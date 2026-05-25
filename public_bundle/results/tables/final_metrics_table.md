@@ -24,3 +24,15 @@
 | tau_mae | 0.0452 |
 | tau_rmse_reduction_vs_mean_baseline | -0.0011 |
 | tau_r2_delta_vs_mean_baseline | -0.0345 |
+| method_x_cog_best_roc_auc | 0.7871 |
+| method_x_cog_best_pr_auc | 0.8732 |
+| method_x_cog_best_brier | 0.1882 |
+| method_x_cog_auc_gain_over_fixed_tabular | 0.0536 |
+| method_x_cog_best_non_mri_roc_auc | 0.7851 |
+| method_x_cog_best_non_mri_pr_auc | 0.8771 |
+| method_x_cog_best_non_mri_auc_gain | 0.0516 |
+| method_y_locked_catalog_rows | 1700 |
+| method_y_amyloid_pet_image_files | 5661 |
+| method_y_tau_pet_image_files | 1576 |
+| method_y_multimodal_training_started | False |
+| method_y_multimodal_clinical_ad_output_allowed_now | False |

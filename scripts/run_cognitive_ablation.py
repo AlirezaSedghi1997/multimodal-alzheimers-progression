@@ -345,12 +345,32 @@ def main() -> int:
     improvement_over_fixed_tabular_auc = None
     if fixed is not None and fixed.get("roc_auc") is not None:
         improvement_over_fixed_tabular_auc = float(best["roc_auc"]) - float(fixed["roc_auc"])
+    valid_non_mri = [c for c in valid if not MODEL_VARIANTS[str(c.get("variant"))]["mri"]]
+    best_non_mri_raw = max(valid_non_mri, key=lambda c: (float(c["roc_auc"]), float(c["pr_auc"]))) if valid_non_mri else None
+    best_non_mri = None
+    non_mri_improvement_over_fixed_tabular_auc = None
+    if best_non_mri_raw is not None:
+        best_non_mri = {
+            "variant": best_non_mri_raw.get("variant"),
+            "C": best_non_mri_raw.get("C"),
+            "status": best_non_mri_raw.get("status"),
+            "n": best_non_mri_raw.get("n"),
+            "feature_count": best_non_mri_raw.get("feature_count"),
+            "roc_auc": best_non_mri_raw.get("roc_auc"),
+            "pr_auc": best_non_mri_raw.get("pr_auc"),
+            "brier": best_non_mri_raw.get("brier"),
+            "uses_mri_features": False,
+        }
+        if fixed is not None and fixed.get("roc_auc") is not None:
+            non_mri_improvement_over_fixed_tabular_auc = float(best_non_mri["roc_auc"]) - float(fixed["roc_auc"])
     summary = {
         "schema_version": 1,
         "method": "Method X-Cog",
         "status": "COMPLETED",
         "best": best,
         "best_by_variant": best_by_variant,
+        "best_non_mri": best_non_mri,
+        "non_mri_improvement_over_fixed_tabular_auc": non_mri_improvement_over_fixed_tabular_auc,
         "improvement_over_fixed_tabular_auc": improvement_over_fixed_tabular_auc,
         "candidate_table": [
             {
@@ -387,6 +407,11 @@ def main() -> int:
         f"- pr_auc: `{float(best['pr_auc']):.4f}`\n",
         f"- brier: `{float(best['brier']):.4f}`\n",
         f"- improvement_over_fixed_tabular_auc: `{improvement_over_fixed_tabular_auc}`\n",
+        f"- best_non_mri_variant: `{best_non_mri['variant'] if best_non_mri else 'NA'}`\n",
+        f"- best_non_mri_roc_auc: `{float(best_non_mri['roc_auc']):.4f}`\n" if best_non_mri else "- best_non_mri_roc_auc: `NA`\n",
+        f"- best_non_mri_pr_auc: `{float(best_non_mri['pr_auc']):.4f}`\n" if best_non_mri else "- best_non_mri_pr_auc: `NA`\n",
+        f"- non_mri_improvement_over_fixed_tabular_auc: `{non_mri_improvement_over_fixed_tabular_auc}`\n",
+        "- best_overall_may_use_mri_surrogate_features: `True`\n",
         "- uses_pet_as_input: `False`\n",
         "- uses_raw_identifiers: `False`\n",
         "- method_x_claim_unchanged: `True`\n",

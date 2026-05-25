@@ -62,6 +62,9 @@ def main() -> int:
     subgroup = load_optional_json("results/final_results/subgroup_performance_audit.json")
     three_d_ablation = load_optional_json("results/final_results/three_d_ablation/three_d_ablation_summary.json")
     xai = load_optional_json("results/final_results/xai/xai_summary.json")
+    method_x_cog = load_optional_json("results/final_results/method_x_cog/method_x_cog_summary.json")
+    method_y_pet = load_optional_json("results/tables/method_y_pet_inventory.json")
+    method_y_multimodal = load_optional_json("results/tables/method_y_multimodal_design.json")
     tau_gate = tau_regression["mode"] if tau_regression is not None else tau["feasibility_mode_120d"]
     three_d_gate = (
         "PASSED" if three_d and three_d["aggregate"].get("final_claim_allowed") else "DEBUG_ONLY" if three_d else "PENDING"
@@ -73,6 +76,9 @@ def main() -> int:
     subgroup_gate = "PASSED" if subgroup else "PENDING"
     ablation_gate = "PASSED" if three_d_ablation and three_d_ablation.get("status") == "COMPLETED" else "PENDING"
     xai_gate = "PASSED" if xai and xai.get("status") == "COMPLETED" else "PENDING"
+    method_x_cog_gate = "PASSED" if method_x_cog and method_x_cog.get("status") == "COMPLETED" else "PENDING"
+    method_y_pet_gate = "AGGREGATE_ONLY" if method_y_pet and method_y_pet.get("status") == "COMPLETED" else "PENDING"
+    method_y_multimodal_gate = "DESIGN_READY_NOT_TRAINED" if method_y_multimodal and method_y_multimodal.get("status") == "DESIGN_READY_NOT_TRAINED" else "PENDING"
 
     gates = {
         "gate_h1_data": "PASSED",
@@ -91,6 +97,9 @@ def main() -> int:
         "gate_3d_training": three_d_gate,
         "gate_3d_fusion_ablation": ablation_gate,
         "gate_xai": xai_gate,
+        "gate_method_x_cog": method_x_cog_gate,
+        "gate_method_y_pet_inventory": method_y_pet_gate,
+        "gate_method_y_multimodal_design": method_y_multimodal_gate,
         "gate_tau": tau_gate,
     }
     final = {
@@ -135,6 +144,18 @@ def main() -> int:
             "tau_mae": nested(tau_regression, "aggregate", "mae"),
             "tau_rmse_reduction_vs_mean_baseline": nested(tau_regression, "delta_vs_mean_baseline", "rmse_reduction"),
             "tau_r2_delta_vs_mean_baseline": nested(tau_regression, "delta_vs_mean_baseline", "r2_delta"),
+            "method_x_cog_best_roc_auc": nested(method_x_cog, "best", "roc_auc"),
+            "method_x_cog_best_pr_auc": nested(method_x_cog, "best", "pr_auc"),
+            "method_x_cog_best_brier": nested(method_x_cog, "best", "brier"),
+            "method_x_cog_auc_gain_over_fixed_tabular": nested(method_x_cog, "improvement_over_fixed_tabular_auc"),
+            "method_x_cog_best_non_mri_roc_auc": nested(method_x_cog, "best_non_mri", "roc_auc"),
+            "method_x_cog_best_non_mri_pr_auc": nested(method_x_cog, "best_non_mri", "pr_auc"),
+            "method_x_cog_best_non_mri_auc_gain": nested(method_x_cog, "non_mri_improvement_over_fixed_tabular_auc"),
+            "method_y_locked_catalog_rows": nested(method_y_pet, "locked_catalog", "rows"),
+            "method_y_amyloid_pet_image_files": nested(method_y_pet, "pet_image_inventory", "amyloid_fbp", "image_file_count"),
+            "method_y_tau_pet_image_files": nested(method_y_pet, "pet_image_inventory", "tau_ftp", "image_file_count"),
+            "method_y_multimodal_training_started": nested(method_y_multimodal, "training_started"),
+            "method_y_multimodal_clinical_ad_output_allowed_now": nested(method_y_multimodal, "target_policy", "clinical_alzheimer_output_allowed_now"),
         },
         "gates": gates,
         "bias": {
@@ -152,6 +173,9 @@ def main() -> int:
         "subgroup_performance_audit": subgroup,
         "three_d_ablation": three_d_ablation,
         "xai": xai,
+        "method_x_cog": method_x_cog,
+        "method_y_pet_inventory": method_y_pet,
+        "method_y_multimodal_design": method_y_multimodal,
         "scientific_caveat": (
             "The local catalog has complete cohort-label coupling. Report performance as Method X engineering evidence "
             "under a pseudo-external holdout, not as proof of pathology-only generalization to an independent cohort."
@@ -205,11 +229,25 @@ def main() -> int:
         f"- Site/scanner drift status: `{site_scanner_gate}`\n",
         f"- Subgroup audit status: `{subgroup_gate}`\n",
         f"- XAI status: `{xai_gate}`\n",
+        f"- Method X-Cog status: `{method_x_cog_gate}`\n",
+        f"- Method X-Cog best ROC-AUC: `{fmt(nested(method_x_cog, 'best', 'roc_auc'))}`\n",
+        f"- Method X-Cog AUC gain over fixed tabular: `{fmt(nested(method_x_cog, 'improvement_over_fixed_tabular_auc'))}`\n",
+        f"- Method X-Cog best non-MRI variant: `{nested(method_x_cog, 'best_non_mri', 'variant') or 'NA'}`\n",
+        f"- Method X-Cog best non-MRI ROC-AUC: `{fmt(nested(method_x_cog, 'best_non_mri', 'roc_auc'))}`\n",
+        f"- Method Y PET inventory status: `{method_y_pet_gate}`\n",
+        f"- Method Y amyloid PET image files counted: `{fmt(nested(method_y_pet, 'pet_image_inventory', 'amyloid_fbp', 'image_file_count'), 0)}`\n",
+        f"- Method Y tau PET image files counted: `{fmt(nested(method_y_pet, 'pet_image_inventory', 'tau_ftp', 'image_file_count'), 0)}`\n",
+        f"- Method Y multimodal design status: `{method_y_multimodal_gate}`\n",
+        f"- Method Y clinical Alzheimer output allowed now: `{nested(method_y_multimodal, 'target_policy', 'clinical_alzheimer_output_allowed_now')}`\n",
         f"- Implementation gap summary: `{gap_matrix.get('summary') if gap_matrix else 'PENDING'}`\n\n",
         "## Required Caveat\n\n",
         final["scientific_caveat"],
         "\n\n## Compliance\n\n",
         "- PET as model input: `False`\n",
+        "- PET as Method X-Cog input: `False`\n",
+        "- Method Y PET inventory is aggregate-only: `True`\n",
+        "- Method Y multimodal training started: `False`\n",
+        "- Alzheimer diagnosis output requires independent clinical label: `True`\n",
         "- Raw identifiers used: `False`\n",
         "- External used for calibration fit: `False`\n",
         "- External holdout type: `locked_pseudo_external_random_patient_holdout`\n",

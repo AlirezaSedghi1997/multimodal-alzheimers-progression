@@ -14,8 +14,11 @@
 | gate_gap_matrix | PASSED |
 | gate_site_scanner_drift | SKIP_WITH_JUSTIFICATION |
 | gate_subgroup_audit | PASSED |
-| gate_full_mri_preprocess | BLOCKED |
+| gate_full_mri_preprocess | BATCH_COMPLETED |
 | gate_3d_training | PASSED |
 | gate_3d_fusion_ablation | PENDING |
 | gate_xai | PASSED |
+| gate_method_x_cog | PASSED |
+| gate_method_y_pet_inventory | AGGREGATE_ONLY |
+| gate_method_y_multimodal_design | DESIGN_READY_NOT_TRAINED |
 | gate_tau | FULL |

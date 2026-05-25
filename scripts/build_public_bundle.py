@@ -15,6 +15,8 @@ PUBLIC_FILES = [
     "README.md",
     "governance/method_x_operating_contract.md",
     "governance/method_x_cog_operating_contract.md",
+    "governance/method_y_pet_exploratory_policy.md",
+    "governance/method_y_multimodal_operating_contract.md",
     "governance/cognitive_feature_policy.md",
     "governance/data_schema_policy.md",
     "governance/calibration_policy.md",
@@ -30,6 +32,8 @@ PUBLIC_FILES = [
     "results/tables/full_mri_preprocess_toolchain_report.md",
     "results/tables/spm_preprocess_toolchain_report.md",
     "results/tables/site_scanner_drift_sensitivity_report.md",
+    "results/tables/method_y_pet_inventory.md",
+    "results/tables/method_y_multimodal_design.md",
     "results/final_results/subgroup_performance_audit.md",
     "results/final_results/three_d_ablation/three_d_ablation_summary.md",
     "results/final_results/xai/xai_summary.md",
@@ -42,6 +46,10 @@ PUBLIC_FILES = [
     "results/tables/cognitive_feature_summary.md",
     "results/final_results/method_x_cog/method_x_cog_summary.md",
     "docs/method_x_cog_validation_plan.md",
+    "docs/method_y_pet_assisted_exploratory_plan.md",
+    "docs/method_y_pet_mri_multimodal_plan.md",
+    "docs/research_methods_limitations_ethics_statistics.md",
+    "configs/model/method_y_multimodal_plan.yaml",
 ]
 
 FORBIDDEN_SUFFIXES = {".csv", ".h5", ".hdf5", ".nii", ".gz"}
