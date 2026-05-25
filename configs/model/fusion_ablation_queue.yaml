@@ -1,0 +1,16 @@
+version: 3.4-patched
+method: X
+mandatory_fusion_variants:
+  - name: late_concat
+  - name: attention_cross_light
+    implementation: src.models.fusion.bottleneck_cross_attention.BottleneckCrossAttention
+  - name: conv_feature_fusion
+    implementation: src.models.fusion.conv_feature_fusion.ConvFeatureFusion
+  - name: hyperfusion_light
+  - name: adaptive_fusion
+mandatory_latent_alignment_ablation:
+  enabled: true
+  lambda_default: 0.05
+vram_policy:
+  dryrun_guard_gb: 6.5
+  training_soft_cap_gb: 7.0

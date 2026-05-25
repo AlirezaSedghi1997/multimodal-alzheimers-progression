@@ -1,0 +1,39 @@
+project: amyloid-tau-prediction-a4learn
+method: X
+version: 3.4-patched
+
+data:
+  default_windows_root: "H:\\A4 Learn"
+  default_wsl_root: "/mnt/h/A4 Learn"
+  raw_read_only: true
+  processed_dir: data/processed
+  cached_dir: data/cached
+
+primary_task:
+  name: AB_POS_vs_AB_NEG
+  type: binary_classification
+  label_source: "Clinical/External Data/imaging_PET_VA.csv"
+  label_column: overall_score
+
+secondary_task:
+  name: TAU_BURDEN_REGRESSION
+  type: regression
+  status: exploratory
+  label_source: "Clinical/External Data/imaging_SUVR_tau.csv"
+  target_candidates: [suvr_cer, suvr_persi, suvr_crus]
+  min_n_full: 200
+  min_n_strong_bootstrap: 150
+  min_n_descriptive_only: 50
+
+inputs:
+  imaging: T1 MRI only
+  tabular: [age, sex, education_years, apoe4_carrier, mmse_base]
+  pet: label_or_target_only
+
+hardware:
+  gpu: RTX 4060 8GB
+  vram_guard_gb_dryrun: 6.5
+  vram_guard_gb_training: 7.0
+  vram_hard_stop_gb: 7.5
+  cpu_allowed: true
+

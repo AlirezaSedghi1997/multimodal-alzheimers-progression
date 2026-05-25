@@ -1,0 +1,33 @@
+{
+  "contains_hdf5": false,
+  "contains_images": false,
+  "contains_raw_data": false,
+  "contains_raw_identifiers": false,
+  "copied_files": [
+    "README.md",
+    "governance/calibration_policy.md",
+    "governance/compute_fallback_policy.md",
+    "governance/data_schema_policy.md",
+    "governance/external_drive_policy.md",
+    "governance/feasibility_assessment.md",
+    "governance/method_x_operating_contract.md",
+    "results/final_results/final_analysis/final_analysis_report.md",
+    "results/final_results/subgroup_performance_audit.md",
+    "results/final_results/tau/tau_regression_metrics.md",
+    "results/final_results/three_d/three_d_metrics.md",
+    "results/final_results/xai/xai_summary.md",
+    "results/tables/cross_cohort_bias_report.md",
+    "results/tables/dataset_inventory.md",
+    "results/tables/final_metrics_table.md",
+    "results/tables/full_mri_preprocess_toolchain_report.md",
+    "results/tables/gate_matrix.md",
+    "results/tables/implementation_gap_matrix.md",
+    "results/tables/master_catalog_summary.md",
+    "results/tables/power_analysis.md",
+    "results/tables/site_scanner_drift_sensitivity_report.md",
+    "results/tables/split_summary.md",
+    "results/tables/tau_feasibility_report.md"
+  ],
+  "public_bundle": "public_bundle",
+  "violations": []
+}

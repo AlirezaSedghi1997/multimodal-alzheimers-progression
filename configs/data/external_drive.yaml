@@ -1,0 +1,12 @@
+data_root_candidates:
+  windows: "H:\\A4 Learn"
+  wsl: "/mnt/h/A4 Learn"
+read_only: true
+required_files:
+  ab_label: "Clinical/External Data/imaging_PET_VA.csv"
+  tau: "Clinical/External Data/imaging_SUVR_tau.csv"
+  volumetric_mri: "Clinical/External Data/imaging_volumetric_mri.csv"
+  subjinfo: "Clinical/Derived Data/SUBJINFO.csv"
+  visits: "Clinical/Derived Data/SV.csv"
+t1_dir: "T1"
+

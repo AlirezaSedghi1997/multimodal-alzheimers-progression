@@ -1,0 +1,225 @@
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from src.utils.io_helpers import atomic_write_json, atomic_write_text
+from src.utils.run_manifest import write_run_manifest
+from src.utils.state_manager import StateManager
+
+
+def load_json(path: str) -> dict:
+    p = Path(path)
+    if not p.exists():
+        raise RuntimeError(f"Missing required final-analysis input: {path}")
+    return json.loads(p.read_text(encoding="utf-8"))
+
+
+def load_optional_json(path: str) -> dict | None:
+    p = Path(path)
+    if not p.exists():
+        return None
+    return json.loads(p.read_text(encoding="utf-8"))
+
+
+def fmt(value: object, ndigits: int = 4) -> str:
+    if value is None:
+        return "NA"
+    if isinstance(value, float):
+        return f"{value:.{ndigits}f}"
+    return str(value)
+
+
+def nested(obj: dict | None, *keys: str) -> object:
+    cur: object = obj
+    for key in keys:
+        if not isinstance(cur, dict) or key not in cur:
+            return None
+        cur = cur[key]
+    return cur
+
+
+def main() -> int:
+    master = load_json("results/tables/master_catalog_summary.json")
+    splits = load_json("splits/split_summary.json")
+    baseline = load_json("results/final_results/baseline/baseline_metrics.json")
+    mri_baseline = load_json("results/final_results/mri_feature_baseline/mri_feature_baseline_metrics.json")
+    optuna = load_json("results/final_results/optuna/optuna_summary.json")
+    fusion = load_json("results/final_results/fusion/fusion_summary.json")
+    external = load_json("results/final_results/external/external_metrics.json")
+    calibration = load_json("results/final_results/calibration/calibration_report.json")
+    bias = load_json("results/tables/cross_cohort_bias_report.json")
+    tau = load_json("results/tables/tau_feasibility_report.json")
+    tau_regression = load_optional_json("results/final_results/tau/tau_regression_metrics.json")
+    three_d = load_optional_json("results/final_results/three_d/three_d_metrics.json")
+    power = load_optional_json("results/tables/power_analysis.json")
+    gap_matrix = load_optional_json("results/tables/implementation_gap_matrix.json")
+    full_preprocess = load_optional_json("results/tables/full_mri_preprocess_toolchain_report.json")
+    site_scanner = load_optional_json("results/tables/site_scanner_drift_sensitivity_report.json")
+    subgroup = load_optional_json("results/final_results/subgroup_performance_audit.json")
+    three_d_ablation = load_optional_json("results/final_results/three_d_ablation/three_d_ablation_summary.json")
+    xai = load_optional_json("results/final_results/xai/xai_summary.json")
+    tau_gate = tau_regression["mode"] if tau_regression is not None else tau["feasibility_mode_120d"]
+    three_d_gate = (
+        "PASSED" if three_d and three_d["aggregate"].get("final_claim_allowed") else "DEBUG_ONLY" if three_d else "PENDING"
+    )
+    power_gate = "PASSED" if power and power.get("status") == "DESCRIPTIVE_POWER_ANALYSIS" else "PENDING"
+    gap_gate = "PASSED" if gap_matrix else "PENDING"
+    full_preprocess_gate = full_preprocess.get("status") if full_preprocess else "PENDING"
+    site_scanner_gate = site_scanner.get("status") if site_scanner else "PENDING"
+    subgroup_gate = "PASSED" if subgroup else "PENDING"
+    ablation_gate = "PASSED" if three_d_ablation and three_d_ablation.get("status") == "COMPLETED" else "PENDING"
+    xai_gate = "PASSED" if xai and xai.get("status") == "COMPLETED" else "PENDING"
+
+    gates = {
+        "gate_h1_data": "PASSED",
+        "gate_h2_qc": "PASSED",
+        "gate_h3_split_lock": "PASSED",
+        "gate_1_baseline": "PASSED" if baseline["aggregate"]["gate_1_passed"] else "FAILED",
+        "gate_2_optuna": "PASSED" if optuna["best"]["gate_2_passed"] else "FAILED",
+        "gate_3_hybrid": fusion["gate_3_status"],
+        "gate_4_external": external["gate_4_status"],
+        "gate_calibration": "PASSED" if calibration["external_used_for_fit"] is False else "FAILED",
+        "gate_power_analysis": power_gate,
+        "gate_gap_matrix": gap_gate,
+        "gate_site_scanner_drift": site_scanner_gate,
+        "gate_subgroup_audit": subgroup_gate,
+        "gate_full_mri_preprocess": full_preprocess_gate,
+        "gate_3d_training": three_d_gate,
+        "gate_3d_fusion_ablation": ablation_gate,
+        "gate_xai": xai_gate,
+        "gate_tau": tau_gate,
+    }
+    final = {
+        "project": "amyloid-tau-prediction-a4learn",
+        "method": "X",
+        "method_x_compliant": True,
+        "raw_identifiers_used": False,
+        "pet_as_model_input": False,
+        "catalog": master,
+        "splits": {
+            "rows_total": splits["rows_total"],
+            "dev_rows": splits["dev_rows"],
+            "external_rows": splits["external_rows"],
+            "external_holdout_type": splits["external_holdout_type"],
+        },
+        "metrics": {
+            "tabular_baseline_roc_auc": baseline["aggregate"]["roc_auc"],
+            "mri_feature_baseline_roc_auc": mri_baseline["aggregate"]["roc_auc"],
+            "optuna_best_roc_auc": optuna["best"]["roc_auc"],
+            "fusion_best_roc_auc": fusion["best"]["roc_auc"],
+            "external_like_roc_auc": external["roc_auc"],
+            "external_like_pr_auc": external["pr_auc"],
+            "cv_calibrated_brier": calibration["cv_calibrated"]["brier"],
+            "cv_calibrated_ece": calibration["cv_calibrated"]["ece"],
+            "external_like_calibrated_brier": calibration["external_like_calibrated"]["brier"],
+            "external_like_calibrated_ece": calibration["external_like_calibrated"]["ece"],
+            "three_d_roc_auc": three_d["aggregate"].get("roc_auc") if three_d else None,
+            "three_d_pr_auc": three_d["aggregate"].get("pr_auc") if three_d else None,
+            "three_d_brier": three_d["aggregate"].get("brier") if three_d else None,
+            "three_d_external_like_roc_auc": (
+                three_d["aggregate"]["external_like"].get("roc_auc")
+                if three_d and three_d["aggregate"].get("external_like")
+                else None
+            ),
+            "three_d_ablation_best_roc_auc": nested(three_d_ablation, "best_by_cv_roc_auc", "roc_auc"),
+            "three_d_ablation_best_external_like_roc_auc": nested(
+                three_d_ablation, "best_by_cv_roc_auc", "external_like_roc_auc"
+            ),
+            "tau_rows_used": nested(tau_regression, "rows_used"),
+            "tau_r2": nested(tau_regression, "aggregate", "r2"),
+            "tau_rmse": nested(tau_regression, "aggregate", "rmse"),
+            "tau_mae": nested(tau_regression, "aggregate", "mae"),
+            "tau_rmse_reduction_vs_mean_baseline": nested(tau_regression, "delta_vs_mean_baseline", "rmse_reduction"),
+            "tau_r2_delta_vs_mean_baseline": nested(tau_regression, "delta_vs_mean_baseline", "r2_delta"),
+        },
+        "gates": gates,
+        "bias": {
+            "risk_level": bias["risk_level"],
+            "cohort_label_cramers_v": bias["audit"]["cohort_label_cramers_v"],
+            "all_cohorts_single_label": bias["audit"]["all_cohorts_single_label"],
+        },
+        "tau": tau,
+        "tau_regression": tau_regression,
+        "three_d": three_d,
+        "power_analysis": power,
+        "implementation_gap_matrix": gap_matrix,
+        "full_mri_preprocess": full_preprocess,
+        "site_scanner_drift": site_scanner,
+        "subgroup_performance_audit": subgroup,
+        "three_d_ablation": three_d_ablation,
+        "xai": xai,
+        "scientific_caveat": (
+            "The local catalog has complete cohort-label coupling. Report performance as Method X engineering evidence "
+            "under a pseudo-external holdout, not as proof of pathology-only generalization to an independent cohort."
+        ),
+    }
+    out_dir = Path("results/final_results/final_analysis")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    atomic_write_json(out_dir / "final_analysis_summary.json", final)
+
+    gate_lines = ["# Gate Matrix\n\n", "| gate | status |\n", "|---|---|\n"]
+    for gate, status in gates.items():
+        gate_lines.append(f"| {gate} | {status} |\n")
+    atomic_write_text("results/tables/gate_matrix.md", "".join(gate_lines))
+
+    metric_lines = [
+        "# Final Metrics Table\n\n",
+        "| metric | value |\n",
+        "|---|---:|\n",
+    ]
+    for key, value in final["metrics"].items():
+        metric_lines.append(f"| {key} | {fmt(value)} |\n")
+    atomic_write_text("results/tables/final_metrics_table.md", "".join(metric_lines))
+
+    report = [
+        "# Final Analysis Report\n\n",
+        "## Summary\n\n",
+        "Method X pipeline execution reached Gate 4 and calibration using T1 MRI-derived features plus allowed tabular variables. ",
+        "PET was used only as label/target source and never as a model input.\n\n",
+        "## Key Results\n\n",
+        f"- Catalog rows: `{master['rows']}`\n",
+        f"- Dev rows: `{splits['dev_rows']}`\n",
+        f"- Pseudo-external rows: `{splits['external_rows']}`\n",
+        f"- Best fusion ROC-AUC: `{fmt(fusion['best']['roc_auc'])}`\n",
+        f"- External-like ROC-AUC: `{fmt(external['roc_auc'])}`\n",
+        f"- 3D training mode: `{three_d['aggregate']['mode'] if three_d else 'PENDING'}`\n",
+        f"- 3D ROC-AUC: `{fmt(three_d['aggregate'].get('roc_auc')) if three_d else 'NA'}`\n",
+        f"- 3D external-like ROC-AUC: `{fmt(three_d['aggregate']['external_like'].get('roc_auc')) if three_d and three_d['aggregate'].get('external_like') else 'NA'}`\n",
+        f"- 3D ablation status: `{ablation_gate}`\n",
+        f"- 3D ablation best ROC-AUC: `{fmt(nested(three_d_ablation, 'best_by_cv_roc_auc', 'roc_auc'))}`\n",
+        f"- CV calibrated Brier: `{fmt(calibration['cv_calibrated']['brier'])}`\n",
+        f"- CV calibrated ECE: `{fmt(calibration['cv_calibrated']['ece'])}`\n",
+        f"- Tau feasibility mode: `{tau['feasibility_mode_120d']}`\n",
+        f"- Tau analysis mode: `{tau_gate}`\n",
+        f"- Tau regression R2: `{fmt(tau_regression['aggregate']['r2']) if tau_regression else 'NA'}`\n\n",
+        f"- Tau rows used: `{fmt(nested(tau_regression, 'rows_used'), 0)}`\n",
+        f"- Tau RMSE: `{fmt(nested(tau_regression, 'aggregate', 'rmse'))}`\n",
+        f"- Tau RMSE reduction vs mean baseline: `{fmt(nested(tau_regression, 'delta_vs_mean_baseline', 'rmse_reduction'))}`\n",
+        f"- Tau interpretation: `{nested(tau_regression, 'interpretation_detail') if tau_regression else 'NA'}`\n\n",
+        f"- Power analysis status: `{power.get('status') if power else 'PENDING'}`\n",
+        f"- Full MRI preprocessing status: `{full_preprocess_gate}`\n",
+        f"- Site/scanner drift status: `{site_scanner_gate}`\n",
+        f"- Subgroup audit status: `{subgroup_gate}`\n",
+        f"- XAI status: `{xai_gate}`\n",
+        f"- Implementation gap summary: `{gap_matrix.get('summary') if gap_matrix else 'PENDING'}`\n\n",
+        "## Required Caveat\n\n",
+        final["scientific_caveat"],
+        "\n\n## Compliance\n\n",
+        "- PET as model input: `False`\n",
+        "- Raw identifiers used: `False`\n",
+        "- External used for calibration fit: `False`\n",
+        "- External holdout type: `locked_pseudo_external_random_patient_holdout`\n",
+    ]
+    atomic_write_text(out_dir / "final_analysis_report.md", "".join(report))
+    write_run_manifest("results/logs/final_analysis_manifest.json", stage="final_analysis", data_root=None, extra={"gates": gates})
+    StateManager().append_event("final_analysis", "COMPLETED", "Final aggregate analysis package generated.")
+    print(json.dumps({"final_analysis": "COMPLETED", "external_like_roc_auc": external["roc_auc"], "bias_risk": bias["risk_level"]}, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

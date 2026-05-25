@@ -1,0 +1,23 @@
+# Tau Regression Metrics
+
+- mode: `FULL`
+- target: `tau_mean_suvr_persi_across_regions`
+- t1_candidate_source: `sv_visit_timing`
+- subject_feature_source: `subjinfo`
+- rows_aligned: `1274`
+- rows_used: `281`
+- rows_missing_mri_features: `993`
+- mri_feature_join_rate: `0.2206`
+- unique_patients_used: `281`
+- cv_strategy: `GroupKFold(n_splits=3, group=patient_hash)`
+- r2: `-0.0446`
+- rmse: `0.0671`
+- mae: `0.0452`
+- mean_baseline_r2: `-0.0101`
+- mean_baseline_rmse: `0.0660`
+- rmse_reduction_vs_mean_baseline: `-0.0011`
+- uses_tau_as_input: `False`
+- uses_pet_as_input: `False`
+- uses_raw_identifiers: `False`
+- interpretation: `Exploratory secondary analysis; does not alter primary AB pipeline.`
+- interpretation_detail: `No out-of-fold predictive signal over the grouped mean baseline; report as a negative exploratory result.`

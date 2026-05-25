@@ -1,0 +1,53 @@
+﻿.agent/*.lock
+
+# Raw / protected data
+H:/A4 Learn/
+H:\A4 Learn/
+data/raw/
+data/external/
+data/processed/*.csv
+data/preprocessed_mri_96/
+data/preprocessed_pet*/
+splits/
+*_scratch*/
+_scratch_spm/
+
+# Large or sensitive derived data
+data/cached/
+*.nii
+*.nii.gz
+*.mgz
+*.mgh
+*.dcm
+*.h5
+*.hdf5
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# Raw clinical tables and sensitive exports
+*.xlsx
+*.xls
+Clinical/
+*SUBJINFO*
+*imaging_PET*
+*imaging_volumetric_mri*
+
+# Logs / subject-level outputs
+results/logs/
+results/approval_packets/
+results/final_results/
+results/**/subject*
+results/**/per_subject*
+results/**/patient*
+
+# Local runtime noise
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Root-level protected runtime/state directories
+/.agent/
+/data/
+/results/
