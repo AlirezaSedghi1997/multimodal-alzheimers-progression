@@ -64,4 +64,4 @@ Planned modality patterns:
 - `MRI+PET`: multimodal image fusion; Method Y only.
 - `MRI+PET+cognitive`: multimodal plus cognitive/psychological covariates; Method Y only.
 
-Current approved output wording: probability of `Aβ-positive vs Aβ-negative biomarker status`. Do not call this Alzheimer diagnosis. A clinical Alzheimer output requires a separate independent clinical diagnosis/conversion label.
+Current approved output wording: probability of `A-beta-positive vs A-beta-negative biomarker status`. Do not call this Alzheimer diagnosis. A clinical Alzheimer output requires a separate independent clinical diagnosis/conversion label.

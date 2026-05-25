@@ -1,4 +1,4 @@
-﻿# Method Y PET Exploratory Policy
+# Method Y PET Exploratory Policy
 
 PET image preprocessing may be added only as an exploratory Method Y branch for QC, label reproducibility, and aggregate sensitivity analyses.
 

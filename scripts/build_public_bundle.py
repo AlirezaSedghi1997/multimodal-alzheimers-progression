@@ -45,6 +45,7 @@ PUBLIC_FILES = [
     "results/final_results/three_d/three_d_metrics.md",
     "results/tables/cognitive_feature_summary.md",
     "results/final_results/method_x_cog/method_x_cog_summary.md",
+    "docs/final_writeup_method_x_cog_method_y_pet_mm.md",
     "docs/method_x_cog_validation_plan.md",
     "docs/method_y_pet_assisted_exploratory_plan.md",
     "docs/method_y_pet_mri_multimodal_plan.md",

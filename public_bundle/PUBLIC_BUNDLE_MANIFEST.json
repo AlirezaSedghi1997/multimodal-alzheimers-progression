@@ -6,6 +6,7 @@
   "copied_files": [
     "README.md",
     "configs/model/method_y_multimodal_plan.yaml",
+    "docs/final_writeup_method_x_cog_method_y_pet_mm.md",
     "docs/method_x_cog_validation_plan.md",
     "docs/method_y_pet_assisted_exploratory_plan.md",
     "docs/method_y_pet_mri_multimodal_plan.md",
