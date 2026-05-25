@@ -40,6 +40,11 @@ STAGE_ORDER = [
     "public-bundle",
 ]
 
+METHOD_X_COG_STAGE_ORDER = [
+    "cognitive-features",
+    "cognitive-ablation",
+]
+
 STAGE_COMMANDS = {
     "preflight": ["scripts/preflight_check.py"],
     "external-drive-check": ["scripts/external_drive_check.py"],
@@ -66,6 +71,8 @@ STAGE_COMMANDS = {
     "gap-matrix": ["scripts/build_implementation_gap_matrix.py"],
     "public-bundle": ["scripts/build_public_bundle.py"],
     "tau": ["scripts/run_tau_branch.py"],
+    "cognitive-features": ["scripts/build_cognitive_features.py"],
+    "cognitive-ablation": ["scripts/run_cognitive_ablation.py"],
 }
 
 STAGE_ARTIFACTS = {
@@ -94,6 +101,8 @@ STAGE_ARTIFACTS = {
     "gap-matrix": Path("results/tables/implementation_gap_matrix.json"),
     "public-bundle": Path("public_bundle/PUBLIC_BUNDLE_MANIFEST.json"),
     "tau": Path("results/final_results/tau/tau_regression_metrics.json"),
+    "cognitive-features": Path("data/processed/cognitive_features.csv"),
+    "cognitive-ablation": Path("results/final_results/method_x_cog/method_x_cog_summary.json"),
 }
 
 DATA_ROOT_STAGES = {
@@ -106,6 +115,7 @@ DATA_ROOT_STAGES = {
     "mri-volume-cache",
     "mri-features",
     "tau",
+    "cognitive-features",
 }
 REQUIRED_VOLUME_CACHE_KEYS = {"image", "label", "sample_hash", "patient_hash", "tabular", "status"}
 
@@ -168,8 +178,14 @@ def artifact_is_current(stage: str, data_root: str | None = None) -> bool:
     return True
 
 
-def next_missing_stage(data_root: str | None = None) -> str | None:
-    for stage in STAGE_ORDER:
+def stage_order(include_method_x_cog: bool = False) -> list[str]:
+    if include_method_x_cog:
+        return [*STAGE_ORDER, *METHOD_X_COG_STAGE_ORDER]
+    return STAGE_ORDER
+
+
+def next_missing_stage(data_root: str | None = None, *, include_method_x_cog: bool = False) -> str | None:
+    for stage in stage_order(include_method_x_cog):
         if not artifact_is_current(stage, data_root):
             return stage
     return None
@@ -188,11 +204,16 @@ def main() -> int:
     ap.add_argument("--stage", choices=sorted(STAGE_COMMANDS))
     ap.add_argument("--next", action="store_true")
     ap.add_argument("--run_all", action="store_true")
+    ap.add_argument(
+        "--include_method_x_cog",
+        action="store_true",
+        help="Include optional Method X-Cog cognitive feature and ablation stages after the primary Method X pipeline.",
+    )
     ap.add_argument("--data_root", default=os.environ.get("DATA_ROOT"))
     args = ap.parse_args()
     if args.run_all:
         while True:
-            stage = next_missing_stage(args.data_root)
+            stage = next_missing_stage(args.data_root, include_method_x_cog=args.include_method_x_cog)
             if stage is None:
                 print("all_stages_complete")
                 return 0
@@ -200,7 +221,7 @@ def main() -> int:
             if code != 0:
                 return code
     if args.next:
-        stage = next_missing_stage(args.data_root)
+        stage = next_missing_stage(args.data_root, include_method_x_cog=args.include_method_x_cog)
         if stage is None:
             print("all_stages_complete")
             return 0

@@ -14,6 +14,8 @@ from src.utils.state_manager import StateManager
 PUBLIC_FILES = [
     "README.md",
     "governance/method_x_operating_contract.md",
+    "governance/method_x_cog_operating_contract.md",
+    "governance/cognitive_feature_policy.md",
     "governance/data_schema_policy.md",
     "governance/calibration_policy.md",
     "governance/feasibility_assessment.md",
@@ -37,6 +39,9 @@ PUBLIC_FILES = [
     "results/tables/gate_matrix.md",
     "results/final_results/final_analysis/final_analysis_report.md",
     "results/final_results/three_d/three_d_metrics.md",
+    "results/tables/cognitive_feature_summary.md",
+    "results/final_results/method_x_cog/method_x_cog_summary.md",
+    "docs/method_x_cog_validation_plan.md",
 ]
 
 FORBIDDEN_SUFFIXES = {".csv", ".h5", ".hdf5", ".nii", ".gz"}
@@ -66,7 +71,7 @@ def copy_if_exists(src: Path, root: Path, out: Path) -> list[str]:
         dst.write_text(sanitize_public_text(src.read_text(encoding="utf-8")), encoding="utf-8")
     else:
         shutil.copy2(src, dst)
-    copied.append(str(dst.relative_to(out)))
+    copied.append(dst.relative_to(out).as_posix())
     return copied
 
 
@@ -106,7 +111,7 @@ def main() -> int:
         dst = out / "results/tables/split_summary.md"
         dst.parent.mkdir(parents=True, exist_ok=True)
         dst.write_text(sanitize_public_text(split_summary.read_text(encoding="utf-8")), encoding="utf-8")
-        copied.append(str(dst.relative_to(out)))
+        copied.append(dst.relative_to(out).as_posix())
 
     manifest = {
         "public_bundle": str(out),
