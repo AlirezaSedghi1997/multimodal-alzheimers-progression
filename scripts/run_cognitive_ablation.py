@@ -147,6 +147,28 @@ def fallback_gaussian_predict(x_train: list[list[float]], y_train: list[int], x_
     return probs
 
 
+def average_precision_grouped(y_true: list[int], y_score: list[float]) -> float:
+    total_pos = sum(y_true)
+    if total_pos == 0:
+        raise ValueError("PR-AUC requires positives")
+    grouped: dict[float, list[int]] = {}
+    for y, score in zip(y_true, y_score):
+        grouped.setdefault(float(score), []).append(int(y))
+    tp = 0
+    fp = 0
+    prev_recall = 0.0
+    area = 0.0
+    for score in sorted(grouped, reverse=True):
+        labels = grouped[score]
+        tp += sum(labels)
+        fp += len(labels) - sum(labels)
+        recall = tp / total_pos
+        precision = tp / (tp + fp)
+        area += (recall - prev_recall) * precision
+        prev_recall = recall
+    return area
+
+
 def tabular_vector(row: dict[str, str]) -> list[float]:
     return [
         safe_value(row.get("age")),
@@ -241,7 +263,7 @@ def evaluate_variant(split_dir: Path, cognitive, mri, variant: str, c_value: flo
         y, p = fit_predict(read_rows(split_dir / f"fold_{fold}_train.csv"), read_rows(test_path), cognitive, mri, variant, c_value)
         if not y:
             continue
-        folds.append({"fold": fold, "n_test": len(y), "roc_auc": roc_auc(y, p), "pr_auc": average_precision(y, p), "brier": brier(y, p)})
+        folds.append({"fold": fold, "n_test": len(y), "roc_auc": roc_auc(y, p), "pr_auc": average_precision_grouped(y, p), "brier": brier(y, p)})
         all_y.extend(y)
         all_p.extend(p)
     if not all_y:
@@ -253,12 +275,38 @@ def evaluate_variant(split_dir: Path, cognitive, mri, variant: str, c_value: flo
         "n": len(all_y),
         "feature_count": len(variant_feature_names(variant)),
         "roc_auc": roc_auc(all_y, all_p),
-        "pr_auc": average_precision(all_y, all_p),
+        "pr_auc": average_precision_grouped(all_y, all_p),
         "brier": brier(all_y, all_p),
         "folds": folds,
         "y_true": all_y,
         "y_prob": all_p,
     }
+
+
+def best_candidate_by_variant(candidates: list[dict[str, object]]) -> list[dict[str, object]]:
+    out = []
+    variants = sorted({str(c.get("variant")) for c in candidates})
+    for variant in variants:
+        valid = [c for c in candidates if c.get("variant") == variant and c.get("status") == "OK"]
+        if not valid:
+            skipped = [c for c in candidates if c.get("variant") == variant]
+            if skipped:
+                out.append({"variant": variant, "status": skipped[0].get("status"), "n": skipped[0].get("n", 0)})
+            continue
+        best = max(valid, key=lambda c: (float(c["roc_auc"]), float(c["pr_auc"])))
+        out.append(
+            {
+                "variant": variant,
+                "C": best.get("C"),
+                "status": best.get("status"),
+                "n": best.get("n"),
+                "feature_count": best.get("feature_count"),
+                "roc_auc": best.get("roc_auc"),
+                "pr_auc": best.get("pr_auc"),
+                "brier": best.get("brier"),
+            }
+        )
+    return out
 
 
 def main() -> int:
@@ -288,15 +336,22 @@ def main() -> int:
     y_true = list(best.pop("y_true"))
     y_prob = list(best.pop("y_prob"))
     best["roc_auc_ci"] = guarded_bootstrap_ci(y_true, y_prob, roc_auc, n_boot=1000)
-    best["pr_auc_ci"] = guarded_bootstrap_ci(y_true, y_prob, average_precision, n_boot=1000)
+    best["pr_auc_ci"] = guarded_bootstrap_ci(y_true, y_prob, average_precision_grouped, n_boot=1000)
     best["features"] = variant_feature_names(str(best["variant"]))
     best["uses_pet_as_input"] = False
     best["uses_raw_identifiers"] = False
+    best_by_variant = best_candidate_by_variant(candidates)
+    fixed = next((c for c in best_by_variant if c.get("variant") == "fixed_tabular_only" and c.get("status") == "OK"), None)
+    improvement_over_fixed_tabular_auc = None
+    if fixed is not None and fixed.get("roc_auc") is not None:
+        improvement_over_fixed_tabular_auc = float(best["roc_auc"]) - float(fixed["roc_auc"])
     summary = {
         "schema_version": 1,
         "method": "Method X-Cog",
         "status": "COMPLETED",
         "best": best,
+        "best_by_variant": best_by_variant,
+        "improvement_over_fixed_tabular_auc": improvement_over_fixed_tabular_auc,
         "candidate_table": [
             {
                 "variant": c.get("variant"),
@@ -331,12 +386,29 @@ def main() -> int:
         f"- roc_auc: `{float(best['roc_auc']):.4f}`\n",
         f"- pr_auc: `{float(best['pr_auc']):.4f}`\n",
         f"- brier: `{float(best['brier']):.4f}`\n",
+        f"- improvement_over_fixed_tabular_auc: `{improvement_over_fixed_tabular_auc}`\n",
         "- uses_pet_as_input: `False`\n",
         "- uses_raw_identifiers: `False`\n",
         "- method_x_claim_unchanged: `True`\n",
         "- method_x_cog_exploratory: `True`\n",
         "- cohort_label_confound_warning: `True`\n",
+        "\n## Best By Variant\n\n",
+        "| variant | status | n | feature_count | roc_auc | pr_auc | brier |\n",
+        "|---|---|---:|---:|---:|---:|---:|\n",
     ]
+    for item in best_by_variant:
+        roc = item.get("roc_auc")
+        pr = item.get("pr_auc")
+        br = item.get("brier")
+        lines.append(
+            f"| {item.get('variant')} | {item.get('status')} | {item.get('n', '')} | "
+            f"{item.get('feature_count', '')} | "
+            f"{float(roc):.4f}" if roc is not None else f"| {item.get('variant')} | {item.get('status')} | {item.get('n', '')} | {item.get('feature_count', '')} | NA"
+        )
+        if roc is not None:
+            lines[-1] += f" | {float(pr):.4f} | {float(br):.4f} |\n"
+        else:
+            lines[-1] += " | NA | NA |\n"
     atomic_write_text(out_dir / "method_x_cog_summary.md", "".join(lines))
     write_run_manifest("results/logs/method_x_cog_manifest.json", stage="cognitive-ablation", data_root=None, extra={"best": best})
     StateManager().append_event("cognitive-ablation", "COMPLETED", "Method X-Cog cognitive ablation completed.")

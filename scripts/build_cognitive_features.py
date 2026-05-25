@@ -40,6 +40,13 @@ COGNITIVE_FEATURES = [
     *COGSTATE_FEATURES,
     *MOOD_ANXIETY_FEATURES,
 ]
+FEATURE_FAMILIES = {
+    "core": CORE_COGNITIVE_FEATURES,
+    "clinical_severity": CLINICAL_SEVERITY_FEATURES,
+    "complaints": COMPLAINT_FEATURES,
+    "cogstate": COGSTATE_FEATURES,
+    "mood_anxiety": MOOD_ANXIETY_FEATURES,
+}
 FORBIDDEN_INPUT_TERMS = ("pet", "tau", "suvr", "amyloid", "centiloid", "scan_date", "raw_path")
 SOURCE_FILES = {
     "pacc": Path("Clinical") / "Derived Data" / "PACC.csv",
@@ -163,6 +170,23 @@ def select_row(
             row_visit = norm_visit(row.get("VISCODE") or row.get("VISITCD") or row.get("VISIT"))
             if row_visit == visit:
                 return row, "exact_visit"
+        try:
+            target_visit_num = int(float(visit))
+        except (TypeError, ValueError):
+            target_visit_num = None
+        if target_visit_num is not None:
+            visit_candidates = []
+            for row in rows:
+                row_visit = norm_visit(row.get("VISCODE") or row.get("VISITCD") or row.get("VISIT"))
+                try:
+                    row_visit_num = int(float(row_visit)) if row_visit is not None else None
+                except (TypeError, ValueError):
+                    row_visit_num = None
+                if row_visit_num is not None and row_visit_num <= target_visit_num:
+                    visit_candidates.append((row, row_visit_num))
+            if visit_candidates:
+                row, _ = max(visit_candidates, key=lambda item: item[1])
+                return row, "nearest_nonfuture_visit_code"
     return None, "missing"
 
 
@@ -228,6 +252,31 @@ def add_mood_anxiety(
     assign_feature(features, "iescore", ies.get("IESCORE") if ies else None)
 
 
+def summarize_feature_coverage(rows: list[dict[str, object]]) -> tuple[dict[str, dict[str, object]], dict[str, dict[str, object]]]:
+    feature_summary: dict[str, dict[str, object]] = {}
+    for feature in COGNITIVE_FEATURES:
+        present = sum(1 for row in rows if row.get(feature) != "")
+        missing = len(rows) - present
+        feature_summary[feature] = {
+            "present": present,
+            "missing": missing,
+            "missing_rate": round(missing / len(rows), 6) if rows else 0.0,
+        }
+    family_summary: dict[str, dict[str, object]] = {}
+    for family, features in FEATURE_FAMILIES.items():
+        any_present = sum(1 for row in rows if any(row.get(feature) != "" for feature in features))
+        complete = sum(1 for row in rows if all(row.get(feature) != "" for feature in features))
+        total_present = sum(sum(1 for feature in features if row.get(feature) != "") for row in rows)
+        family_summary[family] = {
+            "features": features,
+            "any_present": any_present,
+            "complete": complete,
+            "mean_present_count": round(total_present / len(rows), 6) if rows else 0.0,
+            "missing_all": len(rows) - any_present,
+        }
+    return feature_summary, family_summary
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--data_root", default=os.environ.get("DATA_ROOT"))
@@ -244,6 +293,7 @@ def main() -> int:
 
     rows: list[dict[str, object]] = []
     alignment_counts: Counter[str] = Counter()
+    source_alignment_counts: Counter[str] = Counter()
     for catalog_row in catalog_rows:
         sample_hash = catalog_row["sample_hash"]
         link = links.get(sample_hash)
@@ -293,17 +343,19 @@ def main() -> int:
             day_columns=("IEDATE_DAYS_T0",),
         )
 
-        alignments = [
-            pacc_alignment,
-            cdr_alignment,
-            cfi_alignment,
-            cfisp_alignment,
-            cogstate_alignment,
-            psychwell_alignment,
-            concerns_alignment,
-            ies_alignment,
-        ]
+        alignments_by_source = {
+            "pacc": pacc_alignment,
+            "cdr": cdr_alignment,
+            "cfi": cfi_alignment,
+            "cfisp": cfisp_alignment,
+            "cogstate": cogstate_alignment,
+            "psychwell": psychwell_alignment,
+            "concerns": concerns_alignment,
+            "ies": ies_alignment,
+        }
+        alignments = list(alignments_by_source.values())
         alignment_counts.update(alignments)
+        source_alignment_counts.update(f"{source}:{alignment}" for source, alignment in alignments_by_source.items())
         add_pacc(base, pacc_row)
         add_cdr(base, cdr_row)
         add_complaints(base, cfi_row, cfisp_row)
@@ -338,18 +390,16 @@ def main() -> int:
     ]
     write_rows(Path(args.out), rows, fieldnames)
     status_counts = Counter(str(row["cognitive_feature_status"]) for row in rows)
+    feature_coverage, family_coverage = summarize_feature_coverage(rows)
     summary = {
         "rows": len(rows),
         "features": COGNITIVE_FEATURES,
-        "feature_families": {
-            "core": CORE_COGNITIVE_FEATURES,
-            "clinical_severity": CLINICAL_SEVERITY_FEATURES,
-            "complaints": COMPLAINT_FEATURES,
-            "cogstate": COGSTATE_FEATURES,
-            "mood_anxiety": MOOD_ANXIETY_FEATURES,
-        },
+        "feature_families": FEATURE_FAMILIES,
+        "feature_coverage": feature_coverage,
+        "family_coverage": family_coverage,
         "status_counts": dict(status_counts),
         "alignment_counts": dict(alignment_counts),
+        "source_alignment_counts": dict(source_alignment_counts),
         "forbidden_input_terms": FORBIDDEN_INPUT_TERMS,
         "contains_pet_input": False,
         "contains_raw_identifiers": False,
@@ -369,7 +419,25 @@ def main() -> int:
         "- output_granularity: `hashed_sample_level`\n",
         "- method_x_cog_exploratory: `True`\n",
         "- method_x_claim_unchanged: `True`\n",
+        "\n## Family Coverage\n\n",
+        "| family | any_present | complete | mean_present_count | missing_all |\n",
+        "|---|---:|---:|---:|---:|\n",
     ]
+    for family, item in family_coverage.items():
+        lines.append(
+            f"| {family} | {item['any_present']} | {item['complete']} | "
+            f"{float(item['mean_present_count']):.3f} | {item['missing_all']} |\n"
+        )
+    lines.extend([
+        "\n## Feature Coverage\n\n",
+        "| feature | present | missing | missing_rate |\n",
+        "|---|---:|---:|---:|\n",
+    ])
+    for feature, item in feature_coverage.items():
+        lines.append(
+            f"| {feature} | {item['present']} | {item['missing']} | "
+            f"{float(item['missing_rate']):.3f} |\n"
+        )
     atomic_write_text(md_path, "".join(lines))
     write_run_manifest("results/logs/cognitive_features_manifest.json", stage="cognitive-features", data_root=str(root), extra={"summary": summary})
     StateManager().append_event("cognitive-features", "COMPLETED", "Method X-Cog hashed cognitive features generated.")
