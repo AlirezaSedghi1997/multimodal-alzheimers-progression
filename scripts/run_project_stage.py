@@ -35,6 +35,7 @@ STAGE_ORDER = [
     "external",
     "calibration",
     "tau",
+    "clinical-ad-feasibility",
     "final-analysis",
     "gap-matrix",
     "public-bundle",
@@ -71,6 +72,7 @@ STAGE_COMMANDS = {
     "gap-matrix": ["scripts/build_implementation_gap_matrix.py"],
     "public-bundle": ["scripts/build_public_bundle.py"],
     "tau": ["scripts/run_tau_branch.py"],
+    "clinical-ad-feasibility": ["scripts/clinical_ad_target_feasibility.py"],
     "cognitive-features": ["scripts/build_cognitive_features.py"],
     "cognitive-ablation": ["scripts/run_cognitive_ablation.py"],
 }
@@ -101,6 +103,7 @@ STAGE_ARTIFACTS = {
     "gap-matrix": Path("results/tables/implementation_gap_matrix.json"),
     "public-bundle": Path("public_bundle/PUBLIC_BUNDLE_MANIFEST.json"),
     "tau": Path("results/final_results/tau/tau_regression_metrics.json"),
+    "clinical-ad-feasibility": Path("results/tables/clinical_ad_target_feasibility.json"),
     "cognitive-features": Path("data/processed/cognitive_features.csv"),
     "cognitive-ablation": Path("results/final_results/method_x_cog/method_x_cog_summary.json"),
 }
@@ -115,6 +118,7 @@ DATA_ROOT_STAGES = {
     "mri-volume-cache",
     "mri-features",
     "tau",
+    "clinical-ad-feasibility",
     "cognitive-features",
 }
 REQUIRED_VOLUME_CACHE_KEYS = {"image", "label", "sample_hash", "patient_hash", "tabular", "status"}
@@ -165,6 +169,17 @@ def artifact_is_current(stage: str, data_root: str | None = None) -> bool:
         return False
     if stage == "public-bundle" and newer_than(artifact, STAGE_ARTIFACTS["final-analysis"]):
         return False
+    if stage == "clinical-ad-feasibility":
+        try:
+            obj = json.loads(artifact.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return False
+        return (
+            obj.get("status") == "FEASIBILITY_ONLY_NOT_TRAINED"
+            and obj.get("training_started") is False
+            and obj.get("clinical_alzheimer_output_allowed_now") is False
+            and obj.get("subject_level_outputs_exported") is False
+        )
     if stage == "tau":
         try:
             obj = json.loads(artifact.read_text(encoding="utf-8"))

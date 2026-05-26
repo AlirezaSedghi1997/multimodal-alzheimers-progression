@@ -4,7 +4,7 @@ PY := conda run -n $(ENV_NAME) python
 DATA_ROOT ?= /mnt/h/A4\ Learn
 export WANDB_MODE := offline
 
-.PHONY: test preflight inventory catalog preprocess preprocess-toolchain-check preprocess-spm-toolchain-check preprocess-full-mri preprocess-full-mri-spm mri-volume-cache mri-volume-cache-96 mri-features mri-feature-baseline train-3d three-d-ablation xai-summary splits baseline cross-cohort-bias optuna fusion external-eval calibration final-analysis public-bundle tau external-drive-check compute-plan power-analysis site-drift subgroup-audit gap-matrix method-y-pet-inventory method-y-multimodal-design run-stage run-next-stage run-all-stages
+.PHONY: test preflight inventory catalog preprocess preprocess-toolchain-check preprocess-spm-toolchain-check preprocess-full-mri preprocess-full-mri-spm mri-volume-cache mri-volume-cache-96 mri-features mri-feature-baseline train-3d three-d-ablation xai-summary splits baseline cross-cohort-bias optuna fusion external-eval calibration final-analysis public-bundle tau external-drive-check compute-plan power-analysis site-drift subgroup-audit gap-matrix method-y-pet-inventory method-y-multimodal-design clinical-ad-feasibility run-stage run-next-stage run-all-stages
 
 test:
 	$(PY) -m pytest tests/ -q
@@ -111,6 +111,10 @@ method-y-pet-inventory:
 
 method-y-multimodal-design:
 	$(PY) scripts/method_y_multimodal_design.py
+
+clinical-ad-feasibility:
+	$(PY) scripts/clinical_ad_target_feasibility.py --data_root "$(DATA_ROOT)"
+
 run-stage:
 	$(PY) scripts/run_project_stage.py --stage "$(STAGE)" --data_root "$(DATA_ROOT)"
 
