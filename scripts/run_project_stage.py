@@ -10,6 +10,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.data.a4_schema import resolve_data_root, resolve_required_file
+from scripts.spm_completion_guard import spm_completion_ready, spm_completion_status
 
 
 STAGE_ORDER = [
@@ -122,6 +123,15 @@ DATA_ROOT_STAGES = {
     "cognitive-features",
 }
 REQUIRED_VOLUME_CACHE_KEYS = {"image", "label", "sample_hash", "patient_hash", "tabular", "status"}
+POST_SPM_GATED_STAGES = {
+    "mri-volume-cache",
+    "train-3d",
+    "optuna",
+    "fusion",
+    "external",
+    "calibration",
+    "final-analysis",
+}
 
 
 def tau_target_available(data_root: str | None) -> bool:
@@ -207,6 +217,11 @@ def next_missing_stage(data_root: str | None = None, *, include_method_x_cog: bo
 
 
 def run_stage(stage: str, data_root: str | None) -> int:
+    if stage in POST_SPM_GATED_STAGES:
+        spm_status = spm_completion_status()
+        if not spm_completion_ready(spm_status):
+            print(json.dumps({"stage": stage, "blocked": "SPM_NOT_COMPLETE", "spm_completion": spm_status}, indent=2))
+            return 4
     cmd = [sys.executable, *STAGE_COMMANDS[stage]]
     if stage in DATA_ROOT_STAGES and data_root:
         cmd += ["--data_root", data_root]

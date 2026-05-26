@@ -4,7 +4,7 @@ PY := conda run -n $(ENV_NAME) python
 DATA_ROOT ?= /mnt/h/A4\ Learn
 export WANDB_MODE := offline
 
-.PHONY: test preflight inventory catalog preprocess preprocess-toolchain-check preprocess-spm-toolchain-check preprocess-full-mri preprocess-full-mri-spm mri-volume-cache mri-volume-cache-96 mri-features mri-feature-baseline train-3d three-d-ablation xai-summary splits baseline cross-cohort-bias optuna fusion external-eval calibration final-analysis public-bundle tau external-drive-check compute-plan power-analysis site-drift subgroup-audit gap-matrix method-y-pet-inventory method-y-multimodal-design clinical-ad-feasibility run-stage run-next-stage run-all-stages
+.PHONY: test preflight inventory catalog preprocess preprocess-toolchain-check preprocess-spm-toolchain-check preprocess-full-mri preprocess-full-mri-spm spm-completion-guard mri-volume-cache mri-volume-cache-96 mri-features mri-feature-baseline train-3d three-d-ablation xai-summary splits baseline cross-cohort-bias optuna fusion external-eval calibration final-analysis public-bundle tau external-drive-check compute-plan power-analysis site-drift subgroup-audit gap-matrix method-y-pet-inventory method-y-multimodal-design clinical-ad-feasibility run-stage run-next-stage run-all-stages
 
 test:
 	$(PY) -m pytest tests/ -q
@@ -40,10 +40,15 @@ preprocess-full-mri:
 preprocess-full-mri-spm:
 	$(PY) scripts/preprocess_mri_spm.py --data_root "$(DATA_ROOT)" --matlab "$(MATLAB_BIN)" --spm_dir "$(SPM_DIR)" --execute
 
+spm-completion-guard:
+	$(PY) scripts/spm_completion_guard.py
+
 mri-volume-cache:
+	$(PY) scripts/spm_completion_guard.py
 	$(PY) scripts/build_mri_volume_cache.py --data_root "$(DATA_ROOT)"
 
 mri-volume-cache-96:
+	$(PY) scripts/spm_completion_guard.py
 	$(PY) scripts/build_mri_volume_cache.py --preprocessed_dir data/preprocessed_mri_96 --out data/cached/t1_volume_cache_96.h5 --resolution 96
 
 mri-features:
@@ -53,12 +58,15 @@ mri-feature-baseline:
 	$(PY) scripts/train_mri_feature_baseline.py
 
 train-3d:
+	$(PY) scripts/spm_completion_guard.py
 	$(PY) scripts/train_3d_mri.py
 
 three-d-ablation:
+	$(PY) scripts/spm_completion_guard.py
 	$(PY) scripts/run_3d_ablation.py --cache data/cached/t1_volume_cache_96.h5 --folds 5 --epochs 4 --batch_size 1
 
 xai-summary:
+	$(PY) scripts/spm_completion_guard.py
 	$(PY) scripts/run_xai_summary.py --cache data/cached/t1_volume_cache_96.h5
 
 splits:
@@ -74,15 +82,19 @@ optuna:
 	$(PY) scripts/run_optuna.py
 
 fusion:
+	$(PY) scripts/spm_completion_guard.py
 	$(PY) scripts/run_fusion.py
 
 external-eval:
+	$(PY) scripts/spm_completion_guard.py
 	$(PY) scripts/run_external_eval.py
 
 calibration:
+	$(PY) scripts/spm_completion_guard.py
 	$(PY) scripts/run_calibration.py
 
 final-analysis:
+	$(PY) scripts/spm_completion_guard.py
 	$(PY) scripts/final_analysis.py
 
 public-bundle:
