@@ -127,6 +127,7 @@ def load_volume(path: Path, resolution: int, device: str | object = "cpu"):
     try:
         import nibabel as nib
         import numpy as np
+        import torch
         import torch.nn.functional as F
     except Exception as exc:
         raise RuntimeError("build_mri_volume_cache requires nibabel, numpy, and torch") from exc
