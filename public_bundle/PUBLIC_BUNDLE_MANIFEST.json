@@ -6,6 +6,7 @@
   "copied_files": [
     "README.md",
     "configs/model/method_y_multimodal_plan.yaml",
+    "docs/clinical_alzheimer_target_feasibility_and_governance.md",
     "docs/final_writeup_method_x_cog_method_y_pet_mm.md",
     "docs/method_x_cog_validation_plan.md",
     "docs/method_y_pet_assisted_exploratory_plan.md",
@@ -27,6 +28,8 @@
     "results/final_results/tau/tau_regression_metrics.md",
     "results/final_results/three_d/three_d_metrics.md",
     "results/final_results/xai/xai_summary.md",
+    "results/tables/clinical_ad_target_feasibility.json",
+    "results/tables/clinical_ad_target_feasibility.md",
     "results/tables/cognitive_feature_summary.md",
     "results/tables/cross_cohort_bias_report.md",
     "results/tables/dataset_inventory.md",
