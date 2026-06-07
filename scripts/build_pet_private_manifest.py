@@ -9,6 +9,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+from src.utils.pet_path_resolver import discover_pet_from_project_inventory, attach_native_t1_paths_to_candidates
 from src.utils.pet_manifest import (
     discover_pet_files, read_catalog, read_private_manifest, write_private_manifest,
     link_candidates_to_catalog, write_excluded_manifest, canonical_tracer,
@@ -26,6 +27,7 @@ def main() -> int:
     ap.add_argument("--input_manifest", default=None, help="Existing private manifest or metadata CSV, preferred over regex discovery.")
     ap.add_argument("--out", default=None)
     ap.add_argument("--requested_tier", default="primary_strict")
+    ap.add_argument("--allow_regex_fallback", action="store_true", help="Allow filename regex discovery when project inventory is empty.")
     args = ap.parse_args()
 
     tracer = canonical_tracer(args.tracer)
@@ -37,13 +39,22 @@ def main() -> int:
         candidates = read_private_manifest(args.input_manifest, tracer=tracer)
         source = "input_private_manifest"
     elif args.data_root:
-        candidates = discover_pet_files(args.data_root, tracer=tracer)
-        source = "filename_regex_fallback"
+        candidates = discover_pet_from_project_inventory(args.data_root, tracer=tracer)
+        if candidates:
+            source = "project_inventory"
+        elif args.allow_regex_fallback:
+            candidates = discover_pet_files(args.data_root, tracer=tracer)
+            source = "filename_regex_fallback"
+        else:
+            candidates = []
+            source = "none"
     else:
         candidates = []
         source = "none"
 
     candidates = enrich_candidates(candidates)
+    if args.data_root and candidates:
+        candidates = attach_native_t1_paths_to_candidates(candidates, args.data_root)
     write_private_manifest(out_path, candidates)
     catalog = read_catalog_with_t1_paths(
         PROJECT_ROOT / args.catalog if not Path(args.catalog).is_absolute() else args.catalog,
@@ -68,7 +79,8 @@ def main() -> int:
         "linked_gap_tiers": dict(gap_counts),
         "raw_paths_exported": False,
         "regex_fallback_used": source == "filename_regex_fallback",
-        "training_ready_manifest": source != "filename_regex_fallback" and link_summary.get("linked_work_items", 0) > 0,
+        "project_inventory_used": source == "project_inventory",
+        "training_ready_manifest": source in {"input_private_manifest", "project_inventory"} and link_summary.get("linked_work_items", 0) > 0,
         "warning": "Filename regex fallback is allowed for dry-run only; training-ready PET requires private manifest/project resolver.",
     }
     atomic_write_json(PROJECT_ROOT / "results" / "tables" / "method_y_pet_manifest_summary.json", summary)

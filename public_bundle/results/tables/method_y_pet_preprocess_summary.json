@@ -6,7 +6,7 @@
   "manifest_source": "private_manifest",
   "candidate_count": 5661,
   "catalog_rows": 1699,
-  "selected_work_items": 5,
+  "selected_work_items": 2,
   "excluded_items": 1508,
   "link_summary": {
     "catalog_rows": 1699,
@@ -26,15 +26,15 @@
   },
   "spatial_mode": "ants_rigid_pet_to_t1",
   "normalization": "percentile_clip_foreground_zscore",
-  "n_jobs": 2,
+  "n_jobs": 1,
   "raw_paths_exported": false,
   "train_ready": false,
   "requires_readiness_gate": true,
   "mni_template_provided": false,
   "reference_mask_provided": false,
   "status_counts": {
-    "FAIL": 5
+    "PASS": 2
   },
-  "processed_items": 5,
-  "verdict": "NO_PASSING_OUTPUTS"
+  "processed_items": 2,
+  "verdict": "PASS_WITH_QC_OUTPUTS_NOT_YET_TRAINING_READY_UNTIL_READINESS_GATE"
 }

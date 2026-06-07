@@ -37,17 +37,14 @@ Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict or 
 
 ## Training blockers
 
-- **`REGEX_FALLBACK_MANIFEST_NOT_TRAINING_READY`** — PET file manifest still relies on regex fallback; training-grade private manifest is required.
-- **`PRIVATE_MANIFEST_NOT_TRAINING_READY`** — Hash-level private PET manifest is incomplete or not validated for one-PET-per-patient discipline.
 - **`PRIMARY_TIER_MIN_CLASS_BELOW_BLOCK_THRESHOLD`** — Primary-tier Method Y split has insufficient minority-class support for stable training.
-- **`PREPROCESS_NOT_EXECUTED`** — Method Y PET spatial preprocessing / cache build has not been executed.
-- **`NO_QC_PASS_PET_OUTPUTS`** — No PET preprocessing outputs passed spatial QC gates.
 
 ## Warnings
 
 - **`COHORT_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING`** — Amyloid label may remain coupled to cohort/tracer in Method Y splits.
 - **`TRACER_LABEL_AUDIT_SINGLE_ROW_OR_COLUMN_REVIEW`** — Tracer vs label contingency needs manual review.
 - **`GAP_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING`** — PET–T1 temporal gap bins may correlate with label.
+- **`SUBJECT_T1_ONLY_SPATIAL_OUTPUT_REQUIRES_MNI_STEP_FOR_REFERENCE_REGION_POLICY`** — Review Method Y gap/cohort audits.
 - **`PET_CACHE_NOT_BUILT_YET`** — Method Y PET volume cache has not been built.
 
 ## Required before training

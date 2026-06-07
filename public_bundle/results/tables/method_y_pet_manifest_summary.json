@@ -1,7 +1,7 @@
 {
   "stage": "method_y_pet_manifest",
   "tracer": "fbp",
-  "source": "filename_regex_fallback",
+  "source": "project_inventory",
   "private_manifest_path_redacted": "data/preprocessed_pet/_private/manifests/<tracer>_private_manifest.csv",
   "excluded_manifest_path_redacted": "data/preprocessed_pet/_private/manifests/<tracer>_excluded_manifest.csv",
   "n_candidates": 5661,
@@ -33,7 +33,8 @@
     "primary_strict": 191
   },
   "raw_paths_exported": false,
-  "regex_fallback_used": true,
-  "training_ready_manifest": false,
+  "regex_fallback_used": false,
+  "project_inventory_used": true,
+  "training_ready_manifest": true,
   "warning": "Filename regex fallback is allowed for dry-run only; training-ready PET requires private manifest/project resolver."
 }
