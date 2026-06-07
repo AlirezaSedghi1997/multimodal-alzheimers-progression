@@ -397,7 +397,11 @@ def main() -> int:
         lines.append(f"- claim_blockers: `{claim_policy['claim_blockers']}`\n")
     atomic_write_text(out_dir / "three_d_metrics.md", "".join(lines))
     write_run_manifest("results/logs/three_d_manifest.json", stage="train_3d", data_root=None, extra={"aggregate": aggregate})
-    StateManager().append_event("train_3d", "COMPLETED" if aggregate["final_claim_allowed"] else "DEBUG_ONLY", "3D MRI training stage completed.")
+    StateManager().append_event(
+        "train_3d",
+        "COMPLETED" if mode == "FULL_3D_TRAINING" else "DEBUG_ONLY",
+        "3D MRI training stage completed.",
+    )
     print(json.dumps({"mode": mode, "device": device.type, "roc_auc": aggregate["roc_auc"], "final_claim_allowed": aggregate["final_claim_allowed"]}, indent=2))
     return 0
 

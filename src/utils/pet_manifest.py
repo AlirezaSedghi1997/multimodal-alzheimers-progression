@@ -4,7 +4,7 @@ import csv
 import hashlib
 import re
 from collections import Counter, defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Optional, Sequence
 
@@ -216,6 +216,51 @@ def write_private_manifest(path: str | Path, candidates: Sequence[PetCandidate])
             })
 
 
+def enrich_candidate(candidate: PetCandidate) -> PetCandidate:
+    from .privacy import stable_hash
+
+    if not candidate.substudy or not candidate.bid:
+        return candidate
+    patient_hash = candidate.patient_hash or stable_hash(candidate.substudy + "|" + candidate.bid, prefix="pt")
+    sample_hash = candidate.sample_hash or stable_hash(
+        candidate.substudy + "|" + candidate.bid + "|" + (candidate.visit_code or ""),
+        prefix="s",
+    )
+    return PetCandidate(
+        raw_path=candidate.raw_path,
+        tracer=candidate.tracer,
+        substudy=candidate.substudy,
+        bid=candidate.bid,
+        visit_code=candidate.visit_code,
+        pet_day=candidate.pet_day,
+        scanner=candidate.scanner,
+        frame=candidate.frame,
+        source=candidate.source,
+        file_hash=candidate.file_hash,
+        patient_hash=patient_hash,
+        sample_hash=sample_hash,
+        t1_path=candidate.t1_path,
+        abs_pet_t1_gap_days=candidate.abs_pet_t1_gap_days,
+    )
+
+
+def enrich_candidates(candidates: Sequence[PetCandidate]) -> list[PetCandidate]:
+    return [enrich_candidate(c) for c in candidates]
+
+
+def attach_t1_paths(catalog: Sequence[CatalogRow], preprocessed_dir: str | Path) -> list[CatalogRow]:
+    root = Path(preprocessed_dir)
+    out: list[CatalogRow] = []
+    for row in catalog:
+        t1_path = row.t1_path
+        if not t1_path:
+            candidate = root / f"{row.sample_hash}.nii.gz"
+            if candidate.exists():
+                t1_path = str(candidate)
+        out.append(replace(row, t1_path=t1_path or row.t1_path))
+    return out
+
+
 def read_catalog(path: str | Path) -> list[CatalogRow]:
     path = Path(path)
     if not path.exists():
@@ -242,6 +287,10 @@ def read_catalog(path: str | Path) -> list[CatalogRow]:
     return rows
 
 
+def read_catalog_with_t1_paths(path: str | Path, preprocessed_dir: str | Path = "data/preprocessed_mri_96") -> list[CatalogRow]:
+    return attach_t1_paths(read_catalog(path), preprocessed_dir)
+
+
 def tier_for_gap(gap: Optional[float], policy: dict) -> str:
     if gap is None:
         return "missing"
@@ -252,6 +301,26 @@ def tier_for_gap(gap: Optional[float], policy: dict) -> str:
         if max_gap is not None and float(gap) <= float(max_gap):
             return name
     return "excluded_from_training"
+
+
+PRIMARY_TRAINING_WINDOW_TIERS = frozenset({"gold_standard_30", "primary_strict"})
+
+
+def tier_matches_requested(tier: str, requested_tier: str, gap: Optional[float], policy: dict) -> bool:
+    if not requested_tier or requested_tier == "all":
+        return True
+    if requested_tier == "primary_strict":
+        return tier in PRIMARY_TRAINING_WINDOW_TIERS
+    if requested_tier == "primary_feasible_90":
+        if gap is None:
+            return False
+        max_gap = (
+            policy.get("temporal_pairing", {}).get("primary_training_window_days")
+            or policy.get("temporal_alignment", {}).get("eligibility_tiers", {}).get("primary_strict", {}).get("max_abs_gap_days")
+            or 90
+        )
+        return float(gap) <= float(max_gap)
+    return tier == requested_tier
 
 
 def _catalog_match_key(row: CatalogRow) -> str:
@@ -285,7 +354,7 @@ def link_candidates_to_catalog(
         elif not r.is_binary_label:
             reason = "MISSING_LABEL"
         tier = tier_for_gap(r.abs_pet_t1_gap_days, policy)
-        if reason is None and requested_tier and requested_tier != "all" and tier != requested_tier:
+        if reason is None and not tier_matches_requested(tier, requested_tier, r.abs_pet_t1_gap_days, policy):
             reason = "GAP_NOT_IN_REQUESTED_TIER"
         if reason:
             excluded.append({"sample_hash": r.sample_hash, "patient_hash": r.patient_hash, "reason": reason, "tier": tier, "gap": r.abs_pet_t1_gap_days})
@@ -295,11 +364,17 @@ def link_candidates_to_catalog(
             cand.extend(by_patient_hash[r.patient_hash])
         if r.sample_hash in by_sample_hash:
             cand.extend(by_sample_hash[r.sample_hash])
-        # raw BID matching only if manifest/catalog has compatible patient_hash absent; kept as fallback.
         if not cand:
-            for key, items in by_raw_key.items():
-                if key.startswith(r.substudy + "|"):
-                    cand.extend(items)
+            cand = [
+                c for c in candidates
+                if c.substudy == r.substudy
+                and (c.patient_hash == r.patient_hash or (not c.patient_hash and not r.patient_hash))
+            ]
+        if not cand:
+            cand = [
+                c for c in candidates
+                if c.substudy == r.substudy and not c.patient_hash
+            ]
         if not cand:
             excluded.append({"sample_hash": r.sample_hash, "patient_hash": r.patient_hash, "reason": "NO_PET_CANDIDATE_MATCH", "tier": tier, "gap": r.abs_pet_t1_gap_days})
             continue

@@ -69,11 +69,26 @@ bio-cog-method-z-readiness:
 bio-cog-blood-column-mapping-audit:
 	$(PY) scripts/audit_bio_cog_blood_column_mapping.py
 
+bio-cog-method-z-train:
+	$(PY) scripts/train_bio_cog_method_z.py
+
 clinical-endpoint-readiness:
 	$(PY) scripts/audit_clinical_endpoint_readiness.py
 
 clinical-endpoint-governance:
 	$(PY) scripts/write_clinical_endpoint_governance.py
+
+clinical-endpoint-freeze:
+	$(PY) scripts/freeze_clinical_endpoint_governance.py
+
+clinical-endpoint-labels:
+	$(PY) scripts/build_clinical_endpoint_labels.py --data_root "$(DATA_ROOT)"
+
+clinical-endpoint-baseline:
+	$(PY) scripts/train_clinical_endpoint_baseline.py
+
+bio-cog-blood-ablation:
+	$(PY) scripts/run_bio_cog_blood_ablation.py
 
 method-y-status-summary:
 	$(PY) scripts/build_method_y_status_summary.py
@@ -248,6 +263,15 @@ v38-method-x-validity:
 	$(PY) scripts/run_temporal_window_sensitivity.py
 	$(PY) scripts/run_external_eval.py --final_locked_config
 	$(PY) scripts/build_thesis_grade_report.py
+
+matched-propensity-analysis:
+	$(PY) scripts/run_matched_propensity_analysis.py --catalog data/processed/master_catalog.csv
+
+decision-curve-analysis:
+	$(PY) scripts/run_decision_curve_analysis.py --catalog data/processed/master_catalog.csv
+
+tripod-probast-checklists:
+	$(PY) scripts/write_tripod_probast_checklists.py
 
 v38-pet-gap method-y-gap-filter:
 	$(PY) scripts/method_y_gap_filter.py --catalog data/processed/master_catalog.csv

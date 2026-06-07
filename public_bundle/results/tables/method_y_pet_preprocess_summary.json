@@ -1,30 +1,40 @@
 {
   "stage": "method_y_pet_preprocess",
   "version": "v3.8-literature-aligned",
-  "mode": "dry_run",
+  "mode": "execute",
   "tracer": "fbp",
   "manifest_source": "private_manifest",
   "candidate_count": 5661,
   "catalog_rows": 1699,
-  "selected_work_items": 0,
-  "excluded_items": 1699,
+  "selected_work_items": 2,
+  "excluded_items": 1508,
   "link_summary": {
     "catalog_rows": 1699,
     "candidate_rows": 5661,
-    "linked_work_items": 0,
-    "excluded_rows": 1699,
+    "linked_work_items": 191,
+    "excluded_rows": 1508,
     "one_pet_per_patient": true,
     "requested_tier": "primary_strict",
-    "linked_tiers": {},
-    "linked_labels": {},
+    "linked_tiers": {
+      "primary_strict": 191
+    },
+    "linked_labels": {
+      "1": 168,
+      "0": 23
+    },
     "note": "Training-ready linking requires private manifest or project resolver; filename fallback is dry-run only."
   },
-  "spatial_mode": "ants_pet_t1_mni",
+  "spatial_mode": "ants_rigid_pet_to_t1",
   "normalization": "percentile_clip_foreground_zscore",
-  "n_jobs": 2,
+  "n_jobs": 1,
   "raw_paths_exported": false,
   "train_ready": false,
   "requires_readiness_gate": true,
   "mni_template_provided": false,
-  "reference_mask_provided": false
+  "reference_mask_provided": false,
+  "status_counts": {
+    "PASS": 2
+  },
+  "processed_items": 2,
+  "verdict": "PASS_WITH_QC_OUTPUTS_NOT_YET_TRAINING_READY_UNTIL_READINESS_GATE"
 }

@@ -11,18 +11,10 @@
     "tau_ftp_locked_patient_matches": 447
   },
   "blocker_glossary": {
-    "NO_QC_PASS_PET_OUTPUTS": "No PET preprocessing outputs passed spatial QC gates.",
-    "PREPROCESS_NOT_EXECUTED": "Method Y PET spatial preprocessing / cache build has not been executed.",
-    "PRIMARY_TIER_MIN_CLASS_BELOW_BLOCK_THRESHOLD": "Primary-tier Method Y split has insufficient minority-class support for stable training.",
-    "PRIVATE_MANIFEST_NOT_TRAINING_READY": "Hash-level private PET manifest is incomplete or not validated for one-PET-per-patient discipline.",
-    "REGEX_FALLBACK_MANIFEST_NOT_TRAINING_READY": "PET file manifest still relies on regex fallback; training-grade private manifest is required."
+    "PRIMARY_TIER_MIN_CLASS_BELOW_BLOCK_THRESHOLD": "Primary-tier Method Y split has insufficient minority-class support for stable training."
   },
   "blockers": [
-    "REGEX_FALLBACK_MANIFEST_NOT_TRAINING_READY",
-    "PRIVATE_MANIFEST_NOT_TRAINING_READY",
-    "PRIMARY_TIER_MIN_CLASS_BELOW_BLOCK_THRESHOLD",
-    "PREPROCESS_NOT_EXECUTED",
-    "NO_QC_PASS_PET_OUTPUTS"
+    "PRIMARY_TIER_MIN_CLASS_BELOW_BLOCK_THRESHOLD"
   ],
   "branch": "method_y_pet_assisted",
   "claim_boundary": "Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict or Method X-Cog. Multimodal PET/MRI training has not started; only design, inventory, and readiness audits exist.",
@@ -114,12 +106,14 @@
     "COHORT_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING": "Amyloid label may remain coupled to cohort/tracer in Method Y splits.",
     "GAP_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING": "PET–T1 temporal gap bins may correlate with label.",
     "PET_CACHE_NOT_BUILT_YET": "Method Y PET volume cache has not been built.",
+    "SUBJECT_T1_ONLY_SPATIAL_OUTPUT_REQUIRES_MNI_STEP_FOR_REFERENCE_REGION_POLICY": "Review Method Y gap/cohort audits.",
     "TRACER_LABEL_AUDIT_SINGLE_ROW_OR_COLUMN_REVIEW": "Tracer vs label contingency needs manual review."
   },
   "warnings": [
     "COHORT_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING",
     "TRACER_LABEL_AUDIT_SINGLE_ROW_OR_COLUMN_REVIEW",
     "GAP_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING",
+    "SUBJECT_T1_ONLY_SPATIAL_OUTPUT_REQUIRES_MNI_STEP_FOR_REFERENCE_REGION_POLICY",
     "PET_CACHE_NOT_BUILT_YET"
   ]
 }

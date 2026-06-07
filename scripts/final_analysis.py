@@ -309,6 +309,19 @@ def main() -> int:
         "- External used for calibration fit: `False`\n",
         "- External holdout type: `locked_pseudo_external_random_patient_holdout`\n",
     ]
+    if cohort_probe:
+        report.append("\n## Cohort-probe validity notes\n\n")
+        for block in cohort_probe.get("blocks", []):
+            name = block.get("input_name", "")
+            lin = block.get("linear_probe_auc")
+            nonlin = block.get("nonlinear_probe", {}).get("roc_auc") if isinstance(block.get("nonlinear_probe"), dict) else None
+            gap = block.get("linear_vs_nonlinear_gap")
+            report.append(f"- `{name}`: linear AUC `{fmt(lin)}`, nonlinear AUC `{fmt(nonlin)}`, gap `{fmt(gap)}`\n")
+            if name == "mri_roi_wmh_reads" and nonlin and float(nonlin) > 0.9:
+                report.append(
+                    "- ROI/WMH/read branch shows strong nonlinear cohort encoding (~0.99). "
+                    "Treat as cohort/protocol artifact risk, not successful deconfounding.\n"
+                )
     atomic_write_text(out_dir / "final_analysis_report.md", "".join(report))
     write_run_manifest("results/logs/final_analysis_manifest.json", stage="final_analysis", data_root=None, extra={"gates": gates})
     StateManager().append_event("final_analysis", "COMPLETED", "Final aggregate analysis package generated.")

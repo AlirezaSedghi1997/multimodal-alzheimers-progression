@@ -10,7 +10,16 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.utils.pet_manifest import read_catalog, read_private_manifest, discover_pet_files, link_candidates_to_catalog, write_excluded_manifest, canonical_tracer
+from src.utils.pet_path_resolver import attach_native_t1_paths_to_candidates
+from src.utils.pet_manifest import (
+    read_private_manifest,
+    discover_pet_files,
+    link_candidates_to_catalog,
+    write_excluded_manifest,
+    canonical_tracer,
+    enrich_candidates,
+    read_catalog_with_t1_paths,
+)
 from src.utils.pet_resume import PetResumeManifest
 from src.utils.pet_spatial_qc import (
     assert_method_y_output_root, atomic_write_json, atomic_write_text, assess_qc_gates,
@@ -27,7 +36,31 @@ def _load_nifti(path: Path):
     img = nib.load(str(path))
     img = nib.as_closest_canonical(img)
     arr = img.get_fdata(dtype="float32")
+    arr = _collapse_pet_to_3d(arr)
     return img, arr
+
+
+def _collapse_pet_to_3d(arr):
+    import numpy as np
+
+    if getattr(arr, "ndim", 0) == 4:
+        if arr.shape[-1] == 1:
+            return arr[..., 0]
+        return np.nanmean(arr, axis=-1)
+    return arr
+
+
+def _prepare_pet_for_ants(pet_path: Path) -> tuple[Path, Path | None]:
+    import nibabel as nib
+
+    img = nib.as_closest_canonical(nib.load(str(pet_path)))
+    arr = img.get_fdata(dtype="float32")
+    if arr.ndim <= 3:
+        return pet_path, None
+    collapsed = _collapse_pet_to_3d(arr)
+    tmp = pet_path.parent / f".tmp3d_{pet_path.stem}.nii.gz"
+    _save_nifti_like(tmp, collapsed.astype("float32"), img.affine)
+    return tmp, tmp
 
 
 def _save_nifti_like(path: Path, arr, affine):
@@ -63,11 +96,25 @@ def apply_spatial_alignment(pet_path: Path, t1_path: str | None, out_path: Path,
         except Exception as e:
             raise RuntimeError("antspyx is required for ANTs PET spatial preprocessing, or use precomputed PETPrep/petBrain outputs.") from e
         fixed_t1 = ants.image_read(str(t1_path))
-        moving_pet = ants.image_read(str(pet_path))
-        pet_to_t1 = ants.registration(fixed=fixed_t1, moving=moving_pet, type_of_transform="Rigid")
+        pet_for_ants, tmp_pet = _prepare_pet_for_ants(pet_path)
+        try:
+            moving_pet = ants.image_read(str(pet_for_ants))
+            pet_to_t1 = ants.registration(fixed=fixed_t1, moving=moving_pet, type_of_transform="Rigid")
+        finally:
+            if tmp_pet is not None and tmp_pet.exists():
+                tmp_pet.unlink()
+        collapsed_from_4d = tmp_pet is not None
         if mode == "ants_rigid_pet_to_t1":
+            out_path.parent.mkdir(parents=True, exist_ok=True)
             ants.image_write(pet_to_t1["warpedmovout"], str(out_path))
-            return {"spatial_mode": mode, "status": "PASS_ANTS_RIGID_TO_T1", "registration_performed": True, "training_ready_spatial": False, "space": "subject_t1"}
+            return {
+                "spatial_mode": mode,
+                "status": "PASS_ANTS_RIGID_TO_T1",
+                "registration_performed": True,
+                "training_ready_spatial": False,
+                "space": "subject_t1",
+                "input_collapsed_from_4d": collapsed_from_4d,
+            }
         if not mni_template:
             raise RuntimeError("ants_pet_t1_mni requires --mni_template for training-ready MNI outputs.")
         fixed_mni = ants.image_read(str(mni_template))
@@ -80,6 +127,7 @@ def apply_spatial_alignment(pet_path: Path, t1_path: str | None, out_path: Path,
             transformlist=t1_to_mni["fwdtransforms"] + pet_to_t1["fwdtransforms"],
             interpolator="linear",
         )
+        out_path.parent.mkdir(parents=True, exist_ok=True)
         ants.image_write(warped_pet_mni, str(out_path))
         return {
             "spatial_mode": mode,
@@ -109,7 +157,7 @@ def process_one(item, args, policy, out_dir: Path) -> dict:
         return {"key": key, "sample_hash": sample_hash, "status": "SKIPPED_EXISTS", "output_hash": sha256_file(norm_path)}
 
     spatial = apply_spatial_alignment(
-        pet_path=Path(item.candidate.raw_path), t1_path=item.catalog.t1_path or item.candidate.t1_path or None,
+        pet_path=Path(item.candidate.raw_path), t1_path=item.candidate.t1_path or item.catalog.t1_path or None,
         out_path=aligned_path, mode=args.spatial_mode, allow_identity_for_tests=args.allow_identity_for_tests,
         mni_template=args.mni_template,
     )
@@ -129,7 +177,8 @@ def process_one(item, args, policy, out_dir: Path) -> dict:
     # Numeric registration QC placeholder: if T1 is same grid, compute NCC; otherwise visual QC remains required.
     if item.catalog.t1_path:
         try:
-            _, t1_arr = _load_nifti(Path(item.catalog.t1_path))
+            overlay_t1 = item.candidate.t1_path or item.catalog.t1_path
+            _, t1_arr = _load_nifti(Path(overlay_t1))
             if t1_arr.shape == norm_arr.shape:
                 qc_after["ncc_pet_t1"] = normalized_cross_correlation(norm_arr, t1_arr)
                 overlay_status = write_overlay_png(overlay_dir / f"{sample_hash}_pet_on_t1.png", t1_arr, norm_arr, "PET on T1")
@@ -174,7 +223,7 @@ def main() -> int:
     ap.add_argument("--policy", default="configs/model/method_y_spatial_preprocess_policy.yaml")
     ap.add_argument("--out_root", default="data/preprocessed_pet")
     ap.add_argument("--tracer", default="fbp", help="fbp, fbb, pib, fmm, ftp")
-    ap.add_argument("--tier", default="primary_strict", choices=["gold_standard_30", "primary_strict", "secondary_window", "relaxed_exploratory", "all"])
+    ap.add_argument("--tier", default="primary_strict", choices=["gold_standard_30", "primary_strict", "primary_feasible_90", "secondary_window", "relaxed_exploratory", "all"])
     ap.add_argument("--normalization", default="percentile_clip_foreground_zscore", choices=["foreground_zscore", "percentile_clip_foreground_zscore", "suvr_image"])
     ap.add_argument("--spatial_mode", default="ants_pet_t1_mni", choices=["ants_pet_t1_mni", "ants_rigid_pet_to_t1", "spm_pet_t1_mni", "precomputed_petprep_output", "identity_for_tests"])
     ap.add_argument("--mni_template", default=None)
@@ -203,9 +252,16 @@ def main() -> int:
     candidates = read_private_manifest(manifest_path, tracer=tracer)
     manifest_source = "private_manifest"
     if not candidates and args.data_root:
-        candidates = discover_pet_files(args.data_root, tracer=tracer)
+        candidates = enrich_candidates(discover_pet_files(args.data_root, tracer=tracer))
         manifest_source = "filename_regex_fallback"
-    catalog = read_catalog(PROJECT_ROOT / args.catalog if not Path(args.catalog).is_absolute() else args.catalog)
+    else:
+        candidates = enrich_candidates(candidates)
+    if args.data_root and candidates:
+        candidates = attach_native_t1_paths_to_candidates(candidates, args.data_root)
+    catalog = read_catalog_with_t1_paths(
+        PROJECT_ROOT / args.catalog if not Path(args.catalog).is_absolute() else args.catalog,
+        PROJECT_ROOT / "data/preprocessed_mri_96",
+    )
     work, excluded, link_summary = link_candidates_to_catalog(catalog, candidates, policy, requested_tier=args.tier, one_per_patient=True)
     if args.limit:
         work = work[: args.limit]

@@ -60,6 +60,20 @@ def test_private_manifest_candidate_t1_path_can_satisfy_t1_requirement():
     assert summary["linked_work_items"] == 1
 
 
+def test_primary_strict_includes_gold_tier_rows():
+    from src.utils.pet_manifest import tier_matches_requested, tier_for_gap
+
+    policy = {"temporal_alignment": {"eligibility_tiers": {
+        "gold_standard_30": {"max_abs_gap_days": 30},
+        "primary_strict": {"max_abs_gap_days": 90},
+    }}}
+    assert tier_for_gap(20, policy) == "gold_standard_30"
+    assert tier_matches_requested("gold_standard_30", "primary_strict", 20, policy)
+    assert tier_matches_requested("primary_strict", "primary_strict", 60, policy)
+    assert not tier_matches_requested("secondary_window", "primary_strict", 100, policy)
+    assert tier_matches_requested("gold_standard_30", "primary_feasible_90", 20, policy)
+
+
 def test_missing_catalog_and_candidate_t1_still_blocks_pet_linking():
     policy = {"temporal_alignment": {"eligibility_tiers": {"primary_strict": {"max_abs_gap_days": 90}}},
               "sample_selection": {"exclude_substudies_from_mainline": []}}
