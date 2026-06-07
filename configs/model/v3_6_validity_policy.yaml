@@ -1,0 +1,152 @@
+version: "v3.6-validity-fixes"
+project: "amyloid-tau-prediction-a4learn"
+method: "X"
+
+scope:
+  purpose: "Repair scientific validity, evaluation scope, temporal-window sensitivity, and final reporting before thesis-grade claims."
+  applies_to:
+    - "Method X"
+    - "Method X-Cog reporting"
+  does_not_apply_to:
+    - "Method Y PET image training, except where Method X/PET separation is checked"
+
+non_negotiable:
+  imaging_input: "T1_MRI_only"
+  allowed_tabular_inputs:
+    - age
+    - sex
+    - education_years
+    - apoe4_carrier
+    - mmse_base
+  pet_role: "label_target_only_never_input"
+  forbidden_model_inputs:
+    - pet
+    - pet_image
+    - amyloid_pet
+    - tau_pet
+    - suvr
+    - centiloid
+    - tracer
+    - fbp
+    - ftp
+    - site_scanner_id
+    - raw_patient_id
+    - raw_sample_id
+    - scan_date_derived_feature
+    - pet_t1_gap_as_feature
+
+validity_audit:
+  required_before:
+    - "final_3d_claim"
+    - "thesis_grade_method_x_claim"
+    - "model_upgrade_claim"
+  output_dir: "results/tables/validity_audit"
+  required_controls:
+    - "tabular_only"
+    - "mri_features_only"
+    - "tabular_plus_mri_features"
+    - "mri_feature_permutation"
+    - "substudy_prediction_from_mri"
+    - "global_label_shuffle"
+    - "random_feature_control"
+  decision_thresholds:
+    mri_permutation_delta_auc_min: 0.03
+    strong_cohort_artifact_auc: 0.85
+    moderate_cohort_artifact_auc: 0.70
+    label_shuffle_auc_warn: 0.60
+  final_claim_rule:
+    allowed_only_if:
+      - "mri_permutation_delta_auc >= 0.03"
+      - "substudy_prediction_auc < 0.85"
+      - "global_label_shuffle_auc < 0.60"
+    otherwise: "CLAIM_MUST_BE_LIMITED_OR_REFRAMED"
+
+temporal_window_sensitivity:
+  required: true
+  gap_is_model_feature: false
+  main_catalog_overwrite_default: false
+  windows_days:
+    - 0
+    - 60
+    - 90
+    - 120
+  output_catalog_dir: "data/processed/catalog_variants"
+  output_report_json: "results/tables/temporal_window_sensitivity.json"
+  output_report_md: "results/tables/temporal_window_sensitivity.md"
+  required_counts:
+    - "n"
+    - "label_counts"
+    - "substudy_counts"
+    - "two_class_status"
+    - "missing_gap_count"
+  mainline_policy_decision_required_in: "DECISIONS.md"
+
+hpo:
+  fast_track_hpo_label: "non_final"
+  final_hpo_required_for_thesis_grade: true
+  final_hpo_protocol: "nested_inner_validation_with_outer_test_holdout"
+  forbidden_scopes:
+    - "external_like_holdout_for_tuning"
+    - "outer_test_fold_for_tuning"
+    - "calibration_fit_inside_optuna_objective"
+  required_flags:
+    external_used_for_tuning: false
+    outer_test_used_for_tuning: false
+
+external_like_evaluation:
+  terminology: "locked_pseudo_external_holdout"
+  is_truly_independent_external: false
+  delong_policy: "blocked_until_true_external_binary_set"
+  permitted_uncertainty: "guarded_bootstrap_ci"
+  calibration_fit_scope: "fold_validation_or_dev_only_never_external"
+  required_flags:
+    external_used_for_fit: false
+    external_used_for_tuning: false
+    external_used_for_calibration_fit: false
+
+three_d_final:
+  allowed_after_validity_audit: true
+  if_audit_negative: "run_only_with_limited_claim"
+  final_resolution: 96
+  final_folds: 5
+  required_modes:
+    - "image_only"
+    - "tabular_only"
+    - "mri_plus_tabular"
+  required_ablation:
+    - "concat"
+    - "cross_attention"
+    - "latent_alignment_off"
+    - "latent_alignment_on"
+  required_logs:
+    - "vram_dry_run"
+    - "training_curves"
+    - "fold_metrics"
+    - "run_manifest"
+    - "no_pet_hdf5_test"
+
+method_x_cog:
+  status: "exploratory"
+  required_family_ablation:
+    - "fixed_tabular_only"
+    - "fixed_tabular_plus_core_cognitive"
+    - "fixed_tabular_plus_clinical_severity"
+    - "fixed_tabular_plus_complaints"
+    - "fixed_tabular_plus_cogstate"
+    - "fixed_tabular_plus_mood_anxiety"
+    - "fixed_tabular_plus_gdtotal_only"
+    - "fixed_tabular_plus_staitotal_only"
+    - "fixed_tabular_plus_cadcncrn_only"
+    - "fixed_tabular_plus_iescore_only"
+    - "fixed_tabular_plus_all_cognitive"
+  caveat: "Do not attribute gains to core cognition unless family ablation supports it."
+
+privacy:
+  public_bundle: "aggregate_only"
+  forbid_public_artifacts:
+    - raw_ids
+    - raw_paths
+    - nifti
+    - hdf5
+    - checkpoints
+    - subject_level_predictions

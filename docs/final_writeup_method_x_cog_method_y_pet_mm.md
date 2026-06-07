@@ -65,4 +65,4 @@ Avoid:
 
 ## Next Executable Gate
 
-The next thesis-critical execution remains the MRI/SPM-dependent stage: final MRI 96/3D cache, 5-fold 3D ablation, final MRI 96/3D plus cognitive fusion, XAI refresh, final analysis refresh, gate matrix refresh, and public bundle refresh. Method Y clinical Alzheimer output remains blocked until an independent clinical label is available.
+The next thesis-critical execution remains the MRI/SPM-dependent stage: final MRI 96/3D cache, 5-fold 3D ablation, final MRI 96/3D plus cognitive fusion, XAI refresh, final analysis refresh, gate matrix refresh, and public bundle refresh. Before SPM reaches 1700 completed files, only aggregate-safe docs, tests, orchestration updates, and the explicit MRI volume cache smoke check are allowed; the smoke check is not a training cache and must not be used for claims. Method Y clinical Alzheimer output remains blocked until an independent clinical label is available.

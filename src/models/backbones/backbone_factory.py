@@ -1,0 +1,28 @@
+from __future__ import annotations
+
+import torch.nn as nn
+
+
+def build_3d_backbone(name: str, in_channels: int = 1, out_dim: int = 128) -> nn.Module:
+    """Build a PET-free 3D MRI encoder for Method X."""
+    name = name.lower().strip()
+
+    if name == "tiny":
+        from src.models.backbones.lightweight_3d import Lightweight3DEncoder
+        return Lightweight3DEncoder(in_channels=in_channels, base_channels=8, out_dim=out_dim)
+
+    if name == "resnet10_3d":
+        try:
+            from monai.networks.nets import resnet10
+        except Exception as exc:
+            raise ImportError("MONAI is required for resnet10_3d. Install monai or use --backbone tiny.") from exc
+        return resnet10(spatial_dims=3, n_input_channels=in_channels, num_classes=out_dim)
+
+    if name == "efficientnet3d_b0":
+        try:
+            from monai.networks.nets import EfficientNetBN
+        except Exception as exc:
+            raise ImportError("MONAI is required for efficientnet3d_b0. Install monai or use --backbone tiny.") from exc
+        return EfficientNetBN("efficientnet-b0", spatial_dims=3, in_channels=in_channels, num_classes=out_dim, pretrained=False)
+
+    raise ValueError(f"Unknown 3D backbone: {name}")

@@ -21,6 +21,7 @@ data/cached/
 *.dcm
 *.h5
 *.hdf5
+*.npz
 *.pt
 *.pth
 *.ckpt
@@ -45,6 +46,11 @@ results/**/patient*
 # Local runtime noise
 __pycache__/
 .pytest_cache/
+.pytest_tmp/
+.codex_cuda_site/
+.codex_sklearn_site/
+.pip_cache/
+.pip_tmp/
 *.pyc
 
 # Root-level protected runtime/state directories

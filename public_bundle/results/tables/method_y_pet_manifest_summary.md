@@ -1,0 +1,16 @@
+# Method Y PET Manifest Summary
+
+- stage: `method_y_pet_manifest`
+- tracer: `fbp`
+- source: `filename_regex_fallback`
+- private_manifest_path_redacted: `data<REDACTED>/<tracer>_private_manifest.csv`
+- excluded_manifest_path_redacted: `data<REDACTED>/<tracer>_excluded_manifest.csv`
+- n_candidates: `5661`
+- counts_by_substudy: `{'A4': 2100, 'LEARN': 789, 'SF': 2772}`
+- counts_by_tracer: `{'fbp': 5661}`
+- link_summary: `{'catalog_rows': 1699, 'candidate_rows': 5661, 'linked_work_items': 0, 'excluded_rows': 1699, 'one_pet_per_patient': True, 'requested_tier': 'primary_strict', 'linked_tiers': {}, 'linked_labels': {}, 'note': 'Training-ready linking requires private manifest or project resolver; filename fallback is dry-run only.'}`
+- linked_gap_tiers: `{}`
+- raw_paths_exported: `False`
+- regex_fallback_used: `True`
+- training_ready_manifest: `False`
+- warning: `Filename regex fallback is allowed for dry-run only; training-ready PET requires private manifest<REDACTED>`

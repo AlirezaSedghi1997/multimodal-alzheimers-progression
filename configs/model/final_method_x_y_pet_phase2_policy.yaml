@@ -1,0 +1,98 @@
+schema_version: 2
+policy_name: final_method_x_y_v38_literature_aligned_policy
+version: "2026-05-30-v3.8-literature-aligned"
+status: "FINAL_COMPREHENSIVE_PATCH_WITH_LITERATURE_ALIGNED_PET_PHASE2"
+
+scope:
+  method_x:
+    pet_image_input_allowed: false
+    pet_derived_scalar_input_allowed: false
+  method_y:
+    pet_image_input_allowed: true
+    pet_derived_scalar_input_allowed: true
+  compatibility_note: "Retains v3.6 contract keys while v3.8 policy fields remain canonical."
+
+method_x:
+  role: "primary non-invasive thesis branch"
+  allowed_inputs:
+    image: ["T1 MRI"]
+    tabular_fixed: ["age", "sex", "education_years", "apoe4_carrier", "mmse_base"]
+  forbidden_inputs:
+    - "PET image"
+    - "SUVR scalar"
+    - "Centiloid scalar"
+    - "amyloid PET-derived feature"
+    - "tau PET-derived feature"
+  output: "A-beta-positive vs A-beta-negative biomarker status"
+  alzheimer_diagnosis_claim_allowed: false
+
+method_x_cog:
+  role: "exploratory cognitive/tabular extension"
+  pet_role: "label/target only"
+  exploratory: true
+
+method_y_pet_mm:
+  role: "exploratory PET-assisted branch"
+  pet_image_input_allowed: true
+  must_report_separately_from_method_x: true
+  not_non_invasive: true
+  output: "A-beta-positive vs A-beta-negative biomarker status"
+  alzheimer_diagnosis_claim_allowed: false
+  pet_label_tautology_caveat_required: true
+  interpretation: "PET-containing models are biomarker reproduction / reader-assist / fusion-behavior analyses, not independent clinical diagnosis."
+
+literature_aligned_updates:
+  temporal_pairing:
+    add_gap30_gold_standard: true
+    primary_training_gap_days: 90
+    secondary_sensitivity_gap_days: 120
+    exclude_from_primary_training_if_gap_gt_days: 90
+  spatial:
+    require_two_step_pet_t1_mni: true
+    require_visual_or_numeric_qc: true
+  suvr_centiloid:
+    whole_cerebellum_primary: true
+    cerebellar_grey_sensitivity: true
+    fbp_threshold_suvr: 1.11
+    fbb_threshold_suvr: 1.08
+    fbp_centiloid_equation: "CL = 188.22 * SUVR - 189.16"
+    fbb_centiloid_equation: "CL = 157.15 * SUVR - 151.87"
+    scalar_inputs_for_method_x: false
+    scalar_primary_inputs_for_method_y: false
+    scalar_suvr_or_centiloid_as_model_input: false
+  modeling:
+    pet_only_baseline_required: true
+    mri_only_baseline_on_method_y_split_required: true
+    early_channel_concat_primary_forbidden: true
+    early_channel_concat_allowed_as_ablation: true
+    late_fusion_required_baseline: true
+    gated_feature_fusion_preferred_primary: true
+    cross_attention_optional_if_sample_size_and_vram_allow: true
+    modality_dropout_or_moe_future_extension: true
+  evaluation:
+    patient_level_split_required: true
+    one_pet_per_patient_required: true
+    cohort_label_chi2_required_before_training: true
+    tracer_label_audit_required_before_training: true
+    gap_label_audit_required_before_training: true
+    calibration_required: ["Brier", "ECE", "reliability_diagram"]
+    bootstrap_ci_default: true
+    delong_restricted: true
+    pseudo_external_wording_required: true
+    tripod_ai_compliance_table_required_before_thesis: true
+
+method_y_pet_phase2_spatial_qc:
+  spatial_preprocessing:
+    execute_without_spatial_alignment: "BLOCK"
+  suvr_reference_policy:
+    scalar_suvr_or_centiloid_as_model_input: false
+
+public_bundle:
+  aggregate_only: true
+  forbidden:
+    - "raw identifiers"
+    - "raw paths"
+    - "NIfTI images"
+    - "HDF5 caches"
+    - "checkpoints"
+    - "subject-level PET QC rows"

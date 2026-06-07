@@ -6,6 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from src.utils.final_claim_policy import three_d_gate_status, spm_progress, validity_recommendation
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
 from src.utils.run_manifest import write_run_manifest
 from src.utils.state_manager import StateManager
@@ -63,12 +64,15 @@ def main() -> int:
     three_d_ablation = load_optional_json("results/final_results/three_d_ablation/three_d_ablation_summary.json")
     xai = load_optional_json("results/final_results/xai/xai_summary.json")
     method_x_cog = load_optional_json("results/final_results/method_x_cog/method_x_cog_summary.json")
+    method_x_cog_sf = load_optional_json("results/final_results/method_x_cog_sf/sf_stress_tests_summary.json")
+    phase2_mvp = load_optional_json("results/tables/phase2_mvp/phase2_mvp_status.json")
+    cohort_probe = load_optional_json("results/tables/cohort_probe/cohort_probe_summary.json")
+    centiloid_regression = load_optional_json("results/final_results/centiloid_regression/centiloid_regression_metrics.json")
+    phase1_baselines = load_optional_json("results/final_results/phase1_baselines/phase1_baselines_summary.json")
     method_y_pet = load_optional_json("results/tables/method_y_pet_inventory.json")
     method_y_multimodal = load_optional_json("results/tables/method_y_multimodal_design.json")
     tau_gate = tau_regression["mode"] if tau_regression is not None else tau["feasibility_mode_120d"]
-    three_d_gate = (
-        "PASSED" if three_d and three_d["aggregate"].get("final_claim_allowed") else "DEBUG_ONLY" if three_d else "PENDING"
-    )
+    three_d_gate = three_d_gate_status(three_d)
     power_gate = "PASSED" if power and power.get("status") == "DESCRIPTIVE_POWER_ANALYSIS" else "PENDING"
     gap_gate = "PASSED" if gap_matrix else "PENDING"
     full_preprocess_gate = full_preprocess.get("status") if full_preprocess else "PENDING"
@@ -77,6 +81,11 @@ def main() -> int:
     ablation_gate = "PASSED" if three_d_ablation and three_d_ablation.get("status") == "COMPLETED" else "PENDING"
     xai_gate = "PASSED" if xai and xai.get("status") == "COMPLETED" else "PENDING"
     method_x_cog_gate = "PASSED" if method_x_cog and method_x_cog.get("status") == "COMPLETED" else "PENDING"
+    method_x_cog_sf_gate = "PASSED" if method_x_cog_sf and method_x_cog_sf.get("status") == "COMPLETED" else "PENDING"
+    phase2_mvp_gate = "PASSED" if phase2_mvp and phase2_mvp.get("status") == "MVP_COMPLETE" else "PARTIAL" if phase2_mvp else "PENDING"
+    cohort_probe_gate = "PASSED" if cohort_probe and cohort_probe.get("status") == "COMPLETED" else "PENDING"
+    centiloid_gate = "PASSED" if centiloid_regression and centiloid_regression.get("status") == "COMPLETED" else "PENDING"
+    phase1_gate = "PASSED" if phase1_baselines and phase1_baselines.get("status") == "COMPLETED" else "PENDING"
     method_y_pet_gate = "AGGREGATE_ONLY" if method_y_pet and method_y_pet.get("status") == "COMPLETED" else "PENDING"
     method_y_multimodal_gate = "DESIGN_READY_NOT_TRAINED" if method_y_multimodal and method_y_multimodal.get("status") == "DESIGN_READY_NOT_TRAINED" else "PENDING"
 
@@ -98,6 +107,11 @@ def main() -> int:
         "gate_3d_fusion_ablation": ablation_gate,
         "gate_xai": xai_gate,
         "gate_method_x_cog": method_x_cog_gate,
+        "gate_method_x_cog_sf_stress_tests": method_x_cog_sf_gate,
+        "gate_phase2_minimum_mvp": phase2_mvp_gate,
+        "gate_cohort_probe": cohort_probe_gate,
+        "gate_centiloid_within_cohort": centiloid_gate,
+        "gate_phase1_interpretable_baselines": phase1_gate,
         "gate_method_y_pet_inventory": method_y_pet_gate,
         "gate_method_y_multimodal_design": method_y_multimodal_gate,
         "gate_tau": tau_gate,
@@ -156,6 +170,37 @@ def main() -> int:
             "method_y_tau_pet_image_files": nested(method_y_pet, "pet_image_inventory", "tau_ftp", "image_file_count"),
             "method_y_multimodal_training_started": nested(method_y_multimodal, "training_started"),
             "method_y_multimodal_clinical_ad_output_allowed_now": nested(method_y_multimodal, "target_policy", "clinical_alzheimer_output_allowed_now"),
+            "phase1_fixed_tabular_roc_auc": nested(phase1_baselines, "results", "fixed_tabular", "roc_auc"),
+            "cohort_probe_3d_latent_linear_auc": next(
+                (
+                    block.get("linear_probe_auc")
+                    for block in (cohort_probe or {}).get("blocks", [])
+                    if block.get("input_name") == "method_x_3d_mri_latent_oof"
+                ),
+                None,
+            ),
+            "centiloid_within_a4_spearman": nested(centiloid_regression, "subsets", "within_a4", "spearman_r"),
+            "centiloid_within_learn_spearman": nested(centiloid_regression, "subsets", "within_learn", "spearman_r"),
+            "method_x_cog_sf_pooled_cramers_v": nested(method_x_cog_sf, "cohort_label_coupling", "pooled_cramers_v"),
+            "method_x_cog_sf_inclusive_cognitive_roc_auc": next(
+                (
+                    variant.get("roc_auc")
+                    for arm in (method_x_cog_sf or {}).get("arms", [])
+                    if arm.get("arm") == "sf_inclusive_confound_controlled_5fold_cv"
+                    for variant in [arm.get("variants", {}).get("fixed_tabular_plus_all_cognitive", {})]
+                ),
+                None,
+            ),
+            "method_x_cog_sf_train_sf_cognitive_roc_auc": next(
+                (
+                    variant.get("roc_auc")
+                    for arm in (method_x_cog_sf or {}).get("arms", [])
+                    if arm.get("arm") == "train_sf_test_enrolled_internal_decoupling"
+                    for variant in [arm.get("variants", {}).get("fixed_tabular_plus_all_cognitive", {})]
+                ),
+                None,
+            ),
+            "phase2_mvp_overall_status": nested(phase2_mvp, "status"),
         },
         "gates": gates,
         "bias": {
@@ -174,12 +219,19 @@ def main() -> int:
         "three_d_ablation": three_d_ablation,
         "xai": xai,
         "method_x_cog": method_x_cog,
+        "method_x_cog_sf": method_x_cog_sf,
+        "phase2_mvp": phase2_mvp,
+        "cohort_probe": cohort_probe,
+        "centiloid_regression": centiloid_regression,
+        "phase1_baselines": phase1_baselines,
         "method_y_pet_inventory": method_y_pet,
         "method_y_multimodal_design": method_y_multimodal,
         "scientific_caveat": (
             "The local catalog has complete cohort-label coupling. Report performance as Method X engineering evidence "
             "under a pseudo-external holdout, not as proof of pathology-only generalization to an independent cohort."
         ),
+        "validity_recommendation": validity_recommendation(),
+        "spm_progress": spm_progress(),
     }
     out_dir = Path("results/final_results/final_analysis")
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -234,6 +286,11 @@ def main() -> int:
         f"- Method X-Cog AUC gain over fixed tabular: `{fmt(nested(method_x_cog, 'improvement_over_fixed_tabular_auc'))}`\n",
         f"- Method X-Cog best non-MRI variant: `{nested(method_x_cog, 'best_non_mri', 'variant') or 'NA'}`\n",
         f"- Method X-Cog best non-MRI ROC-AUC: `{fmt(nested(method_x_cog, 'best_non_mri', 'roc_auc'))}`\n",
+        f"- Method X-Cog/SF stress-test status: `{method_x_cog_sf_gate}`\n",
+        f"- Phase 2 minimum MVP status: `{phase2_mvp_gate}`\n",
+        f"- Cohort-probe (3D latent linear AUC): `{fmt(final['metrics']['cohort_probe_3d_latent_linear_auc'])}`\n",
+        f"- Centiloid within-A4 Spearman: `{fmt(final['metrics']['centiloid_within_a4_spearman'])}`\n",
+        f"- Centiloid within-LEARN Spearman: `{fmt(final['metrics']['centiloid_within_learn_spearman'])}`\n",
         f"- Method Y PET inventory status: `{method_y_pet_gate}`\n",
         f"- Method Y amyloid PET image files counted: `{fmt(nested(method_y_pet, 'pet_image_inventory', 'amyloid_fbp', 'image_file_count'), 0)}`\n",
         f"- Method Y tau PET image files counted: `{fmt(nested(method_y_pet, 'pet_image_inventory', 'tau_ftp', 'image_file_count'), 0)}`\n",

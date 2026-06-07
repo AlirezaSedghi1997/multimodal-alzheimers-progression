@@ -1,0 +1,60 @@
+version: "v3.6-integrated-method-x-validity-plus-method-y-pet"
+project: "amyloid-tau-prediction-a4learn"
+
+purpose:
+  summary: "Unified patch pack combining Method X v3.6 validity fixes and Method Y PET Phase-2 preparation."
+  method_x_scope: "Primary thesis path; PET is label/target only and never model input."
+  method_y_scope: "Separate PET-assisted exploratory path; PET image preprocessing and PET-containing models are Method Y only."
+
+method_x:
+  method: "X"
+  pet_role: "label_target_only_never_input"
+  allowed_inputs:
+    imaging: ["T1_MRI"]
+    tabular: ["age", "sex", "education_years", "apoe4_carrier", "mmse_base"]
+    optional_exploratory: ["cognitive_feature_families_under_Method_X_Cog"]
+  forbidden_inputs:
+    - "PET_image"
+    - "SUVR_scalar"
+    - "centiloid"
+    - "PET_derived_feature"
+    - "PET_T1_gap_as_feature"
+    - "site_scanner_id_as_model_feature"
+  required_stages:
+    - "validity_audit"
+    - "temporal_window_sensitivity"
+    - "nested_hpo_or_explicit_fast_track_caveat"
+    - "pseudo_external_evaluation_with_delong_blocked"
+    - "thesis_grade_report"
+
+method_y:
+  method: "Y-PET/MM"
+  status_after_patch: "PHASE_2_PREPROCESSING_READY_NOT_TRAINED"
+  pet_input_allowed: true
+  method_x_pet_input_allowed: false
+  required_before_training:
+    - "docs/method_y_preregistration.md completed"
+    - "configs/model/method_y_gap_cohort_eval_policy.yaml reviewed"
+    - "scripts/method_y_gap_filter.py aggregate report generated"
+    - "scripts/preprocess_pet.py dry_run completed"
+    - "tests/test_pet_preprocess_contract.py passed"
+  output_root:
+    private_pet_preprocessing: "data/preprocessed_pet"
+    forbidden_roots:
+      - "data/cached/method_x"
+      - "data/processed"
+  public_bundle_policy: "aggregate_only_no_raw_ids_no_paths_no_images_no_hdf5_no_checkpoints"
+
+branching_policy:
+  recommended:
+    method_x_branch: "v3.6-validity-fixes"
+    method_y_branch: "method-y-pet-phase2"
+  combined_patch_branch_allowed: true
+  warning: "If applying this integrated patch to one branch, do not train PET-containing models under Method X labels."
+
+reporting_policy:
+  method_x_and_method_y_tables_must_be_separate: true
+  output_label_allowed: "Aβ-positive vs Aβ-negative biomarker status"
+  output_label_forbidden_until_independent_clinical_label: "Alzheimer disease diagnosis"
+  external_terminology: "locked_pseudo_external_holdout unless truly independent external cohort is added"
+  delong_policy: "blocked for CV and pseudo-external; allowed only for true independent binary external set"

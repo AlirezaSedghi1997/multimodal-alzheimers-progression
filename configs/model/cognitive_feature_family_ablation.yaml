@@ -1,0 +1,93 @@
+version: "v3.6-validity-fixes"
+method: "X-Cog"
+status: "exploratory"
+
+fixed_tabular:
+  - age
+  - sex
+  - education_years
+  - apoe4_carrier
+  - mmse_base
+
+feature_families:
+  core_cognitive:
+    - pacc
+    - fctotal96
+    - ldeltotal
+    - digittotal
+    - mmscore
+  clinical_severity:
+    - cdglobal
+    - cdrsb
+    - cdr_memory
+    - cdr_orientation
+    - cdr_judgment
+    - cdr_community
+    - cdr_home
+    - cdr_care
+  complaints:
+    - cfipttotal
+    - cfspttotal
+  cogstate:
+    - c3comp
+    - learnwmcomp
+    - oclonbcomp
+    - psychattncomp
+    - attncomp
+    - c3abrcomp
+  mood_anxiety:
+    - gdtotal
+    - staitotal
+    - cadcncrn
+    - iescore
+  gdtotal_only:
+    - gdtotal
+  staitotal_only:
+    - staitotal
+  cadcncrn_only:
+    - cadcncrn
+  iescore_only:
+    - iescore
+
+variants:
+  - name: fixed_tabular_only
+    fixed_tabular: true
+    families: []
+  - name: fixed_tabular_plus_core_cognitive
+    fixed_tabular: true
+    families: [core_cognitive]
+  - name: fixed_tabular_plus_clinical_severity
+    fixed_tabular: true
+    families: [clinical_severity]
+  - name: fixed_tabular_plus_complaints
+    fixed_tabular: true
+    families: [complaints]
+  - name: fixed_tabular_plus_cogstate
+    fixed_tabular: true
+    families: [cogstate]
+  - name: fixed_tabular_plus_mood_anxiety
+    fixed_tabular: true
+    families: [mood_anxiety]
+  - name: fixed_tabular_plus_gdtotal_only
+    fixed_tabular: true
+    families: [gdtotal_only]
+  - name: fixed_tabular_plus_staitotal_only
+    fixed_tabular: true
+    families: [staitotal_only]
+  - name: fixed_tabular_plus_cadcncrn_only
+    fixed_tabular: true
+    families: [cadcncrn_only]
+  - name: fixed_tabular_plus_iescore_only
+    fixed_tabular: true
+    families: [iescore_only]
+  - name: fixed_tabular_plus_all_cognitive
+    fixed_tabular: true
+    families: [core_cognitive, clinical_severity, complaints, cogstate, mood_anxiety]
+
+reporting:
+  output_json: "results/final_results/method_x_cog/method_x_cog_family_ablation.json"
+  output_md: "results/final_results/method_x_cog/method_x_cog_family_ablation.md"
+  interpretation_required:
+    - "state whether mood/anxiety drives the gain"
+    - "state whether core cognition independently improves over fixed tabular"
+    - "state that Method X-Cog remains exploratory"

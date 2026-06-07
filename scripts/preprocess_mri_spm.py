@@ -265,6 +265,12 @@ def preprocess_one_spm(
         return False, "spm_output_missing"
     if not qc_path.exists():
         return False, "spm_qc_json_missing"
+    try:
+        qc = json.loads(qc_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False, "spm_qc_json_unreadable"
+    if float(qc.get("normalized_nonzero_fraction") or 0.0) <= 0.0 or float(qc.get("normalized_brain_std") or 0.0) <= 0.0:
+        return False, "spm_qc_empty_normalized_output"
     gzip_file(spm_output, tmp_final)
     os.replace(tmp_final, final_path)
     return True, str(final_path)

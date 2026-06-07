@@ -11,7 +11,6 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src.models.backbones.lightweight_3d import MethodX3DClassifier
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
 from src.utils.run_manifest import write_run_manifest
 from src.utils.state_manager import StateManager
@@ -97,6 +96,7 @@ def h5_attr(h5, key: str, default=None):
 
 def load_model(checkpoint_path: Path, device):
     import torch
+    from src.models.backbones.lightweight_3d import MethodX3DClassifier
 
     checkpoint = torch.load(checkpoint_path, map_location=device)
     fusion = checkpoint.get("fusion", "cross_attention")

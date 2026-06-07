@@ -1,0 +1,245 @@
+schema_version: 2
+policy_name: method_y_spatial_preprocess_policy
+version: "2026-05-30-v3.8-literature-aligned"
+method: "Y"
+status: "PHASE2_SPATIAL_QC_LITERATURE_ALIGNED"
+
+method_x_boundary:
+  method_x_pet_image_input_allowed: false
+  method_x_pet_derived_scalar_input_allowed: false
+  method_x_cache_roots_forbidden_for_pet:
+    - "data/cached"
+    - "data/processed"
+  forbidden_model_input_terms:
+    - pet
+    - amyloid
+    - tau
+    - fbp
+    - fbb
+    - pib
+    - fmm
+    - ftp
+    - tracer
+    - suvr
+    - centiloid
+    - cl
+    - scan_date
+    - scan_day
+    - days_t0
+    - gap
+    - pet_t1_gap
+    - abs_pet_t1_gap_days
+    - pet_t1_gap_days
+
+method_y_scope:
+  allowed_pet_image_input: true
+  branch_label: "PET-assisted exploratory Method Y only"
+  output_label: "A-beta-positive vs A-beta-negative biomarker status, not Alzheimer diagnosis"
+  public_outputs_must_be_aggregate_only: true
+  private_subject_level_allowed_roots:
+    - "data/preprocessed_pet/**"
+    - "results/qc/method_y_pet/**"
+    - "results/logs/method_y_pet_preprocess_resume_*.json"
+  public_forbidden:
+    - raw_id
+    - raw_path
+    - nifti
+    - hdf5
+    - checkpoint
+    - subject_level_rows
+
+temporal_pairing:
+  gap_is_model_feature: false
+  ideal_gold_standard_window_days: 30
+  primary_training_window_days: 90
+  secondary_sensitivity_window_days: 120
+  report_only_window_days: 365
+  exclude_from_primary_training_if_gap_gt_days: 90
+  eligibility_tiers:
+    gold_standard_30:
+      max_abs_gap_days: 30
+      role: "high-validity sensitivity subset"
+      train_primary: false
+      report_required: true
+    primary_strict:
+      max_abs_gap_days: 90
+      role: "primary feasible Method Y training tier"
+      train_primary: true
+      report_required: true
+    secondary_window:
+      max_abs_gap_days: 120
+      role: "secondary sensitivity"
+      train_primary: false
+      report_required: true
+    relaxed_exploratory:
+      max_abs_gap_days: 365
+      role: "report-only/descriptive, not primary training"
+      train_primary: false
+      report_required: true
+    excluded_from_training:
+      min_abs_gap_days_exclusive: 365
+      train_primary: false
+      report_required: true
+  if_primary_strict_infeasible:
+    do_not_silently_switch_primary: true
+    create_decision_packet: true
+    require_DECISIONS_entry: true
+    allowed_actions:
+      - "downgrade_claim_to_secondary_window"
+      - "report_strict_as_underpowered"
+      - "continue_secondary_as_exploratory"
+
+spatial_preprocessing:
+  required_for_training_ready_outputs: true
+  dry_run_may_skip_coregistration: true
+  execute_without_spatial_alignment: "BLOCK"
+  required_pipeline:
+    - "pet_to_subject_t1_rigid"
+    - "subject_t1_to_mni_nonlinear"
+    - "apply_combined_transform_to_pet"
+  rationale: "Deep learning volumes and reference-region extraction require anatomical correspondence. Native-space PET-only reorientation is not training-ready."
+  target_spaces:
+    subject_t1_grid:
+      required_for_qc: true
+    mni_space:
+      required_for_reference_region_qc: true
+      preferred_template: "MNI152"
+      preferred_resolution_mm: [1.0, 1.0, 1.0]
+      acceptable_resolution_mm: [1.5, 1.5, 1.5]
+    fixed_deep_learning_cache:
+      shape: [96, 96, 96]
+      note: "Use only after QC-pass spatial preprocessing; do not compute reference regions on resized DL cache."
+  pet_to_t1:
+    transform: "rigid_6dof"
+    recommended_cost: "mutual_information"
+    preferred_tools: ["ANTs", "FSL_FLIRT", "SPM_coregister", "PETPrep"]
+    interpolation: "linear"
+  t1_to_mni:
+    transform: "nonlinear"
+    preferred_tools: ["ANTs_SyN", "FSL_FNIRT", "SPM_normalise", "PETPrep"]
+  apply_combined_transform_to_pet:
+    required: true
+    reason: "Reduce repeated interpolation artifacts where local toolchain supports transform concatenation."
+  allowed_methods:
+    - name: "ants_pet_t1_mni"
+      status: "allowed_if_antspyx_installed_and_t1_template_available"
+      steps: ["PET->T1 rigid", "T1->MNI SyN", "apply transforms to PET"]
+    - name: "ants_rigid_pet_to_t1"
+      status: "allowed_for_subject_t1_grid_outputs_only_not_final_mni_reference"
+      steps: ["PET->T1 rigid"]
+    - name: "spm_pet_t1_mni"
+      status: "allowed_if_local_spm_wrapper_available"
+      steps: ["PET->T1 coregister", "T1->MNI normalise", "apply deformation"]
+    - name: "precomputed_petprep_output"
+      status: "allowed_if_manifest_points_to_qc_passed_preprocessed_outputs"
+      steps: ["external PETPrep/petBrain/ADprep style output ingestion"]
+    - name: "identity_for_tests"
+      status: "tests_only"
+      execute_allowed_only_with_flag: "--allow_identity_for_tests"
+
+normalization:
+  allowed_modes:
+    - "foreground_zscore"
+    - "percentile_clip_foreground_zscore"
+    - "suvr_image"
+  default_mode: "suvr_image"
+  whole_volume_zscore_allowed: false
+  foreground_mask_required: true
+  suvr_requires_reference_policy: true
+  scalar_suvr_centiloid_as_training_feature: false
+  scalar_suvr_as_method_y_training_feature: false
+  scalar_centiloid_as_method_y_training_feature: false
+  note: "SUVR/Centiloid scalar features are QC/sensitivity only, not Method X inputs and not primary Method Y features."
+
+qc_gates:
+  finite_fraction_min: 0.95
+  foreground_fraction_min: 0.01
+  std_min: 0.000001
+  p99_abs_max_after_normalization: 20.0
+  require_affine_valid: true
+  require_shape_3d: true
+  registration_qc_required_for_training_ready: true
+  require_visual_qc_for_training: true
+  ncc_warn_below: 0.70
+  reference_mean_min: 0.000001
+  centiloid_valid_range: [-20, 200]
+  fail_if_registration_missing: true
+  fail_if_reference_region_empty: true
+  fail_action: "exclude_from_training_candidates"
+  overlay_outputs_private_only: true
+
+manifest_linking:
+  priority_order:
+    - existing_inventory
+    - private_manifest
+    - project_metadata_tables
+    - filename_regex_fallback
+  private_manifest_required_for_training_ready: true
+  regex_fallback_allowed_for_dry_run: true
+  regex_fallback_allowed_for_training_ready: false
+  regex_fallback_warning_required: true
+  minimum_match_rate:
+    warn_below: 0.90
+    block_below: 0.75
+
+sample_selection:
+  one_pet_per_patient_for_training: true
+  create_excluded_manifest: true
+  selection_order:
+    - correct_tracer
+    - valid_label
+    - primary_gap_eligible
+    - smallest_abs_pet_t1_gap
+    - qc_pass
+    - earliest_non_future_visit
+    - deterministic_file_hash_tiebreak
+  exclusion_reasons:
+    - GAP_GT_90
+    - MISSING_T1
+    - MISSING_LABEL
+    - DUPLICATE_PATIENT_NON_SELECTED
+    - QC_FAIL
+    - TRACER_UNSUPPORTED
+    - SUBSTUDY_EXCLUDED
+  exclude_substudies_from_mainline:
+    - "SF"
+
+harmonization_scope:
+  fit_on_training_only: true
+  full_dataset_fit_forbidden: true
+  applies_to:
+    - "ComBat"
+    - "neuroHarmonize"
+    - "scanner/site harmonization"
+  note: "Any harmonizer must be a train-fold transformer; never fit on validation/test/external."
+
+parallel_and_resume:
+  default_n_jobs: 2
+  max_n_jobs: 4
+  save_resume_after_each_subject: true
+  resume_key_fields:
+    - sample_hash
+    - tracer
+    - policy_hash
+    - input_file_hash
+  error_text_must_be_scrubbed: true
+
+training_readiness:
+  min_per_class_warn: 150
+  min_per_class_block: 100
+  requires:
+    - "gap_report_with_gold30_primary90_secondary120"
+    - "private_manifest_match_rate_reported"
+    - "one_pet_per_patient_selection_reported"
+    - "spatial_preprocessing_completed"
+    - "visual_or_numeric_qc_reported"
+    - "qc_pass_rate_reported"
+    - "cohort_label_audit_reported"
+    - "tracer_label_audit_reported"
+    - "gap_label_audit_reported"
+    - "patient_overlap_audit_passed"
+    - "no_raw_paths_in_exportable_outputs"
+    - "method_x_cache_scan_passed"
+    - "pet_only_and_mri_only_baseline_plan_frozen"
+    - "calibration_and_ci_plan_frozen"
+  status_if_missing: "NOT_TRAINING_READY"

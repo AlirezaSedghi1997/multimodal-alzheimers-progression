@@ -16,7 +16,13 @@ def test_final_analysis_contract_if_generated():
     if obj.get("tau_regression") is not None:
         assert obj["gates"]["gate_tau"] == obj["tau_regression"]["mode"]
     if obj.get("three_d") is not None:
-        assert obj["gates"]["gate_3d_training"] in {"PASSED", "DEBUG_ONLY"}
+        assert obj["gates"]["gate_3d_training"] in {"PASSED", "PARTIAL", "DEBUG_ONLY"}
+        if obj["gates"]["gate_3d_training"] == "PARTIAL":
+            aggregate = obj["three_d"]["aggregate"]
+            assert aggregate["mode"] == "FULL_3D_TRAINING"
+            assert aggregate["device"] == "cuda"
+            assert aggregate["final_claim_allowed"] is False
+            assert aggregate["claim_policy"]["claim_blockers"]
 
 
 def test_final_report_mentions_caveat_if_generated():

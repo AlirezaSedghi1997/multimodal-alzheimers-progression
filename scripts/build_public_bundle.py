@@ -36,6 +36,14 @@ PUBLIC_FILES = [
     "results/tables/method_y_multimodal_design.md",
     "results/tables/clinical_ad_target_feasibility.md",
     "results/tables/clinical_ad_target_feasibility.json",
+    "results/tables/mri_volume_cache_smoke_summary.md",
+    "results/tables/mri_volume_cache_smoke_summary.json",
+    "results/tables/method_y_gap_filter_report.md",
+    "results/tables/method_y_pet_manifest_summary.json",
+    "results/tables/method_y_pet_manifest_summary.md",
+    "results/tables/method_y_pet_preprocess_summary.json",
+    "results/tables/method_y_training_readiness.json",
+    "results/final_results/method_y/phase_y_summary.md",
     "results/final_results/subgroup_performance_audit.md",
     "results/final_results/three_d_ablation/three_d_ablation_summary.md",
     "results/final_results/xai/xai_summary.md",
@@ -45,7 +53,13 @@ PUBLIC_FILES = [
     "results/tables/gate_matrix.md",
     "results/final_results/final_analysis/final_analysis_report.md",
     "results/final_results/three_d/three_d_metrics.md",
-    "results/tables/cognitive_feature_summary.md",
+    "governance/sf_internal_decoupling_policy.md",
+    "results/tables/phase1_incremental_value_table.md",
+    "results/tables/phase2_mvp/phase2_mvp_status.md",
+    "results/tables/cohort_probe/cohort_probe_summary.md",
+    "results/final_results/centiloid_regression/centiloid_regression_metrics.md",
+    "results/final_results/method_x_cog_sf/sf_stress_tests_summary.md",
+    "results/tables/bio_cog_method_z_readiness.md",
     "results/final_results/method_x_cog/method_x_cog_summary.md",
     "docs/final_writeup_method_x_cog_method_y_pet_mm.md",
     "docs/clinical_alzheimer_target_feasibility_and_governance.md",
@@ -53,10 +67,11 @@ PUBLIC_FILES = [
     "docs/method_y_pet_assisted_exploratory_plan.md",
     "docs/method_y_pet_mri_multimodal_plan.md",
     "docs/research_methods_limitations_ethics_statistics.md",
+    "docs/spm_incomplete_safe_workflow.md",
     "configs/model/method_y_multimodal_plan.yaml",
 ]
 
-FORBIDDEN_SUFFIXES = {".csv", ".h5", ".hdf5", ".nii", ".gz"}
+FORBIDDEN_SUFFIXES = {".csv", ".h5", ".hdf5", ".nii", ".gz", ".pt", ".ckpt"}
 FORBIDDEN_TERMS = ("BID", "PREVBID", "patient_id", "sample_id")
 
 

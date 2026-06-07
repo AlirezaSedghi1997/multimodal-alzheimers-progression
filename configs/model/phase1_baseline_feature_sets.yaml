@@ -1,0 +1,107 @@
+schema_version: 1
+phase: 1
+headline_model: logistic_regression
+catalog_sources:
+  strict: data/processed/catalogs/method_x_strict_catalog.csv
+  roi_wmh_reads: data/processed/catalogs/mri_roi_wmh_reads_catalog.csv
+  cognitive: data/processed/cognitive_features.csv
+label_column: ab_label_primary
+forbidden_feature_patterns:
+  - pet
+  - suvr
+  - centiloid
+  - tau
+  - pmod
+  - patient_hash
+  - sample_hash
+  - substudy
+  - branch
+  - has_t1_mri
+  - icv_ml
+  - t1_
+  - raw_
+  - path
+  - mri_shape
+  - mri_voxel
+  - mri_mean
+  - mri_std
+  - mri_p0
+  - mri_nonzero
+feature_sets:
+  fixed_tabular:
+    branch: method_x_strict
+    description: Method X-Strict fixed tabular baseline
+    features:
+      - age
+      - sex_binary
+      - education_years
+      - apoe4_carrier
+      - mmse_base
+  cognitive_only:
+    branch: method_x_strict
+    description: Cognitive/psychological features only (Method X-Cog extension on enrolled MRI catalog)
+    join: cognitive
+    features:
+      - pacc
+      - fctotal96
+      - ldeltotal
+      - digittotal
+      - mmscore
+      - cdglobal
+      - cdrsb
+      - cdr_memory
+      - cdr_orient
+      - cdr_judge
+      - cdr_commun
+      - cdr_home
+      - cdr_care
+      - cfipttotal
+      - cfspttotal
+      - c3comp
+      - learnwmcomp
+      - oclonbcomp
+      - psychattncomp
+      - attncomp
+      - c3abrcomp
+      - gdtotal
+      - staitotal
+      - cadcncrn
+      - iescore
+  fixed_tabular_plus_cognitive:
+    branch: method_x_strict
+    description: Fixed tabular plus full cognitive family
+    join: cognitive
+    inherit:
+      - fixed_tabular
+      - cognitive_only
+  roi_icv_norm_only:
+    branch: mri_roi_wmh_reads
+    description: Official ICV-normalized volumetric ROI features
+    column_suffix: _icv_norm
+  wmh_only:
+    branch: mri_roi_wmh_reads
+    description: FLAIR WMH corrected (ICV-normalized volume)
+    features:
+      - wmh_corrected
+  mri_reads_only:
+    branch: mri_roi_wmh_reads
+    description: Official MRI reads (microhemorrhage, superficial siderosis)
+    features:
+      - microhemorrhage_definite
+      - microhemorrhage_lobar
+      - microhemorrhage_deep
+      - superficial_siderosis
+  roi_wmh_reads:
+    branch: mri_roi_wmh_reads
+    description: ROI + WMH + MRI reads interpretable extension
+    inherit:
+      - roi_icv_norm_only
+      - wmh_only
+      - mri_reads_only
+  fixed_tabular_plus_roi_wmh_reads:
+    branch: mri_roi_wmh_reads
+    description: Fixed tabular plus ROI/WMH/reads incremental value row
+    join: strict_tabular_from_master
+    inherit:
+      - fixed_tabular
+      - roi_wmh_reads

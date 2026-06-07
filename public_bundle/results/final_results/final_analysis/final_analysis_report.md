@@ -6,18 +6,18 @@ Method X pipeline execution reached Gate 4 and calibration using T1 MRI-derived 
 
 ## Key Results
 
-- Catalog rows: `1700`
-- Dev rows: `1360`
+- Catalog rows: `1699`
+- Dev rows: `1359`
 - Pseudo-external rows: `340`
 - Best fusion ROC-AUC: `0.7544`
-- External-like ROC-AUC: `0.7527`
+- External-like ROC-AUC: `0.7505`
 - 3D training mode: `FULL_3D_TRAINING`
-- 3D ROC-AUC: `0.7121`
-- 3D external-like ROC-AUC: `0.7316`
-- 3D ablation status: `PENDING`
-- 3D ablation best ROC-AUC: `NA`
-- CV calibrated Brier: `0.1847`
-- CV calibrated ECE: `0.0525`
+- 3D ROC-AUC: `0.7222`
+- 3D external-like ROC-AUC: `0.7236`
+- 3D ablation status: `PASSED`
+- 3D ablation best ROC-AUC: `0.7216`
+- CV calibrated Brier: `0.1832`
+- CV calibrated ECE: `0.0441`
 - Tau feasibility mode: `FULL`
 - Tau analysis mode: `FULL`
 - Tau regression R2: `-0.0446`
@@ -28,7 +28,7 @@ Method X pipeline execution reached Gate 4 and calibration using T1 MRI-derived 
 - Tau interpretation: `No out-of-fold predictive signal over the grouped mean baseline; report as a negative exploratory result.`
 
 - Power analysis status: `DESCRIPTIVE_POWER_ANALYSIS`
-- Full MRI preprocessing status: `BATCH_COMPLETED`
+- Full MRI preprocessing status: `COMPLETED`
 - Site/scanner drift status: `SKIP_WITH_JUSTIFICATION`
 - Subgroup audit status: `PASSED`
 - XAI status: `PASSED`
@@ -37,12 +37,17 @@ Method X pipeline execution reached Gate 4 and calibration using T1 MRI-derived 
 - Method X-Cog AUC gain over fixed tabular: `0.0536`
 - Method X-Cog best non-MRI variant: `fixed_tabular_plus_all_cognitive`
 - Method X-Cog best non-MRI ROC-AUC: `0.7851`
+- Method X-Cog/SF stress-test status: `PASSED`
+- Phase 2 minimum MVP status: `PASSED`
+- Cohort-probe (3D latent linear AUC): `0.5031`
+- Centiloid within-A4 Spearman: `NA`
+- Centiloid within-LEARN Spearman: `NA`
 - Method Y PET inventory status: `AGGREGATE_ONLY`
 - Method Y amyloid PET image files counted: `5661`
 - Method Y tau PET image files counted: `1576`
 - Method Y multimodal design status: `DESIGN_READY_NOT_TRAINED`
 - Method Y clinical Alzheimer output allowed now: `False`
-- Implementation gap summary: `{'DONE': 10, 'MISSING': 2, 'PARTIAL': 2, 'SKIP_WITH_JUSTIFICATION': 1}`
+- Implementation gap summary: `{'DONE': 31, 'MISSING': 0, 'PARTIAL': 1, 'SKIP_WITH_JUSTIFICATION': 1}`
 
 ## Required Caveat
 

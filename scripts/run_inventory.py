@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.data.a4_schema import REQUIRED_RELATIVE_FILES, T1_NAME_PATTERN, resolve_data_root
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
-from src.utils.privacy import redact_path
+from src.utils.privacy import redact_path, scrub_identifier_text
 from src.utils.run_manifest import write_run_manifest
 from src.utils.state_manager import StateManager
 
@@ -39,7 +39,13 @@ def main() -> int:
             files[key] = {"exists": False}
             continue
         header, rows = csv_header_and_rows(path)
-        files[key] = {"exists": True, "rows": rows, "columns": header}
+        safe_header = [scrub_identifier_text(col) for col in header]
+        files[key] = {
+            "exists": True,
+            "rows": rows,
+            "columns": safe_header,
+            "raw_identifier_columns_redacted": sum(1 for raw, safe in zip(header, safe_header) if raw != safe),
+        }
     t1_dir = root / "T1"
     t1_total = 0
     t1_matching = 0

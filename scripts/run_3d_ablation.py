@@ -51,6 +51,11 @@ def run_variant(args: argparse.Namespace, variant: dict[str, object]) -> dict[st
         args.splits,
         "--out_dir",
         str(out_dir),
+        "--phase",
+        "final",
+        "--resolution",
+        "96",
+        "--amp",
         "--epochs",
         str(args.epochs),
         "--batch_size",
@@ -91,6 +96,8 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
                 "uses_pet_as_input": agg["uses_pet_as_input"],
                 "uses_raw_identifiers": agg["uses_raw_identifiers"],
                 "final_claim_allowed": agg["final_claim_allowed"],
+                "phase": agg.get("phase"),
+                "requested_resolution": agg.get("requested_resolution"),
             }
         )
     best = max(
@@ -98,6 +105,13 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
         key=lambda row: float(row["roc_auc"]),
         default=None,
     )
+    phase_mismatch = []
+    for obj in results:
+        agg = obj.get("aggregate", {})
+        variant_name = agg.get("ablation_variant")
+        if agg.get("phase") != "final" or agg.get("requested_resolution") != 96:
+            if variant_name:
+                phase_mismatch.append(variant_name)
     return {
         "schema_version": 1,
         "status": "COMPLETED",
@@ -106,6 +120,12 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
         "contains_pet_input": False,
         "contains_raw_identifiers": False,
         "public_output_granularity": "aggregate_variant_level",
+        "training_contract": {
+            "required_phase": "final",
+            "required_resolution": 96,
+            "variants_with_dev_mode_artifact": sorted(set(phase_mismatch)),
+            "note": "Re-run with --force if any variant was trained under dev/64 metadata.",
+        },
     }
 
 
@@ -144,11 +164,32 @@ def main() -> int:
     ap.add_argument("--batch_size", type=int, default=1)
     ap.add_argument("--folds", type=int, default=5)
     ap.add_argument("--lr", type=float, default=1e-4)
-    ap.add_argument("--force", action="store_true")
+    ap.add_argument("--force", action="store_true", help="Re-run all selected variants even if metrics exist.")
+    ap.add_argument(
+        "--variants",
+        default="",
+        help="Comma-separated subset of variant folder names to run (default: all).",
+    )
     args = ap.parse_args()
 
-    results = [run_variant(args, variant) for variant in VARIANTS]
-    summary = summarize(results)
+    selected = {v.strip() for v in args.variants.split(",") if v.strip()}
+    variants = [v for v in VARIANTS if not selected or str(v["name"]) in selected]
+    if not variants:
+        raise SystemExit("No ablation variants selected.")
+    results = [run_variant(args, variant) for variant in variants]
+    if not args.variants:
+        summary = summarize(results)
+    else:
+        merged: dict[str, dict[str, Any]] = {}
+        base = Path(args.base_out_dir)
+        for spec in VARIANTS:
+            name = str(spec["name"])
+            path = variant_metrics_path(base, name)
+            if path.exists():
+                merged[name] = load_json(path)
+        for obj in results:
+            merged[str(obj["aggregate"]["ablation_variant"])] = obj
+        summary = summarize([merged[str(spec["name"])] for spec in VARIANTS if str(spec["name"]) in merged])
     write_summary(summary)
     write_run_manifest("results/logs/three_d_ablation_manifest.json", stage="three_d_ablation", data_root=None, extra=summary)
     StateManager().append_event("three_d_ablation", "COMPLETED", "3D fusion ablation summary generated.")

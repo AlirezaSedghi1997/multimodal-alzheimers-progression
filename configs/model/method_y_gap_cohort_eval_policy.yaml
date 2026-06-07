@@ -1,0 +1,166 @@
+schema_version: 1
+policy_name: method_y_gap_cohort_eval_policy
+version: "2026-05-29"
+method: Method_Y_PET_MM
+status: preregistration_required_before_training
+method_x_claim_unchanged: true
+method_x_pet_input_allowed: false
+method_y_pet_input_allowed: true
+
+scope:
+  purpose: "Freeze PET-T1 temporal eligibility and cohort-stratified reporting before any Method Y PET-image training."
+  applies_to:
+    - PET-only
+    - MRI+PET
+    - MRI+PET+cognitive
+  does_not_apply_to:
+    - Method X training
+    - Method X-Cog training
+
+approved_target:
+  current_target: AB_POS_vs_AB_NEG_biomarker_status
+  label_source: imaging_PET_VA.csv official dataset label only
+  alzheimer_diagnosis_output_allowed: false
+  clinical_output_requires:
+    - independent_clinical_diagnosis_or_conversion_label
+    - target_validation_report
+    - separate_preregistration_bump
+  required_wording: "A-beta-positive vs A-beta-negative biomarker status, not clinical Alzheimer disease diagnosis."
+
+temporal_alignment:
+  anchor: amyloid_pet_scan_day
+  paired_modality: T1_MRI
+  gap_column: abs_pet_t1_gap_days
+  gap_is_model_feature: false
+  forbidden_model_input_terms:
+    - gap
+    - pet_t1_gap
+    - scan_day
+    - days_t0
+    - scan_date
+  eligibility_tiers:
+    primary_strict:
+      max_abs_gap_days: 90
+      use_for_primary_method_y_training: true
+      rationale: "Highest temporal validity; expected n may be small and must be reported."
+    secondary_window:
+      max_abs_gap_days: 120
+      use_for_sensitivity_training: true
+      rationale: "Consistent with prior Method X window sweep; not primary if strict tier is feasible."
+    relaxed_exploratory:
+      max_abs_gap_days: 365
+      use_for_sensitivity_training: false
+      use_for_aggregate_or_secondary_sensitivity_only: true
+      rationale: "Allows feasibility estimates but is too weak for main PET/MRI fusion claims."
+    excluded_from_training:
+      min_abs_gap_days_exclusive: 365
+      aggregate_inventory_only: true
+  missing_gap_behavior: EXCLUDE_FROM_TRAINING_REPORT_AGGREGATE_ONLY
+  reporting_required:
+    - n_by_gap_tier
+    - label_counts_by_gap_tier
+    - cohort_counts_by_gap_tier
+    - performance_by_gap_tier_if_binary
+
+cohort_stratified_evaluation:
+  cohort_column: substudy
+  required_strata:
+    - overall
+    - A4
+    - LEARN
+    - A4_LEARN_cross_cohort_stress
+  binary_metric_guard:
+    require_both_classes_for_roc_auc: true
+    require_both_classes_for_pr_auc: true
+    if_single_class:
+      report:
+        - n
+        - label_distribution
+        - brier_if_labels_available
+        - ece_if_calibration_bins_valid
+        - predicted_probability_distribution
+      forbidden:
+        - roc_auc
+        - pr_auc
+        - delong_test
+      status_label: SINGLE_CLASS_NO_DISCRIMINATION_METRIC
+  minimum_counts:
+    min_pos_for_auc: 20
+    min_neg_for_auc: 20
+    if_below_minimum: REPORT_DESCRIPTIVE_ONLY_WITH_WARNING
+  confounding_policy:
+    known_issue: "A4/LEARN may be strongly coupled with AB label; all Method Y results must carry this caveat."
+    required_checks:
+      - label_distribution_by_cohort
+      - predicted_probability_by_cohort
+      - modality_ablation_by_cohort_if_binary
+      - cohort_classifier_probe_optional
+    reject_or_downgrade_claim_if:
+      - overall_auc_high_but_within_cohort_auc_unavailable_or_low
+      - predictions_separate_cohort_more_than_label_within_cohort
+      - permutation_or_shuffle_control_has_similar_performance
+
+modeling_scenarios:
+  PET-only:
+    report_under: Method_Y
+    required_baseline: true
+  MRI+PET:
+    report_under: Method_Y
+    required_comparison_to:
+      - MRI-only_same_sample_set
+      - PET-only_same_sample_set
+  MRI+PET+cognitive:
+    report_under: Method_Y
+    optional_until_MRI_96_and_cognitive_contract_finalized: true
+  MRI-only_same_sample_set:
+    report_under: Method_X_compatible_baseline_within_Method_Y_table
+    pet_input: false
+
+statistical_testing:
+  default_ci:
+    method: stratified_bootstrap
+    n_bootstrap_min: 1000
+    ci_level: 0.95
+    stratify_by:
+      - label
+      - cohort_when_feasible
+  paired_model_comparison:
+    preferred_for_pseudo_external_or_cv: bootstrap_delta_auc_or_corrected_resampled_t_test
+    delong_allowed_only_if:
+      - truly_independent_external_binary_set
+      - both_models_evaluated_on_same_subjects
+      - both_classes_present
+      - governance_context_external_is_truly_independent_true
+    delong_forbidden_if:
+      - cv_fold
+      - pseudo_external
+      - single_class_stratum
+
+privacy_and_outputs:
+  raw_identifiers_public: false
+  raw_paths_public: false
+  subject_level_public: false
+  private_hash_level_outputs_allowed: true
+  public_outputs_must_be_aggregate_only: true
+  forbidden_public_extensions:
+    - .nii
+    - .nii.gz
+    - .h5
+    - .pt
+    - .ckpt
+  required_manifest_fields:
+    - method
+    - scenario
+    - policy_name
+    - policy_version
+    - sample_selection_tier
+    - pet_as_method_x_input_false
+    - raw_ids_logged_false
+
+pretraining_gates:
+  - gate_method_y_preregistration_frozen
+  - gate_pet_preprocess_root_separate_from_method_x_cache
+  - gate_no_pet_in_method_x_loaders_after_pet_code_added
+  - gate_gap_policy_applied_before_training
+  - gate_cohort_stratified_eval_plan_frozen
+  - gate_public_bundle_aggregate_only_validation

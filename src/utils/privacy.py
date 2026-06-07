@@ -8,6 +8,8 @@ from pathlib import Path
 SECRET_SALT = "method-x-a4learn-local"
 ID_PATTERNS = [
     re.compile(r"\bB\d{5,}\b", re.IGNORECASE),
+    re.compile(r"\bPREVBID\b", re.IGNORECASE),
+    re.compile(r"\bLRN_?\d{4,}\b", re.IGNORECASE),
 ]
 
 
@@ -33,6 +35,6 @@ def contains_raw_identifier(text: str) -> bool:
 def scrub_identifier_text(text: str) -> str:
     out = text
     for pattern in ID_PATTERNS:
-        out = pattern.sub("<ID>", out)
+        out = pattern.sub("<RAW_ID_FIELD>", out)
     return out
 

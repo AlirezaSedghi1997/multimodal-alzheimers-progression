@@ -1,0 +1,32 @@
+{
+  "blockers": [
+    "REGEX_FALLBACK_MANIFEST_NOT_TRAINING_READY",
+    "PRIVATE_MANIFEST_NOT_TRAINING_READY",
+    "PRIMARY_TIER_MIN_CLASS_BELOW_BLOCK_THRESHOLD",
+    "PREPROCESS_NOT_EXECUTED",
+    "NO_QC_PASS_PET_OUTPUTS"
+  ],
+  "branch": "method_y_pet_assisted",
+  "claim_boundary": "Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict. Training has not started; design and inventory artifacts only.",
+  "clinical_alzheimer_diagnosis_allowed": false,
+  "design_status": "DESIGN_READY_NOT_TRAINED",
+  "inventory_status": "COMPLETED",
+  "method_x_claim_unchanged": true,
+  "pet_as_method_x_input": false,
+  "phase_y_status": "MISSING",
+  "required_before_training": [
+    "PET-only baseline plan frozen",
+    "MRI-only baseline on Method Y split plan frozen",
+    "calibration/ECE/Brier/CI plan frozen",
+    "patient-level split and one-PET-per-patient verified",
+    "cohort/tracer/gap confounding audits reviewed"
+  ],
+  "schema_version": 1,
+  "status": "NOT_TRAINING_READY",
+  "warnings": [
+    "COHORT_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING",
+    "TRACER_LABEL_AUDIT_SINGLE_ROW_OR_COLUMN_REVIEW",
+    "GAP_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING",
+    "PET_CACHE_NOT_BUILT_YET"
+  ]
+}
