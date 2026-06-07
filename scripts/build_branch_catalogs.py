@@ -338,7 +338,7 @@ def build_bio_cog_method_z_catalog(root: Path, cog_sf_rows: list[dict[str, objec
     for row in read_csv_dicts(roche_path):
         substudy = (row.get("SUBSTUDY") or "").upper()
         bid = row.get("BID") or ""
-        test_code = (row.get("LBTESTCD") or "").upper()
+        test_code = (row.get("LBTESTCD") or "").strip().upper()
         key = (substudy, bid)
         entry = blood_rows.setdefault(
             key,
@@ -352,10 +352,14 @@ def build_bio_cog_method_z_catalog(root: Path, cog_sf_rows: list[dict[str, objec
             continue
         if "GFAP" in test_code:
             entry["GFAP"] = value
-        elif "NFL" in test_code:
+        elif "NF-L" in test_code or test_code == "NFL":
             entry["NfL"] = value
-        elif "PTAU181" in test_code:
+        elif "TPP181" in test_code or "PTAU181" in test_code:
             entry["pTau181"] = value
+        elif "AMYLB42" in test_code:
+            entry["Ab42"] = value
+        elif "AMYLB40" in test_code:
+            entry["Ab40"] = value
 
     ab_path = external / "biomarker_AB_Test.csv"
     ab42: dict[tuple[str, str], float] = {}
@@ -364,14 +368,14 @@ def build_bio_cog_method_z_catalog(root: Path, cog_sf_rows: list[dict[str, objec
         substudy = (row.get("SUBSTUDY") or "").upper()
         bid = row.get("BID") or ""
         key = (substudy, bid)
-        test_code = (row.get("LBTESTCD") or "").upper()
+        test_code = (row.get("LBTESTCD") or "").strip().upper()
         value = to_float(row.get("LBORRES"))
         if value is None:
             continue
-        if "AB42" in test_code and "RATIO" not in test_code:
-            ab42[key] = value
-        elif "AB40" in test_code and "RATIO" not in test_code:
-            ab40[key] = value
+        if test_code in {"BP42", "TP42", "FP42"}:
+            ab42.setdefault(key, value)
+        elif test_code in {"BP40", "TP40", "FP40"}:
+            ab40.setdefault(key, value)
 
     label_by_patient = {str(r["patient_hash"]): r for r in cog_sf_rows}
     fieldnames = [
@@ -394,8 +398,8 @@ def build_bio_cog_method_z_catalog(root: Path, cog_sf_rows: list[dict[str, objec
         patient_hash = str(entry["patient_hash"])
         label_row = label_by_patient.get(patient_hash)
         ab_label = label_row["ab_label_primary"] if label_row else ""
-        a42 = ab42.get(key)
-        a40 = ab40.get(key)
+        a42 = entry.get("Ab42") or ab42.get(key)
+        a40 = entry.get("Ab40") or ab40.get(key)
         ratio = (a42 / a40) if a42 is not None and a40 not in (None, 0) else None
         if not any(entry.get(k) is not None for k in ("pTau217", "GFAP", "NfL", "pTau181")) and ratio is None:
             continue

@@ -1,4 +1,22 @@
 {
+  "availability_summary": {
+    "amyloid_fbp_image_files": 5661,
+    "amyloid_fbp_locked_patient_matches": 1698,
+    "cognitive_feature_rows": 1700,
+    "dev_rows": 1360,
+    "external_rows": 340,
+    "locked_catalog_patients": 1700,
+    "locked_catalog_rows": 1700,
+    "tau_ftp_image_files": 1576,
+    "tau_ftp_locked_patient_matches": 447
+  },
+  "blocker_glossary": {
+    "NO_QC_PASS_PET_OUTPUTS": "No PET preprocessing outputs passed spatial QC gates.",
+    "PREPROCESS_NOT_EXECUTED": "Method Y PET spatial preprocessing / cache build has not been executed.",
+    "PRIMARY_TIER_MIN_CLASS_BELOW_BLOCK_THRESHOLD": "Primary-tier Method Y split has insufficient minority-class support for stable training.",
+    "PRIVATE_MANIFEST_NOT_TRAINING_READY": "Hash-level private PET manifest is incomplete or not validated for one-PET-per-patient discipline.",
+    "REGEX_FALLBACK_MANIFEST_NOT_TRAINING_READY": "PET file manifest still relies on regex fallback; training-grade private manifest is required."
+  },
   "blockers": [
     "REGEX_FALLBACK_MANIFEST_NOT_TRAINING_READY",
     "PRIVATE_MANIFEST_NOT_TRAINING_READY",
@@ -7,12 +25,72 @@
     "NO_QC_PASS_PET_OUTPUTS"
   ],
   "branch": "method_y_pet_assisted",
-  "claim_boundary": "Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict. Training has not started; design and inventory artifacts only.",
+  "claim_boundary": "Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict or Method X-Cog. Multimodal PET/MRI training has not started; only design, inventory, and readiness audits exist.",
   "clinical_alzheimer_diagnosis_allowed": false,
+  "current_primary_target": "AB-positive vs AB-negative biomarker status",
   "design_status": "DESIGN_READY_NOT_TRAINED",
+  "execution_gates_before_training": [
+    "Create separate Method Y PET preprocessing root outside Method X caches.",
+    "Create no-PET-in-Method-X regression test after adding PET code.",
+    "Confirm PET images are never loaded by Method X or Method X-Cog dataloaders.",
+    "Define whether the target is biomarker abnormality or an independent clinical diagnosis.",
+    "If clinical AD output is desired, build and validate a separate clinical-label table before training.",
+    "Keep public outputs aggregate-only unless a separate privacy review approves hash-level artifacts."
+  ],
+  "gap_filter_status": null,
   "inventory_status": "COMPLETED",
   "method_x_claim_unchanged": true,
+  "modality_scenarios": [
+    {
+      "inputs": [
+        "T1 MRI"
+      ],
+      "method_x_compliant": true,
+      "name": "mri_only",
+      "pet_input": false,
+      "status": "Method X baseline/final-comparison path"
+    },
+    {
+      "inputs": [
+        "amyloid PET image",
+        "optional tau PET image"
+      ],
+      "method_x_compliant": false,
+      "name": "pet_only",
+      "pet_input": true,
+      "status": "Method Y only"
+    },
+    {
+      "inputs": [
+        "T1 MRI",
+        "amyloid PET image",
+        "optional tau PET image"
+      ],
+      "method_x_compliant": false,
+      "name": "mri_pet",
+      "pet_input": true,
+      "status": "Method Y multimodal only"
+    },
+    {
+      "inputs": [
+        "T1 MRI",
+        "PET image",
+        "cognitive/psychological summaries"
+      ],
+      "method_x_compliant": false,
+      "name": "mri_pet_cognitive",
+      "pet_input": true,
+      "status": "Method Y multimodal+cognitive only"
+    }
+  ],
   "pet_as_method_x_input": false,
+  "pet_image_inventory": {
+    "amyloid_fbp_files": 5661,
+    "amyloid_locked_patient_matches": 1698,
+    "tau_ftp_files": 1576,
+    "tau_locked_patient_matches": 447
+  },
+  "pet_preprocessing_started": false,
   "phase_y_status": "MISSING",
   "required_before_training": [
     "PET-only baseline plan frozen",
@@ -21,8 +99,23 @@
     "patient-level split and one-PET-per-patient verified",
     "cohort/tracer/gap confounding audits reviewed"
   ],
-  "schema_version": 1,
+  "resolution_checklist": [
+    "Build and validate private PET manifest (no regex fallback).",
+    "Execute Method Y PET spatial preprocessing and pass QC gates.",
+    "Build PET volume cache separate from Method X T1 cache.",
+    "Confirm patient-level split with one amyloid PET per patient.",
+    "Run cohort/tracer/gap confounding audits on Method Y split plan.",
+    "Keep calibration/ECE/Brier/CI plan train-fold-only."
+  ],
+  "schema_version": 2,
   "status": "NOT_TRAINING_READY",
+  "training_started": false,
+  "warning_glossary": {
+    "COHORT_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING": "Amyloid label may remain coupled to cohort/tracer in Method Y splits.",
+    "GAP_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING": "PET–T1 temporal gap bins may correlate with label.",
+    "PET_CACHE_NOT_BUILT_YET": "Method Y PET volume cache has not been built.",
+    "TRACER_LABEL_AUDIT_SINGLE_ROW_OR_COLUMN_REVIEW": "Tracer vs label contingency needs manual review."
+  },
   "warnings": [
     "COHORT_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING",
     "TRACER_LABEL_AUDIT_SINGLE_ROW_OR_COLUMN_REVIEW",

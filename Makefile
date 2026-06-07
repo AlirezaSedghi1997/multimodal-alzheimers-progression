@@ -66,8 +66,14 @@ method-x-cog-sf-stress-tests: method-x-cog-sf-cognitive-features
 bio-cog-method-z-readiness:
 	$(PY) scripts/audit_bio_cog_method_z_readiness.py
 
+bio-cog-blood-column-mapping-audit:
+	$(PY) scripts/audit_bio_cog_blood_column_mapping.py
+
 clinical-endpoint-readiness:
 	$(PY) scripts/audit_clinical_endpoint_readiness.py
+
+clinical-endpoint-governance:
+	$(PY) scripts/write_clinical_endpoint_governance.py
 
 method-y-status-summary:
 	$(PY) scripts/build_method_y_status_summary.py

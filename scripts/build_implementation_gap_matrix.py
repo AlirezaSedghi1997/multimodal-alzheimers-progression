@@ -91,7 +91,10 @@ def build_rows() -> list[dict[str, str]]:
     sf_stress = load_json("results/final_results/method_x_cog_sf/sf_stress_tests_summary.json") or {}
     add(rows, "Method X-Cog/SF internal stress tests", "DONE" if sf_stress.get("status") == "COMPLETED" else "MISSING", "results/final_results/method_x_cog_sf/sf_stress_tests_summary.json", "SF-only, SF-inclusive, and train-SF/test-enrolled internal decoupling arms; not external validation.")
     bio_z = load_json("results/tables/bio_cog_method_z_readiness.json") or {}
-    bio_status = "DONE" if bio_z.get("status") == "FEASIBILITY_ONLY_NOT_TRAINED" else "PARTIAL" if bio_z else "MISSING"
+    bio_status = "DONE" if bio_z.get("status") in {
+        "FEASIBILITY_ONLY_NOT_TRAINED",
+        "DESIGN_READY_AWAITING_PHASE3_TRAINING",
+    } else "PARTIAL" if bio_z else "MISSING"
     add(rows, "Bio-Cog/Method Z Phase 3 readiness audit", bio_status, "results/tables/bio_cog_method_z_readiness.json", "CPU feasibility audit for blood-biomarker branch; separate from Method X claim.")
     matrix_check = load_json("results/governance/method_x_feature_matrix_pet_leakage_check.json") or {}
     add(rows, "Method X final feature-matrix no-PET test", "DONE" if matrix_check.get("status") == "PASS" else "MISSING", "results/governance/method_x_feature_matrix_pet_leakage_check.json", "Tests the final feature matrix itself, not just the allowlist.")
