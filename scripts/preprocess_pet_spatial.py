@@ -10,7 +10,15 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.utils.pet_manifest import read_catalog, read_private_manifest, discover_pet_files, link_candidates_to_catalog, write_excluded_manifest, canonical_tracer
+from src.utils.pet_manifest import (
+    read_private_manifest,
+    discover_pet_files,
+    link_candidates_to_catalog,
+    write_excluded_manifest,
+    canonical_tracer,
+    enrich_candidates,
+    read_catalog_with_t1_paths,
+)
 from src.utils.pet_resume import PetResumeManifest
 from src.utils.pet_spatial_qc import (
     assert_method_y_output_root, atomic_write_json, atomic_write_text, assess_qc_gates,
@@ -203,9 +211,14 @@ def main() -> int:
     candidates = read_private_manifest(manifest_path, tracer=tracer)
     manifest_source = "private_manifest"
     if not candidates and args.data_root:
-        candidates = discover_pet_files(args.data_root, tracer=tracer)
+        candidates = enrich_candidates(discover_pet_files(args.data_root, tracer=tracer))
         manifest_source = "filename_regex_fallback"
-    catalog = read_catalog(PROJECT_ROOT / args.catalog if not Path(args.catalog).is_absolute() else args.catalog)
+    else:
+        candidates = enrich_candidates(candidates)
+    catalog = read_catalog_with_t1_paths(
+        PROJECT_ROOT / args.catalog if not Path(args.catalog).is_absolute() else args.catalog,
+        PROJECT_ROOT / "data/preprocessed_mri_96",
+    )
     work, excluded, link_summary = link_candidates_to_catalog(catalog, candidates, policy, requested_tier=args.tier, one_per_patient=True)
     if args.limit:
         work = work[: args.limit]

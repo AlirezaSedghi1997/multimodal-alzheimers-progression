@@ -11,7 +11,8 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from src.utils.pet_manifest import (
     discover_pet_files, read_catalog, read_private_manifest, write_private_manifest,
-    link_candidates_to_catalog, write_excluded_manifest, canonical_tracer
+    link_candidates_to_catalog, write_excluded_manifest, canonical_tracer,
+    enrich_candidates, read_catalog_with_t1_paths,
 )
 from src.utils.pet_spatial_qc import atomic_write_json, atomic_write_text, load_yaml, scrub_sensitive_text
 
@@ -42,8 +43,12 @@ def main() -> int:
         candidates = []
         source = "none"
 
+    candidates = enrich_candidates(candidates)
     write_private_manifest(out_path, candidates)
-    catalog = read_catalog(PROJECT_ROOT / args.catalog if not Path(args.catalog).is_absolute() else args.catalog)
+    catalog = read_catalog_with_t1_paths(
+        PROJECT_ROOT / args.catalog if not Path(args.catalog).is_absolute() else args.catalog,
+        PROJECT_ROOT / "data" / "preprocessed_mri_96",
+    )
     work, excluded, link_summary = link_candidates_to_catalog(catalog, candidates, policy, requested_tier=args.requested_tier, one_per_patient=True)
     write_excluded_manifest(excluded_path, excluded)
 

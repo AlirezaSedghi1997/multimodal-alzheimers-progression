@@ -81,6 +81,15 @@ clinical-endpoint-governance:
 clinical-endpoint-freeze:
 	$(PY) scripts/freeze_clinical_endpoint_governance.py
 
+clinical-endpoint-labels:
+	$(PY) scripts/build_clinical_endpoint_labels.py --data_root "$(DATA_ROOT)"
+
+clinical-endpoint-baseline:
+	$(PY) scripts/train_clinical_endpoint_baseline.py
+
+bio-cog-blood-ablation:
+	$(PY) scripts/run_bio_cog_blood_ablation.py
+
 method-y-status-summary:
 	$(PY) scripts/build_method_y_status_summary.py
 

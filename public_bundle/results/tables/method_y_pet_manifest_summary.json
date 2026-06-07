@@ -16,15 +16,22 @@
   "link_summary": {
     "catalog_rows": 1699,
     "candidate_rows": 5661,
-    "linked_work_items": 0,
-    "excluded_rows": 1699,
+    "linked_work_items": 191,
+    "excluded_rows": 1508,
     "one_pet_per_patient": true,
     "requested_tier": "primary_strict",
-    "linked_tiers": {},
-    "linked_labels": {},
+    "linked_tiers": {
+      "primary_strict": 191
+    },
+    "linked_labels": {
+      "1": 168,
+      "0": 23
+    },
     "note": "Training-ready linking requires private manifest or project resolver; filename fallback is dry-run only."
   },
-  "linked_gap_tiers": {},
+  "linked_gap_tiers": {
+    "primary_strict": 191
+  },
   "raw_paths_exported": false,
   "regex_fallback_used": true,
   "training_ready_manifest": false,
