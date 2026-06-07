@@ -54,6 +54,7 @@ def main() -> int:
     ap.add_argument("--features", default="data/processed/mri_features.csv")
     ap.add_argument("--fusion_summary", default="results/final_results/fusion/fusion_summary.json")
     ap.add_argument("--out_dir", default="results/final_results/external")
+    ap.add_argument("--final_locked_config", action="store_true")
     args = ap.parse_args()
 
     try:
@@ -104,6 +105,37 @@ def main() -> int:
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     atomic_write_json(out_dir / "external_metrics.json", metrics)
+    if args.final_locked_config:
+        final_report = {
+            "version": "v3.8-literature-aligned",
+            "method": "X",
+            "mode": variant,
+            "external_holdout_type": metrics["external_holdout_type"],
+            "is_truly_independent_external": False,
+            "external_used_for_fit": False,
+            "external_used_for_tuning": False,
+            "external_used_for_calibration_fit": False,
+            "external_n": metrics["n_external"],
+            "feature_count": None,
+            "metrics": {
+                "n": metrics["n_external"],
+                "label_counts": metrics["label_counts"],
+                "roc_auc": metrics["roc_auc"],
+                "pr_auc": metrics["pr_auc"],
+                "brier": metrics["brier"],
+                "status": "SINGLE_CLASS_NO_DISCRIMINATION_METRIC" if single_class else "OK",
+            },
+            "roc_auc_ci": metrics["roc_auc_ci"],
+            "pr_auc_ci": metrics["pr_auc_ci"],
+            "delong": {
+                "status": "CORRECTLY_BLOCKED_PSEUDO_EXTERNAL",
+                "reason": "DeLong is allowed only for a truly independent external binary set. This holdout is locked pseudo-external.",
+                "replacement": "guarded_bootstrap_ci",
+            },
+            "uses_pet_as_input": False,
+            "uses_raw_identifiers": False,
+        }
+        atomic_write_json(out_dir / "external_final_metrics.json", final_report)
     lines = [
         "# External-Like Evaluation\n\n",
         f"- external_holdout_type: `{metrics['external_holdout_type']}`\n",
@@ -122,6 +154,19 @@ def main() -> int:
         "This is a locked pseudo-external holdout derived from the same local A4/LEARN data layout, not a truly independent external cohort.\n",
     ]
     atomic_write_text(out_dir / "external_metrics.md", "".join(lines))
+    if args.final_locked_config:
+        final_lines = [
+            "# External-Like Final Evaluation\n\n",
+            "- external_holdout_type: `locked_pseudo_external_random_patient_holdout`\n",
+            "- is_truly_independent_external: `False`\n",
+            "- external_used_for_fit: `False`\n",
+            "- external_used_for_tuning: `False`\n",
+            "- DeLong: `CORRECTLY_BLOCKED_PSEUDO_EXTERNAL`\n\n",
+            "## Metrics\n\n",
+        ]
+        for key, value in final_report["metrics"].items():
+            final_lines.append(f"- {key}: `{value}`\n")
+        atomic_write_text(out_dir / "external_final_metrics.md", "".join(final_lines))
     pkt = Path("results/approval_packets/GATE_4_EXTERNAL")
     pkt.mkdir(parents=True, exist_ok=True)
     atomic_write_text(pkt / "README.md", "# GATE_4_EXTERNAL\n\nExternal-like evaluation completed once on the locked pseudo-external holdout.\n")
@@ -133,4 +178,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

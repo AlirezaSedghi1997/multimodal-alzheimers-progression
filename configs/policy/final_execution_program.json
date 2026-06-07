@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "version": "2026-06-07",
+  "program_name": "PET-free amyloid biomarker-status execution program",
+  "protected_thesis_object": "Method X-Strict",
+  "optimization_priority": [
+    "validity",
+    "defensibility",
+    "reproducibility",
+    "scientific claim control"
+  ],
+  "method_x_allowed_inputs": [
+    "t1_structural_mri",
+    "age",
+    "sex",
+    "education_years",
+    "apoe4_carrier",
+    "mmse_base"
+  ],
+  "method_x_forbidden_inputs": [
+    "pet_image",
+    "pet_suvr",
+    "centiloid_as_predictor",
+    "tau_pet",
+    "pet_derived_image_features",
+    "scanner_site_ids_as_model_features",
+    "cognitive_features_beyond_fixed_tabular_set",
+    "blood_biomarkers",
+    "future_visits",
+    "raw_subject_ids",
+    "raw_paths"
+  ],
+  "terminology": {
+    "target": "Aβ-positive vs Aβ-negative amyloid biomarker status",
+    "required_pseudo_external_term": "locked pseudo-external evaluation",
+    "required_blood_branch_term": "minimally invasive blood-biomarker branch",
+    "forbidden_target_terms": [
+      "Alzheimer disease diagnosis",
+      "Alzheimer disease classification",
+      "clinical Alzheimer diagnosis",
+      "conversion-to-AD"
+    ],
+    "forbidden_validation_terms": [
+      "true external validation",
+      "independent external validation",
+      "real-world external validation",
+      "SF external validation",
+      "SF quasi-external validation"
+    ]
+  },
+  "privacy": {
+    "outputs": "aggregate_or_hash_level_only",
+    "raw_data_root": "read_only",
+    "never_export": [
+      "raw_subject_ids",
+      "raw_paths",
+      "raw_csv_rows",
+      "mri_images",
+      "pet_images",
+      "hdf5_caches",
+      "checkpoints",
+      "subject_level_predictions"
+    ]
+  },
+  "label_freeze": {
+    "primary_binary_label": "centiloid_threshold",
+    "centiloid_threshold": 33.2705,
+    "sensitivity_label": "VA / visual-read consensus label",
+    "required_fields": [
+      "cutoff_value",
+      "source_rationale",
+      "date_frozen",
+      "approved_by",
+      "sensitivity_label",
+      "change_policy"
+    ],
+    "change_policy": "No change after modeling starts, model selection, performance inspection, calibration, or threshold selection."
+  },
+  "external_reference_quarantine": {
+    "enabled": true,
+    "rule": "Published multi-cohort or pretrained reference implementations are methodological or benchmark references only.",
+    "borrowed_embedding_role": "optional supplementary sensitivity comparison",
+    "never_relabels_pseudo_external": true,
+    "never_replaces_method_x_strict": true
+  },
+  "small_n_filtering_doctrine": {
+    "enabled": true,
+    "rule": "Small-N strongly confounded clinical prediction requires leakage filtering, QC exclusion, strict allowlists, and train-fold-only preprocessing."
+  },
+  "branches": {
+    "method_x_strict": {
+      "purpose": "Protected thesis baseline.",
+      "allowed_inputs": [
+        "t1_96_cache",
+        "age",
+        "sex",
+        "education_years",
+        "apoe4_carrier",
+        "mmse_base"
+      ],
+      "groups": [
+        "A4",
+        "LEARN"
+      ],
+      "targets": [
+        "locked_binary_ab_status_primary",
+        "continuous_centiloid_secondary_target_only"
+      ],
+      "claim_boundary": "PET-free non-invasive baseline under locked pseudo-external evaluation.",
+      "confound_controlled_cv": "N/A-DEGENERATE because label approximately equals cohort."
+    },
+    "method_x_cog_sf": {
+      "purpose": "Method X-Strict remains the protected thesis anchor. Method X-Cog/SF is the main deconfounding-oriented exploratory/extended branch for testing whether PET-free clinical/cognitive signal survives cohort-label coupling. It is scientifically central for confounding analysis, but it does not replace Method X-Strict as the thesis anchor.",
+      "allowed_inputs": [
+        "fixed_tabular_variables",
+        "pacc",
+        "cdr",
+        "cogstate",
+        "memory_tests",
+        "complaints",
+        "mood_anxiety",
+        "related_non_future_clinical_variables"
+      ],
+      "groups": [
+        "A4",
+        "LEARN",
+        "SF"
+      ],
+      "targets": [
+        "centiloid_threshold_primary",
+        "VA_visual_read_sensitivity"
+      ],
+      "claim_boundary": "PET-free clinical/cognitive extension; SF is internal decoupling/stress-test only.",
+      "confound_controlled_cv": "REQUIRED where label does not equal cohort in SF-inclusive screening."
+    },
+    "mri_roi_wmh_reads": {
+      "purpose": "Improve interpretability and replace leaky MRI surrogate features.",
+      "allowed_inputs": [
+        "official_volumetric_mri_roi_features",
+        "icv_normalized_volumes",
+        "flair_wmh_corrected",
+        "microhemorrhage_reads",
+        "superficial_siderosis_reads",
+        "fixed_tabular_variables"
+      ],
+      "mandatory_normalization": "ICV-normalization for volumetric ROIs.",
+      "forbidden_inputs": [
+        "pet_inputs",
+        "blood",
+        "future_visits",
+        "leaky_intensity_shape_surrogates",
+        "unnormalized_raw_volumes_as_standalone_predictors"
+      ]
+    },
+    "bio_cog_method_z": {
+      "purpose": "Separate minimally invasive benchmark branch.",
+      "allowed_inputs": [
+        "pTau217",
+        "GFAP",
+        "Aβ42/40_ratio",
+        "NfL",
+        "pTau181",
+        "optional_cognition",
+        "optional_fixed_tabular_variables"
+      ],
+      "claim_boundary": "Minimally invasive biomarker-assisted branch; never supports the non-invasive Method X claim."
+    },
+    "clinical_endpoint": {
+      "purpose": "Exploratory clinical/cognitive progression proxy.",
+      "allowed_inputs": [
+        "baseline_predictors_only",
+        "non_future_predictors_only"
+      ],
+      "targets": [
+        "frozen_cdr_worsening",
+        "frozen_pacc_decline"
+      ],
+      "claim_boundary": "Do not call Alzheimer diagnosis or conversion-to-AD without independent validated label."
+    }
+  },
+  "phase2_minimum_mvp": [
+    "5_fold_subject_grouped_cv",
+    "locked_pseudo_external_evaluation",
+    "cramers_v_cohort_label_audit",
+    "linear_and_nonlinear_cohort_probe",
+    "calibration_brier_ece_reliability_plot",
+    "bootstrap_ci",
+    "label_shuffle_control",
+    "feature_permutation_or_ablation",
+    "sf_aware_stress_test_where_applicable",
+    "continuous_centiloid_within_cohort_analysis"
+  ],
+  "cohort_probe_protocol": {
+    "headline_validity_metric": true,
+    "primary_probe": {
+      "type": "linear",
+      "model": "logistic_regression",
+      "input": "frozen_embeddings_or_features",
+      "target": "substudy_or_cohort"
+    },
+    "secondary_probe": {
+      "type": "nonlinear",
+      "model": "calibrated_gbt_or_small_mlp",
+      "input": "same_as_primary",
+      "target": "substudy_or_cohort"
+    },
+    "always_report": [
+      "linear_probe_auc",
+      "nonlinear_probe_auc",
+      "linear_vs_nonlinear_gap"
+    ]
+  },
+  "train_only_discipline": {
+    "enabled": true,
+    "fit_on_train_only": [
+      "deconfounder",
+      "normalizer",
+      "scaler",
+      "imputer",
+      "calibrator",
+      "combat_harmonizer",
+      "feature_selector",
+      "threshold_selector_if_applicable"
+    ],
+    "log_per_fold": true
+  },
+  "optional_supplementary": {
+    "leakage_inflation_negative_control": {
+      "enabled": "if_time_permits_after_mvp",
+      "preferred_location": "Supplementary Materials unless reviewers request otherwise",
+      "never_report_as_model_performance": true
+    },
+    "ssl": {
+      "mvp_participation": false,
+      "scope": "stretch_only",
+      "single_level_only": true,
+      "never_enters_method_x_strict": true
+    },
+    "external_pretrained_embedding_sensitivity": {
+      "scope": "optional_supplementary",
+      "skip_if_licensing_preprocessing_or_domain_shift_risk": true
+    }
+  }
+}

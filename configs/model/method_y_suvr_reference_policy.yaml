@@ -1,0 +1,113 @@
+schema_version: 2
+policy_name: method_y_suvr_reference_policy
+version: "2026-05-30-v3.8-literature-aligned"
+method: "Y"
+status: "REFERENCE_REGION_AND_CENTILOID_POLICY_FROZEN_FOR_QC_AND_SENSITIVITY"
+
+global_rules:
+  scalar_suvr_as_method_x_input: false
+  scalar_centiloid_as_method_x_input: false
+  scalar_suvr_as_method_y_primary_training_feature: false
+  scalar_suvr_as_method_y_training_feature: false
+  scalar_centiloid_as_method_y_primary_training_feature: false
+  scalar_centiloid_as_method_y_training_feature: false
+  scalar_suvr_centiloid_allowed_private_qc: true
+  scalar_suvr_centiloid_allowed_sensitivity_benchmark: true
+  suvr_image_normalization_allowed_in_method_y: true
+  public_scalar_subject_level_outputs_allowed: false
+  manual_label_indices_allowed: false
+  label_indices_must_be_resolved_from_lut: true
+  official_dataset_label_preferred_if_available: true
+  note: "Centiloid/SUVR may support QC/sensitivity and label harmonization, but PET-derived scalars do not enter Method X and are not primary Method Y model features."
+
+amyloid_pet:
+  primary_reference:
+    name: "whole_cerebellum"
+    role: "primary cross-sectional reference"
+    atlas_name: "TBD_local_atlas"
+    atlas_version: "TBD"
+    roi_names:
+      - "left_cerebellum"
+      - "right_cerebellum"
+    label_indices_resolved_by_script: true
+    rationale: "Whole cerebellum is retained as primary cross-sectional amyloid reference; cerebellar grey is sensitivity where atlas support exists."
+  sensitivity_references:
+    - name: "cerebellar_grey"
+      role: "reference-region sensitivity"
+      status: "sensitivity_only_if_atlas_available"
+    - name: "whole_cerebellum_plus_brainstem"
+      role: "optional cross-tracer sensitivity"
+      status: "optional"
+    - name: "eroded_subcortical_white_matter"
+      role: "longitudinal sensitivity only"
+      status: "not_primary_cross_sectional"
+  tracers:
+    fbp:
+      aliases: ["FBP", "florbetapir", "AV45", "18F-florbetapir"]
+      suvr_threshold_primary_reference: 1.11
+      centiloid_equation: "CL = 188.22 * SUVR - 189.16"
+      centiloid_slope: 188.22
+      centiloid_intercept: -189.16
+      centiloid_threshold: 20
+      equation_source: "Royse 2021 / Centiloid harmonization literature; verify before thesis submission"
+    fbb:
+      aliases: ["FBB", "florbetaben", "18F-florbetaben"]
+      suvr_threshold_primary_reference: 1.08
+      centiloid_equation: "CL = 157.15 * SUVR - 151.87"
+      centiloid_slope: 157.15
+      centiloid_intercept: -151.87
+      centiloid_threshold: 18
+      equation_source: "Royse 2021 / Centiloid harmonization literature; verify before thesis submission"
+    pib:
+      aliases: ["PiB", "PIB", "11C-PiB"]
+      status: "optional_if_present_requires_local_equation_or_official_label"
+    fmm:
+      aliases: ["FMM", "flutemetamol", "18F-flutemetamol"]
+      status: "optional_if_present_requires_local_equation_or_official_label"
+
+tau_pet:
+  ftp:
+    aliases: ["FTP", "flortaucipir", "AV1451", "tau"]
+    primary_reference:
+      name: "inferior_cerebellar_grey"
+      atlas_name: "TBD_local_atlas"
+      atlas_version: "TBD"
+      roi_names:
+        - "inferior_cerebellar_grey_left"
+        - "inferior_cerebellar_grey_right"
+      label_indices_resolved_by_script: true
+      rationale: "Tau FTP reference policy; execute only if atlas mapping and QC are verified."
+    status: "OPTIONAL_SUBSET_ONLY_NOT_PRIMARY_METHOD_Y_AMYLOID_BRANCH"
+
+centiloid:
+  allowed_as_primary_label: false
+  allowed_as_sensitivity_benchmark_if_available: true
+  requires_policy_bump_before_new_tracer_use: true
+  valid_qc_range: [-20, 200]
+  thresholding_order:
+    - "official_dataset_label_if_available"
+    - "official_centiloid_if_available"
+    - "tracer_specific_equation_if_suvr_available"
+    - "visual_read_if_policy_frozen"
+    - "do_not_infer_ad_hoc"
+
+roi_suvr:
+  allowed_private_qc: true
+  allowed_xai_sanity_check: true
+  allowed_model_input: false
+  recommended_outputs_private_only:
+    - "whole_cerebellum_mean"
+    - "cerebellar_grey_mean"
+    - "cortical_composite_suvr"
+    - "centiloid_estimate_if_available"
+    - "reference_region_sensitivity_delta"
+
+reference_region_sensitivity:
+  required_before_thesis_reporting_if_masks_available: true
+  compare:
+    - "whole_cerebellum"
+    - "cerebellar_grey"
+  report:
+    - "positivity_reclassification_count"
+    - "centiloid_delta_distribution"
+    - "number_of_borderline_cases"

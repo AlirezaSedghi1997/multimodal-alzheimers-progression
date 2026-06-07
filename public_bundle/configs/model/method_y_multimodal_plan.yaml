@@ -1,0 +1,31 @@
+﻿schema_version: 1
+method: Method_Y_PET_MM
+status: design_ready_not_trained
+method_x_claim_unchanged: true
+method_x_pet_input_allowed: false
+current_primary_target: AB_POS_vs_AB_NEG_biomarker_status
+clinical_alzheimer_output_allowed_now: false
+clinical_alzheimer_requires_independent_label: true
+scenarios:
+  mri_only:
+    inputs: [t1_mri]
+    report_under: Method_X
+    pet_input: false
+  pet_only:
+    inputs: [amyloid_pet_image, optional_tau_pet_image]
+    report_under: Method_Y
+    pet_input: true
+  mri_pet:
+    inputs: [t1_mri, amyloid_pet_image, optional_tau_pet_image]
+    report_under: Method_Y
+    pet_input: true
+  mri_pet_cognitive:
+    inputs: [t1_mri, pet_image, cognitive_psychological_summaries]
+    report_under: Method_Y
+    pet_input: true
+pretraining_gates:
+  - separate_pet_preprocessing_root
+  - no_pet_in_method_x_regression_test
+  - explicit_target_policy
+  - privacy_review_for_any_hash_level_outputs
+  - aggregate_only_public_outputs

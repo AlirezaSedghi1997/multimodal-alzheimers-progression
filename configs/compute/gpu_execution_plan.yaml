@@ -1,0 +1,45 @@
+schema_version: 1
+policy_name: gpu_execution_plan
+version: "2026-06-05"
+preferred_device: cuda
+expected_gpu: "RTX 4060"
+vram_gb:
+  expected: 8
+  dryrun_guard: 6.5
+  training_soft_cap: 7.0
+  hard_stop: 7.5
+fallback:
+  cuda_unavailable: "cpu_debug_only_for_non_claim_checks"
+  oom_order:
+    - "reduce_batch_size"
+    - "enable_amp"
+    - "reduce_num_workers"
+    - "reduce_resolution_for_debug_only"
+method_x_mri:
+  cache_resampling:
+    device: auto
+    official_resolution: 96
+  final_training:
+    device: auto
+    amp: true
+    folds: 5
+    resolution: 96
+    batch_size_start: 1
+    claim_requires_cuda_full_run: true
+method_y_pet:
+  execute_gate:
+    require_dry_run_review: true
+    require_mni_template_for_execute: true
+    require_training_readiness_status: READY_FOR_EXPLORATORY_METHOD_Y_TRAINING
+  cache:
+    root: "data/cached_method_y_pet"
+    forbidden_roots:
+      - "data/cached"
+      - "data/processed"
+  exploratory_training:
+    device: auto
+    amp: true
+    folds: 5
+    batch_size_start: 1
+    method_x_claim_unchanged: true
+    pet_training_branch: "Method Y only"

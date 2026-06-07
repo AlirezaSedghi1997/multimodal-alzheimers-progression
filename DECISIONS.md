@@ -1,5 +1,12 @@
 ﻿# Decisions
 
+## 2026-05-25 - Add Method X-Cog as Separate Cognitive/Clinical Fusion Extension
+
+- Decision: Add `Method X-Cog` as an exploratory extension that can combine fixed Method X tabular inputs with cognitive and psychological test summaries.
+- Reason: Cognitive tests may add clinically meaningful signal, but they change the scientific input contract and must not silently replace Method X.
+- Alternatives: Add all cognitive tests directly into Method X, or avoid cognitive testing entirely.
+- Impact: Method X remains the primary T1 MRI plus fixed-tabular method. Method X-Cog is optional, separately staged, and must report leakage controls, temporal alignment, missingness, and cohort-label confounding.
+
 ## 2026-05-25 - Define PET Processing as Separate Method Y Exploratory Branch
 
 - Decision: PET image preprocessing may be added only as an exploratory `Method Y` branch for QC, label reproducibility, and aggregate sensitivity analyses.

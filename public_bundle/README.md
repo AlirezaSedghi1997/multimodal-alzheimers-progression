@@ -1,14 +1,110 @@
-# amyloid-tau-prediction-a4learn
+# amyloid-tau-prediction-a4learn-methodx
 
-Method X implementation scaffold for A4/LEARN amyloid status prediction.
+PET-free **Method X-Strict** pipeline for Aβ biomarker-status prediction on A4/LEARN-style data, aligned with execution program **v3.9** (thesis-grade validity controls).
 
-Core contract:
-- PET is label/target only, never model input.
-- T1 MRI is the only imaging input.
-- Tabular inputs are limited to age, sex, education_years, apoe4_carrier, and mmse_base.
-- Raw identifiers and raw patient data must not be printed in logs or public outputs.
+**Repository:** [github.com/AlirezaSedghi1997/amyloid-tau-prediction-a4learn-methodx](https://github.com/AlirezaSedghi1997/amyloid-tau-prediction-a4learn-methodx)
 
-Default local data root:
+## Scientific object (protected thesis anchor)
+
+**Method X-Strict** predicts amyloid **biomarker status** (Aβ+ vs Aβ−), not Alzheimer disease diagnosis.
+
+| Allowed inputs | Forbidden inputs |
+|----------------|------------------|
+| T1 structural MRI (96³ cache) | PET image / SUVR / centiloid as predictor |
+| `age`, `sex`, `education_years`, `apoe4_carrier`, `mmse_base` | Blood biomarkers in Method X |
+| | Cognitive features beyond fixed tabular set |
+| | Raw subject IDs / raw paths in public outputs |
+
+- **Target/label only:** PET-derived centiloid (frozen cutoff **33.2705**), VA/visual-read sensitivity label.
+- **Validation term:** locked **pseudo-external** evaluation — not true external validation.
+- **Cohort caveat:** A4/LEARN enrolled sample has strong cohort–label coupling (Cramér's V ≈ 1 within enrolled-only analyses).
+
+## Branch architecture
+
+| Branch | Role | Status (local) |
+|--------|------|----------------|
+| **Method X-Strict** | Protected thesis anchor (T1 + fixed tabular [+ 3D CNN]) | Phase 2 MVP **complete** |
+| **Method X-Cog/SF** | Confounding-oriented cognitive extension + SF internal decoupling | Stress tests **done** |
+| **MRI ROI/WMH/reads** | Interpretable MRI branch (no leaky surrogates) | Phase 2 MVP **complete** |
+| **Method Y** | Exploratory PET-assisted multimodal | **NOT_TRAINING_READY** (design/inventory only) |
+| **Bio-Cog / Method Z** | Minimally invasive blood benchmark | **FEASIBILITY_ONLY** (Phase 3) |
+| **Clinical endpoint** | Exploratory progression proxy | **FEASIBILITY_ONLY** |
+
+## Execution progress (v3.9)
+
+| Phase | Gate / deliverable | Status |
+|-------|-------------------|--------|
+| **0** | Branch catalogs, SF governance, leakage review, label freeze | **PASS** |
+| **1** | Interpretable baselines (tabular, cognitive, ROI, WMH, reads) | **DONE** |
+| **0.6** | Cohort-probe + within-cohort centiloid regression | **DONE** |
+| **2** | Minimum MVP battery (3 headline models) | **MVP_COMPLETE** |
+| **3** | Method Z + clinical endpoint + Method Y training | **Partial / not started** |
+
+Key validity findings (aggregate, local runs):
+
+- **3D MRI latent cohort-probe:** linear AUC ≈ **0.50** → cohort not encoded in CNN embeddings.
+- **ROI/WMH nonlinear cohort-probe:** AUC ≈ **0.99** → cohort artifact; report as limitation.
+- **SF stress tests:** train-SF→enrolled cognitive transfer collapses (~0.51 AUC); SF is internal decoupling only.
+
+## Data (local, read-only)
+
+Default data root (not in git):
+
 - Windows: `H:\A4 Learn`
 - WSL: `/mnt/h/A4 Learn`
 
+Large artifacts (`data/cached/*.h5`, `results/final_results/`, raw CSVs) are **gitignored**. Reproduce via staged pipeline below.
+
+## Quick start
+
+```bash
+# Environment
+conda activate amyloid-tau   # or see Makefile ENV_NAME
+
+# Phase 0
+make phase0-complete DATA_ROOT="/mnt/h/A4 Learn"
+
+# Phase 1 + validity probes (CPU)
+make phase1-baselines cohort-probe centiloid-regression
+
+# Phase 2 MVP audit (CPU)
+make phase2-mvp-audit gap-matrix
+
+# GPU stages (when SPM + 96³ cache ready)
+make gpu-preflight three-d-ablation
+
+# Method X-Cog/SF + Phase 3 feasibility (CPU)
+make method-x-cog-sf-stress-tests bio-cog-method-z-readiness thesis-grade-report
+
+# Aggregate reports
+make final-analysis public-bundle
+```
+
+Orchestrator: `python scripts/run_project_stage.py --next`
+
+## Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [docs/final_execution_program.md](docs/final_execution_program.md) | Master execution program |
+| [governance/sf_internal_decoupling_policy.md](governance/sf_internal_decoupling_policy.md) | SF stress-test policy |
+| [docs/method_y_status_summary.md](docs/method_y_status_summary.md) | Method Y blockers |
+| [docs/clinical_endpoint_readiness.md](docs/clinical_endpoint_readiness.md) | Clinical endpoint feasibility |
+| [public_bundle/](public_bundle/) | Aggregate reproducibility bundle (no raw IDs/images) |
+
+## Tests
+
+```bash
+python -m pytest tests/ -q
+```
+
+## Privacy & compliance
+
+- No raw subject IDs, raw paths, or subject-level predictions in public bundle.
+- PET is **never** a Method X model input.
+- SF must **never** be described as external validation.
+
+## Citation / contact
+
+Master's thesis project — A4/LEARN amyloid biomarker-status prediction under cohort-label confounding.  
+Maintainer: [AlirezaSedghi1997](https://github.com/AlirezaSedghi1997)

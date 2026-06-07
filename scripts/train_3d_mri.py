@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.train_baseline import average_precision, brier, roc_auc
 from src.models.backbones.lightweight_3d import MethodX3DClassifier
 from src.models.losses.latent_alignment import latent_alignment_loss
+from src.utils.final_claim_policy import evaluate_three_d_final_claim
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
 from src.utils.run_manifest import write_run_manifest
 from src.utils.state_manager import StateManager
@@ -108,7 +109,7 @@ def unique_indices(values: list[int]) -> list[int]:
     return out
 
 
-def run_epoch(model, loader, optimizer, device, pos_weight, latent_alignment_lambda: float = 0.0):
+def run_epoch(model, loader, optimizer, device, pos_weight, latent_alignment_lambda: float = 0.0, *, use_amp: bool = False, scaler=None):
     import torch
     import torch.nn.functional as F
 
@@ -119,17 +120,34 @@ def run_epoch(model, loader, optimizer, device, pos_weight, latent_alignment_lam
         tabular = tabular.to(device)
         label = label.to(device)
         optimizer.zero_grad(set_to_none=True)
-        if latent_alignment_lambda > 0:
-            logits, mri_latent, tab_latent = model.forward_with_latents(image, tabular)
+        amp_enabled = use_amp and device.type == "cuda"
+        with torch.cuda.amp.autocast(enabled=amp_enabled):
+            if latent_alignment_lambda > 0:
+                logits, mri_latent, tab_latent = model.forward_with_latents(image, tabular)
+            else:
+                logits = model(image, tabular)
+            loss = F.binary_cross_entropy_with_logits(logits, label, pos_weight=pos_weight)
+            if latent_alignment_lambda > 0:
+                loss = loss + latent_alignment_lambda * latent_alignment_loss(mri_latent, tab_latent)
+        if scaler is not None and amp_enabled:
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
         else:
-            logits = model(image, tabular)
-        loss = F.binary_cross_entropy_with_logits(logits, label, pos_weight=pos_weight)
-        if latent_alignment_lambda > 0:
-            loss = loss + latent_alignment_lambda * latent_alignment_loss(mri_latent, tab_latent)
-        loss.backward()
-        optimizer.step()
+            loss.backward()
+            optimizer.step()
         losses.append(float(loss.detach().cpu()))
     return sum(losses) / max(len(losses), 1)
+
+
+def resolve_training_device(requested: str):
+    import torch
+
+    if requested == "auto":
+        return torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if requested == "cuda" and not torch.cuda.is_available():
+        raise RuntimeError("CUDA requested for 3D MRI training, but torch.cuda.is_available() is false")
+    return torch.device(requested)
 
 
 def predict(model, loader, device) -> tuple[list[int], list[float]]:
@@ -162,7 +180,10 @@ def evaluate(y_true: list[int], y_prob: list[float]) -> dict[str, float | int | 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--cache", default="data/cached/t1_volume_cache_64.h5")
+    ap.add_argument("--cache", default=None)
+    ap.add_argument("--phase", choices=["dev", "final"], default="dev")
+    ap.add_argument("--resolution", type=int, choices=[64, 96], default=64)
+    ap.add_argument("--input_mode", choices=["image_only", "tabular_only", "mri_plus_tabular"], default="mri_plus_tabular")
     ap.add_argument("--splits", default="splits")
     ap.add_argument("--out_dir", default="results/final_results/three_d")
     ap.add_argument("--epochs", type=int, default=4)
@@ -172,7 +193,17 @@ def main() -> int:
     ap.add_argument("--cpu_debug_limit", type=int, default=64)
     ap.add_argument("--fusion", choices=["concat", "cross_attention"], default="cross_attention")
     ap.add_argument("--latent_alignment_lambda", type=float, default=0.0)
+    ap.add_argument("--device", choices=["auto", "cpu", "cuda"], default="auto")
+    ap.add_argument("--amp", action="store_true", help="Use CUDA automatic mixed precision when running on GPU.")
+    ap.add_argument("--num_workers", type=int, default=0)
     args = ap.parse_args()
+    if args.phase == "final":
+        if args.resolution != 96:
+            raise SystemExit("Final 3D claim requires --resolution 96.")
+        if args.folds != 5:
+            raise SystemExit("Final 3D claim requires --folds 5 unless DECISIONS.md records a caveat.")
+    if args.input_mode != "mri_plus_tabular":
+        raise SystemExit("Current real Method X 3D trainer supports --input_mode mri_plus_tabular only.")
 
     try:
         import h5py
@@ -181,18 +212,23 @@ def main() -> int:
     except Exception as exc:
         raise RuntimeError("train_3d_mri requires torch and h5py") from exc
 
-    cache_path = Path(args.cache)
+    cache_path = Path(args.cache or f"data/cached/t1_volume_cache_{args.resolution}.h5")
     split_dir = Path(args.splits)
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
+    cache_attr_resolution = cache_resolution(cache_path)
+    if args.phase == "final" and cache_attr_resolution is not None and cache_attr_resolution != args.resolution:
+        raise SystemExit(f"Final 3D cache resolution mismatch: cache has {cache_attr_resolution}, requested {args.resolution}.")
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = resolve_training_device(args.device)
     mode = "FULL_3D_TRAINING" if device.type == "cuda" else "CPU_DEBUG_ONLY"
     if device.type == "cuda":
         torch.cuda.reset_peak_memory_stats()
     epochs = args.epochs if mode == "FULL_3D_TRAINING" else 1
     folds = args.folds if mode == "FULL_3D_TRAINING" else 1
     limit = 0 if mode == "FULL_3D_TRAINING" else args.cpu_debug_limit
+    amp_enabled = bool(args.amp and device.type == "cuda")
+    scaler = torch.cuda.amp.GradScaler(enabled=amp_enabled)
 
     sample_to_idx = cache_index(cache_path)
     fold_results = []
@@ -207,8 +243,8 @@ def main() -> int:
         tab_mean, tab_std = tabular_stats(cache_path, train_idx)
         train_ds = H5MRIDataset(cache_path, train_idx, tab_mean, tab_std)
         test_ds = H5MRIDataset(cache_path, test_idx, tab_mean, tab_std)
-        train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True, num_workers=0)
-        test_loader = DataLoader(test_ds, batch_size=args.batch_size, shuffle=False, num_workers=0)
+        train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers)
+        test_loader = DataLoader(test_ds, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers)
         with h5py.File(cache_path, "r") as h5:
             y_train = [int(h5["label"][idx]) for idx in train_idx]
         positives = max(float(sum(y_train)), 1.0)
@@ -218,7 +254,7 @@ def main() -> int:
         optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
         losses = []
         for _ in range(epochs):
-            losses.append(run_epoch(model, train_loader, optimizer, device, pos_weight, args.latent_alignment_lambda))
+            losses.append(run_epoch(model, train_loader, optimizer, device, pos_weight, args.latent_alignment_lambda, use_amp=amp_enabled, scaler=scaler))
         y_true, y_prob = predict(model, test_loader, device)
         metrics = evaluate(y_true, y_prob)
         metrics["fold"] = fold
@@ -255,8 +291,8 @@ def main() -> int:
             tab_mean, tab_std = tabular_stats(cache_path, dev_idx)
             dev_ds = H5MRIDataset(cache_path, dev_idx, tab_mean, tab_std)
             external_ds = H5MRIDataset(cache_path, external_idx, tab_mean, tab_std)
-            dev_loader = DataLoader(dev_ds, batch_size=args.batch_size, shuffle=True, num_workers=0)
-            external_loader = DataLoader(external_ds, batch_size=args.batch_size, shuffle=False, num_workers=0)
+            dev_loader = DataLoader(dev_ds, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers)
+            external_loader = DataLoader(external_ds, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers)
             with h5py.File(cache_path, "r") as h5:
                 y_dev = [int(h5["label"][idx]) for idx in dev_idx]
             positives = max(float(sum(y_dev)), 1.0)
@@ -265,7 +301,7 @@ def main() -> int:
             model = MethodX3DClassifier(fusion=args.fusion).to(device)
             optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
             for _ in range(epochs):
-                run_epoch(model, dev_loader, optimizer, device, pos_weight, args.latent_alignment_lambda)
+                run_epoch(model, dev_loader, optimizer, device, pos_weight, args.latent_alignment_lambda, use_amp=amp_enabled, scaler=scaler)
             y_ext, p_ext = predict(model, external_loader, device)
             external_like = evaluate(y_ext, p_ext)
             external_like["n"] = len(y_ext)
@@ -290,15 +326,28 @@ def main() -> int:
     peak_vram_gb = None
     if device.type == "cuda":
         peak_vram_gb = float(torch.cuda.max_memory_allocated() / (1024**3))
+    claim_policy = evaluate_three_d_final_claim(
+        mode=mode,
+        phase=args.phase,
+        resolution=args.resolution,
+        folds=folds,
+        cache_resolution=cache_attr_resolution,
+    )
     aggregate.update(
         {
             "mode": mode,
+            "phase": args.phase,
             "device": device.type,
+            "device_requested": args.device,
+            "amp_enabled": amp_enabled,
+            "num_workers": args.num_workers,
+            "requested_resolution": args.resolution,
+            "input_mode": args.input_mode,
             "epochs": epochs,
             "folds": folds,
             "batch_size": args.batch_size,
             "cache": str(cache_path),
-            "cache_resolution": cache_resolution(cache_path),
+            "cache_resolution": cache_attr_resolution,
             "model": "MethodX3DClassifier",
             "fusion": args.fusion,
             "latent_alignment_lambda": args.latent_alignment_lambda,
@@ -312,7 +361,13 @@ def main() -> int:
             "checkpoints": checkpoint_paths,
             "external_like": external_like,
             "peak_vram_gb": peak_vram_gb,
-            "final_claim_allowed": mode == "FULL_3D_TRAINING",
+            "final_claim_allowed": claim_policy["final_claim_allowed"],
+            "claim_policy": claim_policy,
+            "final_contract": {
+                "final_requires_96": True,
+                "final_requires_5fold": True,
+                "pet_input_allowed": False,
+            },
         }
     )
     summary = {"aggregate": aggregate, "folds": fold_results}
@@ -332,9 +387,14 @@ def main() -> int:
         f"- peak_vram_gb: `{aggregate['peak_vram_gb']}`\n",
         f"- external_like_roc_auc: `{external_like.get('roc_auc') if external_like else None}`\n",
         f"- final_claim_allowed: `{aggregate['final_claim_allowed']}`\n",
+        f"- reporting_mode: `{claim_policy['reporting_mode']}`\n",
+        f"- validity_recommendation: `{claim_policy['validity_recommendation']}`\n",
+        f"- spm_complete: `{claim_policy['spm_complete']}`\n",
         "- uses_pet_as_input: `False`\n",
         "- uses_raw_identifiers: `False`\n",
     ]
+    if claim_policy.get("claim_blockers"):
+        lines.append(f"- claim_blockers: `{claim_policy['claim_blockers']}`\n")
     atomic_write_text(out_dir / "three_d_metrics.md", "".join(lines))
     write_run_manifest("results/logs/three_d_manifest.json", stage="train_3d", data_root=None, extra={"aggregate": aggregate})
     StateManager().append_event("train_3d", "COMPLETED" if aggregate["final_claim_allowed"] else "DEBUG_ONLY", "3D MRI training stage completed.")

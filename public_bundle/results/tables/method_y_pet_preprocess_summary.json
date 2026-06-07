@@ -1,0 +1,30 @@
+{
+  "stage": "method_y_pet_preprocess",
+  "version": "v3.8-literature-aligned",
+  "mode": "dry_run",
+  "tracer": "fbp",
+  "manifest_source": "private_manifest",
+  "candidate_count": 5661,
+  "catalog_rows": 1699,
+  "selected_work_items": 0,
+  "excluded_items": 1699,
+  "link_summary": {
+    "catalog_rows": 1699,
+    "candidate_rows": 5661,
+    "linked_work_items": 0,
+    "excluded_rows": 1699,
+    "one_pet_per_patient": true,
+    "requested_tier": "primary_strict",
+    "linked_tiers": {},
+    "linked_labels": {},
+    "note": "Training-ready linking requires private manifest or project resolver; filename fallback is dry-run only."
+  },
+  "spatial_mode": "ants_pet_t1_mni",
+  "normalization": "percentile_clip_foreground_zscore",
+  "n_jobs": 2,
+  "raw_paths_exported": false,
+  "train_ready": false,
+  "requires_readiness_gate": true,
+  "mni_template_provided": false,
+  "reference_mask_provided": false
+}

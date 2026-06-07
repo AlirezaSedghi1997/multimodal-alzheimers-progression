@@ -3,13 +3,12 @@ from __future__ import annotations
 import argparse
 import csv
 import json
-import math
 import sys
-from collections import Counter, defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from src.data.cohort_audit import audit_cohort_label_coupling
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
 from src.utils.run_manifest import write_run_manifest
 from src.utils.state_manager import StateManager
@@ -18,47 +17,6 @@ from src.utils.state_manager import StateManager
 def read_csv_rows(path: Path) -> list[dict[str, str]]:
     with path.open("r", encoding="utf-8", newline="") as f:
         return list(csv.DictReader(f))
-
-
-def cramers_v_2xk(table: dict[str, dict[str, int]]) -> float:
-    labels = sorted({label for counts in table.values() for label in counts})
-    cohorts = sorted(table)
-    if len(labels) < 2 or len(cohorts) < 2:
-        return 1.0
-    total = sum(table[c].get(l, 0) for c in cohorts for l in labels)
-    if total == 0:
-        return 0.0
-    row_totals = {c: sum(table[c].get(l, 0) for l in labels) for c in cohorts}
-    col_totals = {l: sum(table[c].get(l, 0) for c in cohorts) for l in labels}
-    chi2 = 0.0
-    for c in cohorts:
-        for l in labels:
-            expected = row_totals[c] * col_totals[l] / total
-            if expected > 0:
-                observed = table[c].get(l, 0)
-                chi2 += (observed - expected) ** 2 / expected
-    denom = total * min(len(cohorts) - 1, len(labels) - 1)
-    return math.sqrt(chi2 / denom) if denom > 0 else 0.0
-
-
-def audit_catalog(rows: list[dict[str, str]]) -> dict[str, object]:
-    by_cohort_label: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
-    for row in rows:
-        by_cohort_label[row["substudy"]][row["ab_label"]] += 1
-    table = {cohort: dict(counts) for cohort, counts in by_cohort_label.items()}
-    pure_cohorts = {
-        cohort: (len([label for label, n in counts.items() if n > 0]) == 1)
-        for cohort, counts in table.items()
-    }
-    return {
-        "rows": len(rows),
-        "label_counts": dict(Counter(r["ab_label"] for r in rows)),
-        "substudy_counts": dict(Counter(r["substudy"] for r in rows)),
-        "label_by_substudy": table,
-        "cohort_label_cramers_v": cramers_v_2xk(table),
-        "all_cohorts_single_label": all(pure_cohorts.values()),
-        "single_label_by_cohort": pure_cohorts,
-    }
 
 
 def main() -> int:
@@ -71,7 +29,7 @@ def main() -> int:
     if not catalog.exists():
         raise RuntimeError("Missing master catalog.")
     rows = read_csv_rows(catalog)
-    audit = audit_catalog(rows)
+    audit = audit_cohort_label_coupling(rows, label_key="ab_label")
     baseline_obj = None
     baseline_path = Path(args.baseline)
     if baseline_path.exists():

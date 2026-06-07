@@ -1,0 +1,2 @@
+sample_hash,t1_file_hash,reason,decision,active,notes
+s_6af45083b095fa22,t1_e0ed8d8b63c45659,RAW_T1_EMPTY_BINARY_QC_INVALID,exclude_from_method_x_final_mri_cache_splits,true,SPM output exists but normalized QC is empty; no same-visit valid T1 replacement is available in the local raw T1 inventory.

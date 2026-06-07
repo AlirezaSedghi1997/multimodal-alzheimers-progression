@@ -14,6 +14,10 @@ from src.utils.state_manager import StateManager
 PUBLIC_FILES = [
     "README.md",
     "governance/method_x_operating_contract.md",
+    "governance/method_x_cog_operating_contract.md",
+    "governance/method_y_pet_exploratory_policy.md",
+    "governance/method_y_multimodal_operating_contract.md",
+    "governance/cognitive_feature_policy.md",
     "governance/data_schema_policy.md",
     "governance/calibration_policy.md",
     "governance/feasibility_assessment.md",
@@ -28,6 +32,18 @@ PUBLIC_FILES = [
     "results/tables/full_mri_preprocess_toolchain_report.md",
     "results/tables/spm_preprocess_toolchain_report.md",
     "results/tables/site_scanner_drift_sensitivity_report.md",
+    "results/tables/method_y_pet_inventory.md",
+    "results/tables/method_y_multimodal_design.md",
+    "results/tables/clinical_ad_target_feasibility.md",
+    "results/tables/clinical_ad_target_feasibility.json",
+    "results/tables/mri_volume_cache_smoke_summary.md",
+    "results/tables/mri_volume_cache_smoke_summary.json",
+    "results/tables/method_y_gap_filter_report.md",
+    "results/tables/method_y_pet_manifest_summary.json",
+    "results/tables/method_y_pet_manifest_summary.md",
+    "results/tables/method_y_pet_preprocess_summary.json",
+    "results/tables/method_y_training_readiness.json",
+    "results/final_results/method_y/phase_y_summary.md",
     "results/final_results/subgroup_performance_audit.md",
     "results/final_results/three_d_ablation/three_d_ablation_summary.md",
     "results/final_results/xai/xai_summary.md",
@@ -37,9 +53,29 @@ PUBLIC_FILES = [
     "results/tables/gate_matrix.md",
     "results/final_results/final_analysis/final_analysis_report.md",
     "results/final_results/three_d/three_d_metrics.md",
+    "governance/sf_internal_decoupling_policy.md",
+    "results/tables/phase1_incremental_value_table.md",
+    "results/tables/phase2_mvp/phase2_mvp_status.md",
+    "results/tables/cohort_probe/cohort_probe_summary.md",
+    "results/final_results/centiloid_regression/centiloid_regression_metrics.md",
+    "results/final_results/method_x_cog_sf/sf_stress_tests_summary.md",
+    "results/tables/bio_cog_method_z_readiness.md",
+    "results/final_results/method_x_cog/method_x_cog_summary.md",
+    "docs/final_writeup_method_x_cog_method_y_pet_mm.md",
+    "docs/clinical_alzheimer_target_feasibility_and_governance.md",
+    "docs/method_x_cog_validation_plan.md",
+    "docs/method_y_pet_assisted_exploratory_plan.md",
+    "docs/method_y_pet_mri_multimodal_plan.md",
+    "docs/method_y_status_summary.md",
+    "docs/clinical_endpoint_readiness.md",
+    "docs/bio_cog_blood_column_mapping_audit.md",
+    "governance/clinical_endpoint_progression_policy.md",
+    "docs/research_methods_limitations_ethics_statistics.md",
+    "docs/spm_incomplete_safe_workflow.md",
+    "configs/model/method_y_multimodal_plan.yaml",
 ]
 
-FORBIDDEN_SUFFIXES = {".csv", ".h5", ".hdf5", ".nii", ".gz"}
+FORBIDDEN_SUFFIXES = {".csv", ".h5", ".hdf5", ".nii", ".gz", ".pt", ".ckpt"}
 FORBIDDEN_TERMS = ("BID", "PREVBID", "patient_id", "sample_id")
 
 
@@ -66,7 +102,7 @@ def copy_if_exists(src: Path, root: Path, out: Path) -> list[str]:
         dst.write_text(sanitize_public_text(src.read_text(encoding="utf-8")), encoding="utf-8")
     else:
         shutil.copy2(src, dst)
-    copied.append(str(dst.relative_to(out)))
+    copied.append(dst.relative_to(out).as_posix())
     return copied
 
 
@@ -106,7 +142,7 @@ def main() -> int:
         dst = out / "results/tables/split_summary.md"
         dst.parent.mkdir(parents=True, exist_ok=True)
         dst.write_text(sanitize_public_text(split_summary.read_text(encoding="utf-8")), encoding="utf-8")
-        copied.append(str(dst.relative_to(out)))
+        copied.append(dst.relative_to(out).as_posix())
 
     manifest = {
         "public_bundle": str(out),

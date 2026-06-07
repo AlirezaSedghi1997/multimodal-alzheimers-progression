@@ -1,0 +1,47 @@
+schema_version: 1
+method: method_x_cog
+feature_sets:
+  fixed_tabular:
+    - age
+    - sex_binary
+    - education_years
+    - apoe4_carrier
+    - mmse_base
+  cognitive_core:
+    - pacc
+    - fctotal96
+    - ldeltotal
+    - digittotal
+    - mmscore
+  clinical_severity:
+    - cdglobal
+    - cdrsb
+    - cdr_memory
+    - cdr_orient
+    - cdr_judge
+    - cdr_commun
+    - cdr_home
+    - cdr_care
+  complaints:
+    - cfipttotal
+    - cfspttotal
+  cogstate:
+    - c3comp
+    - learnwmcomp
+    - oclonbcomp
+    - psychattncomp
+    - attncomp
+    - c3abrcomp
+  mood_anxiety:
+    - gdtotal
+    - staitotal
+    - cadcncrn
+    - iescore
+forbidden_terms:
+  - pet
+  - tau
+  - suvr
+  - amyloid
+  - centiloid
+  - scan_date
+  - raw_path

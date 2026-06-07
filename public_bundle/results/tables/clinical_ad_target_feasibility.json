@@ -1,0 +1,197 @@
+{
+  "approved_future_work_gates": [
+    "Define a clinical label table that is independent of PET-derived biomarker status.",
+    "Lock the clinical endpoint before model training.",
+    "Separate at-visit diagnosis, baseline status, and follow-up conversion endpoints.",
+    "Run leakage review proving PET, SUVR, centiloid, tau, and PET-derived features are not Method X inputs.",
+    "Export only aggregate feasibility and performance reports unless a separate privacy review approves lower-level outputs."
+  ],
+  "artifact": "clinical_alzheimer_target_feasibility",
+  "clinical_alzheimer_output_allowed_now": false,
+  "clinical_alzheimer_requires_independent_label": true,
+  "current_method_x_target": "A-beta positive vs A-beta negative biomarker status",
+  "current_target_is_clinical_alzheimer_diagnosis": false,
+  "dictionary_scan": {
+    "adjudicated_diagnosis_entries_detected": 0,
+    "cdr_progression_entries_detected": 2,
+    "cn_mci_ad_status_entries_detected": 0,
+    "context_excluded_entries": 25,
+    "diagnosis_like_entries": 51,
+    "dictionary_files_scanned": 3,
+    "direct_participant_diagnosis_entries_after_context_exclusion": 0
+  },
+  "forbidden_claims": [
+    "Do not relabel A-beta biomarker status as Alzheimer disease diagnosis.",
+    "Do not train a clinical Alzheimer classifier from this feasibility artifact.",
+    "Do not use PET images or PET-derived measurements as Method X or Method X-Cog inputs.",
+    "Do not publish subject-level clinical labels, predictions, raw identifiers, or raw paths."
+  ],
+  "interpretation": "The available files support aggregate feasibility analysis for a future independent clinical target. They do not authorize a current Alzheimer disease yes/no model claim.",
+  "label_availability": {
+    "adjudicated_diagnosis_availability": {
+      "adjudicated_source_detected": false,
+      "status": "NOT_DETECTED",
+      "supported_now": false
+    },
+    "cn_mci_ad_dementia_availability": {
+      "explicit_label_detected": false,
+      "reason": "No direct independent CN/MCI/AD dementia class label was detected in the available source scan.",
+      "status": "NOT_DETECTED_AS_DIRECT_LABEL",
+      "supported_now": false
+    },
+    "conversion_followup_availability": {
+      "cdr_progression_event_detected": true,
+      "longitudinal_cdr_available": true,
+      "reason": "CDR progression/conversion can be studied later only after a prespecified clinical endpoint definition and leakage review.",
+      "status": "CANDIDATE_ENDPOINT_REQUIRES_PROTOCOL_LOCK",
+      "supported_now": false
+    },
+    "diagnosis_at_visit_availability": {
+      "explicit_diagnosis_at_visit_detected": false,
+      "global_cdr_at_visit_available": true,
+      "reason": "Visit-level Global CDR is available as a clinical rating scale, but it is not an adjudicated Alzheimer diagnosis label.",
+      "status": "CDR_SCALE_AVAILABLE_NOT_DIAGNOSIS",
+      "supported_now": false
+    }
+  },
+  "locked_catalog_patients": 1699,
+  "method_x_allowed_inputs_unchanged": true,
+  "method_x_claim_unchanged": true,
+  "missingness_and_class_balance": {
+    "clinical_dementia_rating": {
+      "conversion_candidate_counts": {
+        "first_cdr_missing": 0,
+        "first_cdr_nonzero": 0,
+        "first_cdr_zero_with_later_positive_global_cdr": 720,
+        "first_cdr_zero_without_later_cdr": 94,
+        "first_cdr_zero_without_later_positive_global_cdr": 885
+      },
+      "field_missingness": {
+        "all_phase_cdr_progression_event": {
+          "missing": 9183,
+          "missing_rate": 0.8464,
+          "non_missing": 1666
+        },
+        "blinded_phase_cdr_progression_event": {
+          "missing": 9245,
+          "missing_rate": 0.8522,
+          "non_missing": 1604
+        },
+        "cdr_sum_of_boxes": {
+          "missing": 273,
+          "missing_rate": 0.0252,
+          "non_missing": 10576
+        },
+        "global_cdr_at_visit": {
+          "missing": 274,
+          "missing_rate": 0.0253,
+          "non_missing": 10575
+        },
+        "visit_day": {
+          "missing": 277,
+          "missing_rate": 0.0255,
+          "non_missing": 10572
+        }
+      },
+      "first_observed_global_cdr_patient_counts": {
+        "0": 1699
+      },
+      "followup_availability": {
+        "cdr_followup_span_bins": {
+          "1-3y": 215,
+          "3-5y": 250,
+          "<=1y": 26,
+          ">5y": 1129,
+          "missing_or_single_visit": 79
+        },
+        "cdr_visits_per_patient_bins": {
+          "1": 79,
+          "2-4": 358,
+          "5+": 1262
+        },
+        "patients_with_two_or_more_cdr_timepoints": 1620
+      },
+      "latest_observed_global_cdr_patient_counts": {
+        "0": 1200,
+        "0.5": 424,
+        "1": 58,
+        "2": 17
+      },
+      "locked_patients_with_cdr": 1699,
+      "locked_rows_matched_in_memory": 10849,
+      "patient_level_all_phase_cdr_progression_event_counts": {
+        "event": 590,
+        "missing": 33,
+        "no_event_or_censored": 1076
+      },
+      "patient_level_blinded_phase_cdr_progression_event_counts": {
+        "event": 480,
+        "missing": 95,
+        "no_event_or_censored": 1124
+      },
+      "row_level_global_cdr_counts": {
+        "0": 8441,
+        "0.5": 1974,
+        "1": 138,
+        "2": 22,
+        "missing": 274
+      },
+      "source_rows": 15511,
+      "subject_level_outputs_exported": false
+    },
+    "scheduled_visits": {
+      "locked_patients_with_visit_records": 1699,
+      "locked_rows_matched_in_memory": 91934,
+      "scheduled_visit_rows_matched_in_memory": 0,
+      "source_rows": 103351,
+      "visit_records_per_patient_bins": {
+        "11+": 1593,
+        "2-4": 5,
+        "5-10": 101
+      }
+    }
+  },
+  "pet_as_method_x_cog_input": false,
+  "pet_as_method_x_input": false,
+  "pet_preprocessing_started": false,
+  "raw_identifiers_exported": false,
+  "raw_paths_exported": false,
+  "schema_version": 1,
+  "source_inventory": {
+    "clinical_dementia_rating": {
+      "columns": 25,
+      "exists": true,
+      "file_name": "cdr.csv",
+      "raw_identifiers_exported": false,
+      "raw_paths_exported": false,
+      "rows": 15511
+    },
+    "disposition": {
+      "columns": 9,
+      "exists": true,
+      "file_name": "DS.csv",
+      "raw_identifiers_exported": false,
+      "raw_paths_exported": false,
+      "rows": 16262
+    },
+    "scheduled_visits": {
+      "columns": 9,
+      "exists": true,
+      "file_name": "SV.csv",
+      "raw_identifiers_exported": false,
+      "raw_paths_exported": false,
+      "rows": 103351
+    },
+    "subject_information": {
+      "columns": 62,
+      "exists": true,
+      "file_name": "SUBJINFO.csv",
+      "raw_identifiers_exported": false,
+      "raw_paths_exported": false,
+      "rows": 6945
+    }
+  },
+  "status": "FEASIBILITY_ONLY_NOT_TRAINED",
+  "subject_level_outputs_exported": false,
+  "training_started": false
+}

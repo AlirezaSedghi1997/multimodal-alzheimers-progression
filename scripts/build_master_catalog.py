@@ -5,7 +5,7 @@ import csv
 import os
 import re
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -24,6 +24,7 @@ from src.utils.run_manifest import write_run_manifest
 from src.utils.state_manager import StateManager
 
 
+DEFAULT_MRI_QC_EXCLUSIONS = Path("configs/data/mri_qc_exclusions.csv")
 def read_csv_dicts(path: Path) -> list[dict[str, str]]:
     with path.open("r", encoding="utf-8-sig", newline="") as f:
         return list(csv.DictReader(f))
@@ -121,9 +122,72 @@ def choose_nearest_t1(pet_day: float | None, candidates: list[dict[str, object]]
     return min(valid, key=lambda c: (abs(float(c["t1_day_t0"]) - pet_day), float(c["t1_day_t0"])))
 
 
+def read_mri_qc_exclusions(path: Path) -> dict[str, dict[str, str]]:
+    if not path.exists():
+        return {}
+    exclusions: dict[str, dict[str, str]] = {}
+    with path.open("r", encoding="utf-8", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            sample_hash = (row.get("sample_hash") or "").strip()
+            active = (row.get("active") or "true").strip().lower()
+            if not sample_hash or active not in {"1", "true", "yes", "y"}:
+                continue
+            exclusions[sample_hash] = {k: (v or "") for k, v in row.items()}
+    return exclusions
+
+
+def apply_mri_qc_exclusions(
+    rows: list[dict[str, object]],
+    exclusions: dict[str, dict[str, str]],
+) -> tuple[list[dict[str, object]], list[dict[str, str]]]:
+    if not exclusions:
+        return rows, []
+    kept: list[dict[str, object]] = []
+    excluded_rows: list[dict[str, str]] = []
+    for row in rows:
+        sample_hash = str(row.get("sample_hash", ""))
+        exclusion = exclusions.get(sample_hash)
+        if not exclusion:
+            kept.append(row)
+            continue
+        excluded_rows.append(
+            {
+                "sample_hash": sample_hash,
+                "patient_hash": str(row.get("patient_hash", "")),
+                "t1_file_hash": str(row.get("t1_file_hash", "")),
+                "reason": exclusion.get("reason", "MRI_QC_EXCLUSION"),
+                "decision": exclusion.get("decision", "exclude_from_method_x_final_mri_cache_splits"),
+            }
+        )
+    return kept, excluded_rows
+
+
+def write_mri_qc_exclusion_report(excluded_rows: list[dict[str, str]], exclusions_path: Path) -> None:
+    reason_counts = Counter(row["reason"] for row in excluded_rows)
+    report = {
+        "stage": "mri_qc_exclusions",
+        "status": "APPLIED" if excluded_rows else "NO_ACTIVE_EXCLUSIONS_APPLIED",
+        "active_exclusion_count": len(excluded_rows),
+        "reason_counts": dict(reason_counts),
+        "exclusions_path": str(exclusions_path),
+        "excluded_rows": excluded_rows,
+        "raw_identifiers_written": False,
+        "raw_paths_written": False,
+        "pet_as_input": False,
+    }
+    atomic_write_json("results/tables/mri_qc_exclusion_report.json", report)
+    lines = ["# MRI QC Exclusion Report\n\n", f"- status: `{report['status']}`\n", f"- active_exclusion_count: `{len(excluded_rows)}`\n"]
+    for reason, count in reason_counts.items():
+        lines.append(f"- {reason}: `{count}`\n")
+    lines.extend(["- raw_identifiers_written: `False`\n", "- raw_paths_written: `False`\n", "- pet_as_input: `False`\n"])
+    atomic_write_text("results/tables/mri_qc_exclusion_report.md", "".join(lines))
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--data_root", default=os.environ.get("DATA_ROOT"))
+    ap.add_argument("--mri_qc_exclusions", default=str(DEFAULT_MRI_QC_EXCLUSIONS))
     args = ap.parse_args()
     root = resolve_data_root(args.data_root)
     ab_path = root / REQUIRED_RELATIVE_FILES["ab_label"]
@@ -212,6 +276,13 @@ def main() -> int:
             }
         )
 
+    exclusions_path = Path(args.mri_qc_exclusions)
+    mri_qc_exclusions = read_mri_qc_exclusions(exclusions_path)
+    rows, mri_qc_excluded_rows = apply_mri_qc_exclusions(rows, mri_qc_exclusions)
+    if mri_qc_excluded_rows:
+        excluded["mri_qc_manual_exclusion"] += len(mri_qc_excluded_rows)
+    write_mri_qc_exclusion_report(mri_qc_excluded_rows, exclusions_path)
+
     out_csv = Path("data/processed/master_catalog.csv")
     out_csv.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = list(rows[0].keys()) if rows else [
@@ -259,6 +330,9 @@ def main() -> int:
         "t1_match_strategy_counts": dict(match_strategy_counts),
         "raw_identifiers_written": False,
         "pet_as_input": False,
+        "mri_qc_exclusion_count": len(mri_qc_excluded_rows),
+        "mri_qc_exclusion_reasons": dict(Counter(row["reason"] for row in mri_qc_excluded_rows)),
+        "mri_qc_exclusions_path": str(exclusions_path),
     }
     atomic_write_json("results/tables/master_catalog_summary.json", summary)
     md = [
@@ -269,6 +343,7 @@ def main() -> int:
         f"- substudy_counts: `{dict(substudy_counts)}`\n",
         f"- gap_within_days: `{gap_within}`\n",
         f"- t1_match_strategy_counts: `{dict(match_strategy_counts)}`\n",
+        f"- mri_qc_exclusion_count: `{len(mri_qc_excluded_rows)}`\n",
         "- raw identifiers written: `False`\n",
         "- PET as model input: `False`\n",
     ]

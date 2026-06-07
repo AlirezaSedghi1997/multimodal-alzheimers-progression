@@ -262,9 +262,10 @@ def run_matlab_batch(matlab_cmd: str, batch_path: Path, log_path: Path | None = 
     batch_arg = str(batch_path)
     if is_windows_matlab(matlab_cmd) and os.name != "nt":
         batch_arg = wslpath_windows(batch_path)
+    batch_expr = f"restoredefaultpath; matlabrc; run('{matlab_quote(batch_arg)}')"
     if log_path is None:
         proc = subprocess.run(
-            [matlab_cmd, "-batch", f"run('{matlab_quote(batch_arg)}')"],
+            [matlab_cmd, "-batch", batch_expr],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             check=False,
@@ -273,7 +274,7 @@ def run_matlab_batch(matlab_cmd: str, batch_path: Path, log_path: Path | None = 
         log_path.parent.mkdir(parents=True, exist_ok=True)
         with log_path.open("w", encoding="utf-8", errors="replace") as log:
             proc = subprocess.run(
-                [matlab_cmd, "-batch", f"run('{matlab_quote(batch_arg)}')"],
+                [matlab_cmd, "-batch", batch_expr],
                 stdout=log,
                 stderr=subprocess.STDOUT,
                 check=False,
