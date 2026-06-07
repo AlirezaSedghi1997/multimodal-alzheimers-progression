@@ -303,6 +303,26 @@ def tier_for_gap(gap: Optional[float], policy: dict) -> str:
     return "excluded_from_training"
 
 
+PRIMARY_TRAINING_WINDOW_TIERS = frozenset({"gold_standard_30", "primary_strict"})
+
+
+def tier_matches_requested(tier: str, requested_tier: str, gap: Optional[float], policy: dict) -> bool:
+    if not requested_tier or requested_tier == "all":
+        return True
+    if requested_tier == "primary_strict":
+        return tier in PRIMARY_TRAINING_WINDOW_TIERS
+    if requested_tier == "primary_feasible_90":
+        if gap is None:
+            return False
+        max_gap = (
+            policy.get("temporal_pairing", {}).get("primary_training_window_days")
+            or policy.get("temporal_alignment", {}).get("eligibility_tiers", {}).get("primary_strict", {}).get("max_abs_gap_days")
+            or 90
+        )
+        return float(gap) <= float(max_gap)
+    return tier == requested_tier
+
+
 def _catalog_match_key(row: CatalogRow) -> str:
     return row.patient_hash or f"{row.substudy}|{row.sample_hash}"
 
@@ -334,7 +354,7 @@ def link_candidates_to_catalog(
         elif not r.is_binary_label:
             reason = "MISSING_LABEL"
         tier = tier_for_gap(r.abs_pet_t1_gap_days, policy)
-        if reason is None and requested_tier and requested_tier != "all" and tier != requested_tier:
+        if reason is None and not tier_matches_requested(tier, requested_tier, r.abs_pet_t1_gap_days, policy):
             reason = "GAP_NOT_IN_REQUESTED_TIER"
         if reason:
             excluded.append({"sample_hash": r.sample_hash, "patient_hash": r.patient_hash, "reason": reason, "tier": tier, "gap": r.abs_pet_t1_gap_days})

@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.data.a4_schema import T1_NAME_PATTERN, resolve_data_root
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
-from src.utils.privacy import stable_hash
+from src.utils.quarantine_paths import LEAKY_MRI_SURROGATE_REL, ensure_quarantine_readme
 from src.utils.run_manifest import write_run_manifest
 from src.utils.state_manager import StateManager
 
@@ -91,7 +91,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--data_root", default=os.environ.get("DATA_ROOT"))
     ap.add_argument("--catalog", default="data/processed/master_catalog.csv")
-    ap.add_argument("--out", default="data/processed/mri_features.csv")
+    ap.add_argument("--out", default=str(LEAKY_MRI_SURROGATE_REL))
     ap.add_argument("--limit", type=int, default=0)
     args = ap.parse_args()
 
@@ -100,6 +100,7 @@ def main() -> int:
     if args.limit > 0:
         rows = rows[: args.limit]
     t1_index = build_t1_hash_index(data_root)
+    ensure_quarantine_readme()
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -151,6 +152,8 @@ def main() -> int:
         "contains_raw_images": False,
         "contains_pet_input": False,
         "contains_raw_identifiers": False,
+        "quarantined_negative_control_only": True,
+        "headline_model_use_forbidden": True,
         "features": MRI_FEATURES,
     }
     atomic_write_json("results/tables/mri_feature_extraction_summary.json", summary)

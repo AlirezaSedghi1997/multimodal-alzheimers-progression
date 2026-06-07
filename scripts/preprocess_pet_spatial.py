@@ -223,7 +223,7 @@ def main() -> int:
     ap.add_argument("--policy", default="configs/model/method_y_spatial_preprocess_policy.yaml")
     ap.add_argument("--out_root", default="data/preprocessed_pet")
     ap.add_argument("--tracer", default="fbp", help="fbp, fbb, pib, fmm, ftp")
-    ap.add_argument("--tier", default="primary_strict", choices=["gold_standard_30", "primary_strict", "secondary_window", "relaxed_exploratory", "all"])
+    ap.add_argument("--tier", default="primary_strict", choices=["gold_standard_30", "primary_strict", "primary_feasible_90", "secondary_window", "relaxed_exploratory", "all"])
     ap.add_argument("--normalization", default="percentile_clip_foreground_zscore", choices=["foreground_zscore", "percentile_clip_foreground_zscore", "suvr_image"])
     ap.add_argument("--spatial_mode", default="ants_pet_t1_mni", choices=["ants_pet_t1_mni", "ants_rigid_pet_to_t1", "spm_pet_t1_mni", "precomputed_petprep_output", "identity_for_tests"])
     ap.add_argument("--mni_template", default=None)

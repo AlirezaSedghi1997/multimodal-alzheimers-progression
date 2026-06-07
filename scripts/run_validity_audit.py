@@ -18,6 +18,8 @@ FORBIDDEN_FEATURE_TERMS = (
 DEFAULT_TABULAR = ["age", "sex", "education_years", "apoe4_carrier", "mmse_base"]
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
+from src.utils.quarantine_paths import resolve_leaky_mri_surrogate_path
+
 
 def atomic_write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -291,7 +293,7 @@ def write_md(report: Dict[str, Any], path: Path) -> None:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--catalog", default="data/processed/master_catalog.csv")
-    ap.add_argument("--mri_features", default="data/processed/mri_features.csv")
+    ap.add_argument("--mri_features", default=None, help="Quarantined leaky surrogate CSV (negative control only).")
     ap.add_argument("--label_col", default="ab_label")
     ap.add_argument("--out_dir", default="results/tables/validity_audit")
     ap.add_argument("--n_splits", type=int, default=3)
@@ -300,7 +302,7 @@ def main() -> int:
     args = ap.parse_args()
 
     catalog_path = PROJECT_ROOT / args.catalog
-    mri_path = PROJECT_ROOT / args.mri_features
+    mri_path = Path(args.mri_features) if args.mri_features else resolve_leaky_mri_surrogate_path(PROJECT_ROOT)
     out_dir = PROJECT_ROOT / args.out_dir
     out_dir.mkdir(parents=True, exist_ok=True)
 

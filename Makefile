@@ -264,6 +264,15 @@ v38-method-x-validity:
 	$(PY) scripts/run_external_eval.py --final_locked_config
 	$(PY) scripts/build_thesis_grade_report.py
 
+matched-propensity-analysis:
+	$(PY) scripts/run_matched_propensity_analysis.py --catalog data/processed/master_catalog.csv
+
+decision-curve-analysis:
+	$(PY) scripts/run_decision_curve_analysis.py --catalog data/processed/master_catalog.csv
+
+tripod-probast-checklists:
+	$(PY) scripts/write_tripod_probast_checklists.py
+
 v38-pet-gap method-y-gap-filter:
 	$(PY) scripts/method_y_gap_filter.py --catalog data/processed/master_catalog.csv
 

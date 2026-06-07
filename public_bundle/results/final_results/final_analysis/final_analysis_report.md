@@ -63,3 +63,10 @@ The local catalog has complete cohort-label coupling. Report performance as Meth
 - Raw identifiers used: `False`
 - External used for calibration fit: `False`
 - External holdout type: `locked_pseudo_external_random_patient_holdout`
+
+## Cohort-probe validity notes
+
+- `method_x_3d_mri_latent_oof`: linear AUC `0.5031`, nonlinear AUC `0.5102`, gap `0.0070`
+- `method_x_strict_tabular`: linear AUC `0.7313`, nonlinear AUC `0.7050`, gap `-0.0263`
+- `mri_roi_wmh_reads`: linear AUC `0.7621`, nonlinear AUC `0.9920`, gap `0.2299`
+- ROI/WMH/read branch shows strong nonlinear cohort encoding (~0.99). Treat as cohort/protocol artifact risk, not successful deconfounding.
