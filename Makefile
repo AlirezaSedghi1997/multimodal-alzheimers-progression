@@ -69,11 +69,17 @@ bio-cog-method-z-readiness:
 bio-cog-blood-column-mapping-audit:
 	$(PY) scripts/audit_bio_cog_blood_column_mapping.py
 
+bio-cog-method-z-train:
+	$(PY) scripts/train_bio_cog_method_z.py
+
 clinical-endpoint-readiness:
 	$(PY) scripts/audit_clinical_endpoint_readiness.py
 
 clinical-endpoint-governance:
 	$(PY) scripts/write_clinical_endpoint_governance.py
+
+clinical-endpoint-freeze:
+	$(PY) scripts/freeze_clinical_endpoint_governance.py
 
 method-y-status-summary:
 	$(PY) scripts/build_method_y_status_summary.py

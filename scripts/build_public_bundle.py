@@ -70,6 +70,7 @@ PUBLIC_FILES = [
     "docs/clinical_endpoint_readiness.md",
     "docs/bio_cog_blood_column_mapping_audit.md",
     "governance/clinical_endpoint_progression_policy.md",
+    "results/final_results/bio_cog_method_z/bio_cog_method_z_summary.md",
     "docs/research_methods_limitations_ethics_statistics.md",
     "docs/spm_incomplete_safe_workflow.md",
     "configs/model/method_y_multimodal_plan.yaml",
