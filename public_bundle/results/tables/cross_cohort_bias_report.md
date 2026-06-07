@@ -4,7 +4,7 @@
 - baseline_roc_auc: `0.731167791947987`
 - cohort_label_cramers_v: `1.0000`
 - all_cohorts_single_label: `True`
-- label_by_substudy: `{'A4': {'1': 1163}, 'LEARN': {'0': 537}}`
+- label_by_substudy: `{'A4': {'1': 1163}, 'LEARN': {'0': 536}}`
 - raw_identifiers_used: `False`
 
 ## Interpretation

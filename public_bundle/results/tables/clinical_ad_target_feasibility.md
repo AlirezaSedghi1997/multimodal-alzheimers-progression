@@ -19,13 +19,13 @@
 
 ## Aggregate CDR Coverage
 
-- locked catalog patients: `1700`
-- locked patients with CDR: `1700`
-- locked CDR rows matched in memory: `10858`
-- patients with two or more CDR timepoints: `1621`
-- first-observed Global CDR counts: `{"0": 1700}`
-- latest-observed Global CDR counts: `{"0": 1201, "0.5": 424, "1": 58, "2": 17}`
-- conversion candidate counts: `{"first_cdr_missing": 0, "first_cdr_nonzero": 0, "first_cdr_zero_with_later_positive_global_cdr": 720, "first_cdr_zero_without_later_cdr": 94, "first_cdr_zero_without_later_positive_global_cdr": 886}`
+- locked catalog patients: `1699`
+- locked patients with CDR: `1699`
+- locked CDR rows matched in memory: `10849`
+- patients with two or more CDR timepoints: `1620`
+- first-observed Global CDR counts: `{"0": 1699}`
+- latest-observed Global CDR counts: `{"0": 1200, "0.5": 424, "1": 58, "2": 17}`
+- conversion candidate counts: `{"first_cdr_missing": 0, "first_cdr_nonzero": 0, "first_cdr_zero_with_later_positive_global_cdr": 720, "first_cdr_zero_without_later_cdr": 94, "first_cdr_zero_without_later_positive_global_cdr": 885}`
 
 ## Governance Rule
 

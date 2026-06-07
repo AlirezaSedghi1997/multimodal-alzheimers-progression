@@ -18,11 +18,11 @@ Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict or 
 
 | resource | count |
 |---|---:|
-| locked catalog rows | 1700 |
-| dev rows | 1360 |
+| locked catalog rows | 1699 |
+| dev rows | 1359 |
 | external rows | 340 |
 | amyloid FBP image files | 5661 |
-| amyloid locked patient matches | 1698 |
+| amyloid locked patient matches | 1697 |
 | tau FTP image files | 1576 |
 | tau locked patient matches | 447 |
 

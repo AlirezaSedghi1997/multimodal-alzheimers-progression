@@ -54,7 +54,7 @@
       "supported_now": false
     }
   },
-  "locked_catalog_patients": 1700,
+  "locked_catalog_patients": 1699,
   "method_x_allowed_inputs_unchanged": true,
   "method_x_claim_unchanged": true,
   "missingness_and_class_balance": {
@@ -64,88 +64,88 @@
         "first_cdr_nonzero": 0,
         "first_cdr_zero_with_later_positive_global_cdr": 720,
         "first_cdr_zero_without_later_cdr": 94,
-        "first_cdr_zero_without_later_positive_global_cdr": 886
+        "first_cdr_zero_without_later_positive_global_cdr": 885
       },
       "field_missingness": {
         "all_phase_cdr_progression_event": {
-          "missing": 9191,
-          "missing_rate": 0.8465,
-          "non_missing": 1667
+          "missing": 9183,
+          "missing_rate": 0.8464,
+          "non_missing": 1666
         },
         "blinded_phase_cdr_progression_event": {
-          "missing": 9253,
+          "missing": 9245,
           "missing_rate": 0.8522,
-          "non_missing": 1605
+          "non_missing": 1604
         },
         "cdr_sum_of_boxes": {
-          "missing": 274,
+          "missing": 273,
           "missing_rate": 0.0252,
-          "non_missing": 10584
+          "non_missing": 10576
         },
         "global_cdr_at_visit": {
-          "missing": 275,
+          "missing": 274,
           "missing_rate": 0.0253,
-          "non_missing": 10583
+          "non_missing": 10575
         },
         "visit_day": {
-          "missing": 278,
-          "missing_rate": 0.0256,
-          "non_missing": 10580
+          "missing": 277,
+          "missing_rate": 0.0255,
+          "non_missing": 10572
         }
       },
       "first_observed_global_cdr_patient_counts": {
-        "0": 1700
+        "0": 1699
       },
       "followup_availability": {
         "cdr_followup_span_bins": {
           "1-3y": 215,
           "3-5y": 250,
           "<=1y": 26,
-          ">5y": 1130,
+          ">5y": 1129,
           "missing_or_single_visit": 79
         },
         "cdr_visits_per_patient_bins": {
           "1": 79,
           "2-4": 358,
-          "5+": 1263
+          "5+": 1262
         },
-        "patients_with_two_or_more_cdr_timepoints": 1621
+        "patients_with_two_or_more_cdr_timepoints": 1620
       },
       "latest_observed_global_cdr_patient_counts": {
-        "0": 1201,
+        "0": 1200,
         "0.5": 424,
         "1": 58,
         "2": 17
       },
-      "locked_patients_with_cdr": 1700,
-      "locked_rows_matched_in_memory": 10858,
+      "locked_patients_with_cdr": 1699,
+      "locked_rows_matched_in_memory": 10849,
       "patient_level_all_phase_cdr_progression_event_counts": {
         "event": 590,
         "missing": 33,
-        "no_event_or_censored": 1077
+        "no_event_or_censored": 1076
       },
       "patient_level_blinded_phase_cdr_progression_event_counts": {
         "event": 480,
         "missing": 95,
-        "no_event_or_censored": 1125
+        "no_event_or_censored": 1124
       },
       "row_level_global_cdr_counts": {
-        "0": 8449,
+        "0": 8441,
         "0.5": 1974,
         "1": 138,
         "2": 22,
-        "missing": 275
+        "missing": 274
       },
       "source_rows": 15511,
       "subject_level_outputs_exported": false
     },
     "scheduled_visits": {
-      "locked_patients_with_visit_records": 1700,
-      "locked_rows_matched_in_memory": 91953,
+      "locked_patients_with_visit_records": 1699,
+      "locked_rows_matched_in_memory": 91934,
       "scheduled_visit_rows_matched_in_memory": 0,
       "source_rows": 103351,
       "visit_records_per_patient_bins": {
-        "11+": 1594,
+        "11+": 1593,
         "2-4": 5,
         "5-10": 101
       }

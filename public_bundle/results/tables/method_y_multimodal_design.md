@@ -9,9 +9,9 @@
 
 ## Availability
 
-- locked catalog rows: `1700`
+- locked catalog rows: `1699`
 - amyloid FBP image files: `5661`
-- amyloid FBP locked-patient matches: `1698`
+- amyloid FBP locked-patient matches: `1697`
 - tau FTP image files: `1576`
 - tau FTP locked-patient matches: `447`
 - cognitive feature rows: `1700`

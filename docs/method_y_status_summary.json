@@ -1,12 +1,12 @@
 {
   "availability_summary": {
     "amyloid_fbp_image_files": 5661,
-    "amyloid_fbp_locked_patient_matches": 1698,
+    "amyloid_fbp_locked_patient_matches": 1697,
     "cognitive_feature_rows": 1700,
-    "dev_rows": 1360,
+    "dev_rows": 1359,
     "external_rows": 340,
-    "locked_catalog_patients": 1700,
-    "locked_catalog_rows": 1700,
+    "locked_catalog_patients": 1699,
+    "locked_catalog_rows": 1699,
     "tau_ftp_image_files": 1576,
     "tau_ftp_locked_patient_matches": 447
   },
@@ -86,7 +86,7 @@
   "pet_as_method_x_input": false,
   "pet_image_inventory": {
     "amyloid_fbp_files": 5661,
-    "amyloid_locked_patient_matches": 1698,
+    "amyloid_locked_patient_matches": 1697,
     "tau_ftp_files": 1576,
     "tau_locked_patient_matches": 447
   },
