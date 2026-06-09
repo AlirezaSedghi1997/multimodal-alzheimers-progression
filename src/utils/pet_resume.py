@@ -21,14 +21,22 @@ class PetResumeManifest:
             "items": {},
         }
 
-    def load(self) -> None:
+    def load(self, *, allow_config_mismatch: bool = False) -> None:
         if not self.path.exists():
             return
         obj = json.loads(self.path.read_text(encoding="utf-8"))
         if obj.get("config_digest") != self.config_digest:
-            raise RuntimeError(
-                f"Resume manifest config digest mismatch for {self.path}; use --overwrite_resume or change output."
-            )
+            if not allow_config_mismatch:
+                raise RuntimeError(
+                    f"Resume manifest config digest mismatch for {self.path}; use --overwrite_resume or change output."
+                )
+            self.data = {
+                "stage": self.stage,
+                "config_digest": self.config_digest,
+                "config": self.config,
+                "items": obj.get("items") or {},
+            }
+            return
         self.data = obj
 
     def is_done(self, key: str) -> bool:

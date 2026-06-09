@@ -41,17 +41,19 @@ CURRENT STATUS (check PROGRESS.yaml for latest):
 - Phase 0–2 MVP: COMPLETE (Method X baselines, 3D ablation, validation battery, XAI)
 - 3D best CV AUC ~0.717; tabular descriptive ~0.73; final_claim_allowed=false for 3D headline
 - 3D latent cohort-probe ~0.50 (good); ROI nonlinear probe ~0.99 (artifact — descriptive only)
-- Method Y: DESIGN_READY_EXECUTION_GATED — PET preprocess ~110/266 (86 PASS + 24 SKIPPED_EXISTS); 156 pending; QC audit + visual sign-off (127 items) required before training
+- Method Y: DESIGN_READY_EXECUTION_GATED — PET preprocess ~230/266 (177 PASS + 53 SKIPPED_EXISTS); 36 pending on SPM host; QC audit gate PASS; visual QC reviewed (109 pass / 111 hold / 11 fail); PET cache n=109 built
 - Phase 4 reporting: PARTIAL (TRIPOD scaffold + achieved-vs-cited table)
 - Full 3-month scope retained (Y1–Y10, FLAIR, EfficientNet, KD) — parallel execution
 
-METHOD Y SAFE PET COMMAND (background, do not stop):
-python -u scripts/preprocess_pet_spatial.py --data_root "H:\A4 Learn" --tracer fbp --tier primary_feasible_90 --spatial_mode spm_pet_t1_mni --execute --n_jobs 1 --auto_batches --batch_size 10
+METHOD Y SAFE PET COMMAND (background, do not stop; Windows — SPM required):
+$env:SPM_DIR = "D:\Matlab & Tolboxes\spm_25.01.02\spm"
+python -u scripts/preprocess_pet_spatial.py --data_root "H:\A4 Learn" --tracer fbp --tier primary_feasible_90 --spatial_mode spm_pet_t1_mni --execute --n_jobs 1 --auto_batches --batch_size 10 --matlab "C:\Program Files\MATLAB\R2024a\bin\matlab.exe" --spm_dir "D:\Matlab & Tolboxes\spm_25.01.02\spm" --overwrite_resume
 (NO --overwrite)
 
 QC BEFORE METHOD Y TRAINING:
 python scripts/run_preprocess_quality_audit.py --data_root "H:\A4 Learn" --build_visual_manifest
 python scripts/build_visual_qc_manifest.py
+python scripts/batch_sign_visual_qc.py   # metrics-based review; use sign_visual_qc.py for manual overrides
 python scripts/sign_visual_qc.py --sample_hash <hash> --decision pass|fail|hold
 python scripts/check_method_y_training_readiness.py
 python scripts/run_method_y_battery.py   # add --execute when gates clear

@@ -35,6 +35,11 @@ from src.utils.pet_spatial_qc import (
 )
 from src.data.a4_schema import resolve_data_root
 from src.utils.pet_reference_mask import image_derived_centiloid, infer_cerebellum_reference_mask
+from src.utils.preprocess_quality import (
+    load_official_centiloid_by_bid,
+    load_official_suvr_by_bid,
+    load_suvr_reference_policy,
+)
 
 def _log(message: str) -> None:
     print(message, flush=True)
@@ -349,6 +354,11 @@ def main() -> int:
     ap.add_argument("--status_only", action="store_true", help="Print resume progress and exit without processing.")
     ap.add_argument("--n_jobs", type=int, default=2)
     ap.add_argument("--overwrite", action="store_true")
+    ap.add_argument(
+        "--overwrite_resume",
+        action="store_true",
+        help="Update resume manifest config/tier digest while keeping completed item statuses.",
+    )
     ap.add_argument("--allow_identity_for_tests", action="store_true")
     args = ap.parse_args()
 
@@ -410,11 +420,13 @@ def main() -> int:
         "policy_hash": sha256_text(Path(args.policy).read_text(encoding="utf-8")),
     })
     try:
-        resume.load()
+        resume.load(allow_config_mismatch=args.overwrite_resume)
     except RuntimeError as e:
         raise RuntimeError(
             f"{e} Delete or rename {resume_path} only if you intentionally changed tier/spatial_mode/normalization."
         ) from e
+    if args.overwrite_resume and resume.path.exists():
+        resume.save()
     done_count = sum(1 for item in work if resume.is_done(_item_key(item, tracer)))
     pending_count = len(_pending_work_items(work, resume, tracer, args.overwrite))
     _log(

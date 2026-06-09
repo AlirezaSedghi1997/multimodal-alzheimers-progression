@@ -47,8 +47,6 @@ Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict or 
 - **`COHORT_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING`** — Amyloid label may remain coupled to cohort/tracer in Method Y splits.
 - **`TRACER_LABEL_AUDIT_SINGLE_ROW_OR_COLUMN_REVIEW`** — Tracer vs label contingency needs manual review.
 - **`GAP_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING`** — PET–T1 temporal gap bins may correlate with label.
-- **`PET_VISUAL_QC_SIGNOFF_INCOMPLETE`** — Review Method Y gap/cohort audits.
-- **`VISUAL_REVIEW_MANIFEST_PENDING`** — Review Method Y gap/cohort audits.
 
 ## Required before training
 

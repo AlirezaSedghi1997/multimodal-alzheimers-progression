@@ -77,3 +77,18 @@ def test_visual_qc_manifest_and_signoff(tmp_path):
 
     manifest2 = build_visual_review_manifest(qc_dir, project_root=tmp_path, pass_sample_fraction=1.0)
     assert manifest2["pending_signoff_count"] == 0
+
+    qc_path2 = qc_dir / "s_hold.json"
+    qc_path2.write_text(
+        __import__("json").dumps(
+            {
+                **payload,
+                "sample_hash": "s_hold",
+                "qc_after": {"ncc_pet_t1": 0.65},
+            }
+        ),
+        encoding="utf-8",
+    )
+    apply_visual_qc_signoff(qc_path2, decision="hold", reason="borderline")
+    manifest3 = build_visual_review_manifest(qc_dir, project_root=tmp_path, pass_sample_fraction=1.0)
+    assert manifest3["pending_signoff_count"] == 0

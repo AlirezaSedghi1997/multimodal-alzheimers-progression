@@ -42,7 +42,7 @@ def build_visual_review_manifest(
         gate = payload.get("gate") or {}
         qc_after = payload.get("qc_after") or {}
         ncc = qc_after.get("ncc_pet_t1")
-        signed = bool(payload.get("visual_qc_signoff"))
+        signed = payload.get("visual_qc_decision") is not None
         tracer = str(payload.get("tracer") or "fbp").lower()
         overlay_rel = Path("results/qc/method_y_pet/overlays") / tracer / f"{sample_hash}_pet_on_t1.png"
         overlay_exists = (root / overlay_rel).exists()
@@ -83,7 +83,7 @@ def build_visual_review_manifest(
         item["review_required_reason"] = "RANDOM_PASS_SAMPLE"
         items.append(item)
 
-    pending = sum(1 for i in items if not i.get("visual_qc_signoff"))
+    pending = sum(1 for i in items if i.get("review_decision") is None)
     return {
         "schema_version": 1,
         "generated_at": _utc_now(),
@@ -107,6 +107,7 @@ def apply_visual_qc_signoff(
     *,
     decision: str,
     reviewer: str = "human_reviewer",
+    reason: str | None = None,
 ) -> dict[str, Any]:
     payload = _load_pet_qc_payload(pet_qc_path)
     if payload is None:
@@ -117,5 +118,7 @@ def apply_visual_qc_signoff(
     payload["visual_qc_decision"] = decision
     payload["visual_qc_signed_at"] = _utc_now()
     payload["visual_qc_reviewer"] = reviewer
+    if reason:
+        payload["visual_qc_decision_reason"] = reason
     atomic_write_json(pet_qc_path, payload)
     return payload

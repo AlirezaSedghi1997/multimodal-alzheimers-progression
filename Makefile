@@ -306,7 +306,7 @@ method-y-pet-execute-spm method-y-pet-execute-spm-smoke:
 	$(PY) scripts/preprocess_pet_spatial.py --data_root "$(DATA_ROOT)" --tracer fbp --execute --spatial_mode spm_pet_t1_mni --matlab "$(MATLAB_BIN)" --spm_dir "$(SPM_DIR)" --n_jobs 1 --limit 2
 
 method-y-pet-execute-spm-full:
-	$(PY) -u scripts/preprocess_pet_spatial.py --data_root "$(DATA_ROOT)" --tracer fbp --tier primary_feasible_90 --execute --spatial_mode spm_pet_t1_mni --matlab "$(MATLAB_BIN)" --spm_dir "$(SPM_DIR)" --n_jobs 1 --auto_batches --batch_size 10
+	$(PY) -u scripts/preprocess_pet_spatial.py --data_root "$(DATA_ROOT)" --tracer fbp --tier primary_feasible_90 --execute --spatial_mode spm_pet_t1_mni --matlab "$(MATLAB_BIN)" --spm_dir "$(SPM_DIR)" --n_jobs 1 --auto_batches --batch_size 10 --overwrite_resume
 
 method-y-pet-execute-spm-auto: method-y-pet-execute-spm-full
 
@@ -324,6 +324,9 @@ preprocess-quality-audit:
 
 visual-qc-manifest:
 	$(PY) scripts/build_visual_qc_manifest.py
+
+batch-sign-visual-qc:
+	$(PY) scripts/batch_sign_visual_qc.py
 
 method-y-battery:
 	$(PY) scripts/run_method_y_battery.py

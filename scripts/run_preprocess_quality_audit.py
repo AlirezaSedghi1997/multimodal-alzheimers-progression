@@ -176,7 +176,7 @@ def audit_pet_qc(pet_qc_dir: Path, project_root: Path) -> dict:
                 )
             except (TypeError, ValueError):
                 pass
-        if payload.get("visual_qc_required_for_training") and not payload.get("visual_qc_signoff"):
+        if payload.get("visual_qc_required_for_training") and payload.get("visual_qc_decision") is None:
             visual_qc_pending += 1
         sample_hash = payload.get("sample_hash") or path.stem
         tracer = str(payload.get("tracer") or "fbp").lower()
