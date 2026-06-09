@@ -5,8 +5,7 @@
   "status": "DESIGN_READY_EXECUTION_GATED",
   "blockers": [],
   "execution_blockers": [
-    "PET_PREPROCESS_INCOMPLETE",
-    "PET_CACHE_NOT_BUILT_YET"
+    "PET_PREPROCESS_INCOMPLETE"
   ],
   "warnings": [
     "PRIMARY_FEASIBLE_90_MIN_CLASS_BELOW_WARN_THRESHOLD",
@@ -20,14 +19,14 @@
     "tracer": "fbp",
     "spatial_mode": "spm_pet_t1_mni",
     "linked_work_items": 266,
-    "resume_done": 110,
+    "resume_done": 230,
     "resume_fail": 0,
-    "resume_pending": 156,
+    "resume_pending": 36,
     "resume_path": "<LOCAL_PATH_REDACTED> project\\results\\logs\\method_y_pet_preprocess_resume_fbp_spm_pet_t1_mni.json",
     "resume_exists": true,
     "status_counts": {
-      "PASS": 86,
-      "SKIPPED_EXISTS": 24
+      "PASS": 177,
+      "SKIPPED_EXISTS": 53
     },
     "preprocessing_started": true,
     "preprocessing_complete": false
@@ -39,6 +38,16 @@
   "forbidden_primary_training_tiers": [
     "gold_standard_30"
   ],
+  "preprocess_quality_audit": {
+    "present": true,
+    "training_ready_after_audit": true,
+    "blockers": []
+  },
+  "visual_qc_manifest": {
+    "present": true,
+    "pending_signoff_count": 0,
+    "all_signed_off": true
+  },
   "class_imbalance_policy": "configs/policy/method_y_class_imbalance_policy.json",
   "interpretation": "DESIGN_READY_EXECUTION_GATED means manifest/gap/tier policy pass but PET preprocess or cache incomplete. This is not a contradiction with thesis report when both design and execution sections are read."
 }

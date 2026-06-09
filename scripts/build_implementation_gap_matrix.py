@@ -115,6 +115,9 @@ def build_rows() -> list[dict[str, str]]:
     prep_done = prep_progress.get("resume_done") or method_y_prep.get("final_done") or method_y_prep.get("status_counts", {}).get("PASS", 0)
     prep_status = "DONE" if prep_total and int(prep_done) >= int(prep_total) else "PARTIAL" if int(prep_done) > 0 else "MISSING"
     add(rows, "Method Y PET SPM/MNI preprocessing", prep_status, "results/logs/method_y_pet_preprocess_resume_fbp_spm_pet_t1_mni.json", f"SPM/MNI PET preprocess progress {prep_done}/{prep_total}; training-ready gate separate.")
+    paired = load_json("results/tables/method_y_paired_hash_list.json") or {}
+    add(rows, "Method Y paired hash list (primary_feasible_90)", "DONE" if paired.get("n") else "MISSING", "results/tables/method_y_paired_hash_list.json", "Frozen N=266 paired-subset hashes for Y1–Y6 identical intersection.")
+    add(rows, "Method Y Y2 MRI-only paired trainer", "DONE" if exists("scripts/train_mri_method_y_paired.py") else "MISSING", "scripts/train_mri_method_y_paired.py", "Script ready; full training gated until PET preprocess + readiness PASS.")
     add(rows, "Leaky MRI surrogate quarantine", "DONE" if exists("data/processed/quarantine/README.md") else "PARTIAL", "data/processed/quarantine/", "Retired 15-feature surrogates moved out of headline feature path.")
     sf_stress = load_json("results/final_results/method_x_cog_sf/sf_stress_tests_summary.json") or {}
     add(rows, "Method X-Cog/SF internal stress tests", "DONE" if sf_stress.get("status") == "COMPLETED" else "MISSING", "results/final_results/method_x_cog_sf/sf_stress_tests_summary.json", "SF-only, SF-inclusive, and train-SF/test-enrolled internal decoupling arms; not external validation.")

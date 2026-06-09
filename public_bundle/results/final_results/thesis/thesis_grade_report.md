@@ -84,10 +84,10 @@
 ## Temporal-gap sensitivity (headline CPU models)
 
 - status: `COMPLETED`
-- window≤0d n=1699: tabular AUC `0.7289 [0.7025, 0.7546]`
-- window≤60d n=154: tabular AUC `0.7969 [0.7006, 0.8883]`
-- window≤90d n=266: tabular AUC `0.7435 [0.6486, 0.8243]`
-- window≤120d n=330: tabular AUC `0.7585 [0.6725, 0.8290]`
+- window≤0d n=1699: tabular AUC `0.7289 [0.7015, 0.7563]`
+- window≤60d n=154: tabular AUC `0.7969 [0.7031, 0.8784]`
+- window≤90d n=266: tabular AUC `0.7435 [0.6447, 0.8356]`
+- window≤120d n=330: tabular AUC `0.7585 [0.6733, 0.8293]`
 - 3D CNN: full-cohort reference only per window (not retrained).
 
 ## Matched covariate subset (sensitivity)
@@ -107,9 +107,9 @@
 - design/training readiness status: `DESIGN_READY_EXECUTION_GATED`
 - approved tier: `primary_feasible_90`
 - design blockers: `[]`
-- execution blockers (preprocess/cache): `['PET_PREPROCESS_INCOMPLETE', 'PET_CACHE_NOT_BUILT_YET']`
+- execution blockers (preprocess/cache): `['PET_PREPROCESS_INCOMPLETE']`
 - warnings: `['PRIMARY_FEASIBLE_90_MIN_CLASS_BELOW_WARN_THRESHOLD', 'PRIMARY_STRICT_TIER_TOO_IMBALANCED_FOR_SOLE_PRIMARY_TRAINING', 'GOLD_STANDARD_30_FOR<RAW_ID_FIELD>DEN_FOR_PRIMARY_TRAINING_MIN_NEG_VIOLATION', 'COHORT_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING', 'TRACER_LABEL_AUDIT_SINGLE_ROW_OR_COLUMN_REVIEW', 'GAP_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING']`
-- PET preprocess progress: `110/266` PASS
+- PET preprocess progress: `230/266` PASS
 - regex_fallback_used (manifest): `False`
 - project_inventory_used: `True`
 - note: exploratory **design** may pass while **execution** (266/266 preprocess + PET cache) remains gated.

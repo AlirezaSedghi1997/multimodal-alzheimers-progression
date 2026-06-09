@@ -47,7 +47,7 @@ Method X pipeline execution reached Gate 4 and calibration using T1 MRI-derived 
 - Method Y tau PET image files counted: `1576`
 - Method Y multimodal design status: `DESIGN_READY_NOT_TRAINED`
 - Method Y clinical Alzheimer output allowed now: `False`
-- Implementation gap summary: `{'DONE': 32, 'MISSING': 0, 'PARTIAL': 1, 'SKIP_WITH_JUSTIFICATION': 1}`
+- Implementation gap summary: `{'DONE': 41, 'MISSING': 0, 'PARTIAL': 2, 'SKIP_WITH_JUSTIFICATION': 1}`
 
 ## Required Caveat
 

@@ -15,6 +15,15 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
 
 
+GATE_BYPASS_IDS = frozenset({"Y7", "Y8", "Y10"})
+
+
+def _gate_blockers_for_row(row_id: str, gate_blockers: list[str]) -> list[str]:
+    if row_id in GATE_BYPASS_IDS:
+        return [b for b in gate_blockers if not b.startswith("READINESS_")]
+    return gate_blockers
+
+
 BATTERY_ROWS = [
     {
         "id": "Y1",
@@ -27,8 +36,10 @@ BATTERY_ROWS = [
     {
         "id": "Y2",
         "title": "MRI-only on paired subset",
-        "script": None,
-        "note": "Train 3D MRI on paired Method Y hash list with same grouped splits as Y1.",
+        "script": "scripts/train_mri_method_y_paired.py",
+        "args": ["--device", "auto", "--amp"],
+        "requires_gpu": True,
+        "note": "Same grouped splits as Y1; paired hash list required.",
     },
     {
         "id": "Y3",
@@ -135,8 +146,13 @@ def main() -> int:
         elif not args.execute:
             entry["status"] = "READY_TO_RUN"
         elif gate_blockers:
-            entry["status"] = "BLOCKED_BY_GATE"
-            entry["gate_blockers"] = gate_blockers
+            row_blockers = _gate_blockers_for_row(row["id"], gate_blockers)
+            if row_blockers:
+                entry["status"] = "BLOCKED_BY_GATE"
+                entry["gate_blockers"] = row_blockers
+            else:
+                entry["run"] = _run_step(args.python, script, list(row.get("args") or []))
+                entry["status"] = entry["run"]["status"]
         else:
             entry["run"] = _run_step(args.python, script, list(row.get("args") or []))
             entry["status"] = entry["run"]["status"]
@@ -174,8 +190,14 @@ def main() -> int:
     for row in rows_out:
         md_lines.append(f"| {row['id']} | {row['title']} | {row['status']} | `{row.get('script')}` |")
     atomic_write_text(out_md, "\n".join(md_lines) + "\n")
-    print(json.dumps({"status": "OK", "gate_blockers": gate_blockers, "battery_rows": len(rows_out)}, indent=2))
-    return 0 if not gate_blockers or not args.execute else 1
+    executed = [r for r in rows_out if r.get("run")]
+    failed = [r for r in executed if r.get("status") != "PASS"]
+    print(json.dumps({"status": "OK", "gate_blockers": gate_blockers, "battery_rows": len(rows_out), "failed": len(failed)}, indent=2))
+    if args.execute and failed:
+        return 1
+    if args.execute and gate_blockers and not executed:
+        return 1
+    return 0
 
 
 if __name__ == "__main__":

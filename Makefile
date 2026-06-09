@@ -325,6 +325,9 @@ preprocess-quality-audit:
 visual-qc-manifest:
 	$(PY) scripts/build_visual_qc_manifest.py
 
+method-y-paired-hash-list:
+	$(PY) scripts/build_method_y_paired_hash_list.py
+
 batch-sign-visual-qc:
 	$(PY) scripts/batch_sign_visual_qc.py
 

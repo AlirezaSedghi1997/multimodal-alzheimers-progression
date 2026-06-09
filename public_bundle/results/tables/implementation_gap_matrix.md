@@ -26,7 +26,7 @@
 | Headline temporal-gap model evaluation | DONE | `results/tables/headline_temporal_gap_evaluation.json` | Tabular and ROI baselines re-evaluated per gap window; 3D reference-only. |
 | Method Y class imbalance policy | DONE | `governance/method_y_class_imbalance_policy.md` | Frozen exploratory tier primary_feasible_90 and weighting rules. |
 | Phase 4 figure manifest | DONE | `results/governance/phase4_figure_manifest.json` | Tracks required thesis figures vs artifacts. |
-| Method Y PET SPM/MNI preprocessing | PARTIAL | `results/logs/method_y_pet_preprocess_resume_fbp_spm_pet_t1_mni.json` | SPM/MNI PET preprocess progress 110/266; training-ready gate separate. |
+| Method Y PET SPM/MNI preprocessing | PARTIAL | `results/logs/method_y_pet_preprocess_resume_fbp_spm_pet_t1_mni.json` | SPM/MNI PET preprocess progress 230/266; training-ready gate separate. |
 | Leaky MRI surrogate quarantine | DONE | `data/processed/quarantine/` | Retired 15-feature surrogates moved out of headline feature path. |
 | Method X-Cog/SF internal stress tests | DONE | `results/final_results/method_x_cog_sf/sf_stress_tests_summary.json` | SF-only, SF-inclusive, and train-SF/test-enrolled internal decoupling arms; not external validation. |
 | Bio-Cog/Method Z Phase 3 readiness audit | DONE | `results/tables/bio_cog_method_z_readiness.json` | CPU feasibility audit for blood-biomarker branch; separate from Method X claim. |
