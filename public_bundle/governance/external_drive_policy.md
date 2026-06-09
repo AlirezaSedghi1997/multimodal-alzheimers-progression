@@ -6,7 +6,7 @@ The A4 Learn dataset is stored outside the repository and must be treated as rea
 
 ## Rules
 
-- Do not delete, move, rename, or rewrite files under `H:\A4 Learn`.
+- Do not delete, move, rename, or rewrite files under `<LOCAL_PATH_REDACTED> Learn`.
 - Do not copy raw MRI/PET images into the repository.
 - Do not include raw CSV contents in reports.
 - Processed outputs must contain only aggregate values, hashes, or derived tensors in gitignored cache locations.

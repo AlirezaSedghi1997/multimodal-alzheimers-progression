@@ -10,12 +10,8 @@
     "tau_ftp_image_files": 1576,
     "tau_ftp_locked_patient_matches": 447
   },
-  "blocker_glossary": {
-    "PRIMARY_TIER_MIN_CLASS_BELOW_BLOCK_THRESHOLD": "Primary-tier Method Y split has insufficient minority-class support for stable training."
-  },
-  "blockers": [
-    "PRIMARY_TIER_MIN_CLASS_BELOW_BLOCK_THRESHOLD"
-  ],
+  "blocker_glossary": {},
+  "blockers": [],
   "branch": "method_y_pet_assisted",
   "claim_boundary": "Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict or Method X-Cog. Multimodal PET/MRI training has not started; only design, inventory, and readiness audits exist.",
   "clinical_alzheimer_diagnosis_allowed": false,
@@ -82,15 +78,26 @@
     "tau_ftp_files": 1576,
     "tau_locked_patient_matches": 447
   },
-  "pet_preprocessing_started": false,
+  "pet_preprocess_progress": {
+    "linked_work_items": 266,
+    "preprocessing_complete": false,
+    "preprocessing_started": true,
+    "resume_done": 230,
+    "resume_exists": true,
+    "resume_fail": 0,
+    "resume_path": "results\\logs\\method_y_pet_preprocess_resume_fbp_spm_pet_t1_mni.json",
+    "resume_pending": 36,
+    "spatial_mode": "spm_pet_t1_mni",
+    "status_counts": {
+      "PASS": 177,
+      "SKIPPED_EXISTS": 53
+    },
+    "tracer": "fbp"
+  },
+  "pet_preprocessing_started": true,
   "phase_y_status": "MISSING",
-  "required_before_training": [
-    "PET-only baseline plan frozen",
-    "MRI-only baseline on Method Y split plan frozen",
-    "calibration/ECE/Brier/CI plan frozen",
-    "patient-level split and one-PET-per-patient verified",
-    "cohort/tracer/gap confounding audits reviewed"
-  ],
+  "preprocess_summary_verdict": "PASS_WITH_QC_OUTPUTS_NOT_YET_TRAINING_READY_UNTIL_READINESS_GATE",
+  "required_before_training": [],
   "resolution_checklist": [
     "Build and validate private PET manifest (no regex fallback).",
     "Execute Method Y PET spatial preprocessing and pass QC gates.",
@@ -100,20 +107,26 @@
     "Keep calibration/ECE/Brier/CI plan train-fold-only."
   ],
   "schema_version": 2,
-  "status": "NOT_TRAINING_READY",
+  "status": "DESIGN_READY_EXECUTION_GATED",
   "training_started": false,
   "warning_glossary": {
     "COHORT_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING": "Amyloid label may remain coupled to cohort/tracer in Method Y splits.",
     "GAP_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING": "PET–T1 temporal gap bins may correlate with label.",
-    "PET_CACHE_NOT_BUILT_YET": "Method Y PET volume cache has not been built.",
-    "SUBJECT_T1_ONLY_SPATIAL_OUTPUT_REQUIRES_MNI_STEP_FOR_REFERENCE_REGION_POLICY": "Review Method Y gap/cohort audits.",
-    "TRACER_LABEL_AUDIT_SINGLE_ROW_OR_COLUMN_REVIEW": "Tracer vs label contingency needs manual review."
+    "GOLD_STANDARD_30_FORBIDDEN_FOR_PRIMARY_TRAINING_MIN_NEG_VIOLATION": "Review Method Y gap/cohort audits.",
+    "PET_VISUAL_QC_SIGNOFF_INCOMPLETE": "Review Method Y gap/cohort audits.",
+    "PRIMARY_FEASIBLE_90_MIN_CLASS_BELOW_WARN_THRESHOLD": "Review Method Y gap/cohort audits.",
+    "PRIMARY_STRICT_TIER_TOO_IMBALANCED_FOR_SOLE_PRIMARY_TRAINING": "Review Method Y gap/cohort audits.",
+    "TRACER_LABEL_AUDIT_SINGLE_ROW_OR_COLUMN_REVIEW": "Tracer vs label contingency needs manual review.",
+    "VISUAL_REVIEW_MANIFEST_PENDING": "Review Method Y gap/cohort audits."
   },
   "warnings": [
+    "PRIMARY_FEASIBLE_90_MIN_CLASS_BELOW_WARN_THRESHOLD",
+    "PRIMARY_STRICT_TIER_TOO_IMBALANCED_FOR_SOLE_PRIMARY_TRAINING",
+    "GOLD_STANDARD_30_FORBIDDEN_FOR_PRIMARY_TRAINING_MIN_NEG_VIOLATION",
     "COHORT_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING",
     "TRACER_LABEL_AUDIT_SINGLE_ROW_OR_COLUMN_REVIEW",
     "GAP_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING",
-    "SUBJECT_T1_ONLY_SPATIAL_OUTPUT_REQUIRES_MNI_STEP_FOR_REFERENCE_REGION_POLICY",
-    "PET_CACHE_NOT_BUILT_YET"
+    "PET_VISUAL_QC_SIGNOFF_INCOMPLETE",
+    "VISUAL_REVIEW_MANIFEST_PENDING"
   ]
 }

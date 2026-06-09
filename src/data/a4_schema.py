@@ -5,6 +5,7 @@ from pathlib import Path
 
 REQUIRED_RELATIVE_FILES = {
     "ab_label": Path("Clinical") / "External Data" / "imaging_PET_VA.csv",
+    "suvr_amyloid": Path("Clinical") / "External Data" / "imaging_SUVR_amyloid.csv",
     "tau": Path("Clinical") / "External Data" / "imaging_SUVR_tau.csv",
     "volumetric_mri": Path("Clinical") / "External Data" / "imaging_volumetric_mri.csv",
     "subjinfo": Path("Clinical") / "Derived Data" / "SUBJINFO.csv",

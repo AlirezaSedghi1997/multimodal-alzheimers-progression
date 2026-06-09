@@ -21,6 +21,7 @@ from scripts.spm_preprocess_backend import (
     write_spm_batch,
 )
 from src.data.a4_schema import resolve_data_root
+from src.utils.preprocess_quality import classify_mri_numeric_qc, load_icv_ml_by_sample_hash
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
 from src.utils.resumable import ResumableManifest, config_digest
 from src.utils.run_manifest import write_run_manifest
@@ -222,6 +223,7 @@ def write_spm_numeric_qc(
         normalized_brain=nib.load(str(final_path)).get_fdata(dtype="float32"),
         voxel_volume_ml=float(zooms[0] * zooms[1] * zooms[2] / 1000.0),
     )
+    qc = classify_mri_numeric_qc(qc)
     qc_dir = out_dir / "qc"
     qc_dir.mkdir(parents=True, exist_ok=True)
     atomic_write_json(qc_dir / f"{sample_hash}.json", qc)
@@ -235,6 +237,7 @@ def preprocess_one_spm(
     spm_dir: Path,
     matlab_cmd: str,
     out_dir: Path,
+    icv_ml: float | None = None,
 ) -> tuple[bool, str]:
     source_t1 = source_t1.resolve()
     out_dir = out_dir.resolve()
@@ -265,10 +268,27 @@ def preprocess_one_spm(
         return False, "spm_output_missing"
     if not qc_path.exists():
         return False, "spm_qc_json_missing"
-    try:
-        qc = json.loads(qc_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return False, "spm_qc_json_unreadable"
+    py_qc = write_spm_numeric_qc(
+        sample_hash=sample_hash,
+        scratch=scratch,
+        final_path=spm_output,
+        out_dir=out_dir,
+    )
+    if py_qc.get("qc_status") not in {"UNAVAILABLE"}:
+        qc = py_qc
+    else:
+        try:
+            qc = json.loads(qc_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return False, "spm_qc_json_unreadable"
+    if icv_ml is not None:
+        qc["icv_ml_official"] = icv_ml
+    qc = classify_mri_numeric_qc(qc)
+    atomic_write_json(qc_path, qc)
+    if qc.get("qc_status") == "FAIL":
+        return False, "spm_qc_fail"
+    if qc.get("qc_status") == "HOLD":
+        return False, "spm_qc_hold"
     if float(qc.get("normalized_nonzero_fraction") or 0.0) <= 0.0 or float(qc.get("normalized_brain_std") or 0.0) <= 0.0:
         return False, "spm_qc_empty_normalized_output"
     gzip_file(spm_output, tmp_final)
@@ -340,6 +360,7 @@ def main() -> int:
 
     data_root = resolve_data_root(args.data_root)
     rows = read_rows(Path(args.catalog))
+    icv_by_sample = load_icv_ml_by_sample_hash(data_root, Path(args.catalog))
     if args.limit > 0:
         rows = rows[: args.limit]
     t1_index = build_t1_hash_index(data_root)
@@ -382,6 +403,7 @@ def main() -> int:
                 spm_dir=Path(str(toolchain["spm_dir"])),
                 matlab_cmd=str(toolchain["matlab"]),
                 out_dir=out_dir,
+                icv_ml=icv_by_sample.get(sample_hash),
             )
             if success:
                 ok += 1

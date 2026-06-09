@@ -7,7 +7,7 @@
 - Secondary task: `TAU_BURDEN_REGRESSION`, exploratory only.
 - PET amyloid and PET tau are label/target sources only.
 - PET images, PET-derived volumes, PET-derived regions, and site/scanner IDs are forbidden model inputs.
-- Raw data under `H:\A4 Learn` is read-only.
+- Raw data under `<LOCAL_PATH_REDACTED> Learn` is read-only.
 - Raw identifiers must not appear in logs, reports, public bundles, or final tables.
 
 ## Allowed Inputs

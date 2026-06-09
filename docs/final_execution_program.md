@@ -1,6 +1,10 @@
 # Final Execution Program
 
+> **Canonical agent program (v2.0):** [`docs/final_execution_program_unified_prompt.md`](final_execution_program_unified_prompt.md) — 3-month full parallel scope (Y1–Y10, FLAIR, EfficientNet, KD), QC hardening, and A4 Learn asset alignment. This file remains the human-readable summary; agents should follow the unified prompt for execution order and gates.
+
 This project implements PET-free prediction of amyloid biomarker status on an A4/LEARN-style dataset. The operational priority is validity, defensibility, reproducibility, and scientific claim control, not higher AUC.
+
+**Method Y approved training tier:** `primary_feasible_90` (not `primary_strict` as sole primary; `gold_standard_30` forbidden for primary training).
 
 ## Hard Constraints
 

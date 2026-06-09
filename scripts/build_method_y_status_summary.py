@@ -8,6 +8,7 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
+from src.utils.pet_preprocess_progress import summarize_pet_preprocess_progress
 from src.utils.state_manager import StateManager
 
 
@@ -59,7 +60,10 @@ def main() -> int:
     inventory = load("results/tables/method_y_pet_inventory.json")
     phase_y = load("results/final_results/method_y/phase_y_summary.json")
     gap = load("results/tables/method_y_gap_filter_report.json")
-
+    manifest = load("results/tables/method_y_pet_manifest_summary.json")
+    preprocess = load("results/tables/method_y_pet_preprocess_summary.json")
+    linked = int(manifest.get("linked_work_items") or nested(manifest, "link_summary", "linked_work_items") or 0)
+    preprocess_progress = summarize_pet_preprocess_progress(linked_work_items=linked)
     availability = design.get("availability_summary", {})
     inv_amyloid = nested(inventory, "pet_image_inventory", "amyloid_fbp") or {}
     inv_tau = nested(inventory, "pet_image_inventory", "tau_ftp") or {}
@@ -72,7 +76,8 @@ def main() -> int:
         "inventory_status": inventory.get("status", "MISSING"),
         "phase_y_status": phase_y.get("status", "MISSING"),
         "training_started": design.get("training_started", False),
-        "pet_preprocessing_started": design.get("pet_preprocessing_started", False),
+        "pet_preprocessing_started": preprocess_progress["preprocessing_started"],
+        "pet_preprocess_progress": preprocess_progress,
         "method_x_claim_unchanged": readiness.get("method_x_claim_unchanged", True),
         "pet_as_method_x_input": False,
         "clinical_alzheimer_diagnosis_allowed": readiness.get("clinical_alzheimer_diagnosis_allowed", False),
@@ -104,6 +109,7 @@ def main() -> int:
             "Keep calibration/ECE/Brier/CI plan train-fold-only.",
         ],
         "gap_filter_status": gap.get("status"),
+        "preprocess_summary_verdict": preprocess.get("verdict"),
     }
 
     out_json = Path("docs/method_y_status_summary.json")
@@ -118,6 +124,7 @@ def main() -> int:
         f"- phase Y summary: `{summary['phase_y_status']}`\n",
         f"- training started: `{summary['training_started']}`\n",
         f"- PET preprocessing started: `{summary['pet_preprocessing_started']}`\n",
+        f"- PET SPM/MNI progress: `{summary['pet_preprocess_progress']['resume_done']}/{summary['pet_preprocess_progress']['linked_work_items']}`\n",
         f"- method_x_claim_unchanged: `{summary['method_x_claim_unchanged']}`\n",
         f"- pet_as_method_x_input: `{summary['pet_as_method_x_input']}`\n",
         f"- current primary target: `{summary['current_primary_target']}`\n\n",

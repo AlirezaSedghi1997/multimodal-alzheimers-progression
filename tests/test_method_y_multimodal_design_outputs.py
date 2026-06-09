@@ -9,7 +9,11 @@ def test_method_y_multimodal_design_if_generated_preserves_method_x_boundary():
     obj = json.loads(path.read_text(encoding="utf-8"))
     assert obj["status"] == "DESIGN_READY_NOT_TRAINED"
     assert obj["training_started"] is False
-    assert obj["pet_preprocessing_started"] is False
+    # Method Y PET spatial preprocessing may run before training; Method X boundary must stay intact.
+    assert isinstance(obj["pet_preprocessing_started"], bool)
+    if obj["pet_preprocessing_started"]:
+        progress = obj.get("pet_preprocess_progress") or {}
+        assert progress.get("preprocessing_started") is True
     assert obj["method_x_claim_unchanged"] is True
     assert obj["method_x_pet_input_allowed"] is False
     assert obj["method_y_pet_input_allowed"] is True

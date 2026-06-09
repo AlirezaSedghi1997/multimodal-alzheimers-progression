@@ -2,8 +2,8 @@
 
 ## Confirmed Local Data Root
 
-- Windows path: `H:\A4 Learn`
-- Expected WSL path: `/mnt/h/A4 Learn`
+- Windows path: `<LOCAL_PATH_REDACTED> Learn`
+- Expected WSL path: `<LOCAL_PATH_REDACTED> Learn`
 
 ## Confirmed Required Sources
 

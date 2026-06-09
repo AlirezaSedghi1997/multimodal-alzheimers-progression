@@ -3,11 +3,13 @@ ENV_NAME ?= amyloid-tau
 PY := conda run -n $(ENV_NAME) python
 DATA_ROOT ?= /mnt/h/A4\ Learn
 MNI_TEMPLATE ?=
+MATLAB_BIN ?= C:/Program Files/MATLAB/R2024a/bin/matlab.exe
+SPM_DIR ?= D:/Matlab & Tolboxes/spm_25.01.02/spm
 SPM_MANIFEST ?= results/logs/spm_mri_preprocess_v2_resume_wsl.json
 SPM_BATCH_SIZE ?= 10
 export WANDB_MODE := offline
 
-.PHONY: test preflight inventory catalog preprocess preprocess-toolchain-check preprocess-spm-toolchain-check preprocess-full-mri preprocess-full-mri-spm preprocess-full-mri-spm-auto spm-completion-guard mri-volume-cache mri-volume-cache-96 mri-volume-cache-smoke mri-features mri-feature-baseline train-3d three-d-ablation xai-summary splits baseline cross-cohort-bias optuna fusion external-eval calibration final-analysis public-bundle tau external-drive-check compute-plan phase0-governance label-freeze method-x-feature-matrix method-x-feature-check phase0-readiness power-analysis site-drift subgroup-audit gap-matrix method-y-pet-inventory method-y-multimodal-design clinical-ad-feasibility run-stage run-next-stage run-all-stages
+.PHONY: test preflight inventory catalog preprocess preprocess-toolchain-check preprocess-spm-toolchain-check preprocess-full-mri preprocess-full-mri-spm preprocess-full-mri-spm-auto spm-completion-guard mri-volume-cache mri-volume-cache-96 mri-volume-cache-smoke mri-features mri-feature-baseline train-3d three-d-ablation xai-summary splits baseline cross-cohort-bias optuna fusion external-eval calibration final-analysis public-bundle tau external-drive-check compute-plan phase0-governance label-freeze method-x-feature-matrix method-x-feature-check phase0-readiness power-analysis site-drift subgroup-audit gap-matrix method-y-pet-inventory method-y-multimodal-design clinical-ad-feasibility run-stage run-next-stage run-all-stages preprocess-quality-audit visual-qc-manifest method-y-battery build-flair-index
 
 test:
 	$(PY) -m pytest tests/ -q
@@ -151,7 +153,7 @@ mri-volume-cache:
 
 mri-volume-cache-96:
 	$(PY) scripts/spm_completion_guard.py
-	$(PY) scripts/build_mri_volume_cache.py --preprocessed_dir data/preprocessed_mri_96 --out data/cached/t1_volume_cache_96.h5 --resolution 96
+	$(PY) scripts/build_mri_volume_cache.py --preprocessed_dir data/preprocessed_mri_96 --qc_dir data/preprocessed_mri_96/qc --out data/cached/t1_volume_cache_96.h5 --resolution 96
 
 mri-volume-cache-smoke:
 	$(PY) scripts/mri_volume_cache_smoke.py --preprocessed_dir data/preprocessed_mri_96 --resolution 96 --device auto
@@ -229,13 +231,27 @@ method-y-pet-inventory:
 method-y-multimodal-design:
 	$(PY) scripts/method_y_multimodal_design.py
 
-.PHONY: validity-audit temporal-window-sensitivity optuna-nested external-final cognitive-family-ablation three-d-final-contract thesis-report v36-tests v38-tests v38-method-x-validity v38-pet-gap v38-pet-manifest v38-pet-dry v38-pet-execute-smoke v38-pet-cache v38-pet-readiness v38-pet-train v38-agent-summary method-y-gap-filter method-y-pet-manifest method-y-pet-dry method-y-pet-dry-run method-y-pet-execute method-y-pet-execute-smoke method-y-pet-cache method-y-readiness method-y-pet-train method-y-summary method-y-phase2-tests final-comprehensive-tests final-method-x-sequence final-method-y-pet-sequence final-agent-summary
+.PHONY: validity-audit temporal-window-sensitivity optuna-nested external-final cognitive-family-ablation three-d-final-contract thesis-report v36-tests v38-tests v38-method-x-validity v38-pet-gap v38-pet-manifest v38-pet-dry v38-pet-execute-smoke v38-pet-cache v38-pet-readiness v38-pet-train v38-agent-summary method-y-gap-filter method-y-pet-manifest method-y-pet-dry method-y-pet-dry-run method-y-pet-execute method-y-pet-execute-smoke method-y-pet-execute-spm method-y-pet-execute-spm-smoke method-y-pet-execute-spm-full method-y-pet-execute-spm-auto method-y-pet-cache method-y-readiness method-y-pet-train method-y-summary method-y-phase2-tests final-comprehensive-tests final-method-x-sequence final-method-y-pet-sequence final-agent-summary
 
 validity-audit:
 	$(PY) scripts/run_validity_audit.py
 
 temporal-window-sensitivity:
 	$(PY) scripts/run_temporal_window_sensitivity.py
+
+headline-temporal-gap-evaluation:
+	$(PY) scripts/run_headline_temporal_gap_evaluation.py
+
+domain-ceiling-citations:
+	@test -f results/governance/domain_ceiling_citation_list.json || (echo "Run write governance artifacts first." && exit 0)
+
+tripod-manuscript-scaffold:
+	$(PY) scripts/write_tripod_manuscript_scaffold.py
+
+phase4-figure-manifest:
+	$(PY) scripts/build_phase4_figure_manifest.py
+
+phase4-reporting-pack: headline-temporal-gap-evaluation tripod-manuscript-scaffold phase4-figure-manifest tripod-probast-checklists build-implementation-gap-matrix build-public-bundle
 
 optuna-nested:
 	$(PY) scripts/run_optuna_nested.py
@@ -286,11 +302,37 @@ v38-pet-execute-smoke method-y-pet-execute method-y-pet-execute-smoke:
 	@test -n "$(MNI_TEMPLATE)" || (echo "Set MNI_TEMPLATE before PET execute smoke." && exit 2)
 	$(PY) scripts/preprocess_pet_spatial.py --data_root "$(DATA_ROOT)" --tracer fbp --execute --spatial_mode ants_pet_t1_mni --mni_template "$(MNI_TEMPLATE)" --n_jobs 2 --limit 20
 
+method-y-pet-execute-spm method-y-pet-execute-spm-smoke:
+	$(PY) scripts/preprocess_pet_spatial.py --data_root "$(DATA_ROOT)" --tracer fbp --execute --spatial_mode spm_pet_t1_mni --matlab "$(MATLAB_BIN)" --spm_dir "$(SPM_DIR)" --n_jobs 1 --limit 2
+
+method-y-pet-execute-spm-full:
+	$(PY) -u scripts/preprocess_pet_spatial.py --data_root "$(DATA_ROOT)" --tracer fbp --tier primary_feasible_90 --execute --spatial_mode spm_pet_t1_mni --matlab "$(MATLAB_BIN)" --spm_dir "$(SPM_DIR)" --n_jobs 1 --auto_batches --batch_size 10
+
+method-y-pet-execute-spm-auto: method-y-pet-execute-spm-full
+
+method-y-pet-execute-spm-batch:
+	$(PY) scripts/preprocess_pet_spatial.py --data_root "$(DATA_ROOT)" --tracer fbp --tier primary_feasible_90 --execute --spatial_mode spm_pet_t1_mni --matlab "$(MATLAB_BIN)" --spm_dir "$(SPM_DIR)" --n_jobs 1 --batch_size $(or $(SPM_PET_BATCH_SIZE),10)
+
 v38-pet-cache method-y-pet-cache:
 	$(PY) scripts/build_pet_volume_cache.py --tracer fbp
 
 v38-pet-readiness method-y-readiness:
 	$(PY) scripts/check_method_y_training_readiness.py --tracer fbp
+
+preprocess-quality-audit:
+	$(PY) scripts/run_preprocess_quality_audit.py --data_root "$(DATA_ROOT)" --build_visual_manifest
+
+visual-qc-manifest:
+	$(PY) scripts/build_visual_qc_manifest.py
+
+method-y-battery:
+	$(PY) scripts/run_method_y_battery.py
+
+method-y-battery-execute:
+	$(PY) scripts/run_method_y_battery.py --execute
+
+build-flair-index:
+	$(PY) scripts/build_flair_index.py --data_root "$(DATA_ROOT)"
 
 v38-pet-train method-y-pet-train:
 	$(PY) scripts/check_method_y_training_readiness.py --tracer fbp

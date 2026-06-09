@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.data.a4_schema import T1_NAME_PATTERN, resolve_data_root
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
 from src.utils.privacy import stable_hash
+from src.utils.cache_qc_filters import mri_cache_allowed
 from src.utils.run_manifest import write_run_manifest
 from src.utils.state_manager import StateManager
 
@@ -181,6 +182,13 @@ def main() -> int:
         default="",
         help="Optional directory of full-preprocessed sample_hash.nii.gz files to cache instead of raw T1 files.",
     )
+    ap.add_argument("--qc_dir", default="", help="Optional MRI QC JSON directory (e.g. data/preprocessed_mri_96/qc).")
+    ap.add_argument(
+        "--require_qc_pass",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="When using --preprocessed_dir, exclude FAIL/HOLD/MISSING QC samples from cache.",
+    )
     args = ap.parse_args()
 
     try:
@@ -193,6 +201,8 @@ def main() -> int:
     if args.limit > 0:
         rows = rows[: args.limit]
     preprocessed_dir = Path(args.preprocessed_dir) if args.preprocessed_dir else None
+    qc_dir = Path(args.qc_dir) if args.qc_dir else (preprocessed_dir / "qc" if preprocessed_dir else None)
+    require_qc = bool(args.require_qc_pass and preprocessed_dir is not None)
     data_root = resolve_data_root(args.data_root) if preprocessed_dir is None else None
     t1_index = build_t1_hash_index(data_root) if data_root is not None else {}
     preprocessed_index = build_preprocessed_hash_index(preprocessed_dir) if preprocessed_dir is not None else {}
@@ -230,6 +240,8 @@ def main() -> int:
         "catalog_t1_hash_overlap": len(overlap),
         "indexed_preprocessed": len(preprocessed_index),
         "catalog_preprocessed_overlap": len(preprocessed_overlap),
+        "require_qc_pass": require_qc,
+        "qc_dir": str(qc_dir) if qc_dir else None,
         "t1_dir_exists": (data_root / "T1").exists() if data_root is not None else None,
     }
     if not source_index or (preprocessed_dir is None and not overlap) or (preprocessed_dir is not None and not preprocessed_overlap):
@@ -248,6 +260,7 @@ def main() -> int:
     ok = 0
     missing = 0
     errors = 0
+    qc_excluded = 0
     with h5py.File(tmp_path, "w") as h5:
         h5.attrs["method"] = "X"
         h5.attrs["contains_processed_t1"] = True
@@ -269,6 +282,17 @@ def main() -> int:
         h5.create_dataset("tabular", data=np.array([tabular_vector(r) for r in rows], dtype=np.float32))
         status = h5.create_dataset("status", shape=(n,), dtype=str_dtype)
         for i, row in enumerate(rows):
+            sample_hash = row["sample_hash"]
+            allowed, qc_reason = mri_cache_allowed(
+                sample_hash=sample_hash,
+                qc_dir=qc_dir,
+                require_qc_pass=require_qc,
+            )
+            if not allowed:
+                qc_excluded += 1
+                images[i] = np.zeros((1, args.resolution, args.resolution, args.resolution), dtype=np.float16)
+                status[i] = qc_reason
+                continue
             source_key = row["sample_hash"] if preprocessed_dir is not None else row["t1_file_hash"]
             path = source_index.get(source_key)
             if path is None:
@@ -296,6 +320,8 @@ def main() -> int:
         "ok": ok,
         "missing": missing,
         "errors": errors,
+        "qc_excluded": qc_excluded,
+        "require_qc_pass": require_qc,
         "resolution": args.resolution,
         "device_requested": args.device,
         "cache_path": str(out_path),

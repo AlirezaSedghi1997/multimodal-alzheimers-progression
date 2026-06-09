@@ -16,11 +16,15 @@
   "manifest_total": 751,
   "official_cache_written": false,
   "published_cache": false,
-  "purpose": "dependency_and_volume_loading_smoke_test_only",
+  "purpose": "historical_dependency_smoke_only",
   "raw_paths_exported": false,
   "resolution": 96,
   "rows_written": 0,
-  "status": "SMOKE_FAILED_NOT_FOR_TRAINING",
+  "status": "SUPERSEDED_BY_FULL_CACHE",
   "subject_level_outputs_exported": false,
-  "training_usable": false
+  "training_usable": false,
+  "superseded_by": "results/tables/mri_volume_cache_summary.json",
+  "full_cache_rows": 1699,
+  "full_cache_ok": 1699,
+  "note": "Full 96\u00b3 T1 volume cache exists; smoke artifact retained for audit trail only."
 }

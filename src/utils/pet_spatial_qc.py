@@ -223,8 +223,25 @@ def assess_qc_gates(qc: Mapping[str, Any], policy: Mapping[str, Any], spatial_st
         if not spatial_status.get("registration_performed", False):
             failures.append("REGISTRATION_MISSING")
     ncc = qc.get("ncc_pet_t1")
-    if ncc is not None and math.isfinite(float(ncc)) and float(ncc) < float(gates.get("ncc_warn_below", 0.70)):
-        warnings.append("LOW_NCC_REVIEW")
+    ncc_fail = float(gates.get("ncc_fail_below", 0.60))
+    ncc_warn = float(gates.get("ncc_warn_below", 0.75))
+    if ncc is not None and math.isfinite(float(ncc)):
+        if float(ncc) < ncc_fail:
+            failures.append("NCC_PET_T1_FAIL")
+        elif float(ncc) < ncc_warn:
+            warnings.append("LOW_NCC_REVIEW")
+    official_cl = qc.get("official_centiloid")
+    derived_cl = qc.get("derived_centiloid")
+    if official_cl is not None and derived_cl is not None:
+        try:
+            delta = abs(float(derived_cl) - float(official_cl))
+            qc_delta_max = float(gates.get("centiloid_abs_delta_max", 15.0))
+            if delta > qc_delta_max:
+                failures.append("CENTILOID_DELTA_FAIL")
+            elif delta > qc_delta_max / 2:
+                warnings.append("CENTILOID_DELTA_REVIEW")
+        except (TypeError, ValueError):
+            pass
     return {"status": "PASS" if not failures else "FAIL", "failures": failures, "warnings": warnings}
 
 

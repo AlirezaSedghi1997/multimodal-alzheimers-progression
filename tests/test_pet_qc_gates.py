@@ -31,3 +31,21 @@ def test_scrub_sensitive_text_removes_paths_and_ids():
     clean = scrub_sensitive_text(msg)
     assert "B12345" not in clean
     assert "/mnt/h" not in clean
+
+
+def test_pet_ncc_fail_gate():
+    policy = {
+        "qc_gates": {
+            "finite_fraction_min": 0.95,
+            "foreground_fraction_min": 0.01,
+            "std_min": 1e-6,
+            "ncc_fail_below": 0.60,
+            "ncc_warn_below": 0.75,
+        }
+    }
+    gate = assess_qc_gates(
+        {"finite_fraction": 1.0, "foreground_fraction": 0.5, "std": 1.0, "ncc_pet_t1": 0.55},
+        policy,
+    )
+    assert gate["status"] == "FAIL"
+    assert "NCC_PET_T1_FAIL" in gate["failures"]

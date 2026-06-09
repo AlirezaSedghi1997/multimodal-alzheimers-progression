@@ -10,6 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.utils.final_claim_policy import spm_is_complete, validity_recommendation
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
+from src.utils.pet_preprocess_progress import summarize_pet_preprocess_progress
 from src.utils.state_manager import StateManager
 
 
@@ -52,6 +53,15 @@ def add(rows: list[dict[str, str]], requirement: str, status: str, artifact: str
     rows.append({"requirement": requirement, "status": status, "artifact": artifact, "note": note})
 
 
+def nested(obj: dict[str, Any] | None, *keys: str) -> Any:
+    cur: Any = obj
+    for key in keys:
+        if not isinstance(cur, dict) or key not in cur:
+            return None
+        cur = cur[key]
+    return cur
+
+
 def build_rows() -> list[dict[str, str]]:
     final = load_json("results/final_results/final_analysis/final_analysis_summary.json") or {}
     three_d = load_json("results/final_results/three_d/three_d_metrics.json") or {}
@@ -88,6 +98,24 @@ def build_rows() -> list[dict[str, str]]:
     add(rows, "Continuous centiloid within-cohort regression", "DONE" if centiloid.get("status") == "COMPLETED" else "MISSING", "results/final_results/centiloid_regression/centiloid_regression_metrics.json", "Huber/elastic net/GBT on pooled, within-A4, and within-LEARN subsets.")
     phase2_mvp = load_json("results/tables/phase2_mvp/phase2_mvp_status.json") or {}
     add(rows, "Phase 2 Minimum MVP audit", "DONE" if phase2_mvp.get("status") == "MVP_COMPLETE" else "PARTIAL", "results/tables/phase2_mvp/phase2_mvp_status.json", "Tracks Minimum Phase-2 MVP checklist per headline model.")
+    matched = load_json("results/tables/matched_propensity_subset.json") or {}
+    add(rows, "Matched/propensity-weighted subset analysis", "DONE" if matched.get("status") == "COMPLETED" else "MISSING", "results/tables/matched_propensity_subset.json", "Phase 2 post-MVP sensitivity on age/sex/APOE4/education/MMSE-matched subset.")
+    dca = load_json("results/tables/decision_curve_analysis.json") or {}
+    add(rows, "Decision-curve analysis", "DONE" if dca.get("status") == "COMPLETED" else "MISSING", "results/tables/decision_curve_analysis.json", "Net-benefit sensitivity for tabular Method X branch.")
+    tripod = load_json("results/governance/tripod_probast_checklists.json") or {}
+    add(rows, "TRIPOD+AI / PROBAST+AI scaffold", "DONE" if tripod.get("status") == "SCAFFOLD_COMPLETE" else "PARTIAL", "results/governance/tripod_probast_checklists.json", "Governance checklist scaffold; manuscript items remain Phase 4.")
+    add(rows, "TRIPOD manuscript scaffold", "DONE" if exists("results/governance/tripod_manuscript_scaffold.json") else "MISSING", "results/governance/tripod_manuscript_scaffold.json", "Phase 4 Methods/Results scaffold text.")
+    add(rows, "Domain-ceiling citation list", "DONE" if exists("results/governance/domain_ceiling_citation_list.json") else "MISSING", "results/governance/domain_ceiling_citation_list.json", "Literature interpretive anchors with exact citations.")
+    add(rows, "Headline temporal-gap model evaluation", "DONE" if exists("results/tables/headline_temporal_gap_evaluation.json") else "MISSING", "results/tables/headline_temporal_gap_evaluation.json", "Tabular and ROI baselines re-evaluated per gap window; 3D reference-only.")
+    add(rows, "Method Y class imbalance policy", "DONE" if exists("configs/policy/method_y_class_imbalance_policy.json") else "MISSING", "governance/method_y_class_imbalance_policy.md", "Frozen exploratory tier primary_feasible_90 and weighting rules.")
+    add(rows, "Phase 4 figure manifest", "DONE" if exists("results/governance/phase4_figure_manifest.json") else "MISSING", "results/governance/phase4_figure_manifest.json", "Tracks required thesis figures vs artifacts.")
+    method_y_prep = load_json("results/tables/method_y_pet_preprocess_summary.json") or {}
+    prep_total = nested(method_y_prep, "link_summary", "linked_work_items") or method_y_prep.get("selected_work_items") or 0
+    prep_progress = summarize_pet_preprocess_progress(linked_work_items=int(prep_total or 0))
+    prep_done = prep_progress.get("resume_done") or method_y_prep.get("final_done") or method_y_prep.get("status_counts", {}).get("PASS", 0)
+    prep_status = "DONE" if prep_total and int(prep_done) >= int(prep_total) else "PARTIAL" if int(prep_done) > 0 else "MISSING"
+    add(rows, "Method Y PET SPM/MNI preprocessing", prep_status, "results/logs/method_y_pet_preprocess_resume_fbp_spm_pet_t1_mni.json", f"SPM/MNI PET preprocess progress {prep_done}/{prep_total}; training-ready gate separate.")
+    add(rows, "Leaky MRI surrogate quarantine", "DONE" if exists("data/processed/quarantine/README.md") else "PARTIAL", "data/processed/quarantine/", "Retired 15-feature surrogates moved out of headline feature path.")
     sf_stress = load_json("results/final_results/method_x_cog_sf/sf_stress_tests_summary.json") or {}
     add(rows, "Method X-Cog/SF internal stress tests", "DONE" if sf_stress.get("status") == "COMPLETED" else "MISSING", "results/final_results/method_x_cog_sf/sf_stress_tests_summary.json", "SF-only, SF-inclusive, and train-SF/test-enrolled internal decoupling arms; not external validation.")
     bio_z = load_json("results/tables/bio_cog_method_z_readiness.json") or {}

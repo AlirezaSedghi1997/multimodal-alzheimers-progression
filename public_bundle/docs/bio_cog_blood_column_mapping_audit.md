@@ -1,7 +1,7 @@
 # Bio-Cog / Method Z — Blood Column Mapping Audit
 
 - status: `MAPPING_AUDIT_COMPLETED`
-- data root: `H:\A4 Learn`
+- data root: `<LOCAL_PATH_REDACTED> Learn`
 
 Empty NfL/pTau181/Ab42_40_ratio columns in the locked catalog are explained by LBTESTCD alias mismatch (NF-L, TPP181, AMYLB42/40, BP42/BP40), not missing source data.
 

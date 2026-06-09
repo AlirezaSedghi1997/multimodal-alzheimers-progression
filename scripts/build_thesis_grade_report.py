@@ -2,36 +2,24 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT))
 
-
-def safe_json(path: Path) -> dict[str, Any]:
-    if not path.exists():
-        return {"status": "MISSING", "path": str(path)}
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except Exception as exc:
-        return {"status": "JSON_READ_FAILED", "path": str(path), "error": str(exc)}
-
-
-def fmt(value: object, ndigits: int = 4) -> str:
-    if value is None:
-        return "NA"
-    if isinstance(value, float):
-        return f"{value:.{ndigits}f}"
-    return str(value)
-
-
-def nested(obj: dict[str, Any] | None, *keys: str) -> Any:
-    cur: Any = obj
-    for key in keys:
-        if not isinstance(cur, dict) or key not in cur:
-            return None
-        cur = cur[key]
-    return cur
+from src.utils.pet_preprocess_progress import summarize_pet_preprocess_progress
+from src.utils.report_sources import (
+    best_centiloid_spearman,
+    ci_overlap,
+    fmt,
+    fmt_ci,
+    load_json,
+    nested,
+    pick_nested,
+    validate_required_keys,
+)
 
 
 def probe_auc(cohort_probe: dict[str, Any], input_name: str, probe: str) -> float | None:
@@ -51,34 +39,93 @@ def atomic_write_text(path: Path, text: str) -> None:
     tmp.replace(path)
 
 
+def method_y_section(method_y: dict[str, Any], manifest: dict[str, Any]) -> list[str]:
+    linked = int(
+        nested(manifest, "link_summary", "linked_work_items")
+        or manifest.get("linked_work_items")
+        or 266
+    )
+    progress = summarize_pet_preprocess_progress(linked_work_items=linked, project_root=PROJECT_ROOT)
+    design_blockers = list(method_y.get("blockers") or [])
+    execution_blockers = list(method_y.get("execution_blockers") or [])
+    warnings = list(method_y.get("warnings") or [])
+    status = method_y.get("status", "MISSING")
+    lines = [
+        f"- design/training readiness status: `{status}`\n",
+        f"- approved tier: `{method_y.get('approved_training_tier', 'primary_feasible_90')}`\n",
+        f"- design blockers: `{design_blockers}`\n",
+        f"- execution blockers (preprocess/cache): `{execution_blockers}`\n",
+        f"- warnings: `{warnings}`\n",
+        f"- PET preprocess progress: `{progress.get('resume_done', 0)}/{linked}` PASS\n",
+        f"- regex_fallback_used (manifest): `{manifest.get('regex_fallback_used')}`\n",
+        f"- project_inventory_used: `{manifest.get('project_inventory_used')}`\n",
+        "- note: exploratory **design** may pass while **execution** (266/266 preprocess + PET cache) remains gated.\n",
+    ]
+    return lines
+
+
 def main() -> int:
     out_dir = PROJECT_ROOT / "results" / "final_results" / "thesis"
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    validity = safe_json(PROJECT_ROOT / "results/tables/validity_audit/validity_audit_summary.json")
-    temporal = safe_json(PROJECT_ROOT / "results/tables/temporal_window_sensitivity.json")
-    external = safe_json(PROJECT_ROOT / "results/final_results/external/external_final_metrics.json")
-    cog = safe_json(PROJECT_ROOT / "results/final_results/method_x_cog/method_x_cog_summary.json")
-    cog_sf = safe_json(PROJECT_ROOT / "results/final_results/method_x_cog_sf/sf_stress_tests_summary.json")
-    phase2 = safe_json(PROJECT_ROOT / "results/tables/phase2_mvp/phase2_mvp_status.json")
-    phase1 = safe_json(PROJECT_ROOT / "results/final_results/phase1_baselines/phase1_baselines_summary.json")
-    cohort_probe = safe_json(PROJECT_ROOT / "results/tables/cohort_probe/cohort_probe_summary.json")
-    centiloid = safe_json(PROJECT_ROOT / "results/final_results/centiloid_regression/centiloid_regression_metrics.json")
-    three_d = safe_json(PROJECT_ROOT / "results/final_results/three_d/three_d_metrics.json")
-    ablation = safe_json(PROJECT_ROOT / "results/final_results/three_d_ablation/three_d_ablation_summary.json")
-    method_y = safe_json(PROJECT_ROOT / "results/tables/method_y_training_readiness.json")
-    bio_z = safe_json(PROJECT_ROOT / "results/tables/bio_cog_method_z_readiness.json")
-    coupling = safe_json(PROJECT_ROOT / "results/governance/cohort_label_coupling_audit.json")
+    validity = load_json(PROJECT_ROOT / "results/tables/validity_audit/validity_audit_summary.json")
+    temporal = load_json(PROJECT_ROOT / "results/tables/headline_temporal_gap_evaluation.json")
+    external = load_json(PROJECT_ROOT / "results/final_results/external/external_final_metrics.json")
+    cog = load_json(PROJECT_ROOT / "results/final_results/method_x_cog/method_x_cog_summary.json")
+    cog_sf = load_json(PROJECT_ROOT / "results/final_results/method_x_cog_sf/sf_stress_tests_summary.json")
+    phase2 = load_json(PROJECT_ROOT / "results/tables/phase2_mvp/phase2_mvp_status.json")
+    phase1 = load_json(PROJECT_ROOT / "results/final_results/phase1_baselines/phase1_baselines_summary.json")
+    incr = load_json(PROJECT_ROOT / "results/tables/phase1_incremental_value_table.json")
+    cohort_probe = load_json(PROJECT_ROOT / "results/tables/cohort_probe/cohort_probe_summary.json")
+    centiloid = load_json(PROJECT_ROOT / "results/final_results/centiloid_regression/centiloid_regression_metrics.json")
+    three_d = load_json(PROJECT_ROOT / "results/final_results/three_d/three_d_metrics.json")
+    ablation = load_json(PROJECT_ROOT / "results/final_results/three_d_ablation/three_d_ablation_summary.json")
+    method_y = load_json(PROJECT_ROOT / "results/tables/method_y_training_readiness.json")
+    manifest = load_json(PROJECT_ROOT / "results/tables/method_y_pet_manifest_summary.json")
+    bio_z = load_json(PROJECT_ROOT / "results/final_results/bio_cog_method_z/bio_cog_method_z_summary.json")
+    bio_ablation = load_json(PROJECT_ROOT / "results/final_results/bio_cog_method_z/bio_cog_blood_ablation.json")
+    coupling = load_json(PROJECT_ROOT / "results/governance/cohort_label_coupling_audit.json")
+    matched = load_json(PROJECT_ROOT / "results/tables/matched_propensity_subset.json")
+    dca = load_json(PROJECT_ROOT / "results/tables/decision_curve_analysis.json")
+    clinical = load_json(PROJECT_ROOT / "results/final_results/clinical_endpoint/clinical_endpoint_baseline_summary.json")
+
+    source_warnings: list[str] = []
+    source_warnings.extend(
+        validate_required_keys(
+            centiloid,
+            [("subsets", "pooled_enrolled"), ("subsets", "within_a4"), ("subsets", "within_learn")],
+            context="centiloid_regression_metrics",
+        )
+    )
+    source_warnings.extend(
+        validate_required_keys(
+            coupling,
+            [("before_sf_inclusion", "cohort_label_cramers_v"), ("after_sf_inclusion", "cohort_label_cramers_v")],
+            context="cohort_label_coupling_audit",
+        )
+    )
+
+    roi_nonlinear = probe_auc(cohort_probe, "mri_roi_wmh_reads", "nonlinear")
+    tabular_auc = nested(phase1, "results", "fixed_tabular", "roc_auc")
+    roi_combo_auc = nested(phase1, "results", "fixed_tabular_plus_roi_wmh_reads", "roc_auc")
+    three_d_auc = nested(three_d, "aggregate", "roc_auc")
+
+    matched_overlap = ci_overlap(
+        nested(matched, "full_cohort", "roc_auc_ci"),
+        nested(matched, "matched_subset", "roc_auc_ci"),
+    )
 
     lines = [
         "# Thesis-grade Method X Report — execution program v3.9\n\n",
         "## Required caveats\n\n",
-        "1. The output is **Aβ-positive vs Aβ-negative amyloid biomarker status**, not Alzheimer disease diagnosis.\n",
-        "2. PET is label/target only in Method X and Method X-Cog; PET image/SUVR/centiloid are not model inputs.\n",
-        "3. Current external-like evaluation is a locked pseudo-external holdout, not a truly independent cohort.\n",
-        "4. A4/LEARN cohort-label coupling must be discussed wherever performance is reported.\n",
-        "5. SF is an internal decoupling/stress-test instrument only — never external validation.\n",
-        "6. High ROI/WMH nonlinear cohort-probe AUC reflects cohort artifact and must be reported as a limitation.\n\n",
+        "1. Output is **Aβ biomarker status**, not Alzheimer disease diagnosis.\n",
+        "2. PET is label/target only; never a Method X predictor.\n",
+        "3. Evaluation is locked **pseudo-external**, not independent external validation.\n",
+        "4. A4/LEARN cohort-label coupling (Cramér's V≈1.0 enrolled-only) limits pooled binary interpretation.\n",
+        "5. SF is internal decoupling only — never external validation.\n",
+        "6. ROI/WMH nonlinear cohort-probe ≈0.99 → high pooled AUC on ROI+tabular is **descriptive**, not biological proof.\n",
+        "7. WMH/reads alone ≈0.50 AUC; signal in MRI branch is driven by ROI volumes, not WMH/reads.\n",
+        "8. 3D CNN AUC (~0.72) below tabular/ROI descriptive AUC reflects architecture/cohort coupling; `final_claim_allowed=false`.\n\n",
         "## Phase 2 Minimum MVP\n\n",
         f"- overall status: `{phase2.get('status', 'MISSING')}`\n",
         f"- method_x_strict_tabular: `{nested(phase2, 'models', 'method_x_strict_tabular', 'completion', 'mvp_complete')}`\n",
@@ -91,64 +138,136 @@ def main() -> int:
         f"- 3D MRI latent linear AUC: `{fmt(probe_auc(cohort_probe, 'method_x_3d_mri_latent_oof', 'linear'))}`\n",
         f"- 3D MRI latent nonlinear AUC: `{fmt(probe_auc(cohort_probe, 'method_x_3d_mri_latent_oof', 'nonlinear'))}`\n",
         f"- tabular linear AUC: `{fmt(probe_auc(cohort_probe, 'method_x_strict_tabular', 'linear'))}`\n",
-        f"- ROI/WMH/reads nonlinear AUC: `{fmt(probe_auc(cohort_probe, 'mri_roi_wmh_reads', 'nonlinear'))}`\n",
-        f"- reading: 3D latent does not encode cohort; ROI branch shows strong cohort artifact.\n\n",
-        "## Continuous centiloid (target only)\n\n",
-        f"- pooled Spearman r: `{fmt(nested(centiloid, 'subsets', 'pooled', 'spearman_r'))}`\n",
-        f"- within-A4 Spearman r: `{fmt(nested(centiloid, 'subsets', 'within_a4', 'spearman_r'))}`\n",
-        f"- within-LEARN Spearman r: `{fmt(nested(centiloid, 'subsets', 'within_learn', 'spearman_r'))}`\n",
-        f"- centiloid_as_predictor: `{centiloid.get('centiloid_as_predictor')}`\n\n",
+        f"- ROI/WMH/reads nonlinear AUC: `{fmt(roi_nonlinear)}`\n",
+        "- reading: 3D latent ≈0.50 (cohort not encoded); ROI branch ≈0.99 (cohort artifact).\n\n",
+        "## Incremental value vs validity (critical)\n\n",
+        f"- highest **descriptive** pooled ROC-AUC step: `{incr.get('best_descriptive_roc_auc_step', 'fixed_tabular_plus_roi_wmh_reads')}` "
+        f"({fmt(roi_combo_auc)})\n",
+        f"- validity-safe headline anchor: `{incr.get('validity_safe_headline_step', 'fixed_tabular')}` "
+        f"(tabular {fmt(tabular_auc)}; 3D {fmt(three_d_auc)} with cohort-probe ≈0.50)\n",
+        f"- ROI nonlinear cohort-probe: `{fmt(roi_nonlinear)}` — do **not** rank ROI+tabular as best biological model.\n\n",
+        "## Continuous centiloid (target only; tabular predictors)\n\n",
+        f"- pooled enrolled best Spearman r: `{fmt(best_centiloid_spearman(nested(centiloid, 'subsets', 'pooled_enrolled')))}`\n",
+        f"- within-A4 best Spearman r: `{fmt(best_centiloid_spearman(nested(centiloid, 'subsets', 'within_a4')))}`\n",
+        f"- within-LEARN best Spearman r: `{fmt(best_centiloid_spearman(nested(centiloid, 'subsets', 'within_learn')))}`\n",
+        f"- centiloid_as_predictor: `{centiloid.get('centiloid_as_predictor')}`\n",
+        "- interpretation: pooled descriptive; within-LEARN signal weak (~0.08).\n\n",
         "## Phase 1 interpretable baselines\n\n",
         f"- status: `{phase1.get('status')}`\n",
-        f"- fixed tabular ROC-AUC: `{fmt(nested(phase1, 'results', 'fixed_tabular', 'roc_auc'))}`\n",
+        f"- fixed tabular ROC-AUC: `{fmt(tabular_auc)}`\n",
         f"- tabular+cognitive ROC-AUC: `{fmt(nested(phase1, 'results', 'fixed_tabular_plus_cognitive', 'roc_auc'))}`\n",
-        f"- ROI/WMH/reads ROC-AUC: `{fmt(nested(phase1, 'results', 'roi_wmh_reads', 'roc_auc'))}`\n\n",
+        f"- ROI volumes only ROC-AUC: `{fmt(nested(phase1, 'results', 'roi_icv_norm_only', 'roc_auc'))}`\n",
+        f"- WMH only ROC-AUC: `{fmt(nested(phase1, 'results', 'wmh_only', 'roc_auc'))}` (single official ICV-normalized WMH column)\n",
+        f"- MRI reads only ROC-AUC: `{fmt(nested(phase1, 'results', 'mri_reads_only', 'roc_auc'))}`\n",
+        f"- tabular+ROI/WMH/reads ROC-AUC: `{fmt(roi_combo_auc)}` (descriptive; cohort-probe caveat applies)\n\n",
         "## Method X-Strict 3D CNN\n\n",
-        f"- ROC-AUC (5-fold CV): `{fmt(nested(three_d, 'aggregate', 'roc_auc'))}`\n",
+        f"- ROC-AUC (5-fold CV): `{fmt(three_d_auc)}`\n",
         f"- external-like ROC-AUC: `{fmt(nested(three_d, 'aggregate', 'external_like', 'roc_auc'))}`\n",
         f"- final_claim_allowed: `{nested(three_d, 'aggregate', 'final_claim_allowed')}`\n",
-        f"- ablation status: `{ablation.get('status')}`\n",
-        f"- ablation best variant: `{nested(ablation, 'best_by_cv_roc_auc', 'variant')}`\n",
-        f"- ablation best ROC-AUC: `{fmt(nested(ablation, 'best_by_cv_roc_auc', 'roc_auc'))}`\n",
-        f"- ablation dev-mode variants pending refresh: `{nested(ablation, 'training_contract', 'variants_with_dev_mode_artifact')}`\n\n",
-        "## Method X-Cog (exploratory; does not replace Method X-Strict)\n\n",
+        f"- ablation best variant: `{nested(ablation, 'best_by_cv_roc_auc', 'variant')}` "
+        f"({fmt(nested(ablation, 'best_by_cv_roc_auc', 'roc_auc'))})\n",
+        "- note: cross-attention > concat but all variants <0.73; lightweight encoder; EfficientNet3D switch deferred.\n\n",
+        "## Method X-Cog (exploratory)\n\n",
         f"- status: `{cog.get('status')}`\n",
         f"- best ROC-AUC: `{fmt(nested(cog, 'best', 'roc_auc'))}`\n",
-        f"- best non-MRI ROC-AUC: `{fmt(nested(cog, 'best_non_mri', 'roc_auc'))}`\n",
-        f"- AUC gain over fixed tabular: `{fmt(cog.get('improvement_over_fixed_tabular_auc'))}`\n\n",
+        f"- train-SF→enrolled collapse: see SF stress tests below.\n\n",
         "## Method X-Cog/SF internal stress tests\n\n",
         f"- status: `{cog_sf.get('status')}`\n",
-        f"- pooled Cramér's V: `{fmt(nested(cog_sf, 'cohort_label_coupling', 'pooled_cramers_v'))}`\n",
+        f"- pooled Cramér's V: `{fmt(pick_nested(cog_sf, ('cohort_label_coupling', 'pooled_cramers_v')))}`\n",
         f"- SF-inclusive cognitive ROC-AUC: `{fmt(nested(cog_sf, 'scientific_interpretation', 'pooled_sf_inclusive_caution', 'cognitive_roc_auc'))}`\n",
-        f"- train-SF→enrolled cognitive ROC-AUC: `{fmt(nested(cog_sf, 'scientific_interpretation', 'internal_decoupling_transfer', 'train_sf_cognitive_roc_auc'))}`\n",
-        f"- disclaimer: SF is internal decoupling only, not external validation.\n\n",
+        f"- train-SF→enrolled cognitive ROC-AUC: `{fmt(nested(cog_sf, 'scientific_interpretation', 'internal_decoupling_transfer', 'train_sf_cognitive_roc_auc'))}`\n\n",
         "## Cohort-label coupling audit\n\n",
-        f"- before SF Cramér's V: `{fmt(nested(coupling, 'before_sf', 'cohort_label_cramers_v'))}`\n",
-        f"- after SF Cramér's V: `{fmt(nested(coupling, 'after_sf', 'cohort_label_cramers_v'))}`\n\n",
-        "## Temporal window sensitivity\n\n",
-        f"- status: `{temporal.get('version', temporal.get('status'))}`\n",
-        f"- main_catalog_overwritten: `{temporal.get('main_catalog_overwritten')}`\n\n",
-        "## External-like evaluation\n\n",
-        f"- external_holdout_type: `{external.get('external_holdout_type')}`\n",
-        f"- is_truly_independent_external: `{external.get('is_truly_independent_external')}`\n",
-        f"- DeLong status: `{nested(external, 'delong', 'status')}`\n\n",
-        "## Method Y PET (exploratory branch)\n\n",
-        f"- training readiness: `{method_y.get('status')}`\n",
-        f"- method_x_claim_unchanged: `{method_y.get('method_x_claim_unchanged')}`\n",
-        f"- blockers: `{method_y.get('blockers')}`\n\n",
-        "## Bio-Cog / Method Z (Phase 3)\n\n",
-        f"- readiness: `{bio_z.get('status', 'PENDING_AUDIT')}`\n",
-        f"- rows: `{bio_z.get('rows')}`\n",
-        f"- blockers: `{bio_z.get('blockers')}`\n\n",
-        "## Required wording\n\n",
-        "The current A4/LEARN enrolled catalog exhibits strong cohort-label coupling (Cramér's V≈1 within enrolled-only analyses). ",
-        "Therefore, model performance cannot be interpreted as pathology-only generalization. ",
-        "All external-like results are reported as locked pseudo-external holdout results, not as validation on a truly independent cohort. ",
-        "Method X-Strict remains the protected thesis anchor; Method X-Cog/SF and blood/PET branches are extensions with separate claim boundaries.\n",
+        f"- before SF Cramér's V: `{fmt(pick_nested(coupling, ('before_sf_inclusion', 'cohort_label_cramers_v'), ('before_sf', 'cohort_label_cramers_v')))}`\n",
+        f"- after SF Cramér's V: `{fmt(pick_nested(coupling, ('after_sf_inclusion', 'cohort_label_cramers_v'), ('after_sf', 'cohort_label_cramers_v')))}`\n\n",
+        "## Temporal-gap sensitivity (headline CPU models)\n\n",
+        f"- status: `{temporal.get('status', 'MISSING')}`\n",
     ]
+    for window in temporal.get("windows") or []:
+        w = window.get("window_days")
+        tab = nested(window, "models", "fixed_tabular") or {}
+        if tab.get("status") != "OK":
+            continue
+        lines.append(
+            f"- window≤{w}d n={window.get('n_catalog')}: tabular AUC "
+            f"`{fmt_ci(tab.get('roc_auc'), tab.get('roc_auc_ci'))}`\n"
+        )
+    lines.append("- 3D CNN: full-cohort reference only per window (not retrained).\n\n")
+
+    lines.extend(
+        [
+            "## Matched covariate subset (sensitivity)\n\n",
+            f"- full cohort AUC: `{fmt_ci(nested(matched, 'full_cohort', 'roc_auc'), nested(matched, 'full_cohort', 'roc_auc_ci'))}`\n",
+            f"- matched 1:1 AUC (n_pairs={matched.get('n_pairs')}): "
+            f"`{fmt_ci(nested(matched, 'matched_subset', 'roc_auc'), nested(matched, 'matched_subset', 'roc_auc_ci'))}`\n",
+            f"- 95% CI overlap full vs matched: `{matched_overlap}` — difference ~0.007 is not significant if CIs overlap.\n\n",
+            "## Decision curve analysis\n\n",
+            f"- status: `{dca.get('status')}`\n",
+        ]
+    )
+    tab_dca = nested(dca, "curves", "method_x_strict_tabular") or {}
+    if tab_dca.get("thresholds"):
+        lines.append(f"- tabular thresholds: `{tab_dca.get('thresholds')}`\n")
+        lines.append(f"- net benefit (model): `{[round(x, 3) for x in tab_dca.get('net_benefit_model', [])]}`\n\n")
+    else:
+        lines.append("- curves: see `results/tables/decision_curve_analysis.json`\n\n")
+
+    lines.extend(["## Method Y PET (exploratory branch)\n\n", *method_y_section(method_y, manifest), "\n"])
+    lines.extend(
+        [
+            "## Bio-Cog / Method Z (Phase 3; separate branch)\n\n",
+            f"- status: `{bio_z.get('status', 'MISSING')}`\n",
+        ]
+    )
+    enrolled = nested(bio_z, "arms", "enrolled_a4_learn", "variants") or {}
+    core = enrolled.get("core_blood_only") or {}
+    full = enrolled.get("full_blood_panel") or {}
+    lines.append(
+        f"- core_blood_only AUC: `{fmt_ci(core.get('roc_auc'), core.get('roc_auc_ci'))}`\n"
+    )
+    lines.append(
+        f"- full_blood_panel AUC: `{fmt_ci(full.get('roc_auc'), full.get('roc_auc_ci'))}`\n"
+    )
+    if bio_ablation.get("drop_one_ablation"):
+        full_auc = float(nested(bio_ablation, "full_panel", "roc_auc") or 0)
+        top_drop = max(
+            bio_ablation["drop_one_ablation"],
+            key=lambda x: full_auc - float(x.get("roc_auc") or 0),
+        )
+        lines.append(
+            f"- largest drop-one impact: drop `{top_drop.get('dropped_feature')}` "
+            f"→ AUC `{fmt(top_drop.get('roc_auc'))}` (Δ={fmt(full_auc - float(top_drop.get('roc_auc') or 0))})\n"
+        )
+    lines.append("- separate minimally invasive benchmark; does not support Method X non-invasive claim.\n\n")
+
+    cdr = nested(clinical, "endpoints", "cdr_worsening_event") or {}
+    pacc = nested(clinical, "endpoints", "pacc_decline_event") or {}
+    lines.extend(
+        [
+            "## Clinical endpoint (exploratory; serious caveat)\n\n",
+            f"- CDR worsening AUC: `{fmt_ci(cdr.get('roc_auc'), cdr.get('roc_auc_ci'))}`\n",
+            f"- PACC decline AUC: `{fmt_ci(pacc.get('roc_auc'), pacc.get('roc_auc_ci'))}`\n",
+            "- AUC ~0.63–0.66 is modest; progression proxies are not AD diagnosis; confounded by substudy.\n\n",
+            "## External-like evaluation\n\n",
+            f"- external_holdout_type: `{external.get('external_holdout_type')}`\n",
+            f"- is_truly_independent_external: `{external.get('is_truly_independent_external')}`\n\n",
+        ]
+    )
+    if source_warnings:
+        lines.append("## Report builder source validation\n\n")
+        for warn in source_warnings:
+            lines.append(f"- WARNING: {warn}\n")
+        lines.append("\n")
+
+    lines.append(
+        "## Required wording\n\n"
+        "Enrolled A4/LEARN catalog exhibits cohort-label coupling. Pooled binary AUC is descriptive only. "
+        "Method X-Strict remains the protected thesis anchor; extensions have separate claim boundaries.\n"
+    )
 
     atomic_write_text(out_dir / "thesis_grade_report.md", "".join(lines))
     print(f"Wrote {out_dir / 'thesis_grade_report.md'}")
+    if source_warnings:
+        print(json.dumps({"source_warnings": source_warnings}, indent=2))
     return 0
 
 

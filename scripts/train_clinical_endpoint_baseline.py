@@ -142,11 +142,23 @@ def main() -> int:
         "label_artifact": str(label_path),
     }
     atomic_write_json(out_dir / "clinical_endpoint_baseline_summary.json", summary)
-    lines = ["# Clinical Endpoint Baseline (Enrolled A4/LEARN)\n\n", f"- status: `{summary['status']}`\n\n"]
+    lines = [
+        "# Clinical Endpoint Baseline (Enrolled A4/LEARN)\n\n",
+        f"- status: `{summary['status']}`\n",
+        "- **Serious caveat:** AUC ~0.63–0.66 is modest; CDR/PACC progression proxies are not AD diagnosis.\n",
+        "- Substudy confounding likely; treat as exploratory Phase 3 feasibility only.\n\n",
+    ]
     for endpoint, result in results.items():
+        ci = result.get("roc_auc_ci") or {}
+        ci_txt = ""
+        if ci.get("status") == "OK":
+            ci_txt = f" [{ci.get('ci_low'):.3f}, {ci.get('ci_high'):.3f}]"
         lines.append(
-            f"## {endpoint}\n\n- status: `{result.get('status')}` "
-            f"- roc_auc: `{result.get('roc_auc')}` - n: `{result.get('n')}`\n\n"
+            f"## {endpoint}\n\n"
+            f"- status: `{result.get('status')}`\n"
+            f"- roc_auc: `{result.get('roc_auc')}`{ci_txt}\n"
+            f"- pr_auc: `{result.get('pr_auc')}`\n"
+            f"- n: `{result.get('n')}` (pos `{result.get('pos')}`, neg `{result.get('neg')}`)\n\n"
         )
     atomic_write_text(out_dir / "clinical_endpoint_baseline_summary.md", "".join(lines))
     write_run_manifest(

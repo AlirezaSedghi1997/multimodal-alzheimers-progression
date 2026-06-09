@@ -63,7 +63,12 @@ temporal_pairing:
       report_required: true
     primary_strict:
       max_abs_gap_days: 90
-      role: "primary feasible Method Y training tier"
+      role: "30-90d sensitivity/high-validity subset (191 rows); NOT sole approved primary training tier"
+      train_primary: false
+      report_required: true
+    primary_feasible_90:
+      max_abs_gap_days: 90
+      role: "approved composite primary training tier (266 rows; gold_standard_30 + primary_strict union)"
       train_primary: true
       report_required: true
     secondary_window:
@@ -160,7 +165,9 @@ qc_gates:
   require_shape_3d: true
   registration_qc_required_for_training_ready: true
   require_visual_qc_for_training: true
-  ncc_warn_below: 0.70
+  ncc_fail_below: 0.60
+  ncc_warn_below: 0.75
+  centiloid_abs_delta_max: 15.0
   reference_mean_min: 0.000001
   centiloid_valid_range: [-20, 200]
   fail_if_registration_missing: true

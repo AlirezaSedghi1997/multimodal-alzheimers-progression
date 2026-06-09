@@ -1,11 +1,12 @@
 # Method Y PET-Assisted Branch — Design & Readiness Summary
 
-- overall training readiness: **`NOT_TRAINING_READY`**
+- overall training readiness: **`READY_FOR_EXPLORATORY_METHOD_Y_TRAINING`**
 - multimodal design: `DESIGN_READY_NOT_TRAINED`
 - PET inventory: `COMPLETED`
 - phase Y summary: `MISSING`
 - training started: `False`
-- PET preprocessing started: `False`
+- PET preprocessing started: `True`
+- PET SPM/MNI progress: `60/266`
 - method_x_claim_unchanged: `True`
 - pet_as_method_x_input: `False`
 - current primary target: `AB-positive vs AB-negative biomarker status`
@@ -37,14 +38,14 @@ Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict or 
 
 ## Training blockers
 
-- **`PRIMARY_TIER_MIN_CLASS_BELOW_BLOCK_THRESHOLD`** — Primary-tier Method Y split has insufficient minority-class support for stable training.
 
 ## Warnings
 
+- **`PRIMARY_FEASIBLE_90_MIN_CLASS_BELOW_WARN_THRESHOLD`** — Review Method Y gap/cohort audits.
+- **`PRIMARY_STRICT_TIER_TOO_IMBALANCED_FOR_SOLE_PRIMARY_TRAINING`** — Review Method Y gap/cohort audits.
 - **`COHORT_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING`** — Amyloid label may remain coupled to cohort/tracer in Method Y splits.
 - **`TRACER_LABEL_AUDIT_SINGLE_ROW_OR_COLUMN_REVIEW`** — Tracer vs label contingency needs manual review.
 - **`GAP_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING`** — PET–T1 temporal gap bins may correlate with label.
-- **`SUBJECT_T1_ONLY_SPATIAL_OUTPUT_REQUIRES_MNI_STEP_FOR_REFERENCE_REGION_POLICY`** — Review Method Y gap/cohort audits.
 - **`PET_CACHE_NOT_BUILT_YET`** — Method Y PET volume cache has not been built.
 
 ## Required before training
@@ -54,6 +55,7 @@ Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict or 
 - calibration/ECE/Brier/CI plan frozen
 - patient-level split and one-PET-per-patient verified
 - cohort/tracer/gap confounding audits reviewed
+- class_imbalance_policy frozen (balanced weighting + PR-AUC reporting)
 
 ## Resolution checklist
 

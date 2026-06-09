@@ -53,6 +53,25 @@ def prepare_input_nii(source: Path, dest: Path) -> None:
         shutil.copy2(source, dest)
 
 
+def prepare_pet_input_nii(source: Path, dest: Path) -> None:
+    """Collapse 4D PET to 3D and write uncompressed NIfTI for SPM.
+
+    Preserve native orientation/affine so SPM coregistration matches the subject T1 grid.
+    Reorienting PET alone (e.g. as_closest_canonical) breaks SPM estwrite reslicing.
+    """
+    import nibabel as nib
+    import numpy as np
+
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    img = nib.load(str(source))
+    arr = np.asarray(img.get_fdata(dtype=np.float32))
+    if arr.ndim == 4:
+        arr = arr[..., 0] if arr.shape[-1] == 1 else np.nanmean(arr, axis=-1)
+    out = nib.Nifti1Image(arr.astype(np.float32), img.affine, img.header.copy())
+    out.set_data_dtype(np.float32)
+    nib.save(out, str(dest))
+
+
 def gzip_file(source: Path, dest: Path) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     tmp = dest.with_suffix(dest.suffix + ".tmp")
@@ -251,6 +270,319 @@ end
 fprintf(fid, '%s', jsonencode(qc));
 fclose(fid);
 copyfile(warped_path, output_nii);
+exit(0);
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+
+
+def write_spm_pet_t1_mni_batch(
+    *,
+    batch_path: Path,
+    spm_dir: Path,
+    t1_nii: Path,
+    pet_nii: Path,
+    output_nii: Path,
+    deform_cache: Path,
+    windows_matlab: bool,
+    sample_hash: str = "unknown_sample",
+    qc_json: Path | None = None,
+) -> None:
+    if qc_json is None:
+        qc_json = batch_path.with_suffix(".qc.json")
+    spm_dir_m = matlab_quote(matlab_path(spm_dir, windows_matlab=windows_matlab))
+    t1_m = matlab_quote(matlab_path(t1_nii, windows_matlab=windows_matlab))
+    pet_m = matlab_quote(matlab_path(pet_nii, windows_matlab=windows_matlab))
+    output_m = matlab_quote(matlab_path(output_nii, windows_matlab=windows_matlab))
+    deform_cache_m = matlab_quote(matlab_path(deform_cache, windows_matlab=windows_matlab))
+    qc_json_m = matlab_quote(matlab_path(qc_json, windows_matlab=windows_matlab))
+    sample_hash_m = matlab_quote(sample_hash)
+    tpm_m = matlab_quote(matlab_path(spm_dir / "tpm" / "TPM.nii", windows_matlab=windows_matlab))
+    batch_path.write_text(
+        f"""
+addpath('{spm_dir_m}');
+spm('Defaults', 'fmri');
+spm_jobman('initcfg');
+t1_nii = '{t1_m}';
+pet_nii = '{pet_m}';
+output_nii = '{output_m}';
+deform_cache = '{deform_cache_m}';
+qc_json = '{qc_json_m}';
+sample_hash = '{sample_hash_m}';
+[work_dir, t1_name, t1_ext] = fileparts(t1_nii);
+[~, pet_name, pet_ext] = fileparts(pet_nii);
+tpm = '{tpm_m}';
+
+if exist(deform_cache, 'file')
+    y_path = deform_cache;
+    used_cached_t1_deform = true;
+else
+    used_cached_t1_deform = false;
+    matlabbatch = {{}};
+    matlabbatch{{1}}.spm.spatial.preproc.channel.vols = {{[t1_nii ',1']}};
+    matlabbatch{{1}}.spm.spatial.preproc.channel.biasreg = 0.001;
+    matlabbatch{{1}}.spm.spatial.preproc.channel.biasfwhm = 60;
+    matlabbatch{{1}}.spm.spatial.preproc.channel.write = [0 1];
+    for k = 1:6
+        matlabbatch{{1}}.spm.spatial.preproc.tissue(k).tpm = {{[tpm ',' num2str(k)]}};
+        matlabbatch{{1}}.spm.spatial.preproc.tissue(k).ngaus = max(k, 2);
+        matlabbatch{{1}}.spm.spatial.preproc.tissue(k).native = [0 0];
+        matlabbatch{{1}}.spm.spatial.preproc.tissue(k).warped = [0 0];
+    end
+    matlabbatch{{1}}.spm.spatial.preproc.tissue(1).native = [1 0];
+    matlabbatch{{1}}.spm.spatial.preproc.tissue(2).native = [1 0];
+    matlabbatch{{1}}.spm.spatial.preproc.tissue(3).native = [1 0];
+    matlabbatch{{1}}.spm.spatial.preproc.tissue(6).ngaus = 2;
+    matlabbatch{{1}}.spm.spatial.preproc.warp.mrf = 1;
+    matlabbatch{{1}}.spm.spatial.preproc.warp.cleanup = 1;
+    matlabbatch{{1}}.spm.spatial.preproc.warp.reg = [0 0.001 0.5 0.05 0.2];
+    matlabbatch{{1}}.spm.spatial.preproc.warp.affreg = 'mni';
+    matlabbatch{{1}}.spm.spatial.preproc.warp.fwhm = 0;
+    matlabbatch{{1}}.spm.spatial.preproc.warp.samp = 3;
+    matlabbatch{{1}}.spm.spatial.preproc.warp.write = [0 1];
+    spm_jobman('run', matlabbatch);
+    y_path = fullfile(work_dir, ['y_' t1_name t1_ext]);
+    if ~exist(y_path, 'file')
+        error('T1 segmentation did not produce deformation field: %s', y_path);
+    end
+    [cache_dir, ~, ~] = fileparts(deform_cache);
+    if ~exist(cache_dir, 'dir')
+        mkdir(cache_dir);
+    end
+    copyfile(y_path, deform_cache);
+    y_path = deform_cache;
+end
+
+matlabbatch = {{}};
+matlabbatch{{1}}.spm.spatial.coreg.estwrite.ref = {{[t1_nii ',1']}};
+matlabbatch{{1}}.spm.spatial.coreg.estwrite.source = {{[pet_nii ',1']}};
+matlabbatch{{1}}.spm.spatial.coreg.estwrite.other = {{''}};
+matlabbatch{{1}}.spm.spatial.coreg.estwrite.eoptions.cost_fun = 'nmi';
+matlabbatch{{1}}.spm.spatial.coreg.estwrite.eoptions.sep = [4 2];
+matlabbatch{{1}}.spm.spatial.coreg.estwrite.eoptions.tol = [0.02 0.02 0.02 0.001 0.001 0.001 0.01 0.01 0.01 0.001 0.001 0.001];
+matlabbatch{{1}}.spm.spatial.coreg.estwrite.eoptions.fwhm = [7 7];
+matlabbatch{{1}}.spm.spatial.coreg.estwrite.roptions.interp = 1;
+matlabbatch{{1}}.spm.spatial.coreg.estwrite.roptions.wrap = [0 0 0];
+matlabbatch{{1}}.spm.spatial.coreg.estwrite.roptions.mask = 0;
+matlabbatch{{1}}.spm.spatial.coreg.estwrite.roptions.prefix = 'r';
+spm_jobman('run', matlabbatch);
+
+pet_coreg = fullfile(work_dir, ['r' pet_name pet_ext]);
+if ~exist(pet_coreg, 'file')
+    error('PET coregistration output missing: %s', pet_coreg);
+end
+
+matlabbatch = {{}};
+matlabbatch{{1}}.spm.spatial.normalise.write.subj.def = {{y_path}};
+matlabbatch{{1}}.spm.spatial.normalise.write.subj.resample = {{[pet_coreg ',1']}};
+matlabbatch{{1}}.spm.spatial.normalise.write.woptions.bb = [-78 -112 -70; 78 76 85];
+matlabbatch{{1}}.spm.spatial.normalise.write.woptions.vox = [2 2 2];
+matlabbatch{{1}}.spm.spatial.normalise.write.woptions.interp = 1;
+matlabbatch{{1}}.spm.spatial.normalise.write.woptions.prefix = 'w';
+spm_jobman('run', matlabbatch);
+
+[~, coreg_name, coreg_ext] = fileparts(pet_coreg);
+pet_mni = fullfile(work_dir, ['w' coreg_name coreg_ext]);
+if ~exist(pet_mni, 'file')
+    error('PET MNI normalization output missing: %s', pet_mni);
+end
+
+V = spm_vol(pet_mni);
+Y = spm_read_vols(V);
+mask = isfinite(Y) & Y ~= 0;
+if any(mask(:))
+    vals = Y(mask);
+    pet_mean = mean(vals(:));
+    pet_std = std(vals(:));
+    finite_fraction = nnz(mask) / numel(Y);
+else
+    pet_mean = 0;
+    pet_std = 0;
+    finite_fraction = 0;
+end
+qc = struct();
+qc.sample_hash = sample_hash;
+qc.qc_status = 'PASS';
+if finite_fraction < 0.95 || pet_std < 1e-6
+    qc.qc_status = 'WARNING';
+end
+qc.used_cached_t1_deform = used_cached_t1_deform;
+qc.finite_fraction = finite_fraction;
+qc.pet_mni_mean = pet_mean;
+qc.pet_mni_std = pet_std;
+qc.space = 'mni';
+qc.mni_voxel_mm = [2 2 2];
+qc.contains_pet_input = true;
+qc.contains_raw_identifiers = false;
+fid = fopen(qc_json, 'w');
+if fid == -1
+    error('Could not write QC JSON: %s', qc_json);
+end
+fprintf(fid, '%s', jsonencode(qc));
+fclose(fid);
+copyfile(pet_mni, output_nii);
+exit(0);
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+
+
+def write_spm_t1_deform_batch(
+    *,
+    batch_path: Path,
+    spm_dir: Path,
+    t1_nii: Path,
+    deform_cache: Path,
+    windows_matlab: bool,
+    sample_hash: str = "unknown_sample",
+) -> None:
+    spm_dir_m = matlab_quote(matlab_path(spm_dir, windows_matlab=windows_matlab))
+    t1_m = matlab_quote(matlab_path(t1_nii, windows_matlab=windows_matlab))
+    deform_cache_m = matlab_quote(matlab_path(deform_cache, windows_matlab=windows_matlab))
+    sample_hash_m = matlab_quote(sample_hash)
+    tpm_m = matlab_quote(matlab_path(spm_dir / "tpm" / "TPM.nii", windows_matlab=windows_matlab))
+    batch_path.write_text(
+        f"""
+addpath('{spm_dir_m}');
+spm('Defaults', 'fmri');
+spm_jobman('initcfg');
+t1_nii = '{t1_m}';
+deform_cache = '{deform_cache_m}';
+sample_hash = '{sample_hash_m}';
+[work_dir, t1_name, t1_ext] = fileparts(t1_nii);
+tpm = '{tpm_m}';
+
+if exist(deform_cache, 'file')
+    exit(0);
+end
+
+matlabbatch = {{}};
+matlabbatch{{1}}.spm.spatial.preproc.channel.vols = {{[t1_nii ',1']}};
+matlabbatch{{1}}.spm.spatial.preproc.channel.biasreg = 0.001;
+matlabbatch{{1}}.spm.spatial.preproc.channel.biasfwhm = 60;
+matlabbatch{{1}}.spm.spatial.preproc.channel.write = [0 1];
+for k = 1:6
+    matlabbatch{{1}}.spm.spatial.preproc.tissue(k).tpm = {{[tpm ',' num2str(k)]}};
+    matlabbatch{{1}}.spm.spatial.preproc.tissue(k).ngaus = max(k, 2);
+    matlabbatch{{1}}.spm.spatial.preproc.tissue(k).native = [0 0];
+    matlabbatch{{1}}.spm.spatial.preproc.tissue(k).warped = [0 0];
+end
+matlabbatch{{1}}.spm.spatial.preproc.tissue(1).native = [1 0];
+matlabbatch{{1}}.spm.spatial.preproc.tissue(2).native = [1 0];
+matlabbatch{{1}}.spm.spatial.preproc.tissue(3).native = [1 0];
+matlabbatch{{1}}.spm.spatial.preproc.tissue(6).ngaus = 2;
+matlabbatch{{1}}.spm.spatial.preproc.warp.mrf = 1;
+matlabbatch{{1}}.spm.spatial.preproc.warp.cleanup = 1;
+matlabbatch{{1}}.spm.spatial.preproc.warp.reg = [0 0.001 0.5 0.05 0.2];
+matlabbatch{{1}}.spm.spatial.preproc.warp.affreg = 'mni';
+matlabbatch{{1}}.spm.spatial.preproc.warp.fwhm = 0;
+matlabbatch{{1}}.spm.spatial.preproc.warp.samp = 3;
+matlabbatch{{1}}.spm.spatial.preproc.warp.write = [0 1];
+spm_jobman('run', matlabbatch);
+
+y_path = fullfile(work_dir, ['y_' t1_name t1_ext]);
+if ~exist(y_path, 'file')
+    error('T1 segmentation did not produce deformation field: %s', y_path);
+end
+[cache_dir, ~, ~] = fileparts(deform_cache);
+if ~exist(cache_dir, 'dir')
+    mkdir(cache_dir);
+end
+copyfile(y_path, deform_cache);
+exit(0);
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+
+
+def write_spm_pet_mni_write_batch(
+    *,
+    batch_path: Path,
+    spm_dir: Path,
+    coreg_pet_nii: Path,
+    output_nii: Path,
+    deform_cache: Path,
+    windows_matlab: bool,
+    sample_hash: str = "unknown_sample",
+    qc_json: Path | None = None,
+) -> None:
+    if qc_json is None:
+        qc_json = batch_path.with_suffix(".qc.json")
+    spm_dir_m = matlab_quote(matlab_path(spm_dir, windows_matlab=windows_matlab))
+    coreg_pet_m = matlab_quote(matlab_path(coreg_pet_nii, windows_matlab=windows_matlab))
+    output_m = matlab_quote(matlab_path(output_nii, windows_matlab=windows_matlab))
+    deform_cache_m = matlab_quote(matlab_path(deform_cache, windows_matlab=windows_matlab))
+    qc_json_m = matlab_quote(matlab_path(qc_json, windows_matlab=windows_matlab))
+    sample_hash_m = matlab_quote(sample_hash)
+    batch_path.write_text(
+        f"""
+addpath('{spm_dir_m}');
+spm('Defaults', 'fmri');
+spm_jobman('initcfg');
+coreg_pet_nii = '{coreg_pet_m}';
+output_nii = '{output_m}';
+deform_cache = '{deform_cache_m}';
+qc_json = '{qc_json_m}';
+sample_hash = '{sample_hash_m}';
+[work_dir, pet_name, pet_ext] = fileparts(coreg_pet_nii);
+
+if ~exist(deform_cache, 'file')
+    error('Missing T1 deformation cache: %s', deform_cache);
+end
+y_path = deform_cache;
+
+matlabbatch = {{}};
+matlabbatch{{1}}.spm.spatial.normalise.write.subj.def = {{y_path}};
+matlabbatch{{1}}.spm.spatial.normalise.write.subj.resample = {{[coreg_pet_nii ',1']}};
+matlabbatch{{1}}.spm.spatial.normalise.write.woptions.bb = [-78 -112 -70; 78 76 85];
+matlabbatch{{1}}.spm.spatial.normalise.write.woptions.vox = [2 2 2];
+matlabbatch{{1}}.spm.spatial.normalise.write.woptions.interp = 1;
+matlabbatch{{1}}.spm.spatial.normalise.write.woptions.prefix = 'w';
+spm_jobman('run', matlabbatch);
+
+pet_mni = fullfile(work_dir, ['w' pet_name pet_ext]);
+if ~exist(pet_mni, 'file')
+    error('PET MNI normalization output missing: %s', pet_mni);
+end
+
+V = spm_vol(pet_mni);
+Y = spm_read_vols(V);
+mask = isfinite(Y) & Y ~= 0;
+if any(mask(:))
+    vals = Y(mask);
+    pet_mean = mean(vals(:));
+    pet_std = std(vals(:));
+    finite_fraction = nnz(mask) / numel(Y);
+else
+    pet_mean = 0;
+    pet_std = 0;
+    finite_fraction = 0;
+end
+qc = struct();
+qc.sample_hash = sample_hash;
+qc.qc_status = 'PASS';
+if finite_fraction < 0.95 || pet_std < 1e-6
+    qc.qc_status = 'WARNING';
+end
+qc.used_cached_t1_deform = true;
+qc.pet_coreg_backend = 'ants_rigid_pet_to_t1';
+qc.finite_fraction = finite_fraction;
+qc.pet_mni_mean = pet_mean;
+qc.pet_mni_std = pet_std;
+qc.space = 'mni';
+qc.mni_voxel_mm = [2 2 2];
+qc.contains_pet_input = true;
+qc.contains_raw_identifiers = false;
+fid = fopen(qc_json, 'w');
+if fid == -1
+    error('Could not write QC JSON: %s', qc_json);
+end
+fprintf(fid, '%s', jsonencode(qc));
+fclose(fid);
+copyfile(pet_mni, output_nii);
 exit(0);
 """.strip()
         + "\n",

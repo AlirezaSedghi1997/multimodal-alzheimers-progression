@@ -21,6 +21,7 @@ from scripts.train_bio_cog_method_z import (
     subset,
     usable_rows,
 )
+from src.evaluation.bootstrap_ci import guarded_bootstrap_ci
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
 from src.utils.state_manager import StateManager
 
@@ -49,6 +50,7 @@ def evaluate(rows: list[dict[str, str]], features: list[str], seed: int) -> dict
         "roc_auc": roc_auc(all_y, all_p),
         "pr_auc": average_precision(all_y, all_p),
         "brier": brier(all_y, all_p),
+        "roc_auc_ci": guarded_bootstrap_ci(all_y, all_p, roc_auc, n_bootstrap=500, seed=seed),
     }
 
 

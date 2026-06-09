@@ -43,11 +43,11 @@ Allowed work is limited to aggregate, public-safe, non-training tasks:
 Use the script's built-in batch loop instead of wrapping single-batch runs in an external shell loop:
 
 ```bash
-cd "/mnt/h/New project"
+cd "<LOCAL_PATH_REDACTED> project"
 
-export DATA_ROOT="/mnt/h/A4 Learn"
-export MATLAB_BIN="/mnt/c/Program Files/MATLAB/R2024a/bin/matlab.exe"
-export SPM_DIR="/mnt/d/Matlab & Tolboxes/spm_25.01.02/spm"
+export DATA_ROOT="<LOCAL_PATH_REDACTED> Learn"
+export MATLAB_BIN="<LOCAL_PATH_REDACTED> Files/MATLAB/R2024a/bin/matlab.exe"
+export SPM_DIR="<LOCAL_PATH_REDACTED> & Tolboxes/spm_25.01.02/spm"
 
 conda run -n amyloid-tau python scripts/preprocess_mri_spm.py \
   --data_root "$DATA_ROOT" \
@@ -63,9 +63,9 @@ Equivalent Make target:
 
 ```bash
 make preprocess-full-mri-spm-auto \
-  DATA_ROOT="/mnt/h/A4 Learn" \
-  MATLAB_BIN="/mnt/c/Program Files/MATLAB/R2024a/bin/matlab.exe" \
-  SPM_DIR="/mnt/d/Matlab & Tolboxes/spm_25.01.02/spm" \
+  DATA_ROOT="<LOCAL_PATH_REDACTED> Learn" \
+  MATLAB_BIN="<LOCAL_PATH_REDACTED> Files/MATLAB/R2024a/bin/matlab.exe" \
+  SPM_DIR="<LOCAL_PATH_REDACTED> & Tolboxes/spm_25.01.02/spm" \
   SPM_BATCH_SIZE=10
 ```
 

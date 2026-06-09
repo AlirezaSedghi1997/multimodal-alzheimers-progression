@@ -104,12 +104,30 @@ def main() -> int:
         "claim_boundary": "Exploratory clinical utility framing only; not Alzheimer diagnosis claim.",
     }
     atomic_write_json("results/tables/decision_curve_analysis.json", report)
-    atomic_write_text(
-        "results/tables/decision_curve_analysis.md",
-        "# Decision Curve Analysis\n\n"
-        f"- status: `{report['status']}`\n"
-        f"- method_x_strict_tabular n: `{curves['method_x_strict_tabular']['n']}`\n",
-    )
+    tab = curves.get("method_x_strict_tabular") or {}
+    md_lines = [
+        "# Decision Curve Analysis\n\n",
+        f"- status: `{report['status']}`\n",
+        f"- claim boundary: {report['claim_boundary']}\n\n",
+        "## Method X-Strict fixed tabular\n\n",
+        f"- n: `{tab.get('n')}`\n",
+        f"- thresholds: `{tab.get('thresholds')}`\n\n",
+        "| threshold | net benefit (model) | treat all | treat none |\n",
+        "|---:|---:|---:|---:|\n",
+    ]
+    for t, nb_m, nb_a, nb_n in zip(
+        tab.get("thresholds") or [],
+        tab.get("net_benefit_model") or [],
+        tab.get("net_benefit_treat_all") or [],
+        tab.get("net_benefit_treat_none") or [],
+    ):
+        md_lines.append(f"| {t:.2f} | {nb_m:.4f} | {nb_a:.4f} | {nb_n:.4f} |\n")
+    md_lines.append("\n## Method Z\n\n")
+    z = curves.get("method_z_blood_core") or {}
+    md_lines.append(f"- status: `{z.get('status')}` — `{z.get('label')}`\n")
+    if z.get("roc_auc") is not None:
+        md_lines.append(f"- enrolled ROC-AUC (metrics only): `{z.get('roc_auc')}`\n")
+    atomic_write_text("results/tables/decision_curve_analysis.md", "".join(md_lines))
     write_run_manifest("results/logs/decision_curve_manifest.json", stage="decision_curve_analysis", data_root=None, extra={"summary": report})
     StateManager().append_event("decision_curve_analysis", "COMPLETED", "Decision curve analysis completed.")
     print(json.dumps({"status": report["status"]}, indent=2))

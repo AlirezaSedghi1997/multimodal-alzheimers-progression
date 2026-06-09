@@ -1,11 +1,12 @@
 # Method Y PET-Assisted Branch — Design & Readiness Summary
 
-- overall training readiness: **`NOT_TRAINING_READY`**
+- overall training readiness: **`DESIGN_READY_EXECUTION_GATED`**
 - multimodal design: `DESIGN_READY_NOT_TRAINED`
 - PET inventory: `COMPLETED`
 - phase Y summary: `MISSING`
 - training started: `False`
-- PET preprocessing started: `False`
+- PET preprocessing started: `True`
+- PET SPM/MNI progress: `230/266`
 - method_x_claim_unchanged: `True`
 - pet_as_method_x_input: `False`
 - current primary target: `AB-positive vs AB-negative biomarker status`
@@ -37,23 +38,20 @@ Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict or 
 
 ## Training blockers
 
-- **`PRIMARY_TIER_MIN_CLASS_BELOW_BLOCK_THRESHOLD`** — Primary-tier Method Y split has insufficient minority-class support for stable training.
 
 ## Warnings
 
+- **`PRIMARY_FEASIBLE_90_MIN_CLASS_BELOW_WARN_THRESHOLD`** — Review Method Y gap/cohort audits.
+- **`PRIMARY_STRICT_TIER_TOO_IMBALANCED_FOR_SOLE_PRIMARY_TRAINING`** — Review Method Y gap/cohort audits.
+- **`GOLD_STANDARD_30_FORBIDDEN_FOR_PRIMARY_TRAINING_MIN_NEG_VIOLATION`** — Review Method Y gap/cohort audits.
 - **`COHORT_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING`** — Amyloid label may remain coupled to cohort/tracer in Method Y splits.
 - **`TRACER_LABEL_AUDIT_SINGLE_ROW_OR_COLUMN_REVIEW`** — Tracer vs label contingency needs manual review.
 - **`GAP_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING`** — PET–T1 temporal gap bins may correlate with label.
-- **`SUBJECT_T1_ONLY_SPATIAL_OUTPUT_REQUIRES_MNI_STEP_FOR_REFERENCE_REGION_POLICY`** — Review Method Y gap/cohort audits.
-- **`PET_CACHE_NOT_BUILT_YET`** — Method Y PET volume cache has not been built.
+- **`PET_VISUAL_QC_SIGNOFF_INCOMPLETE`** — Review Method Y gap/cohort audits.
+- **`VISUAL_REVIEW_MANIFEST_PENDING`** — Review Method Y gap/cohort audits.
 
 ## Required before training
 
-- PET-only baseline plan frozen
-- MRI-only baseline on Method Y split plan frozen
-- calibration/ECE/Brier/CI plan frozen
-- patient-level split and one-PET-per-patient verified
-- cohort/tracer/gap confounding audits reviewed
 
 ## Resolution checklist
 

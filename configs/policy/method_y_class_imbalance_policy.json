@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "policy_name": "method_y_class_imbalance_policy",
+  "version": "2026-06-08",
+  "status": "FROZEN_EXPLORATORY",
+  "scope": "Method Y PET-assisted exploratory branch only; does not change Method X-Strict",
+  "approved_primary_training_tier": "primary_feasible_90",
+  "tier_rationale": {
+    "primary_feasible_90": "Union of gold_standard_30 (<=30d) and primary_strict (30-90d); one PET per patient; N=266 linked with abs PET-T1 gap <=90 days.",
+    "primary_strict_only": "Sensitivity/high-validity subset only (191 rows; min class 23). Not approved as sole primary training tier.",
+    "gold_standard_30": "Report-only high-validity sensitivity (75 rows; min class 11)."
+  },
+  "class_counts_primary_feasible_90": {
+    "n": 266,
+    "pos_like": 232,
+    "neg_like": 34,
+    "min_class": 34,
+    "pos_fraction": 0.872
+  },
+  "class_counts_primary_strict": {
+    "n": 191,
+    "pos_like": 168,
+    "neg_like": 23,
+    "min_class": 23
+  },
+  "thresholds": {
+    "exploratory_min_per_class_block": 30,
+    "exploratory_min_per_class_warn": 50,
+    "headline_min_per_class_block": 100,
+    "max_acceptable_pos_fraction_warn": 0.85
+  },
+  "minimum_counts": {
+    "min_neg_for_auc": 20,
+    "min_neg_for_primary_training": 30
+  },
+  "forbidden_primary_training_tiers": [
+    "gold_standard_30"
+  ],
+  "class_counts_gold_standard_30": {
+    "n": 75,
+    "pos_like": 64,
+    "neg_like": 11,
+    "min_class": 11,
+    "pos_fraction": 0.853,
+    "training_allowed": false,
+    "policy_violation": "min_neg_for_auc=20; report-only sensitivity tier"
+  },
+  "mandatory_mitigations": [
+    "class_weight_balanced_or_equivalent",
+    "stratified_grouped_cv_by_patient",
+    "report_pr_auc_and_balanced_accuracy",
+    "bootstrap_ci_on_minority_class_metrics",
+    "no_pooled_superiority_claims_vs_mri_only"
+  ],
+  "forbidden_claims": [
+    "Method Y PET model replaces or upgrades Method X non-invasive claim",
+    "PET-only model generalizes to full 1700 MRI cohort without sample-selection caveat",
+    "Class-imbalance-corrected AUC proves biological PET signal alone"
+  ],
+  "comparison_scope": {
+    "mri_only_baseline": "Same Method Y eligible sample set (hash intersection), not full 1700 unless explicitly reported separately",
+    "full_mri_cohort_n": 1699,
+    "method_y_pet_eligible_n": 266,
+    "note": "266 PET samples is a PET-MRI temporally linked subset, not a failure of MRI preprocessing."
+  }
+}

@@ -18,6 +18,16 @@
 | Linear + nonlinear cohort-probe | DONE | `results/tables/cohort_probe/cohort_probe_summary.json` | Phase 0.6 protocol on 3D MRI latents, tabular, and ROI/WMH/reads. |
 | Continuous centiloid within-cohort regression | DONE | `results/final_results/centiloid_regression/centiloid_regression_metrics.json` | Huber/elastic net/GBT on pooled, within-A4, and within-LEARN subsets. |
 | Phase 2 Minimum MVP audit | DONE | `results/tables/phase2_mvp/phase2_mvp_status.json` | Tracks Minimum Phase-2 MVP checklist per headline model. |
+| Matched/propensity-weighted subset analysis | DONE | `results/tables/matched_propensity_subset.json` | Phase 2 post-MVP sensitivity on age/sex/APOE4/education/MMSE-matched subset. |
+| Decision-curve analysis | DONE | `results/tables/decision_curve_analysis.json` | Net-benefit sensitivity for tabular Method X branch. |
+| TRIPOD+AI / PROBAST+AI scaffold | DONE | `results/governance/tripod_probast_checklists.json` | Governance checklist scaffold; manuscript items remain Phase 4. |
+| TRIPOD manuscript scaffold | DONE | `results/governance/tripod_manuscript_scaffold.json` | Phase 4 Methods/Results scaffold text. |
+| Domain-ceiling citation list | DONE | `results/governance/domain_ceiling_citation_list.json` | Literature interpretive anchors with exact citations. |
+| Headline temporal-gap model evaluation | DONE | `results/tables/headline_temporal_gap_evaluation.json` | Tabular and ROI baselines re-evaluated per gap window; 3D reference-only. |
+| Method Y class imbalance policy | DONE | `governance/method_y_class_imbalance_policy.md` | Frozen exploratory tier primary_feasible_90 and weighting rules. |
+| Phase 4 figure manifest | DONE | `results/governance/phase4_figure_manifest.json` | Tracks required thesis figures vs artifacts. |
+| Method Y PET SPM/MNI preprocessing | PARTIAL | `results/logs/method_y_pet_preprocess_resume_fbp_spm_pet_t1_mni.json` | SPM/MNI PET preprocess progress 110/266; training-ready gate separate. |
+| Leaky MRI surrogate quarantine | DONE | `data/processed/quarantine/` | Retired 15-feature surrogates moved out of headline feature path. |
 | Method X-Cog/SF internal stress tests | DONE | `results/final_results/method_x_cog_sf/sf_stress_tests_summary.json` | SF-only, SF-inclusive, and train-SF/test-enrolled internal decoupling arms; not external validation. |
 | Bio-Cog/Method Z Phase 3 readiness audit | DONE | `results/tables/bio_cog_method_z_readiness.json` | CPU feasibility audit for blood-biomarker branch; separate from Method X claim. |
 | Method X final feature-matrix no-PET test | DONE | `results/governance/method_x_feature_matrix_pet_leakage_check.json` | Tests the final feature matrix itself, not just the allowlist. |

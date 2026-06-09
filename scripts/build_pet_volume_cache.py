@@ -10,6 +10,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 import numpy as np
+from src.utils.cache_qc_filters import pet_cache_allowed
 from src.utils.pet_spatial_qc import atomic_write_json
 
 
@@ -19,7 +20,8 @@ def main() -> int:
     ap.add_argument("--preprocessed_root", default="data/preprocessed_pet")
     ap.add_argument("--out", default=None)
     ap.add_argument("--limit", type=int, default=None)
-    ap.add_argument("--require_qc_pass", action="store_true", default=True)
+    ap.add_argument("--require_visual_signoff", action=argparse.BooleanOptionalAction, default=True)
+    ap.add_argument("--require_qc_pass", action=argparse.BooleanOptionalAction, default=True)
     args = ap.parse_args()
     try:
         import nibabel as nib
@@ -46,8 +48,9 @@ def main() -> int:
                 excluded.append({"sample_hash": sample_hash, "reason": "MISSING_QC_JSON"})
                 continue
             qc = json.loads(qc_path.read_text(encoding="utf-8"))
-            if qc.get("status") != "PASS":
-                excluded.append({"sample_hash": sample_hash, "reason": "QC_NOT_PASS"})
+            allowed, reason = pet_cache_allowed(qc, require_visual_signoff=args.require_visual_signoff)
+            if not allowed:
+                excluded.append({"sample_hash": sample_hash, "reason": reason})
                 continue
         img = nib.load(str(fp))
         arr = img.get_fdata(dtype="float32")

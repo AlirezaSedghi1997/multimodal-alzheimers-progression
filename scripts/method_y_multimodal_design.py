@@ -8,6 +8,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
+from src.utils.pet_preprocess_progress import summarize_pet_preprocess_progress
 from src.utils.run_manifest import write_run_manifest
 from src.utils.state_manager import StateManager
 
@@ -65,11 +66,20 @@ def main() -> int:
     ap.add_argument("--inventory", default="results/tables/method_y_pet_inventory.json")
     ap.add_argument("--cognitive_summary", default="results/tables/cognitive_feature_summary.json")
     ap.add_argument("--split_summary", default="splits/split_summary.json")
+    ap.add_argument("--manifest_summary", default="results/tables/method_y_pet_manifest_summary.json")
     args = ap.parse_args()
 
     inventory = load_optional_json(args.inventory)
     cognitive = load_optional_json(args.cognitive_summary)
     splits = load_optional_json(args.split_summary)
+    manifest_summary = load_optional_json(args.manifest_summary)
+    linked_work_items = int(
+        manifest_summary.get("linked_work_items")
+        or nested(manifest_summary, "link_summary", "linked_work_items")
+        or 0
+    )
+    preprocess_progress = summarize_pet_preprocess_progress(linked_work_items=linked_work_items)
+    pet_preprocessing_started = bool(preprocess_progress["preprocessing_started"])
 
     amyloid_files = nested(inventory, "pet_image_inventory", "amyloid_fbp", "image_file_count")
     tau_files = nested(inventory, "pet_image_inventory", "tau_ftp", "image_file_count")
@@ -82,7 +92,8 @@ def main() -> int:
         "method": "Method Y-PET/MM",
         "status": "DESIGN_READY_NOT_TRAINED",
         "training_started": False,
-        "pet_preprocessing_started": False,
+        "pet_preprocessing_started": pet_preprocessing_started,
+        "pet_preprocess_progress": preprocess_progress,
         "method_x_claim_unchanged": True,
         "method_x_pet_input_allowed": False,
         "method_y_pet_input_allowed": True,
@@ -145,7 +156,8 @@ def main() -> int:
         "# Method Y PET/MRI Multimodal Design\n\n",
         "- status: `DESIGN_READY_NOT_TRAINED`\n",
         "- training_started: `False`\n",
-        "- PET preprocessing started: `False`\n",
+        f"- PET preprocessing started: `{pet_preprocessing_started}`\n",
+        f"- PET SPM/MNI preprocess: `{preprocess_progress['resume_done']}/{preprocess_progress['linked_work_items']}` complete\n",
         "- Method X claim unchanged: `True`\n",
         "- PET input allowed in Method X: `False`\n",
         "- PET input allowed only in Method Y: `True`\n\n",
@@ -170,7 +182,7 @@ def main() -> int:
     atomic_write_text("results/tables/method_y_multimodal_design.md", "".join(md))
     write_run_manifest("results/logs/method_y_multimodal_design_manifest.json", stage="method_y_multimodal_design", data_root=None, extra={"status": design["status"]})
     StateManager().append_event("method_y_multimodal_design", "DESIGN_READY_NOT_TRAINED", "Method Y PET/MRI multimodal design artifact generated.")
-    print(json.dumps({"status": design["status"], "training_started": False, "pet_preprocessing_started": False}, indent=2))
+    print(json.dumps({"status": design["status"], "training_started": False, "pet_preprocessing_started": pet_preprocessing_started, "pet_preprocess_progress": preprocess_progress}, indent=2))
     return 0
 
 

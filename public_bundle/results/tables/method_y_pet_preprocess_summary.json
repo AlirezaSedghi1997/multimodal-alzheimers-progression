@@ -6,25 +6,26 @@
   "manifest_source": "private_manifest",
   "candidate_count": 5661,
   "catalog_rows": 1699,
-  "selected_work_items": 2,
-  "excluded_items": 1508,
+  "selected_work_items": 266,
+  "excluded_items": 1433,
   "link_summary": {
     "catalog_rows": 1699,
     "candidate_rows": 5661,
-    "linked_work_items": 191,
-    "excluded_rows": 1508,
+    "linked_work_items": 266,
+    "excluded_rows": 1433,
     "one_pet_per_patient": true,
     "requested_tier": "primary_strict",
     "linked_tiers": {
-      "primary_strict": 191
+      "primary_strict": 191,
+      "gold_standard_30": 75
     },
     "linked_labels": {
-      "1": 168,
-      "0": 23
+      "1": 232,
+      "0": 34
     },
     "note": "Training-ready linking requires private manifest or project resolver; filename fallback is dry-run only."
   },
-  "spatial_mode": "ants_rigid_pet_to_t1",
+  "spatial_mode": "spm_pet_t1_mni",
   "normalization": "percentile_clip_foreground_zscore",
   "n_jobs": 1,
   "raw_paths_exported": false,
@@ -33,8 +34,8 @@
   "mni_template_provided": false,
   "reference_mask_provided": false,
   "status_counts": {
-    "PASS": 2
+    "PASS": 10
   },
-  "processed_items": 2,
+  "processed_items": 10,
   "verdict": "PASS_WITH_QC_OUTPUTS_NOT_YET_TRAINING_READY_UNTIL_READINESS_GATE"
 }

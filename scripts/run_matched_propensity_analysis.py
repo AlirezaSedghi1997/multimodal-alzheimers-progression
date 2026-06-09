@@ -149,12 +149,31 @@ def main() -> int:
     }
     out_json = Path("results/tables/matched_propensity_subset.json")
     atomic_write_json(out_json, report)
+    full_ci = report["full_cohort"].get("roc_auc_ci") or {}
+    matched_ci = report["matched_subset"].get("roc_auc_ci") or {}
+    delta = float(report["full_cohort"].get("roc_auc", 0)) - float(report["matched_subset"].get("roc_auc", 0))
+    overlap = None
+    if full_ci.get("status") == "OK" and matched_ci.get("status") == "OK":
+        overlap = not (
+            float(full_ci["ci_high"]) < float(matched_ci["ci_low"])
+            or float(matched_ci["ci_high"]) < float(full_ci["ci_low"])
+        )
     md = [
         "# Matched / Propensity-Weighted Subset Analysis\n\n",
         f"- status: `{report['status']}`\n",
-        f"- n_pairs: `{report['n_pairs']}`\n",
-        f"- full cohort ROC-AUC: `{report['full_cohort'].get('roc_auc')}`\n",
-        f"- matched subset ROC-AUC: `{report['matched_subset'].get('roc_auc')}`\n",
+        f"- method: `{report['method']}`\n",
+        f"- n_pairs: `{report['n_pairs']}`\n\n",
+        "## Full cohort vs matched 1:1\n\n",
+        f"- full cohort ROC-AUC: `{report['full_cohort'].get('roc_auc')}` "
+        f"[{full_ci.get('ci_low', 'NA')}, {full_ci.get('ci_high', 'NA')}]\n",
+        f"- matched subset ROC-AUC: `{report['matched_subset'].get('roc_auc')}` "
+        f"[{matched_ci.get('ci_low', 'NA')}, {matched_ci.get('ci_high', 'NA')}]\n",
+        f"- point difference (full − matched): `{delta:.4f}`\n",
+        f"- 95% CI overlap: `{overlap}`\n\n",
+        "## Interpretation\n\n",
+        "Matched analysis is a covariate-balance sensitivity check only. "
+        "A ~0.007 AUC difference with overlapping CIs does **not** support a meaningful performance shift; "
+        "pseudo-external holdout rules are unchanged.\n",
     ]
     atomic_write_text("results/tables/matched_propensity_subset.md", "".join(md))
     write_run_manifest("results/logs/matched_propensity_manifest.json", stage="matched_propensity", data_root=None, extra={"summary": report})

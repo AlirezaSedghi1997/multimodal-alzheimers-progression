@@ -188,8 +188,6 @@ def evaluate_cv(rows: list[dict[str, str]], features: list[str], *, k: int, seed
         "pr_auc": average_precision(all_y, all_p),
         "brier": brier(all_y, all_p),
         "roc_auc_ci": guarded_bootstrap_ci(all_y, all_p, roc_auc, n_boot=1000),
-        "y_true": all_y,
-        "y_prob": all_p,
     }
 
 
@@ -272,10 +270,12 @@ def main() -> int:
     best = None
     for arm in arms.values():
         for variant in arm["variants"].values():
+            variant.pop("y_true", None)
+            variant.pop("y_prob", None)
             if variant.get("status") != "OK":
                 continue
             if best is None or float(variant["roc_auc"]) > float(best["roc_auc"]):
-                best = variant
+                best = {k: v for k, v in variant.items() if k not in {"y_true", "y_prob"}}
 
     summary: dict[str, Any] = {
         "schema_version": 1,

@@ -69,6 +69,20 @@ def main() -> int:
     tracer_audit = chi2_2d(tracer_by_label)
     gap_label_audit = chi2_2d(gap_by_label)
 
+    # Composite exploratory tier: gold + primary_strict (<=90d linked cohort)
+    pf90_labels = label_by_tier.get("gold_standard_30", Counter()) + label_by_tier.get("primary_strict", Counter())
+    pf90_pos = pf90_labels.get("1", 0)
+    pf90_neg = pf90_labels.get("0", 0)
+    pf90_n = pf90_pos + pf90_neg
+    feasibility["primary_feasible_90"] = {
+        "n": pf90_n,
+        "pos_like": pf90_pos,
+        "neg_like": pf90_neg,
+        "trainable_binary": pf90_pos > 0 and pf90_neg > 0 and min(pf90_pos, pf90_neg) >= 30,
+        "warn_low_n": pf90_n < 300,
+        "components": ["gold_standard_30", "primary_strict"],
+    }
+
     report = {
         "stage": "method_y_gap_filter",
         "catalog_rows": len(rows),

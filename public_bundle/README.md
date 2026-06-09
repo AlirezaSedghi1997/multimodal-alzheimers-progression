@@ -2,7 +2,7 @@
 
 PET-free **Method X-Strict** pipeline for Aβ biomarker-status prediction on A4/LEARN-style data, aligned with execution program **v3.9** (thesis-grade validity controls).
 
-**Repository:** [github.com/AlirezaSedghi1997/amyloid-tau-prediction-a4learn-methodx](https://github.com/AlirezaSedghi1997/amyloid-tau-prediction-a4learn-methodx)
+**Repository:** [github.com/AlirezaSedghi1997/amyloid-tau-prediction-a4learn-methodx](http<LOCAL_PATH_REDACTED>)
 
 ## Scientific object (protected thesis anchor)
 
@@ -50,8 +50,8 @@ Key validity findings (aggregate, local runs):
 
 Default data root (not in git):
 
-- Windows: `H:\A4 Learn`
-- WSL: `/mnt/h/A4 Learn`
+- Windows: `<LOCAL_PATH_REDACTED> Learn`
+- WSL: `<LOCAL_PATH_REDACTED> Learn`
 
 Large artifacts (`data/cached/*.h5`, `results/final_results/`, raw CSVs) are **gitignored**. Reproduce via staged pipeline below.
 
@@ -62,7 +62,7 @@ Large artifacts (`data/cached/*.h5`, `results/final_results/`, raw CSVs) are **g
 conda activate amyloid-tau   # or see Makefile ENV_NAME
 
 # Phase 0
-make phase0-complete DATA_ROOT="/mnt/h/A4 Learn"
+make phase0-complete DATA_ROOT="<LOCAL_PATH_REDACTED> Learn"
 
 # Phase 1 + validity probes (CPU)
 make phase1-baselines cohort-probe centiloid-regression
@@ -107,4 +107,4 @@ python -m pytest tests/ -q
 ## Citation / contact
 
 Master's thesis project — A4/LEARN amyloid biomarker-status prediction under cohort-label confounding.  
-Maintainer: [AlirezaSedghi1997](https://github.com/AlirezaSedghi1997)
+Maintainer: [AlirezaSedghi1997](http<LOCAL_PATH_REDACTED>)
