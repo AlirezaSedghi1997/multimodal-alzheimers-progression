@@ -328,6 +328,12 @@ visual-qc-manifest:
 method-y-paired-hash-list:
 	$(PY) scripts/build_method_y_paired_hash_list.py
 
+method-y-incremental-value-table:
+	$(PY) scripts/build_method_y_incremental_value_table.py
+
+method-y-dca-workflow:
+	$(PY) scripts/build_method_y_dca_workflow_summary.py
+
 batch-sign-visual-qc:
 	$(PY) scripts/batch_sign_visual_qc.py
 

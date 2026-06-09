@@ -118,6 +118,10 @@ def build_rows() -> list[dict[str, str]]:
     paired = load_json("results/tables/method_y_paired_hash_list.json") or {}
     add(rows, "Method Y paired hash list (primary_feasible_90)", "DONE" if paired.get("n") else "MISSING", "results/tables/method_y_paired_hash_list.json", "Frozen N=266 paired-subset hashes for Y1–Y6 identical intersection.")
     add(rows, "Method Y Y2 MRI-only paired trainer", "DONE" if exists("scripts/train_mri_method_y_paired.py") else "MISSING", "scripts/train_mri_method_y_paired.py", "Script ready; full training gated until PET preprocess + readiness PASS.")
+    add(rows, "Method Y Y3 late-fusion trainer", "DONE" if exists("scripts/train_late_fusion_method_y.py") else "MISSING", "scripts/train_late_fusion_method_y.py", "Script ready; training gated until readiness PASS.")
+    add(rows, "Method Y incremental-value table", "DONE" if exists("results/tables/method_y_incremental_value_table.json") else "PARTIAL", "results/tables/method_y_incremental_value_table.json", "Scaffold; metrics populate after Y1–Y4 training.")
+    add(rows, "Method Y DCA three-way workflow", "DONE" if exists("results/tables/method_y_dca_workflow_summary.json") else "PARTIAL", "results/tables/method_y_dca_workflow_summary.json", "Workflow summary; execution after Y1–Y3 probability exports.")
+    add(rows, "Method Y Y9 missing-PET simulation", "DONE" if exists("scripts/run_method_y_missing_pet_simulation.py") else "MISSING", "results/tables/method_y_missing_pet_simulation.json", "Protocol scaffold; dropout eval after fusion training.")
     add(rows, "Leaky MRI surrogate quarantine", "DONE" if exists("data/processed/quarantine/README.md") else "PARTIAL", "data/processed/quarantine/", "Retired 15-feature surrogates moved out of headline feature path.")
     sf_stress = load_json("results/final_results/method_x_cog_sf/sf_stress_tests_summary.json") or {}
     add(rows, "Method X-Cog/SF internal stress tests", "DONE" if sf_stress.get("status") == "COMPLETED" else "MISSING", "results/final_results/method_x_cog_sf/sf_stress_tests_summary.json", "SF-only, SF-inclusive, and train-SF/test-enrolled internal decoupling arms; not external validation.")

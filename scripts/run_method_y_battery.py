@@ -15,7 +15,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
 
 
-GATE_BYPASS_IDS = frozenset({"Y7", "Y8", "Y10"})
+GATE_BYPASS_IDS = frozenset({"Y7", "Y8", "Y9", "Y10"})
 
 
 def _gate_blockers_for_row(row_id: str, gate_blockers: list[str]) -> list[str]:
@@ -44,8 +44,10 @@ BATTERY_ROWS = [
     {
         "id": "Y3",
         "title": "Late fusion MRI+PET",
-        "script": None,
-        "note": "Implement late-fusion trainer on paired PET+MRI cache.",
+        "script": "scripts/train_late_fusion_method_y.py",
+        "args": ["--device", "auto", "--amp"],
+        "requires_gpu": True,
+        "note": "Separate encoders; concat latents; paired subset only.",
     },
     {
         "id": "Y4",
@@ -83,8 +85,10 @@ BATTERY_ROWS = [
     {
         "id": "Y9",
         "title": "Missing-PET simulation / modality dropout at inference",
-        "script": None,
-        "note": "Evaluate fusion model with PET encoder dropped at inference.",
+        "script": "scripts/run_method_y_missing_pet_simulation.py",
+        "args": [],
+        "requires_gpu": False,
+        "note": "Protocol scaffold; full dropout eval after Y3 training.",
     },
     {
         "id": "Y10",
