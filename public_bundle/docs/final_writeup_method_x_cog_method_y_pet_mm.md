@@ -1,6 +1,6 @@
 # Final Write-Up: Method X-Cog and Method Y-PET/MM
 
-Status date: 2026-05-25.
+Status date: 2026-06-14.
 
 This document is the current final write-up block for the exploratory cognitive extension and the PET-assisted multimodal design branch. It does not replace the primary Method X thesis claim.
 
@@ -8,7 +8,7 @@ This document is the current final write-up block for the exploratory cognitive 
 
 Method X remains the main thesis method. Its allowed inputs are T1 MRI plus the fixed baseline tabular variables: age, sex, education_years, apoe4_carrier, and mmse_base. PET is never a Method X model input. Amyloid PET is used only as the label or target source for A-beta positive vs A-beta negative biomarker status.
 
-The current outputs should therefore be described as biomarker-status prediction. They must not be worded as definitive clinical Alzheimer disease diagnosis unless an independent clinical diagnosis or conversion label is built and validated separately.
+The current outputs should therefore be described as **early prediction of amyloid biomarker status and preclinical risk**. They must not be worded as definitive clinical Alzheimer disease diagnosis unless an independent clinical diagnosis or conversion label is built and validated separately.
 
 ## Method X-Cog Write-Up
 
@@ -22,17 +22,29 @@ The best non-MRI Method X-Cog variant is `fixed_tabular_plus_all_cognitive`, wit
 
 Interpretation: these results support the presence of additional catalog-specific predictive signal in cognitive and psychological summaries. They are exploratory and should not be presented as final clinical validation. The locked holdout is pseudo-external, not a fully independent external cohort, and A4/LEARN cohort-label coupling remains a major limitation.
 
-## Method Y-PET Inventory Write-Up
+## Method Y-PET Inventory and Training Write-Up
 
-Method Y is a separate PET-assisted exploratory branch. Phase 0 has run only as aggregate inventory and QC. It did not start PET preprocessing, did not train a PET model, and did not feed PET images, SUVR, centiloid, tau, or PET-derived features into Method X or Method X-Cog.
+Method Y is a separate PET-assisted exploratory branch. PET preprocessing has been completed, and Method Y training has been executed with all incremental modalities.
 
 The locked catalog contains 1700 rows. Aggregate PET inventory counted 5661 amyloid FBP image files, with 1698 locked-patient matches in memory. It also counted 1576 tau FTP image files, with 447 locked-patient matches in memory. These counts are availability and QC evidence only. They are not model inputs and do not alter the Method X non-invasive claim.
 
 Public Method Y artifacts are aggregate-only. Raw identifiers, raw paths, raw clinical rows, PET/MRI images, HDF5/cache files, checkpoints, and subject-level predictions are not public artifacts.
 
-## Method Y-PET/MM Design Write-Up
+## Method Y Training Results
 
-Method Y-PET/MM is design-ready but not trained. Its status is `DESIGN_READY_NOT_TRAINED`; PET preprocessing has not started and model training has not started.
+Method Y has been trained on the paired PET-cache hash intersection (N=184 effective subjects). The incremental value table shows:
+
+| scenario | ROC-AUC | accuracy | sensitivity | specificity | F1 | status |
+|---|---|---|---|---|---|---|
+| PET-only reference | 0.633 | 0.871 | 0.981 | 0.029 | 0.929 | COMPLETED |
+| MRI-only (paired) | 0.571 | 0.881 | 1.000 | 0.000 | 0.936 | COMPLETED |
+| Late fusion MRI+PET | 0.533 | 0.881 | 1.000 | 0.000 | 0.936 | COMPLETED |
+| Gated fusion MRI+PET | 0.470 | 0.886 | 0.974 | 0.143 | 0.937 | COMPLETED |
+| MRI+PET+cognitive | 0.633 | 0.871 | 0.981 | 0.029 | 0.929 | COMPLETED |
+
+**Critical caveat:** Method Y results have PET-label tautology risk because PET is both label source and model input. These results are exploratory only and must not be used for clinical claims.
+
+## Method Y Design Reporting Scenarios
 
 The design separates four reporting scenarios:
 
@@ -45,16 +57,16 @@ The design separates four reporting scenarios:
 
 The currently approved target is A-beta positive vs A-beta negative biomarker status. A clinical Alzheimer disease output is blocked until an independent clinical label is defined, such as clinical diagnosis at visit, CN/MCI/AD dementia category, conversion to MCI or AD dementia on follow-up, or adjudicated clinical diagnosis.
 
-Before any Method Y-PET/MM training, the project must create a separate PET preprocessing root, add regression tests proving that Method X loaders do not load PET tensors or PET-derived tabular values, define the target policy, and keep public outputs aggregate-only unless a separate privacy review approves hash-level release.
-
 ## Approved Reporting Language
 
 Use:
 
 - Method X predicts A-beta biomarker positivity from T1 MRI plus approved fixed tabular variables.
 - Method X-Cog is an exploratory cognitive extension and does not replace the Method X claim.
-- Method Y PET inventory is aggregate-only and does not use PET as a Method X input.
-- Method Y-PET/MM is design-ready, not trained, and separate from Method X.
+- Method Y is PET-assisted exploratory with PET-label tautology caveat; results are not for clinical claims.
+- Method Y MRI+PET+cognitive is the best Method Y modality but still exploratory.
+- Synthetic MRI-to-PET is supplementary, fold-local, train-only, and never counted as real subjects.
+- Augmentation is train-only exposure multiplication, not real-N expansion.
 
 Avoid:
 
@@ -62,7 +74,15 @@ Avoid:
 - Calling PET-assisted models non-invasive Method X.
 - Merging PET-only, MRI+PET, or MRI+PET+cognitive results into the primary Method X claim.
 - Reporting subject-level PET availability, raw identifiers, raw paths, image files, HDF5/cache files, or checkpoints in public artifacts.
+- Using clinical Alzheimer diagnosis framing; use "early prediction of amyloid biomarker status and preclinical risk" instead.
 
 ## Next Executable Gate
 
-The next thesis-critical execution remains the MRI/SPM-dependent stage: final MRI 96/3D cache, 5-fold 3D ablation, final MRI 96/3D plus cognitive fusion, XAI refresh, final analysis refresh, gate matrix refresh, and public bundle refresh. Before SPM reaches 1700 completed files, only aggregate-safe docs, tests, orchestration updates, and the explicit MRI volume cache smoke check are allowed; the smoke check is not a training cache and must not be used for claims. Method Y clinical Alzheimer output remains blocked until an independent clinical label is available.
+Method Y training is complete with all incremental modalities. The current focus is on:
+
+1. Final reporting document refresh to ensure consistent framing as "early prediction of amyloid biomarker status and preclinical risk."
+2. Public bundle rebuild after report changes.
+3. Full pytest verification.
+4. Documentation updates for SESSION_HANDOFF.md and PROGRESS.yaml.
+
+Method Y clinical Alzheimer output remains blocked until an independent clinical label is available.

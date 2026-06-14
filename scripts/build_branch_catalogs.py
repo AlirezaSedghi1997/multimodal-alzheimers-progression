@@ -39,10 +39,17 @@ MRI_READ_COLUMNS = ["Definite.MCH", "Lobar", "Deep", "Superficial.Siderosis", "S
 BLOOD_TEST_MAP = {
     "pTau217": ("biomarker_pTau217.csv", "ORRES", None),
     "GFAP": ("biomarker_Plasma_Roche_Results.csv", "LABRESN", "GFAP"),
-    "NfL": ("biomarker_Plasma_Roche_Results.csv", "LABRESN", "NFL"),
-    "pTau181": ("biomarker_Plasma_Roche_Results.csv", "LABRESN", "PTAU181"),
-    "Ab42": ("biomarker_AB_Test.csv", "LBORRES", "AB42"),
-    "Ab40": ("biomarker_AB_Test.csv", "LBORRES", "AB40"),
+    "NfL": ("biomarker_Plasma_Roche_Results.csv", "LABRESN", "NF-L"),
+    "pTau181": ("biomarker_Plasma_Roche_Results.csv", "LABRESN", "TPP181"),
+    "Ab42": ("biomarker_Plasma_Roche_Results.csv", "LABRESN", "AMYLB42"),
+    "Ab40": ("biomarker_Plasma_Roche_Results.csv", "LABRESN", "AMYLB40"),
+}
+BLOOD_TEST_ALIASES = {
+    "NfL": ("NF-L", "NFL"),
+    "pTau181": ("TPP181", "PTAU181"),
+    "Ab42": ("AMYLB42", "BP42", "TP42", "FP42", "AB42"),
+    "Ab40": ("AMYLB40", "BP40", "TP40", "FP40", "AB40"),
+    "GFAP": ("GFAP",),
 }
 
 
@@ -308,8 +315,9 @@ def build_mri_roi_wmh_reads_catalog(root: Path, master_rows: list[dict[str, str]
 
 def extract_blood_value(row: dict[str, str], value_col: str, test_filter: str | None) -> float | None:
     if test_filter:
-        test_code = (row.get("TESTCD") or row.get("LBTESTCD") or row.get("LBTEST") or "").upper()
-        if test_filter.upper() not in test_code:
+        test_code = (row.get("TESTCD") or row.get("LBTESTCD") or row.get("LBTEST") or "").strip().upper()
+        aliases = BLOOD_TEST_ALIASES.get(test_filter, (test_filter.upper(),))
+        if not any(alias in test_code or test_code == alias for alias in aliases):
             return None
     return to_float(row.get(value_col))
 

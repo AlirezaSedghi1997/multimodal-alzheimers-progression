@@ -26,7 +26,33 @@
 | Headline temporal-gap model evaluation | DONE | `results/tables/headline_temporal_gap_evaluation.json` | Tabular and ROI baselines re-evaluated per gap window; 3D reference-only. |
 | Method Y class imbalance policy | DONE | `governance/method_y_class_imbalance_policy.md` | Frozen exploratory tier primary_feasible_90 and weighting rules. |
 | Phase 4 figure manifest | DONE | `results/governance/phase4_figure_manifest.json` | Tracks required thesis figures vs artifacts. |
-| Method Y PET SPM/MNI preprocessing | PARTIAL | `results/logs/method_y_pet_preprocess_resume_fbp_spm_pet_t1_mni.json` | SPM/MNI PET preprocess progress 230/266; training-ready gate separate. |
+| Method Y PET SPM/MNI preprocessing | DONE | `results/logs/method_y_pet_preprocess_resume_fbp_spm_pet_t1_mni.json` | SPM/MNI PET preprocess progress 266/266; training-ready gate separate. |
+| Method Y paired hash list (primary_feasible_90) | DONE | `results/tables/method_y_paired_hash_list.json` | Frozen N=266 paired-subset hashes for Y1–Y6 identical intersection. |
+| Method Y Y2 MRI-only paired trainer | DONE | `scripts/train_mri_method_y_paired.py` | Script ready; full training gated until PET preprocess + readiness PASS. |
+| Method Y Y3 late-fusion trainer | DONE | `scripts/train_late_fusion_method_y.py` | Script ready; training gated until readiness PASS. |
+| Method Y Y4 gated-fusion trainer | DONE | `scripts/train_gated_fusion_method_y.py` | Shared multimodal training module; full training gated until readiness PASS. |
+| Method Y Y5 early-concat ablation trainer | DONE | `scripts/train_early_concat_method_y.py` | Ablation only; never primary claim path. |
+| Method Y Y6 cross-attention trainer | DONE | `scripts/train_cross_attention_method_y.py` | Cross-attention fusion; training gated until readiness PASS. |
+| Method Y Y10 label reproducibility | DONE | `results/tables/method_y_label_reproducibility.json` | Aggregate centiloid vs frozen-label discordance on paired subset. |
+| Biomarker hierarchy summary (X/Y/Z) | DONE | `results/tables/biomarker_hierarchy_summary.json` | Three-pillar framing; Method Y metrics populate after training. |
+| FLAIR volume index | DONE | `results/tables/flair_volume_index.json` | FLAIR files linked to master catalog: 7006. |
+| FLAIR cache readiness audit | DONE | `results/tables/flair_cache_readiness.json` | Cache build prep; T1+FLAIR sensitivity track. |
+| FLAIR 96^3 volume cache | DONE | `results/tables/flair_volume_cache_summary.json` | Supplementary FLAIR cache ok=1696. |
+| FLAIR T1+FLAIR sensitivity subset | DONE | `results/tables/flair_sensitivity_subset.json` | Intersection of T1+FLAIR cache OK samples. |
+| EfficientNet3D-B0 ablation (Method X) | DONE | `results/final_results/efficientnet3d_ablation/efficientnet3d_ablation_summary.json` | Lightweight vs EfficientNet3D controlled comparison. |
+| PET-guided KD sensitivity protocol | DONE | `results/tables/pet_guided_kd_sensitivity.json` | Teacher PET+MRI, student MRI-only; supplementary framing. |
+| AmyPET QC cross-check audit | DONE | `results/tables/amypet_qc_crosscheck.json` | Aggregate PET QC benchmark row; no AmyPET import. |
+| T1+FLAIR sensitivity protocol | DONE | `results/tables/t1_flair_sensitivity_protocol.json` | Supplementary T1 vs T1+FLAIR under locked splits. |
+| FLAIR-linked enrolled hash list | DONE | `results/tables/flair_linked_hash_list.json` | Frozen hashes for T1+FLAIR sensitivity; independent of cache build. |
+| 3-month parallel execution progress table | DONE | `results/tables/parallel_execution_progress_table.json` | Read-only lane snapshot; no Tier deferral. |
+| Dual-pillar framing paragraph | DONE | `results/governance/dual_pillar_framing_summary.json` | Approved Method X / Method Y manuscript framing. |
+| Training & evaluation protocol (TRIPOD-aligned) | DONE | `results/governance/training_evaluation_protocol.json` | Maps optimizers, CV, overfitting controls per branch. |
+| 3D MRI overfit diagnostics | DONE | `results/tables/three_d_overfit_diagnostics.json` | Train vs val loss gap from early-stopping curves. |
+| Method X imaging training summary | DONE | `results/tables/method_x_imaging_training_summary.json` | Consolidated 3D, EfficientNet, T1+FLAIR tracks. |
+| PET-guided KD student trainer | DONE | `scripts/run_pet_guided_kd_train.py` | MRI-only student; full KD after Y3 teacher checkpoint. |
+| Method Y incremental-value table | DONE | `results/tables/method_y_incremental_value_table.json` | Scaffold; metrics populate after Y1–Y4 training. |
+| Method Y DCA three-way workflow | DONE | `results/tables/method_y_dca_workflow_summary.json` | Workflow summary; execution after Y1–Y3 probability exports. |
+| Method Y Y9 missing-PET simulation | DONE | `results/tables/method_y_missing_pet_simulation.json` | Protocol scaffold; dropout eval after fusion training. |
 | Leaky MRI surrogate quarantine | DONE | `data/processed/quarantine/` | Retired 15-feature surrogates moved out of headline feature path. |
 | Method X-Cog/SF internal stress tests | DONE | `results/final_results/method_x_cog_sf/sf_stress_tests_summary.json` | SF-only, SF-inclusive, and train-SF/test-enrolled internal decoupling arms; not external validation. |
 | Bio-Cog/Method Z Phase 3 readiness audit | DONE | `results/tables/bio_cog_method_z_readiness.json` | CPU feasibility audit for blood-biomarker branch; separate from Method X claim. |

@@ -1,0 +1,24 @@
+{
+  "add_synthetic_to": "same_train_fold_only",
+  "branch": "supplementary_mri_to_pet_synthetic_augmentation",
+  "claim_boundary": "Supplementary augmentation sensitivity only; not evidence of more real patients, not a non-invasive Method X input, and not a clinical Alzheimer diagnosis model.",
+  "fit_generator_scope": "train_fold_only",
+  "folds": 5,
+  "generator_storage_public": false,
+  "holdout_real_only": true,
+  "leakage_guards": [
+    "Fit MRI-to-PET generator independently inside each train fold.",
+    "Do not train generator on validation, test, or holdout hashes.",
+    "Do not add synthetic PET to validation, test, holdout, or Method X.",
+    "Report real N separately from synthetic train exposures."
+  ],
+  "method_x_input_allowed": false,
+  "method_y_only": true,
+  "public_output_granularity": "aggregate_policy_only",
+  "raw_or_synthetic_images_public": false,
+  "status": "DESIGN_READY_SUPPLEMENTARY_ONLY",
+  "synthetic_counted_as_real_subjects": false,
+  "synthetic_per_real_train_sample": 1,
+  "test_real_only": true,
+  "validation_real_only": true
+}

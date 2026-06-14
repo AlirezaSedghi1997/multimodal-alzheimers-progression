@@ -3,7 +3,7 @@
 - status: `DESIGN_READY_NOT_TRAINED`
 - training_started: `False`
 - PET preprocessing started: `True`
-- PET SPM/MNI preprocess: `110/266` complete
+- PET SPM/MNI preprocess: `240/266` complete
 - Method X claim unchanged: `True`
 - PET input allowed in Method X: `False`
 - PET input allowed only in Method Y: `True`

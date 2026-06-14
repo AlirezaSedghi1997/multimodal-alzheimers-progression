@@ -18,10 +18,10 @@ Empty NfL/pTau181/Ab42_40_ratio columns in the locked catalog are explained by L
 
 ## Feature mapping mismatches
 
-- **NfL**: legacy filter matched=False, observed via aliases=2341, status=`MISMATCH`
-- **pTau181**: legacy filter matched=False, observed via aliases=1693, status=`MISMATCH`
-- **Ab42**: legacy filter matched=False, observed via aliases=11785, status=`MISMATCH`
-- **Ab40**: legacy filter matched=False, observed via aliases=11763, status=`MISMATCH`
+- **NfL**: legacy filter matched=True, observed via aliases=2341, status=`OK_OR_EMPTY`
+- **pTau181**: legacy filter matched=True, observed via aliases=1693, status=`OK_OR_EMPTY`
+- **Ab42**: legacy filter matched=True, observed via aliases=11785, status=`OK_OR_EMPTY`
+- **Ab40**: legacy filter matched=True, observed via aliases=11763, status=`OK_OR_EMPTY`
 
 ## Recommended fixes
 

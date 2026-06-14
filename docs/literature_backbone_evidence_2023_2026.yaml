@@ -1,0 +1,278 @@
+# Literature backbone evidence registry (2023–2026)
+# Seed count: 24 entries | Verify each before manuscript citation
+# Generated/expanded: 2026-06-11
+
+schema_version: 2
+disclaimer: >
+  Registry of papers/repos informing Method X/Y mathematical innovation.
+  Entries marked EXCLUDED or ANTI-PATTERN must not be cited as supporting evidence.
+
+innovation_pillars:
+  IP1:
+    name: SynIB synergy objective
+    literature: [LIT019, LIT022, LIT023]
+    math: "PID; penalize I(Y;ŷ|masked modality)"
+    code: src/models/losses/synib_synergy_loss.py
+    train: scripts/train_synib_tabular_fusion.py
+    priority: R1.2
+  IP2:
+    name: Worst-dimension fusion audit
+    literature: [LIT016]
+    math: "Augmented Chebyshev scalarization over {AUC, Brier, cohort-probe, missing-modality}"
+    code: src/evaluation/worst_dimension_audit.py
+    eval: scripts/run_worst_dimension_fusion_audit.py
+  IP3:
+    name: MFSCA texture branch
+    literature: [LIT018]
+    math: "Hilbert-ordered 1D + MFDFA Hurst/spectrum proxies"
+    code: src/features/mfsca_texture.py
+    extract: scripts/extract_mfsca_texture_features.py
+    priority: R3_stretch
+  IP4:
+    name: PET-guided KD sensitivity
+    literature: [LIT006]
+    train: scripts/run_pet_guided_kd_train.py
+    note: Method X remains PET-free at inference
+  IP5:
+    name: PID-disentangled fusion (planned)
+    literature: [LIT024]
+    status: PLANNED
+
+papers:
+  - id: LIT001
+    year: 2023
+    title: "T1w MRI amyloid prediction — domain ceiling reference"
+    project_use: AUC ceiling context for Method X (MRI-only ~0.60–0.75)
+    relevance: Baseline expectation for non-invasive structural imaging
+    status: SEED
+
+  - id: LIT002
+    year: 2024
+    arxiv: "2411.12061"
+    title: "EfficientNet3D T1+FLAIR amyloid classification"
+    project_use: FLAIR sensitivity track (+~0.05 AUC vs T1 alone)
+    relevance: Aligns with train_t1_flair_sensitivity.py
+    status: SEED
+
+  - id: LIT003
+    year: 2024
+    title: "External validation gap in AD ML — narrative"
+    project_use: Supports P03 true external N/A; pseudo-external lock
+    relevance: Never relabel locked holdout as independent cohort
+    status: SEED
+
+  - id: LIT004
+    year: 2023
+    title: "Decision curve analysis for amyloid screening"
+    project_use: Method Y DCA framing (run_method_y_dca_three_way.py)
+    status: SEED
+
+  - id: LIT005
+    year: 2025
+    title: "Multimodal fusion small-N caution — Frontiers Neuroinformatics"
+    project_use: Thesis Discussion — report effective N, avoid ViT headline at N=184
+    status: SEED
+
+  - id: LIT006
+    year: 2025
+    arxiv: "2604.12574"
+    github: https://github.com/FrancescoChiumento/pet-guided-mri-amyloid-detection
+    title: "Cross-Modal Knowledge Distillation for PET-Free Amyloid-Beta Detection from MRI"
+    project_use: PET-guided KD sensitivity; Method X PET-free at inference
+    relevance: "T1w AUC~0.73 OASIS-3; multi-contrast up to 0.74"
+    implementation_status: IMPLEMENTED
+    code_path: scripts/run_pet_guided_kd_train.py
+
+  - id: LIT007
+    year: 2025
+    github: https://github.com/ai-med/DiaMond
+    title: "DiaMond: Multimodal ViT MRI+PET (WACV 2025)"
+    project_use: HDF5 multimodal cache pattern for Method Y
+    relevance: ViT unlikely at N=184 without pretrain — reference only
+    implementation_status: PLANNED
+
+  - id: LIT008
+    year: 2024
+    github: https://github.com/Kateridge/TransMF_AD
+    title: "Transformer Multimodal Fusion AD sMRI+PET"
+    project_use: HyperFusion/cross-attn comparison row
+    implementation_status: PLANNED
+
+  - id: LIT009
+    year: 2025
+    github: https://github.com/huangshuo343/multimodalAD
+    title: "MultimodalAD: Swin-UNETR + tabular TabPFN"
+    project_use: Caution at small N vs ADNI n=1147
+    implementation_status: REFERENCE
+
+  - id: LIT010
+    year: 2025
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC12387124/
+    title: "AI in AD Diagnosis Using PET-MRI: Narrative Review Post-Tauvid"
+    project_use: External validation + leakage warnings
+    status: SEED
+
+  - id: LIT011
+    year: 2025
+    doi: "10.3389/fninf.2025.1557177"
+    title: "Advancements in DL for Early AD Diagnosis Using Multimodal Neuroimaging"
+    project_use: Discussion — fusion gains context-dependent
+    status: SEED
+
+  - id: LIT012
+    year: 2025
+    url: https://www.mdpi.com/3042-4518/3/2/22
+    title: "Plasma p-tau217 pre-screening for Amyloid-PET (DCA, ADNI)"
+    project_use: Method Y DCA framing; Method Z contrast
+
+  - id: LIT013
+    year: 2025
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC12366461/
+    title: "Radiomics vs SUVr for AV45 PET amyloid classification (DCA)"
+    project_use: Method Y PET-only supplementary; tautology caveat
+
+  - id: LIT014
+    year: 2026
+    arxiv: "2606.07721"
+    url: https://arxiv.org/abs/2606.07721
+    title: "LLM extraction from brain MRI reports (MTA, Fazekas, WMH)"
+    project_use: ROI/reads branch sensitivity only — cohort_probe mri_roi_wmh_reads
+    key_findings:
+      - "MTA balanced accuracy ~90–96%"
+      - "Fazekas ~94%; microbleeds 93%"
+      - "Few-shot helps numerical variables"
+    implementation_status: PLANNED
+
+  - id: LIT015
+    year: 2026
+    arxiv: "2606.07798"
+    url: https://arxiv.org/abs/2606.07798
+    title: "GNOVA: GRU-Neural ODE VAE for AD trajectory (CDR-SB/MMSE)"
+    project_use: Method X-Cog / clinical endpoint extension without MRI/PET
+    key_findings:
+      - "MAE CDR-SB 1.35, MMSE 2.28 on ADNI n=1727"
+      - "85% CI coverage for CDR-SB"
+      - "Age, BMI, APOE4 strongest predictors"
+    implementation_status: PLANNED
+
+  - id: LIT016
+    year: 2026
+    arxiv: "2606.07801"
+    url: https://arxiv.org/abs/2606.07801
+    github: https://github.com/leibniz-Man/MMS-PRM
+    title: "MMS-PRM: Worst-dimension multimodal reasoning optimization"
+    project_use: Non-compensatory fusion eval (Chebyshev scalarization)
+    key_math: "g_aug(v) = -max_j(z*_j - v_j) - ρ Σ_j(z*_j - v_j)"
+    implementation_status: IMPLEMENTED
+    code_path: src/evaluation/worst_dimension_audit.py
+
+  - id: LIT017
+    year: 2026
+    arxiv: "2606.10279"
+    url: https://arxiv.org/abs/2606.10279
+    title: "Rationale SFT hurts ADRD prediction"
+    project_use: ANTI-PATTERN — do not use rationale-LLM for tabular Method X
+    implementation_status: EXCLUDED
+
+  - id: LIT018
+    year: 2026
+    arxiv: "2606.10222"
+    url: https://arxiv.org/abs/2606.10222
+    title: "MFSCA: Multifractal MRI dementia signatures via Hilbert curve"
+    project_use: R3 texture branch — multifractality weakens with dementia
+    key_findings:
+      - "Multifractal → monofractal transition with ageing/dementia"
+      - "H, Δα, asymmetry A as slice profiles"
+    implementation_status: IMPLEMENTED
+    code_path: src/features/mfsca_texture.py
+
+  - id: LIT019
+    year: 2026
+    arxiv: "2606.09853"
+    url: https://arxiv.org/abs/2606.09853
+    title: "SynIB: Synergistic Information Bottleneck for multimodal learning"
+    project_use: Primary training objective — modality dropout + fusion Method Y/X
+    key_math: "S(Y;X1,X2) via PID; penalize confident ŷ under masked modality"
+    priority: R1.2
+    implementation_status: IMPLEMENTED
+    code_path: src/models/losses/synib_synergy_loss.py
+
+  - id: LIT020
+    year: 2026
+    url: https://neurosciencenews.com/glucosamine-joint-supplement-alzheimers-30853/
+    title: "Glucosamine and AD risk (epidemiology news)"
+    project_use: Discussion only — not modeling input
+    implementation_status: DISCUSSION_ONLY
+
+  - id: LIT021
+    year: 2026
+    arxiv: "2606.07722"
+    title: "Mislinked draft — LLM/chatbot philosophy, NOT amyloid imaging"
+    project_use: EXCLUDED pending user confirmation
+    implementation_status: EXCLUDED
+
+  - id: LIT022
+    year: 2025
+    arxiv: "2505.19996"
+    url: https://arxiv.org/html/2505.19996
+    title: "Optimal Multimodal Information Bottleneck (OMIB)"
+    project_use: Dynamic λ per modality — future SynIB extension
+    implementation_status: PLANNED
+
+  - id: LIT023
+    year: 2025
+    arxiv: "2509.20225"
+    title: "MRdIB: Representation-disentangled Information Bottleneck"
+    project_use: Unique/redundant/synergy decomposition for Method Y fusion
+    implementation_status: PLANNED
+
+  - id: LIT024
+    year: 2026
+    arxiv: "2602.22545"
+    url: https://arxiv.org/html/2602.22545v2
+    title: "PID-guided disentangled tau-PET synthesis from T1+FLAIR"
+    project_use: PID latent factors for T1+FLAIR branch; complements LIT002
+    implementation_status: PLANNED
+
+github_repos:
+  - repo: FrancescoChiumento/pet-guided-mri-amyloid-detection
+    adopt: scripts/run_pet_guided_kd_train.py
+    anchor: LIT006
+  - repo: ai-med/DiaMond
+    adopt: HDF5 paired cache pattern
+    anchor: LIT007
+  - repo: leibniz-Man/MMS-PRM
+    adopt: worst-dimension eval philosophy (audit only, not full MCTS)
+    anchor: LIT016
+  - repo: Kateridge/TransMF_AD
+    adopt: transformer fusion reference
+    anchor: LIT008
+  - repo: huangshuo343/multimodalAD
+    adopt: Swin-UNETR + tabular caution at small N
+    anchor: LIT009
+
+similar_papers_added:
+  - id: LIT025
+    year: 2025
+    arxiv: "2505.19996"
+    title: "OMIB — see LIT022"
+    note: duplicate anchor consolidated
+  - id: LIT026
+    year: 2024
+    title: "Partial Information Decomposition in multimodal learning (Liang et al.)"
+    project_use: Theoretical foundation for IP1/IP5 PID decomposition
+    relevance: Post-hoc synergy quantification → training signal gap SynIB fills
+
+synthesis_for_project:
+  auc_ceiling_mri_only: "T1w-only amyloid AUC often 0.60–0.75; tabular+MRI up to ~0.79 internal"
+  synergy_over_architecture: "SynIB targets loss-level synergy; orthogonal to backbone swaps"
+  worst_dimension_eval: "MMS-PRM Chebyshev prevents AUC masking calibration/cohort failures"
+  mfsca_texture: "Multifractal weakening marks structural heterogeneity loss in dementia"
+  gnova_trajectory: "Routine-data Neural ODE for Method X-Cog clinical endpoint stretch"
+  llm_reads_sensitivity: "Report extraction as ROI/reads sensitivity branch only"
+  anti_patterns: ["LIT017 rationale SFT", "LIT021 mislinked philosophy draft"]
+
+research_gaps:
+  - "No amyloid PET prediction method jointly optimizes PID synergy + worst-dimension eval at small N"
+  - "MFSCA never combined with information bottleneck fusion in A4/LEARN locked cohort"
+  - "Cohort-label coupling (Cramér V≈1) requires non-compensatory audit, not scalar AUC alone"

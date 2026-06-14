@@ -40,7 +40,7 @@ def extract_fold_embeddings(
     import torch
     from torch.utils.data import DataLoader
 
-    ckpt = torch.load(checkpoint_path, map_location="cpu")
+    ckpt = torch.load(checkpoint_path, map_location="cpu", weights_only=True)
     tab_mean = ckpt["tab_mean"]
     tab_std = ckpt["tab_std"]
     fusion = ckpt.get("fusion", "cross_attention")
@@ -121,7 +121,7 @@ def main() -> int:
 
     import torch
 
-    fusion = torch.load(ckpt_dir / "method_x_3d_fold_0.pt", map_location="cpu").get("fusion", "cross_attention")
+    fusion = torch.load(ckpt_dir / "method_x_3d_fold_0.pt", map_location="cpu", weights_only=True).get("fusion", "cross_attention")
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(

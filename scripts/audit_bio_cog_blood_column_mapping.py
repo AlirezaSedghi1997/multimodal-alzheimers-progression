@@ -16,10 +16,10 @@ from src.utils.run_manifest import write_run_manifest
 from src.utils.state_manager import StateManager
 
 EXPECTED_FILTERS = {
-    "NfL": {"source": "biomarker_Plasma_Roche_Results.csv", "expected_substrings": ["NFL"]},
-    "pTau181": {"source": "biomarker_Plasma_Roche_Results.csv", "expected_substrings": ["PTAU181"]},
-    "Ab42": {"source": "biomarker_AB_Test.csv", "expected_substrings": ["AB42"]},
-    "Ab40": {"source": "biomarker_AB_Test.csv", "expected_substrings": ["AB40"]},
+    "NfL": {"source": "biomarker_Plasma_Roche_Results.csv", "expected_substrings": ["NF-L", "NFL"]},
+    "pTau181": {"source": "biomarker_Plasma_Roche_Results.csv", "expected_substrings": ["TPP181", "PTAU181"]},
+    "Ab42": {"source": "biomarker_Plasma_Roche_Results.csv", "expected_substrings": ["AMYLB42", "BP42", "TP42", "FP42"]},
+    "Ab40": {"source": "biomarker_Plasma_Roche_Results.csv", "expected_substrings": ["AMYLB40", "BP40", "TP40", "FP40"]},
 }
 OBSERVED_ALIASES = {
     "NfL": ["NF-L", "NFL"],

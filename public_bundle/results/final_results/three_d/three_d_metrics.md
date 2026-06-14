@@ -1,21 +1,9 @@
-# 3D MRI Training Metrics
+# Method X 3D metrics
 
-- mode: `FULL_3D_TRAINING`
-- device: `cuda`
 - model: `MethodX3DClassifier`
 - fusion: `cross_attention`
-- latent_alignment_lambda: `0.0`
-- ablation_variant: `cross_attention`
-- n: `1359`
-- roc_auc: `0.7221570544151189`
-- pr_auc: `0.8421626306129226`
-- brier: `0.20841256008246753`
-- peak_vram_gb: `0.08584451675415039`
-- external_like_roc_auc: `0.7235570173679355`
+- backbone: `efficientnet3d_b0`
+- mode: `FULL_3D_TRAINING`
+- synib_lambda: `0.5`
+- roc_auc: `0.7109131012356819`
 - final_claim_allowed: `False`
-- reporting_mode: `LIMITED_OR_DEBUG_REPORTING_ONLY`
-- validity_recommendation: `CLAIM_MUST_BE_LIMITED_OR_REFRAMED`
-- spm_complete: `True`
-- uses_pet_as_input: `False`
-- uses_raw_identifiers: `False`
-- claim_blockers: `['VALIDITY_AUDIT_LIMITS_OR_BLOCKS_STRONG_CLAIM']`

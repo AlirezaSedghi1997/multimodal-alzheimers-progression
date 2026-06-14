@@ -47,6 +47,7 @@ results/**/patient*
 __pycache__/
 .pytest_cache/
 .pytest_tmp/
+.pytest_tmp2/
 .codex_cuda_site/
 .codex_sklearn_site/
 .pip_cache/

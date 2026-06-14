@@ -39,7 +39,13 @@ def atomic_write_text(path: Path, text: str) -> None:
     tmp.replace(path)
 
 
-def method_y_section(method_y: dict[str, Any], manifest: dict[str, Any]) -> list[str]:
+def method_y_section(
+    method_y: dict[str, Any],
+    manifest: dict[str, Any],
+    incremental: dict[str, Any],
+    synthetic: dict[str, Any],
+    augmentation: dict[str, Any],
+) -> list[str]:
     linked = int(
         nested(manifest, "link_summary", "linked_work_items")
         or manifest.get("linked_work_items")
@@ -50,7 +56,10 @@ def method_y_section(method_y: dict[str, Any], manifest: dict[str, Any]) -> list
     execution_blockers = list(method_y.get("execution_blockers") or [])
     warnings = list(method_y.get("warnings") or [])
     status = method_y.get("status", "MISSING")
+    pet_ref = incremental.get("pet_only_reference") or {}
+    rows = incremental.get("rows") or []
     lines = [
+        "- branch status: `PET_ASSISTED_EXPLORATORY_ONLY`\n",
         f"- design/training readiness status: `{status}`\n",
         f"- approved tier: `{method_y.get('approved_training_tier', 'primary_feasible_90')}`\n",
         f"- design blockers: `{design_blockers}`\n",
@@ -59,8 +68,28 @@ def method_y_section(method_y: dict[str, Any], manifest: dict[str, Any]) -> list
         f"- PET preprocess progress: `{progress.get('resume_done', 0)}/{linked}` PASS\n",
         f"- regex_fallback_used (manifest): `{manifest.get('regex_fallback_used')}`\n",
         f"- project_inventory_used: `{manifest.get('project_inventory_used')}`\n",
-        "- note: exploratory **design** may pass while **execution** (266/266 preprocess + PET cache) remains gated.\n",
+        f"- matched effective N for Method Y deltas: `{incremental.get('matched_effective_n', 'NA')}`\n",
+        f"- PET-only reference ROC-AUC: `{fmt(pet_ref.get('roc_auc'))}`\n",
+        "- PET-label tautology caveat: PET-containing models predict a PET-derived amyloid label using PET inputs, so they cannot support the PET-free thesis claim.\n",
+        "- Method X input status: PET and synthetic PET remain forbidden; Method Y rows are reported separately.\n",
+        "- clinical Alzheimer diagnosis allowed: `False`; report amyloid biomarker status and preclinical risk only.\n",
+        "- threshold metrics use fold-internal validation-selected thresholds only.\n",
+        "- current Method Y rows:\n",
     ]
+    for row in rows:
+        threshold = row.get("threshold_metrics") or {}
+        lines.append(
+            f"  - `{row.get('comparison_id')}`: AUC `{fmt(row.get('roc_auc'))}`, "
+            f"delta vs PET `{fmt(row.get('delta_auc_vs_pet_only'))}`, "
+            f"accuracy `{fmt(threshold.get('accuracy'))}`, sensitivity `{fmt(threshold.get('sensitivity'))}`, "
+            f"specificity `{fmt(threshold.get('specificity'))}`, F1 `{fmt(threshold.get('f1'))}`\n"
+        )
+    lines.extend(
+        [
+            f"- synthetic MRI-to-PET status: `{synthetic.get('status', 'MISSING')}`; fit scope `{synthetic.get('fit_generator_scope', 'NA')}`; counted as real subjects `{synthetic.get('synthetic_counted_as_real_subjects', 'NA')}`\n",
+            f"- train-only augmentation exposures: `{augmentation.get('augmented_training_exposures', 'NA')}` from real train N `{augmentation.get('real_train_n', 'NA')}`; counted as real subjects `{augmentation.get('synthetic_or_augmented_counted_as_real_subjects', 'NA')}`\n",
+        ]
+    )
     return lines
 
 
@@ -82,6 +111,9 @@ def main() -> int:
     ablation = load_json(PROJECT_ROOT / "results/final_results/three_d_ablation/three_d_ablation_summary.json")
     method_y = load_json(PROJECT_ROOT / "results/tables/method_y_training_readiness.json")
     manifest = load_json(PROJECT_ROOT / "results/tables/method_y_pet_manifest_summary.json")
+    method_y_incremental = load_json(PROJECT_ROOT / "results/tables/method_y_incremental_value_table.json")
+    synthetic_policy = load_json(PROJECT_ROOT / "results/tables/synthetic_mri_pet_supplement.json")
+    augmentation_policy = load_json(PROJECT_ROOT / "results/tables/augmentation_policy.json")
     bio_z = load_json(PROJECT_ROOT / "results/final_results/bio_cog_method_z/bio_cog_method_z_summary.json")
     bio_ablation = load_json(PROJECT_ROOT / "results/final_results/bio_cog_method_z/bio_cog_blood_ablation.json")
     coupling = load_json(PROJECT_ROOT / "results/governance/cohort_label_coupling_audit.json")
@@ -116,9 +148,9 @@ def main() -> int:
     )
 
     lines = [
-        "# Thesis-grade Method X Report — execution program v3.9\n\n",
+        "# Thesis-grade Method X Report - Early Prediction of Amyloid Biomarker Status and Preclinical Risk\n\n",
         "## Required caveats\n\n",
-        "1. Output is **Aβ biomarker status**, not Alzheimer disease diagnosis.\n",
+        "1. Output is **amyloid biomarker status and preclinical risk**, not Alzheimer disease diagnosis.\n",
         "2. PET is label/target only; never a Method X predictor.\n",
         "3. Evaluation is locked **pseudo-external**, not independent external validation.\n",
         "4. A4/LEARN cohort-label coupling (Cramér's V≈1.0 enrolled-only) limits pooled binary interpretation.\n",
@@ -211,7 +243,13 @@ def main() -> int:
     else:
         lines.append("- curves: see `results/tables/decision_curve_analysis.json`\n\n")
 
-    lines.extend(["## Method Y PET (exploratory branch)\n\n", *method_y_section(method_y, manifest), "\n"])
+    lines.extend(
+        [
+            "## Method Y PET (exploratory branch)\n\n",
+            *method_y_section(method_y, manifest, method_y_incremental, synthetic_policy, augmentation_policy),
+            "\n",
+        ]
+    )
     lines.extend(
         [
             "## Bio-Cog / Method Z (Phase 3; separate branch)\n\n",
@@ -261,7 +299,9 @@ def main() -> int:
     lines.append(
         "## Required wording\n\n"
         "Enrolled A4/LEARN catalog exhibits cohort-label coupling. Pooled binary AUC is descriptive only. "
-        "Method X-Strict remains the protected thesis anchor; extensions have separate claim boundaries.\n"
+        "Method X-Strict remains the protected PET-free thesis anchor; extensions have separate claim boundaries. "
+        "The title and abstract framing should be early prediction of amyloid biomarker status and preclinical risk, "
+        "not clinical Alzheimer diagnosis.\n"
     )
 
     atomic_write_text(out_dir / "thesis_grade_report.md", "".join(lines))

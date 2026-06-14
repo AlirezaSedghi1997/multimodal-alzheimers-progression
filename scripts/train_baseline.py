@@ -29,11 +29,11 @@ def read_rows(path: Path) -> list[dict[str, str]]:
 
 def safe_float(value: str | None) -> float:
     if value is None or value == "":
-        return 0.0
+        return float('nan')
     try:
         return float(value)
     except ValueError:
-        return 0.0
+        return float('nan')
 
 
 def matrix(rows: list[dict[str, str]]) -> tuple[list[list[float]], list[int]]:

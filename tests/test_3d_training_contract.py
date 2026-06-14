@@ -8,7 +8,13 @@ def test_method_x_3d_forward_contract():
     torch = pytest.importorskip("torch")
     from src.models.backbones.lightweight_3d import MethodX3DClassifier
 
-    model = MethodX3DClassifier(base_channels=2, latent_dim=16, tab_hidden_dim=8, fusion="concat")
+    model = MethodX3DClassifier(
+        base_channels=2,
+        latent_dim=16,
+        tab_hidden_dim=8,
+        fusion="concat",
+        backbone="tiny",
+    )
     image = torch.zeros(2, 1, 16, 16, 16)
     tabular = torch.zeros(2, 5)
     logits = model(image, tabular)
@@ -25,6 +31,7 @@ def test_method_x_3d_cross_attention_forward_contract():
         tab_hidden_dim=8,
         fusion="cross_attention",
         dropout=0.0,
+        backbone="tiny",
     )
     image = torch.zeros(2, 1, 16, 16, 16)
     tabular = torch.zeros(2, 5)
@@ -42,12 +49,44 @@ def test_method_x_3d_latent_alignment_contract():
         tab_hidden_dim=8,
         fusion="cross_attention",
         dropout=0.0,
+        backbone="tiny",
     )
     image = torch.zeros(2, 1, 16, 16, 16)
     tabular = torch.zeros(2, 5)
     logits, mri_latent, tab_latent = model.forward_with_latents(image, tabular)
     assert logits.shape == (2,)
     assert mri_latent.shape == tab_latent.shape == (2, 16)
+
+
+def test_method_x_3d_synib_loss_smoke():
+    torch = pytest.importorskip("torch")
+    from src.models.backbones.lightweight_3d import MethodX3DClassifier
+    from src.models.losses.synib_synergy_loss import SynIBConfig, synib_multimodal_loss
+
+    model = MethodX3DClassifier(
+        base_channels=2,
+        latent_dim=16,
+        tab_hidden_dim=8,
+        fusion="cross_attention",
+        dropout=0.0,
+        backbone="tiny",
+    )
+    image = torch.zeros(2, 1, 16, 16, 16)
+    tabular = torch.zeros(2, 5)
+    targets = torch.tensor([0.0, 1.0])
+    logits, mri_latent, tab_latent = model.forward_with_latents(image, tabular)
+    mri_latent, tab_raw = model.encode(image, tabular)
+    zeros_mri = torch.zeros_like(mri_latent)
+    zeros_tab = torch.zeros_like(tab_raw)
+    loss, parts = synib_multimodal_loss(
+        logits,
+        model.logits_from_latents(zeros_mri, tab_raw),
+        model.logits_from_latents(mri_latent, zeros_tab),
+        targets,
+        config=SynIBConfig(lambda_syn=0.5, tabular_dim=5, mri_dim=0),
+    )
+    assert loss.ndim == 0
+    assert parts["total"] >= parts["task_loss"]
 
 
 def test_3d_metrics_contract_if_generated():
@@ -109,7 +148,6 @@ def test_volume_normalization_uses_nonzero_brain_mask(monkeypatch, tmp_path):
     import types
 
     import numpy as np
-    import pytest
 
     pytest.importorskip("torch")
     from scripts.build_mri_volume_cache import load_volume

@@ -1,0 +1,145 @@
+{
+  "comparability_issue": null,
+  "comparability_ok": true,
+  "matched_effective_n": 184,
+  "paired_tier": "primary_feasible_90",
+  "pet_only_reference": {
+    "brier": 0.23057419947656066,
+    "n": 184,
+    "pr_auc": 0.9234309607304746,
+    "roc_auc": 0.6332772166105499,
+    "scenario": null,
+    "status": "COMPLETED",
+    "threshold_metrics": {
+      "accuracy": 0.8139171408250355,
+      "f1": 0.882279758294584,
+      "sensitivity": 0.8760428253615128,
+      "specificity": 0.21142857142857144
+    }
+  },
+  "reporting_rules": {
+    "forbidden_headline": "PET-only AUC as title/abstract primary finding",
+    "primary_metric": "MRI incremental value over PET-only (delta AUC + DCA net benefit)",
+    "sample_scope": "matched_pet_cache_intersection_not_full_1700_cohort",
+    "threshold_metrics": "Accuracy, sensitivity, specificity, and F1 use fold-internal validation-selected thresholds only."
+  },
+  "rows": [
+    {
+      "brier": 0.24387926381116148,
+      "caveat": "Method Y paired PET-cache hash intersection only; PET-containing rows have PET-label tautology caveat and small-N/class-imbalance limitations.",
+      "comparison_id": "Y2_mri_paired",
+      "delta_auc_valid": true,
+      "delta_auc_vs_pet_only": -0.062008978675645365,
+      "effective_n": 184,
+      "headline_allowed": false,
+      "label": "MRI-only on PET-cache hash intersection",
+      "metrics_status": "AVAILABLE",
+      "pr_auc": 0.9123869253016514,
+      "required_common_hash_intersection_n": 184,
+      "roc_auc": 0.5712682379349046,
+      "threshold_metrics": {
+        "accuracy": 0.8811646514935989,
+        "f1": 0.9364043057157515,
+        "sensitivity": 1.0,
+        "specificity": 0.0
+      }
+    },
+    {
+      "brier": 0.2416590530920701,
+      "caveat": "Method Y paired PET-cache hash intersection only; PET-containing rows have PET-label tautology caveat and small-N/class-imbalance limitations.",
+      "comparison_id": "Y3_late_fusion",
+      "delta_auc_valid": true,
+      "delta_auc_vs_pet_only": -0.10058922558922556,
+      "effective_n": 184,
+      "headline_allowed": false,
+      "label": "Late fusion MRI+PET",
+      "metrics_status": "AVAILABLE",
+      "pr_auc": 0.8984981220450114,
+      "required_common_hash_intersection_n": 184,
+      "roc_auc": 0.5326879910213244,
+      "threshold_metrics": {
+        "accuracy": 0.8811646514935989,
+        "f1": 0.9364043057157515,
+        "sensitivity": 1.0,
+        "specificity": 0.0
+      }
+    },
+    {
+      "brier": 0.24505878659035413,
+      "caveat": "Method Y paired PET-cache hash intersection only; PET-containing rows have PET-label tautology caveat and small-N/class-imbalance limitations.",
+      "comparison_id": "Y4_gated_fusion",
+      "delta_auc_valid": true,
+      "delta_auc_vs_pet_only": -0.16329966329966328,
+      "effective_n": 184,
+      "headline_allowed": false,
+      "label": "Gated fusion MRI+PET",
+      "metrics_status": "AVAILABLE",
+      "pr_auc": 0.8862022558782474,
+      "required_common_hash_intersection_n": 184,
+      "roc_auc": 0.46997755331088664,
+      "threshold_metrics": {
+        "accuracy": 0.8864278093883357,
+        "f1": 0.9366941607882154,
+        "sensitivity": 0.9741935483870968,
+        "specificity": 0.14285714285714285
+      }
+    },
+    {
+      "brier": 0.24351412083628135,
+      "caveat": "Method Y paired PET-cache hash intersection only; PET-containing rows have PET-label tautology caveat and small-N/class-imbalance limitations.",
+      "comparison_id": "Y5_mri_pet_cognitive",
+      "delta_auc_valid": true,
+      "delta_auc_vs_pet_only": 0.0,
+      "effective_n": 184,
+      "headline_allowed": false,
+      "label": "MRI+PET+cognitive summaries",
+      "metrics_status": "AVAILABLE",
+      "pr_auc": 0.927189121860636,
+      "required_common_hash_intersection_n": 184,
+      "roc_auc": 0.6332772166105499,
+      "threshold_metrics": {
+        "accuracy": 0.8706383357041252,
+        "f1": 0.9290018530959075,
+        "sensitivity": 0.9806451612903226,
+        "specificity": 0.02857142857142857
+      }
+    }
+  ],
+  "source_of_truth": {
+    "hash_intersection_policy": "Compute deltas only when PET reference and comparison aggregate.n match the common effective PET-cache hash intersection.",
+    "metric_index": {
+      "Y1_pet_only": {
+        "comparison": "reference",
+        "label": "PET-only baseline",
+        "path": "results/final_results/method_y/pet_training/method_y_pet_metrics.json",
+        "requires_common_hash_intersection": true
+      },
+      "Y2_mri_paired": {
+        "comparison": "mri_incremental_reference",
+        "label": "MRI-only on PET-cache hash intersection",
+        "path": "results/final_results/method_y/mri_paired_training/method_y_mri_paired_metrics.json",
+        "requires_common_hash_intersection": true
+      },
+      "Y3_late_fusion": {
+        "comparison": "fusion",
+        "label": "Late fusion MRI+PET",
+        "path": "results/final_results/method_y/late_fusion_training/method_y_late_fusion_metrics.json",
+        "requires_common_hash_intersection": true
+      },
+      "Y4_gated_fusion": {
+        "comparison": "fusion",
+        "label": "Gated fusion MRI+PET",
+        "path": "results/final_results/method_y/gated_fusion_training/method_y_gated_fusion_metrics.json",
+        "requires_common_hash_intersection": true
+      },
+      "Y5_mri_pet_cognitive": {
+        "comparison": "controlled_extension",
+        "label": "MRI+PET+cognitive summaries",
+        "path": "results/final_results/method_y/mri_pet_cognitive_training/method_y_mri_pet_cognitive_metrics.json",
+        "requires_common_hash_intersection": true
+      }
+    }
+  },
+  "stage": "method_y_incremental_value_table",
+  "status": "COMPLETED"
+}

@@ -1,0 +1,175 @@
+{
+  "clinical_extensions": {
+    "PACC.csv": {
+      "branch": "clinical_endpoint",
+      "exists": false,
+      "method_x_input": false,
+      "rows": 0,
+      "status": "feasibility"
+    },
+    "biomarker_AB_Test.csv": {
+      "branch": "bio_cog_method_z",
+      "exists": true,
+      "method_x_input": false,
+      "rows": 31480,
+      "status": "integrated_blood"
+    },
+    "biomarker_Plasma_Roche_Results.csv": {
+      "branch": "bio_cog_method_z",
+      "exists": true,
+      "method_x_input": false,
+      "rows": 13418,
+      "status": "integrated_blood"
+    },
+    "biomarker_pTau217.csv": {
+      "branch": "bio_cog_method_z",
+      "exists": true,
+      "method_x_input": false,
+      "rows": 5813,
+      "status": "integrated_blood"
+    },
+    "cdr.csv": {
+      "branch": "clinical_endpoint",
+      "exists": false,
+      "method_x_input": false,
+      "rows": 0,
+      "status": "feasibility"
+    },
+    "cogstate_battery.csv": {
+      "branch": "method_x_cog",
+      "exists": true,
+      "method_x_input": false,
+      "rows": 278212,
+      "status": "integrated_cognitive"
+    },
+    "cogstate_cpath.csv": {
+      "branch": "method_x_cog",
+      "exists": true,
+      "method_x_input": false,
+      "rows": 801134
+    },
+    "cogstate_macq.csv": {
+      "branch": "method_x_cog",
+      "exists": true,
+      "method_x_input": false,
+      "rows": 192097
+    },
+    "imaging_FLAIR_WMH_QC.csv": {
+      "branch": "mri_roi_wmh_reads",
+      "exists": true,
+      "method_x_input": false,
+      "rows": 6793,
+      "status": "integrated_tabular"
+    },
+    "imaging_MRI_reads.csv": {
+      "branch": "mri_roi_wmh_reads",
+      "exists": true,
+      "method_x_input": false,
+      "rows": 1797,
+      "status": "integrated_tabular"
+    },
+    "imaging_retinal.csv": {
+      "branch": "exploratory_retinal",
+      "exists": true,
+      "method_x_input": false,
+      "rows": 498
+    }
+  },
+  "data_root_hash": "dr_d0dc25f21ce4e709",
+  "method_x_strict_inputs": [
+    "T1 MRI",
+    "age",
+    "sex",
+    "education_years",
+    "apoe4_carrier",
+    "mmse_base"
+  ],
+  "modalities": {
+    "dwi": {
+      "branch": "exploratory_dwi",
+      "dirs_found": [
+        "DWI"
+      ],
+      "integration_rationale": "DTI microstructure (FA/MD) as tabular features; small subset n~674",
+      "method_x_input_allowed": false,
+      "nifti_count": 662,
+      "substudy_counts": {
+        "A4": 656,
+        "LEARN": 6
+      }
+    },
+    "flair": {
+      "branch": "mri_roi_wmh_reads",
+      "dirs_found": [
+        "Flair",
+        "FLAIR"
+      ],
+      "integration_rationale": "WMH volumetrics via imaging_FLAIR_WMH_QC.csv; FLAIR NIfTI for T1+FLAIR sensitivity",
+      "method_x_input_allowed": false,
+      "nifti_count": 14020,
+      "substudy_counts": {
+        "A4": 12176,
+        "LEARN": 1844
+      }
+    },
+    "fmri_rest": {
+      "branch": "exploratory_connectivity",
+      "dirs_found": [
+        "fmri rest",
+        "fMRI rest"
+      ],
+      "integration_rationale": "Network connectivity summaries; high compute; Phase 3+ only",
+      "method_x_input_allowed": false,
+      "nifti_count": 0,
+      "substudy_counts": {}
+    },
+    "t2": {
+      "branch": "exploratory_t2",
+      "dirs_found": [
+        "T2"
+      ],
+      "integration_rationale": "Redundant with T1 for amyloid status; skip for Method X",
+      "method_x_input_allowed": false,
+      "nifti_count": 0,
+      "substudy_counts": {}
+    },
+    "t2star": {
+      "branch": "mri_roi_wmh_reads",
+      "dirs_found": [
+        "T2 star"
+      ],
+      "integration_rationale": "Microhemorrhage/siderosis reads already in imaging_MRI_reads.csv",
+      "method_x_input_allowed": false,
+      "nifti_count": 0,
+      "substudy_counts": {}
+    }
+  },
+  "recommended_next_integrations": [
+    {
+      "action": "T1+FLAIR WMH sensitivity ablation (tabular WMH already integrated)",
+      "asset": "flair",
+      "priority": 1
+    },
+    {
+      "action": "Re-run build_branch_catalogs with fixed Roche aliases; Method Z ablation",
+      "asset": "biomarker blood panels",
+      "priority": 2
+    },
+    {
+      "action": "Clinical endpoint GNOVA surrogate (Phase H)",
+      "asset": "cdr.csv + PACC.csv",
+      "priority": 3
+    },
+    {
+      "action": "Exploratory FA/MD extraction for subset with paired T1",
+      "asset": "dwi",
+      "priority": 4
+    },
+    {
+      "action": "Defer — high compute, no amyloid-status literature support at this scale",
+      "asset": "fmri_rest",
+      "priority": 5
+    }
+  ],
+  "stage": "extended_modality_inventory"
+}

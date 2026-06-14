@@ -2,11 +2,9 @@
   "stage": "method_y_training_readiness",
   "version": "v3.9-readiness-split",
   "tracer": "fbp",
-  "status": "DESIGN_READY_EXECUTION_GATED",
+  "status": "READY_FOR_EXPLORATORY_METHOD_Y_TRAINING",
   "blockers": [],
-  "execution_blockers": [
-    "PET_PREPROCESS_INCOMPLETE"
-  ],
+  "execution_blockers": [],
   "warnings": [
     "PRIMARY_FEASIBLE_90_MIN_CLASS_BELOW_WARN_THRESHOLD",
     "PRIMARY_STRICT_TIER_TOO_IMBALANCED_FOR_SOLE_PRIMARY_TRAINING",
@@ -19,17 +17,17 @@
     "tracer": "fbp",
     "spatial_mode": "spm_pet_t1_mni",
     "linked_work_items": 266,
-    "resume_done": 230,
+    "resume_done": 266,
     "resume_fail": 0,
-    "resume_pending": 36,
+    "resume_pending": 0,
     "resume_path": "<LOCAL_PATH_REDACTED> project\\results\\logs\\method_y_pet_preprocess_resume_fbp_spm_pet_t1_mni.json",
     "resume_exists": true,
     "status_counts": {
-      "PASS": 177,
-      "SKIPPED_EXISTS": 53
+      "SKIPPED_EXISTS": 99,
+      "PASS": 167
     },
     "preprocessing_started": true,
-    "preprocessing_complete": false
+    "preprocessing_complete": true
   },
   "method_x_claim_unchanged": true,
   "pet_training_if_ready_is_method_y_only": true,

@@ -27,6 +27,7 @@ def test_preprocess_spatial_has_required_cli_text():
     assert "spm_pet_t1_mni" in text
     assert "preprocess_pet_spm_t1_mni" in text
     assert "--auto_batches" in text
+    assert "--retry_failed" in text
 
 
 def test_preprocess_spm_execute_blocks_without_spm_dir():

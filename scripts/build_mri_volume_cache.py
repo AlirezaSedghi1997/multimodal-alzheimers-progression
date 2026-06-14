@@ -169,6 +169,40 @@ def validate_cache(path: Path) -> None:
             raise RuntimeError(f"MRI volume cache missing required keys: {sorted(missing)}")
 
 
+def decode_status(value: object) -> str:
+    if isinstance(value, bytes):
+        return value.decode("utf-8")
+    return str(value)
+
+
+def cache_matches_resume(path: Path, *, rows: int, resolution: int, source_mode: str) -> bool:
+    if not path.exists():
+        return False
+    try:
+        import h5py
+
+        with h5py.File(path, "r") as h5:
+            if h5["image"].shape[0] != rows:
+                return False
+            if int(h5.attrs.get("resolution", -1)) != resolution:
+                return False
+            if str(h5.attrs.get("source_mode", "")) != source_mode:
+                return False
+            if REQUIRED_CACHE_KEYS.difference(h5.keys()):
+                return False
+        return True
+    except Exception:
+        return False
+
+
+def count_statuses(status_dataset) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for value in status_dataset[:]:
+        key = decode_status(value)
+        counts[key] = counts.get(key, 0) + 1
+    return counts
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--data_root", default=os.environ.get("DATA_ROOT"))
@@ -188,6 +222,11 @@ def main() -> int:
         action=argparse.BooleanOptionalAction,
         default=True,
         help="When using --preprocessed_dir, exclude FAIL/HOLD/MISSING QC samples from cache.",
+    )
+    ap.add_argument(
+        "--no_resume",
+        action="store_true",
+        help="Rebuild cache from scratch instead of resuming rows that already have status=OK.",
     )
     args = ap.parse_args()
 
@@ -211,8 +250,6 @@ def main() -> int:
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     tmp_path = out_path.with_name(out_path.name + ".tmp")
-    if tmp_path.exists():
-        tmp_path.unlink()
 
     n = len(rows)
     catalog_t1_hashes = {str(r.get("t1_file_hash", "")) for r in rows if r.get("t1_file_hash")}
@@ -257,31 +294,52 @@ def main() -> int:
         return 2
 
     str_dtype = h5py.string_dtype(encoding="utf-8")
-    ok = 0
-    missing = 0
-    errors = 0
-    qc_excluded = 0
-    with h5py.File(tmp_path, "w") as h5:
-        h5.attrs["method"] = "X"
-        h5.attrs["contains_processed_t1"] = True
-        h5.attrs["contains_pet_input"] = False
-        h5.attrs["contains_raw_identifiers"] = False
-        h5.attrs["resolution"] = args.resolution
-        h5.attrs["source_mode"] = source_mode
-        images = h5.create_dataset(
-            "image",
-            shape=(n, 1, args.resolution, args.resolution, args.resolution),
-            dtype="float16",
-            chunks=(1, 1, args.resolution, args.resolution, args.resolution),
-            compression="gzip",
-            compression_opts=1,
-        )
-        h5.create_dataset("label", data=np.array([int(float(r["ab_label"])) for r in rows], dtype=np.int8))
-        h5.create_dataset("sample_hash", data=np.array([r["sample_hash"] for r in rows], dtype=object), dtype=str_dtype)
-        h5.create_dataset("patient_hash", data=np.array([r["patient_hash"] for r in rows], dtype=object), dtype=str_dtype)
-        h5.create_dataset("tabular", data=np.array([tabular_vector(r) for r in rows], dtype=np.float32))
-        status = h5.create_dataset("status", shape=(n,), dtype=str_dtype)
+    resume_kwargs = {"rows": n, "resolution": args.resolution, "source_mode": source_mode}
+    work_path = tmp_path
+    open_mode = "w"
+    resumed_from: str | None = None
+    if not args.no_resume:
+        if cache_matches_resume(out_path, **resume_kwargs):
+            work_path = out_path
+            open_mode = "r+"
+            resumed_from = str(out_path)
+        elif cache_matches_resume(tmp_path, **resume_kwargs):
+            work_path = tmp_path
+            open_mode = "r+"
+            resumed_from = str(tmp_path)
+        elif tmp_path.exists():
+            tmp_path.unlink()
+    elif tmp_path.exists():
+        tmp_path.unlink()
+
+    with h5py.File(work_path, open_mode) as h5:
+        if open_mode == "w":
+            h5.attrs["method"] = "X"
+            h5.attrs["contains_processed_t1"] = True
+            h5.attrs["contains_pet_input"] = False
+            h5.attrs["contains_raw_identifiers"] = False
+            h5.attrs["resolution"] = args.resolution
+            h5.attrs["source_mode"] = source_mode
+            images = h5.create_dataset(
+                "image",
+                shape=(n, 1, args.resolution, args.resolution, args.resolution),
+                dtype="float16",
+                chunks=(1, 1, args.resolution, args.resolution, args.resolution),
+                compression="gzip",
+                compression_opts=1,
+            )
+            h5.create_dataset("label", data=np.array([int(float(r["ab_label"])) for r in rows], dtype=np.int8))
+            h5.create_dataset("sample_hash", data=np.array([r["sample_hash"] for r in rows], dtype=object), dtype=str_dtype)
+            h5.create_dataset("patient_hash", data=np.array([r["patient_hash"] for r in rows], dtype=object), dtype=str_dtype)
+            h5.create_dataset("tabular", data=np.array([tabular_vector(r) for r in rows], dtype=np.float32))
+            status = h5.create_dataset("status", shape=(n,), dtype=str_dtype)
+        else:
+            images = h5["image"]
+            status = h5["status"]
+
         for i, row in enumerate(rows):
+            if open_mode == "r+" and decode_status(status[i]) == "OK":
+                continue
             sample_hash = row["sample_hash"]
             allowed, qc_reason = mri_cache_allowed(
                 sample_hash=sample_hash,
@@ -289,31 +347,43 @@ def main() -> int:
                 require_qc_pass=require_qc,
             )
             if not allowed:
-                qc_excluded += 1
+                if open_mode == "r+" and decode_status(status[i]) == qc_reason:
+                    continue
                 images[i] = np.zeros((1, args.resolution, args.resolution, args.resolution), dtype=np.float16)
                 status[i] = qc_reason
+                h5.flush()
                 continue
             source_key = row["sample_hash"] if preprocessed_dir is not None else row["t1_file_hash"]
             path = source_index.get(source_key)
             if path is None:
-                missing += 1
+                if open_mode == "r+" and decode_status(status[i]) == "MISSING_T1":
+                    continue
                 images[i] = np.zeros((1, args.resolution, args.resolution, args.resolution), dtype=np.float16)
                 status[i] = "MISSING_T1"
+                h5.flush()
                 continue
             try:
                 images[i] = load_volume(path, args.resolution, device=args.device)
                 status[i] = "OK"
-                ok += 1
             except Exception:
-                errors += 1
                 images[i] = np.zeros((1, args.resolution, args.resolution, args.resolution), dtype=np.float16)
                 status[i] = "ERROR"
-        h5.flush()
+            h5.flush()
+
+    with h5py.File(work_path, "r") as h5:
+        final_counts = count_statuses(h5["status"])
+    ok = int(final_counts.get("OK", 0))
+    missing = int(final_counts.get("MISSING_T1", 0))
+    errors = int(final_counts.get("ERROR", 0))
+    qc_excluded = sum(
+        count for key, count in final_counts.items() if key not in {"OK", "MISSING_T1", "ERROR"}
+    )
 
     status_ok = errors == 0 and missing == 0
     if status_ok:
-        validate_cache(tmp_path)
-        tmp_path.replace(out_path)
+        validate_cache(work_path)
+        if work_path == tmp_path:
+            tmp_path.replace(out_path)
 
     summary = {
         "rows": n,
@@ -339,6 +409,8 @@ def main() -> int:
         "indexed_preprocessed": len(preprocessed_index),
         "catalog_preprocessed_overlap": len(preprocessed_overlap),
         "t1_dir_exists": (data_root / "T1").exists() if data_root is not None else None,
+        "resumed_from": resumed_from,
+        "resume_enabled": not args.no_resume,
     }
     write_cache_summary(summary)
     write_run_manifest(

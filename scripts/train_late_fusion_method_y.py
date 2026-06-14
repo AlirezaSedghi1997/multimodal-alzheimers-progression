@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 import sys
 from pathlib import Path
 
@@ -22,8 +23,9 @@ from scripts.train_mri_method_y_paired import (
     cache_index,
     catalog_labels,
     load_paired_hashes,
-    split_indices_paired,
 )
+from src.data.volume_augmentation import build_augmentation_policy, maybe_wrap_train_dataset
+from src.evaluation.threshold_metrics import evaluate_with_train_selected_threshold
 from src.models.backbones.lightweight_3d import Lightweight3DEncoder
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
 from src.utils.run_manifest import write_run_manifest
@@ -146,6 +148,9 @@ def main() -> int:
     ap.add_argument("--folds", type=int, default=5)
     ap.add_argument("--device", default="auto")
     ap.add_argument("--amp", action="store_true")
+    ap.add_argument("--val_fraction", type=float, default=0.15)
+    ap.add_argument("--monai_augment", action="store_true", help="Apply train-fold-only MONAI augmentation.")
+    ap.add_argument("--augmentation_exposures_per_real", type=int, default=4)
     ap.add_argument("--allow_not_ready_for_tests", action="store_true")
     args = ap.parse_args()
 
@@ -171,6 +176,8 @@ def main() -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     fold_results = []
     all_y, all_p = [], []
+    threshold_rows: list[dict] = []
+    real_train_fold_exposures = 0
     for fold in range(folds):
         train_m, train_p, train_y = intersect_paired_indices(
             Path(args.splits) / f"fold_{fold}_train.csv", mri_map, pet_map, labels, paired, limit=limit
@@ -180,19 +187,49 @@ def main() -> int:
         )
         if not train_m or not test_m:
             raise RuntimeError(f"Fold {fold} has no paired MRI+PET overlap.")
-        train_ds = H5PairedDataset(mri_cache, pet_cache, train_m, train_p, train_y)
+        val_n = max(int(len(train_m) * args.val_fraction), 1)
+        val_n = min(val_n, len(train_m) - 1)
+        combined = list(zip(train_m, train_p, train_y))
+        random.shuffle(combined)
+        train_m, train_p, train_y = zip(*combined)
+        val_m, val_p, val_y = train_m[:val_n], train_p[:val_n], train_y[:val_n]
+        fit_m, fit_p, fit_y = train_m[val_n:], train_p[val_n:], train_y[val_n:]
+        real_train_fold_exposures += len(fit_m)
+        train_ds = maybe_wrap_train_dataset(
+            H5PairedDataset(mri_cache, pet_cache, fit_m, fit_p, fit_y),
+            enabled=args.monai_augment,
+            image_positions=(0, 1),
+        )
+        val_ds = H5PairedDataset(mri_cache, pet_cache, val_m, val_p, val_y)
         test_ds = H5PairedDataset(mri_cache, pet_cache, test_m, test_p, test_y)
-        train_loader = DataLoader(train_ds, batch_size=1, shuffle=True)
-        test_loader = DataLoader(test_ds, batch_size=1, shuffle=False)
-        pos_weight = torch.tensor([max(sum(1 for v in train_y if v == 0), 1) / max(sum(train_y), 1)], device=device)
+        train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True)
+        val_loader = DataLoader(val_ds, batch_size=args.batch_size, shuffle=False)
+        test_loader = DataLoader(test_ds, batch_size=args.batch_size, shuffle=False)
+        pos_weight = torch.tensor([min(max(sum(1 for v in fit_y if v == 0), 1) / max(sum(fit_y), 1), 20.0)], device=device)
         model = build_late_fusion_model().to(device)
         optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-4)
         scaler = torch.cuda.amp.GradScaler(enabled=args.amp and device.type == "cuda")
         for _ in range(epochs):
             run_fusion_epoch(model, train_loader, optimizer, device, pos_weight, use_amp=args.amp, scaler=scaler)
+        val_true, val_prob = predict_fusion(model, val_loader, device)
         y_true, y_prob = predict_fusion(model, test_loader, device)
         metrics = evaluate(y_true, y_prob)
-        metrics.update({"fold": fold, "train_n": len(train_m), "test_n": len(test_m)})
+        threshold_eval = evaluate_with_train_selected_threshold(
+            validation_y=val_true,
+            validation_prob=val_prob,
+            test_y=y_true,
+            test_prob=y_prob,
+        )
+        threshold_rows.append({"fold": fold, **threshold_eval})
+        metrics.update(
+            {
+                "fold": fold,
+                "train_n": len(fit_m),
+                "val_n": len(val_m),
+                "test_n": len(test_m),
+                "threshold_metrics": threshold_eval,
+            }
+        )
         fold_results.append(metrics)
         all_y.extend(y_true)
         all_p.extend(y_prob)
@@ -206,6 +243,19 @@ def main() -> int:
             "uses_pet_as_input": True,
             "uses_mri_as_input": True,
             "readiness_status": readiness.get("status"),
+            "pet_label_tautology_caveat": "PET-containing models are evaluated against PET-derived biomarker labels.",
+            "method_x_compliant": False,
+            "clinical_alzheimer_diagnosis_allowed": False,
+            "augmentation": build_augmentation_policy(
+                enabled=args.monai_augment,
+                real_train_n=real_train_fold_exposures,
+                exposures_per_real=args.augmentation_exposures_per_real,
+            ),
+            "threshold_selection": {
+                "source": "fold_internal_validation",
+                "test_labels_used_for_threshold_selection": False,
+                "folds": threshold_rows,
+            },
         }
     )
     summary = {"status": aggregate["status"], "aggregate": aggregate, "folds": fold_results}

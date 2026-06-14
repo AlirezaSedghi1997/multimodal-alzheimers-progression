@@ -1,0 +1,22 @@
+{
+  "augmented_training_exposures": 6000,
+  "enabled": true,
+  "exposures_per_real": 4,
+  "holdout_transform_enabled": false,
+  "library": "MONAI",
+  "method_x_pet_input_allowed": false,
+  "modalities": [
+    "T1 MRI",
+    "Method Y PET"
+  ],
+  "real_n_unchanged": true,
+  "real_train_n": 1500,
+  "selection_scope": "train_fold_only",
+  "stage": "train_only_monai_augmentation_policy",
+  "status": "COMPLETED",
+  "synthetic_or_augmented_counted_as_real_subjects": false,
+  "test_transform_enabled": false,
+  "train_transform_enabled": true,
+  "validation_test_holdout_augmented": false,
+  "validation_transform_enabled": false
+}

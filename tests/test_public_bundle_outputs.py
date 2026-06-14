@@ -12,8 +12,8 @@ def test_public_bundle_manifest_if_generated():
     assert obj["contains_hdf5"] is False
     assert obj["contains_images"] is False
     assert obj["contains_raw_identifiers"] is False
-    assert obj.get("contains_raw_paths") is True
-    assert obj.get("contains_subject_level_vectors") is True
+    assert obj.get("contains_raw_paths") is False
+    assert obj.get("contains_subject_level_vectors") is False
     assert obj["violations"] == []
 
 

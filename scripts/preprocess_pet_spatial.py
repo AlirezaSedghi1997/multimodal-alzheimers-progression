@@ -210,11 +210,22 @@ def _output_already_done(norm_path: Path, qc_path: Path, spatial_mode: str, over
     return qc.get("status") == "PASS" and qc.get("spatial", {}).get("spatial_mode") == spatial_mode
 
 
-def _pending_work_items(work, resume: PetResumeManifest, tracer: str, overwrite: bool) -> list:
+def _pending_work_items(
+    work,
+    resume: PetResumeManifest,
+    tracer: str,
+    overwrite: bool,
+    *,
+    retry_failed: bool = False,
+) -> list:
     pending = []
+    terminal_failures = {"FAIL", "QC_FAIL"}
     for item in work:
         key = _item_key(item, tracer)
         if resume.is_done(key) and not overwrite:
+            continue
+        status = resume.data.get("items", {}).get(key, {}).get("status")
+        if status in terminal_failures and not retry_failed:
             continue
         pending.append(item)
     return pending
@@ -355,6 +366,11 @@ def main() -> int:
     ap.add_argument("--n_jobs", type=int, default=2)
     ap.add_argument("--overwrite", action="store_true")
     ap.add_argument(
+        "--retry_failed",
+        action="store_true",
+        help="When resuming, include items previously marked FAIL or QC_FAIL in the resume log.",
+    )
+    ap.add_argument(
         "--overwrite_resume",
         action="store_true",
         help="Update resume manifest config/tier digest while keeping completed item statuses.",
@@ -428,7 +444,7 @@ def main() -> int:
     if args.overwrite_resume and resume.path.exists():
         resume.save()
     done_count = sum(1 for item in work if resume.is_done(_item_key(item, tracer)))
-    pending_count = len(_pending_work_items(work, resume, tracer, args.overwrite))
+    pending_count = len(_pending_work_items(work, resume, tracer, args.overwrite, retry_failed=args.retry_failed))
     _log(
         f"Resume: {done_count}/{len(work)} complete, {pending_count} pending "
         f"(log: {resume_path.as_posix()})."
@@ -494,7 +510,7 @@ def main() -> int:
     initial_done = sum(1 for item in work if resume.is_done(_item_key(item, tracer)))
 
     while True:
-        pending = _pending_work_items(work, resume, tracer, args.overwrite)
+        pending = _pending_work_items(work, resume, tracer, args.overwrite, retry_failed=args.retry_failed)
         if not pending:
             break
         batch_items = pending[: args.batch_size] if args.batch_size > 0 else pending
@@ -530,7 +546,9 @@ def main() -> int:
     summary["batches_completed"] = batches_completed
     summary["initial_done"] = initial_done
     summary["final_done"] = sum(1 for item in work if resume.is_done(_item_key(item, tracer)))
-    summary["pending_after_run"] = len(_pending_work_items(work, resume, tracer, args.overwrite))
+    summary["pending_after_run"] = len(
+        _pending_work_items(work, resume, tracer, args.overwrite, retry_failed=args.retry_failed)
+    )
     summary["auto_batches"] = bool(args.auto_batches)
     summary["batch_size"] = args.batch_size
     summary["verdict"] = (

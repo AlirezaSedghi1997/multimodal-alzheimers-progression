@@ -14,7 +14,7 @@
     "linked_work_items": 266,
     "excluded_rows": 1433,
     "one_pet_per_patient": true,
-    "requested_tier": "primary_strict",
+    "requested_tier": "primary_feasible_90",
     "linked_tiers": {
       "primary_strict": 191,
       "gold_standard_30": 75
@@ -26,7 +26,7 @@
     "note": "Training-ready linking requires private manifest or project resolver; filename fallback is dry-run only."
   },
   "spatial_mode": "spm_pet_t1_mni",
-  "normalization": "percentile_clip_foreground_zscore",
+  "normalization": "suvr_image",
   "n_jobs": 1,
   "raw_paths_exported": false,
   "train_ready": false,
@@ -34,8 +34,14 @@
   "mni_template_provided": false,
   "reference_mask_provided": false,
   "status_counts": {
-    "PASS": 10
+    "SKIPPED_EXISTS": 10
   },
   "processed_items": 10,
+  "batches_completed": 1,
+  "initial_done": 256,
+  "final_done": 266,
+  "pending_after_run": 0,
+  "auto_batches": true,
+  "batch_size": 10,
   "verdict": "PASS_WITH_QC_OUTPUTS_NOT_YET_TRAINING_READY_UNTIL_READINESS_GATE"
 }

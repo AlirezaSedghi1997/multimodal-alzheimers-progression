@@ -6,10 +6,10 @@
 - interpretation_scope: `final_96_validation_model`
 - Grad-CAM modality: `MRI`
 - Grad-CAM public granularity: `aggregate_coarse_roi_level`
-- Grad-CAM mean ROI importance: `{'left': 0.1855340264737606, 'right': 0.1738744410686195, 'posterior': 0.19560274481773376, 'anterior': 0.16380572598427534, 'inferior': 0.18067189026623964, 'superior': 0.17873657727614045}`
+- Grad-CAM mean ROI importance: `{'left': 5.231323152443679e-08, 'right': 5.2432936437085687e-08, 'posterior': 4.487557714316637e-08, 'anterior': 5.615176479345507e-08, 'inferior': 5.670616043396137e-08, 'superior': 5.0236473425613326e-08}`
 - SHAP modality: `tabular`
 - SHAP method: `exact_shapley_5_features`
-- SHAP mean abs importance: `{'age': 0.2648917525967894, 'education_years': 0.037143722304608676, 'apoe4_carrier': 0.7436135678901337, 'mmse_base': 0.09430372028533991, 'sex': 0.11367707898219427}`
+- SHAP mean abs importance: `{'age': 0.2588206152577186, 'education_years': 0.054410606215242296, 'apoe4_carrier': 0.6177511346739872, 'mmse_base': 0.07043766750042171, 'sex': 0.16675204042112454}`
 - contains_pet_input: `False`
 - contains_raw_identifiers: `False`
 - contains_images: `False`

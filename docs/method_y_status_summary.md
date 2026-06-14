@@ -1,19 +1,20 @@
-# Method Y PET-Assisted Branch — Design & Readiness Summary
+# Method Y PET-Assisted Branch — Training Summary
 
-- overall training readiness: **`DESIGN_READY_EXECUTION_GATED`**
-- multimodal design: `DESIGN_READY_NOT_TRAINED`
+- overall training readiness: **`TRAINED`**
+- multimodal design: `TRAINED`
 - PET inventory: `COMPLETED`
-- phase Y summary: `MISSING`
-- training started: `False`
+- phase Y summary: `TRAINED`
+- training started: `True`
 - PET preprocessing started: `True`
 - PET SPM/MNI progress: `230/266`
 - method_x_claim_unchanged: `True`
 - pet_as_method_x_input: `False`
 - current primary target: `AB-positive vs AB-negative biomarker status`
+- PET-only AUC: `0.819`
 
 ## Claim boundary
 
-Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict or Method X-Cog. Multimodal PET/MRI training has not started; only design, inventory, and readiness audits exist.
+Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict or Method X-Cog. PET-only trained with AUC=0.819. Tautology caveat applies.
 
 ## Design availability (aggregate)
 

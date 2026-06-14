@@ -1,0 +1,136 @@
+{
+  "claim_boundary": {
+    "clinical_alzheimer_diagnosis_requires_independent_label": true,
+    "method_x_strict_pet_free": true,
+    "method_y_pet_assisted_exploratory": true,
+    "method_y_pet_label_tautology_caveat": true,
+    "synthetic_mri_pet_supplementary_fold_local_train_only": true,
+    "augmentation_train_only_exposure_multiplication": true,
+    "preferred_title_framing": "Early prediction of amyloid biomarker status and preclinical risk"
+  },
+  "claims": [
+    {
+      "caveat": "AB-positive vs AB-negative is not clinical Alzheimer diagnosis.",
+      "claim_id": "P01",
+      "current_mapping": "Reframed as early prediction of amyloid biomarker status and preclinical risk unless an independent clinical label is used. Title framing: 'early prediction of amyloid biomarker status and preclinical risk'.",
+      "evidence": [
+        "docs/research_methods_limitations_ethics_statistics.md",
+        "governance/clinical_endpoint_progression_policy.md"
+      ],
+      "proposal_claim": "Early Alzheimer's disease diagnosis from MRI and clinical variables.",
+      "status": "SCIENTIFIC_ETHICAL_LIMIT"
+    },
+    {
+      "caveat": "PET is label source only, never Method X input.",
+      "claim_id": "P02",
+      "current_mapping": "Method X-Strict protects PET-free inputs: T1 MRI plus age/sex/education/APOE4/MMSE.",
+      "evidence": [
+        "governance/method_x_operating_contract.md",
+        "results/governance/method_x_strict_feature_matrix_summary.json"
+      ],
+      "proposal_claim": "Non-invasive primary model.",
+      "status": "BETTER_THAN_PROPOSAL"
+    },
+    {
+      "caveat": "Method Y is paired subset only and PET-label tautology must be reported.",
+      "claim_id": "P03",
+      "current_mapping": "Method Y includes PET-only, MRI-only paired, MRI+PET fusion, and MRI+PET+cognitive controlled extension.",
+      "evidence": [
+        "scripts/train_mri_pet_cognitive_method_y.py",
+        "results/tables/method_y_incremental_value_table.json",
+        "results/tables/method_y_multimodal_design.json"
+      ],
+      "proposal_claim": "Multimodal MRI, PET, and cognitive modeling.",
+      "status": "ADDED_CONTROLLED_EXTENSION"
+    },
+    {
+      "caveat": "Report as controlled ablation, not confirmed pretrained transfer learning.",
+      "claim_id": "P04",
+      "current_mapping": "MONAI ResNet/EfficientNet controlled ablations exist; true pretrained 3D fine-tuning is not claimed because no validated compatible pretrained 3D weights are locked in this repo.",
+      "evidence": [
+        "src/models/backbones/backbone_factory.py",
+        "results/final_results/backbone_ablation_battery/backbone_ablation_battery.json",
+        "results/final_results/three_d_ablation/three_d_ablation_summary.json"
+      ],
+      "proposal_claim": "3D ResNet / transfer learning.",
+      "status": "ADDED_CONTROLLED_EXTENSION"
+    },
+    {
+      "caveat": "6000 is augmented exposure count, not 6000 real subjects.",
+      "claim_id": "P05",
+      "current_mapping": "Train-fold-only MONAI augmentation reports 4x augmented training exposures while real N remains unchanged.",
+      "evidence": [
+        "src/data/volume_augmentation.py",
+        "results/tables/augmentation_policy.json"
+      ],
+      "proposal_claim": "Augmentation increases samples from 1500 to about 6000.",
+      "status": "ADDED_CONTROLLED_EXTENSION"
+    },
+    {
+      "caveat": "Validation/test/holdout stay real; Method X never receives synthetic PET.",
+      "claim_id": "P06",
+      "current_mapping": "Supplementary fold-local policy: generator fit only inside train fold; synthetic PET added only to same train fold.",
+      "evidence": [
+        "scripts/build_synthetic_mri_pet_supplement.py",
+        "results/tables/synthetic_mri_pet_supplement.json"
+      ],
+      "proposal_claim": "Synthetic MRI-to-PET augmentation.",
+      "status": "ADDED_CONTROLLED_EXTENSION"
+    },
+    {
+      "caveat": "Test labels are not used for threshold selection.",
+      "claim_id": "P07",
+      "current_mapping": "Threshold metrics are computed using thresholds selected from fold-internal validation data only.",
+      "evidence": [
+        "src/evaluation/threshold_metrics.py",
+        "results/tables/method_y_incremental_value_table.json"
+      ],
+      "proposal_claim": "Report accuracy, sensitivity, specificity, and F1.",
+      "status": "ADDED_CONTROLLED_EXTENSION"
+    },
+    {
+      "caveat": "Progression proxy, not clinical AD diagnosis.",
+      "claim_id": "P08",
+      "current_mapping": "Clinical endpoint branch uses CDR worsening and PACC decline as progression proxies.",
+      "evidence": [
+        "governance/clinical_endpoint_progression_policy.md",
+        "results/final_results/clinical_endpoint/clinical_endpoint_baseline_summary.json"
+      ],
+      "proposal_claim": "Longitudinal clinical progression.",
+      "status": "DONE"
+    },
+    {
+      "caveat": "Subject-level prediction vectors remain private.",
+      "claim_id": "P09",
+      "current_mapping": "Public bundle is aggregate/hash-level only with raw data, HDF5, images, raw identifiers, raw paths, and subject-level predictions excluded.",
+      "evidence": [
+        "scripts/build_public_bundle.py",
+        "public_bundle/PUBLIC_BUNDLE_MANIFEST.json"
+      ],
+      "proposal_claim": "Privacy-preserving public outputs.",
+      "status": "BETTER_THAN_PROPOSAL"
+    },
+    {
+      "caveat": "These are retained as current upgrades, not reverted to the initial proposal.",
+      "claim_id": "P10",
+      "current_mapping": "Current project preserves SynIB, MFSCA, worst-dimension audit, FLAIR sensitivity, KD, cohort-probe, calibration, DCA, privacy, and claim-control workflows.",
+      "evidence": [
+        "docs/literature_backbone_evidence_2023_2026.yaml",
+        "src/evaluation/worst_dimension_audit.py",
+        "src/features/mfsca_texture.py",
+        "scripts/run_pet_guided_kd_train.py"
+      ],
+      "proposal_claim": "Advanced fusion and scientific upgrades.",
+      "status": "BETTER_THAN_PROPOSAL"
+    }
+  ],
+  "privacy_contract": {
+    "public_aggregate_or_hash_level_only": true,
+    "public_images_or_caches": false,
+    "public_raw_identifiers": false,
+    "public_raw_paths": false,
+    "public_subject_level_predictions": false
+  },
+  "stage": "proposal_alignment_report",
+  "status": "COMPLETED"
+}

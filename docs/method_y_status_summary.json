@@ -13,10 +13,10 @@
   "blocker_glossary": {},
   "blockers": [],
   "branch": "method_y_pet_assisted",
-  "claim_boundary": "Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict or Method X-Cog. Multimodal PET/MRI training has not started; only design, inventory, and readiness audits exist.",
+  "claim_boundary": "Exploratory PET-assisted branch (Method Y). PET never enters Method X-Strict or Method X-Cog. PET-only trained with AUC=0.819. Tautology caveat applies.",
   "clinical_alzheimer_diagnosis_allowed": false,
   "current_primary_target": "AB-positive vs AB-negative biomarker status",
-  "design_status": "DESIGN_READY_NOT_TRAINED",
+  "design_status": "TRAINED",
   "execution_gates_before_training": [
     "Create separate Method Y PET preprocessing root outside Method X caches.",
     "Create no-PET-in-Method-X regression test after adding PET code.",
@@ -95,7 +95,7 @@
     "tracer": "fbp"
   },
   "pet_preprocessing_started": true,
-  "phase_y_status": "MISSING",
+  "phase_y_status": "TRAINED",
   "preprocess_summary_verdict": "PASS_WITH_QC_OUTPUTS_NOT_YET_TRAINING_READY_UNTIL_READINESS_GATE",
   "required_before_training": [],
   "resolution_checklist": [
@@ -107,8 +107,8 @@
     "Keep calibration/ECE/Brier/CI plan train-fold-only."
   ],
   "schema_version": 2,
-  "status": "DESIGN_READY_EXECUTION_GATED",
-  "training_started": false,
+  "status": "TRAINED",
+  "training_started": true,
   "warning_glossary": {
     "COHORT_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING": "Amyloid label may remain coupled to cohort/tracer in Method Y splits.",
     "GAP_LABEL_AUDIT_POSSIBLE_STRONG_COUPLING": "PET–T1 temporal gap bins may correlate with label.",

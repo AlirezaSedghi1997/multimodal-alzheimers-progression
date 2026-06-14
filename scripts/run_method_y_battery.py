@@ -52,8 +52,18 @@ BATTERY_ROWS = [
     {
         "id": "Y4",
         "title": "Gated feature fusion MRI+PET",
-        "script": None,
-        "note": "Implement gated fusion trainer (Method Y branch).",
+        "script": "scripts/train_gated_fusion_method_y.py",
+        "args": ["--device", "auto", "--amp"],
+        "requires_gpu": True,
+        "note": "Learned gate over MRI/PET latent features; Method Y only.",
+    },
+    {
+        "id": "Y4C",
+        "title": "MRI+PET+cognitive controlled extension",
+        "script": "scripts/train_mri_pet_cognitive_method_y.py",
+        "args": ["--device", "auto", "--amp"],
+        "requires_gpu": True,
+        "note": "Method Y only; paired subset with small-N and PET-label tautology caveats.",
     },
     {
         "id": "Y5",

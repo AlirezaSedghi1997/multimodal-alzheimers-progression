@@ -62,13 +62,13 @@ def run_variant(args: argparse.Namespace, variant: dict[str, object]) -> dict[st
         str(args.batch_size),
         "--folds",
         str(args.folds),
-        "--lr",
-        str(args.lr),
         "--fusion",
         str(variant["fusion"]),
         "--latent_alignment_lambda",
         str(variant["latent_alignment_lambda"]),
     ]
+    if args.force:
+        cmd.append("--no_resume")
     code = subprocess.call(cmd)
     if code != 0:
         raise RuntimeError(f"3D ablation variant failed: {name}")
@@ -77,13 +77,27 @@ def run_variant(args: argparse.Namespace, variant: dict[str, object]) -> dict[st
     return obj
 
 
+def _variant_label(agg: dict[str, Any]) -> str:
+    if agg.get("ablation_variant"):
+        return str(agg["ablation_variant"])
+    fusion = agg.get("fusion")
+    lam = float(agg.get("latent_alignment_lambda", 0.0) or 0.0)
+    for spec in VARIANTS:
+        if spec["fusion"] == fusion and float(spec["latent_alignment_lambda"]) == lam:
+            return str(spec["name"])
+    checkpoints = agg.get("checkpoints") or []
+    if checkpoints:
+        return Path(str(checkpoints[0])).parent.name
+    return f"{fusion or 'unknown'}_{lam}"
+
+
 def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
     rows = []
     for obj in results:
         agg = obj["aggregate"]
         rows.append(
             {
-                "variant": agg["ablation_variant"],
+                "variant": _variant_label(agg),
                 "mode": agg["mode"],
                 "folds": agg["folds"],
                 "cache_resolution": agg.get("cache_resolution"),
@@ -108,7 +122,7 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
     phase_mismatch = []
     for obj in results:
         agg = obj.get("aggregate", {})
-        variant_name = agg.get("ablation_variant")
+        variant_name = _variant_label(agg)
         if agg.get("phase") != "final" or agg.get("requested_resolution") != 96:
             if variant_name:
                 phase_mismatch.append(variant_name)
@@ -188,7 +202,7 @@ def main() -> int:
             if path.exists():
                 merged[name] = load_json(path)
         for obj in results:
-            merged[str(obj["aggregate"]["ablation_variant"])] = obj
+            merged[_variant_label(obj["aggregate"])] = obj
         summary = summarize([merged[str(spec["name"])] for spec in VARIANTS if str(spec["name"]) in merged])
     write_summary(summary)
     write_run_manifest("results/logs/three_d_ablation_manifest.json", stage="three_d_ablation", data_root=None, extra=summary)
