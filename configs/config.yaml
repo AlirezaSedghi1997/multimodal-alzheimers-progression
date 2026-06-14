@@ -29,6 +29,7 @@ inputs:
   imaging: T1 MRI only
   tabular: [age, sex, education_years, apoe4_carrier, mmse_base]
   pet: label_or_target_only
+  backbone: resnet18_3d
 
 hardware:
   gpu: RTX 4060 8GB
@@ -36,4 +37,5 @@ hardware:
   vram_guard_gb_training: 7.0
   vram_hard_stop_gb: 7.5
   cpu_allowed: true
+  resolution: 96
 

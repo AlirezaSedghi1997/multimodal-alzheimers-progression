@@ -461,7 +461,7 @@ def main() -> int:
     ap.add_argument("--val_fraction", type=float, default=0.15)
     ap.add_argument("--early_stopping_patience", type=int, default=5)
     ap.add_argument("--fusion", default="cross_attention", choices=["concat", "cross_attention", "moe"])
-    ap.add_argument("--backbone", default="tiny", choices=["tiny", "resnet10_3d", "resnet18_3d", "densenet121_3d", "efficientnet3d_b0"])
+    ap.add_argument("--backbone", default="resnet18_3d", choices=["tiny", "resnet10_3d", "resnet18_3d", "densenet121_3d", "efficientnet3d_b0"])
     ap.add_argument("--latent_alignment_lambda", type=float, default=0.0)
     ap.add_argument("--contrastive_alignment", action="store_true", help="Use InfoNCE contrastive alignment instead of MSE latent alignment.")
     ap.add_argument("--contrastive_temperature", type=float, default=0.07, help="Temperature for contrastive alignment loss.")
