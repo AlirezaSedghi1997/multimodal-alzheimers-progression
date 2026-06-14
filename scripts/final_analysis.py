@@ -71,6 +71,10 @@ def main() -> int:
     phase1_baselines = load_optional_json("results/final_results/phase1_baselines/phase1_baselines_summary.json")
     method_y_pet = load_optional_json("results/tables/method_y_pet_inventory.json")
     method_y_multimodal = load_optional_json("results/tables/method_y_multimodal_design.json")
+    method_y_readiness = load_optional_json("results/tables/method_y_training_readiness.json")
+    method_y_incremental = load_optional_json("results/tables/method_y_incremental_value_table.json")
+    synthetic_policy = load_optional_json("results/tables/synthetic_mri_pet_supplement.json")
+    augmentation_policy = load_optional_json("results/tables/augmentation_policy.json")
     tau_gate = tau_regression["mode"] if tau_regression is not None else tau["feasibility_mode_120d"]
     three_d_gate = three_d_gate_status(three_d)
     power_gate = "PASSED" if power and power.get("status") == "DESCRIPTIVE_POWER_ANALYSIS" else "PENDING"
@@ -88,6 +92,11 @@ def main() -> int:
     phase1_gate = "PASSED" if phase1_baselines and phase1_baselines.get("status") == "COMPLETED" else "PENDING"
     method_y_pet_gate = "AGGREGATE_ONLY" if method_y_pet and method_y_pet.get("status") == "COMPLETED" else "PENDING"
     method_y_multimodal_gate = "DESIGN_READY_NOT_TRAINED" if method_y_multimodal and method_y_multimodal.get("status") == "DESIGN_READY_NOT_TRAINED" else "PENDING"
+    method_y_incremental_gate = (
+        "COMPLETED"
+        if method_y_incremental and method_y_incremental.get("status") == "COMPLETED"
+        else "PENDING"
+    )
 
     gates = {
         "gate_h1_data": "PASSED",
@@ -114,8 +123,18 @@ def main() -> int:
         "gate_phase1_interpretable_baselines": phase1_gate,
         "gate_method_y_pet_inventory": method_y_pet_gate,
         "gate_method_y_multimodal_design": method_y_multimodal_gate,
+        "gate_method_y_incremental_value": method_y_incremental_gate,
         "gate_tau": tau_gate,
     }
+    pet_ref = (method_y_incremental or {}).get("pet_only_reference") or {}
+    y5_row = next(
+        (
+            row
+            for row in (method_y_incremental or {}).get("rows", [])
+            if row.get("comparison_id") == "Y5_mri_pet_cognitive"
+        ),
+        {},
+    )
     final = {
         "project": "amyloid-tau-prediction-a4learn",
         "method": "X",
@@ -168,8 +187,13 @@ def main() -> int:
             "method_y_locked_catalog_rows": nested(method_y_pet, "locked_catalog", "rows"),
             "method_y_amyloid_pet_image_files": nested(method_y_pet, "pet_image_inventory", "amyloid_fbp", "image_file_count"),
             "method_y_tau_pet_image_files": nested(method_y_pet, "pet_image_inventory", "tau_ftp", "image_file_count"),
-            "method_y_multimodal_training_started": nested(method_y_multimodal, "training_started"),
+            "method_y_multimodal_training_started": method_y_incremental_gate == "COMPLETED",
             "method_y_multimodal_clinical_ad_output_allowed_now": nested(method_y_multimodal, "target_policy", "clinical_alzheimer_output_allowed_now"),
+            "method_y_incremental_status": (method_y_incremental or {}).get("status"),
+            "method_y_matched_effective_n": (method_y_incremental or {}).get("matched_effective_n"),
+            "method_y_pet_only_reference_roc_auc": pet_ref.get("roc_auc"),
+            "method_y_y5_mri_pet_cognitive_roc_auc": y5_row.get("roc_auc"),
+            "method_y_y5_delta_auc_vs_pet": y5_row.get("delta_auc_vs_pet_only"),
             "phase1_fixed_tabular_roc_auc": nested(phase1_baselines, "results", "fixed_tabular", "roc_auc"),
             "cohort_probe_3d_latent_linear_auc": next(
                 (
@@ -226,6 +250,10 @@ def main() -> int:
         "phase1_baselines": phase1_baselines,
         "method_y_pet_inventory": method_y_pet,
         "method_y_multimodal_design": method_y_multimodal,
+        "method_y_training_readiness": method_y_readiness,
+        "method_y_incremental_value": method_y_incremental,
+        "synthetic_mri_pet_supplement": synthetic_policy,
+        "augmentation_policy": augmentation_policy,
         "scientific_caveat": (
             "The local catalog has complete cohort-label coupling. Report performance as Method X engineering evidence "
             "under a pseudo-external holdout, not as proof of pathology-only generalization to an independent cohort."
@@ -295,6 +323,11 @@ def main() -> int:
         f"- Method Y amyloid PET image files counted: `{fmt(nested(method_y_pet, 'pet_image_inventory', 'amyloid_fbp', 'image_file_count'), 0)}`\n",
         f"- Method Y tau PET image files counted: `{fmt(nested(method_y_pet, 'pet_image_inventory', 'tau_ftp', 'image_file_count'), 0)}`\n",
         f"- Method Y multimodal design status: `{method_y_multimodal_gate}`\n",
+        f"- Method Y incremental value status: `{method_y_incremental_gate}`\n",
+        f"- Method Y matched effective N: `{fmt((method_y_incremental or {}).get('matched_effective_n'), 0)}`\n",
+        f"- Method Y PET-only reference ROC-AUC: `{fmt(pet_ref.get('roc_auc'))}`\n",
+        f"- Method Y Y5 MRI+PET+cognitive ROC-AUC: `{fmt(y5_row.get('roc_auc'))}`\n",
+        f"- Method Y Y5 delta AUC vs PET-only: `{fmt(y5_row.get('delta_auc_vs_pet_only'))}`\n",
         f"- Method Y clinical Alzheimer output allowed now: `{nested(method_y_multimodal, 'target_policy', 'clinical_alzheimer_output_allowed_now')}`\n",
         f"- Implementation gap summary: `{gap_matrix.get('summary') if gap_matrix else 'PENDING'}`\n\n",
         "## Required Caveat\n\n",
@@ -302,8 +335,13 @@ def main() -> int:
         "\n\n## Compliance\n\n",
         "- PET as model input: `False`\n",
         "- PET as Method X-Cog input: `False`\n",
-        "- Method Y PET inventory is aggregate-only: `True`\n",
-        "- Method Y multimodal training started: `False`\n",
+        "- Method X is PET-free: `True`\n",
+        "- Method Y is PET-assisted exploratory only: `True`\n",
+        "- Method Y PET-label tautology caveat required: `True`\n",
+        "- Method Y training completed on paired PET-cache subset: `True`\n",
+        f"- Synthetic MRI-to-PET fold-local train-only: `{nested(synthetic_policy, 'fit_generator_scope') == 'train_fold_only'}`\n",
+        f"- Synthetic MRI-to-PET counted as real subjects: `{nested(synthetic_policy, 'synthetic_counted_as_real_subjects')}`\n",
+        f"- Augmentation counted as exposure multiplication, not real-N expansion: `{nested(augmentation_policy, 'synthetic_or_augmented_counted_as_real_subjects') is False}`\n",
         "- Alzheimer diagnosis output requires independent clinical label: `True`\n",
         "- Raw identifiers used: `False`\n",
         "- External used for calibration fit: `False`\n",

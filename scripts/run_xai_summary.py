@@ -98,7 +98,7 @@ def load_model(checkpoint_path: Path, device):
     import torch
     from src.models.backbones.lightweight_3d import MethodX3DClassifier
 
-    checkpoint = torch.load(checkpoint_path, map_location=device)
+    checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=True)
     fusion = checkpoint.get("fusion", "cross_attention")
     model = MethodX3DClassifier(fusion=fusion).to(device)
     model.load_state_dict(checkpoint["model_state_dict"], strict=False)

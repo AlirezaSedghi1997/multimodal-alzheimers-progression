@@ -3,12 +3,15 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import random
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.train_baseline import average_precision, brier, roc_auc
+from src.data.volume_augmentation import build_augmentation_policy, maybe_wrap_train_dataset
+from src.evaluation.threshold_metrics import evaluate_with_train_selected_threshold
 from src.models.backbones.lightweight_3d import Lightweight3DEncoder
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
 from src.utils.run_manifest import write_run_manifest
@@ -204,6 +207,9 @@ def main() -> int:
     ap.add_argument("--device", choices=["auto", "cpu", "cuda"], default="auto")
     ap.add_argument("--amp", action="store_true")
     ap.add_argument("--num_workers", type=int, default=0)
+    ap.add_argument("--val_fraction", type=float, default=0.15)
+    ap.add_argument("--monai_augment", action="store_true", help="Apply train-fold-only MONAI augmentation.")
+    ap.add_argument("--augmentation_exposures_per_real", type=int, default=4)
     ap.add_argument("--allow_not_ready_for_tests", action="store_true")
     args = ap.parse_args()
 
@@ -242,6 +248,8 @@ def main() -> int:
     fold_results = []
     all_y: list[int] = []
     all_p: list[float] = []
+    threshold_rows: list[dict] = []
+    real_train_fold_exposures = 0
     checkpoint_paths: list[str] = []
     for fold in range(folds):
         train_idx, train_labels = split_indices(split_dir / f"fold_{fold}_train.csv", sample_to_idx, labels_by_sample, limit=limit)
@@ -249,21 +257,52 @@ def main() -> int:
         test_idx, test_labels = split_indices(split_dir / f"fold_{fold}_test.csv", sample_to_idx, labels_by_sample, limit=test_limit)
         if not train_idx or not test_idx:
             raise RuntimeError(f"Fold {fold} has no PET cache-overlapping samples.")
-        train_ds = H5PETDataset(cache_path, train_idx, train_labels)
+        val_n = max(int(len(train_idx) * args.val_fraction), 1)
+        val_n = min(val_n, len(train_idx) - 1)
+        combined = list(zip(train_idx, train_labels))
+        random.shuffle(combined)
+        train_idx, train_labels = zip(*combined)
+        val_idx, val_labels = train_idx[:val_n], train_labels[:val_n]
+        fit_idx, fit_labels = train_idx[val_n:], train_labels[val_n:]
+        real_train_fold_exposures += len(fit_idx)
+        train_ds = maybe_wrap_train_dataset(
+            H5PETDataset(cache_path, fit_idx, fit_labels),
+            enabled=args.monai_augment,
+            image_positions=(0,),
+        )
+        val_ds = H5PETDataset(cache_path, val_idx, val_labels)
         test_ds = H5PETDataset(cache_path, test_idx, test_labels)
         train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers)
+        val_loader = DataLoader(val_ds, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers)
         test_loader = DataLoader(test_ds, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers)
-        positives = max(float(sum(train_labels)), 1.0)
-        negatives = max(float(len(train_labels) - sum(train_labels)), 1.0)
-        pos_weight = torch.tensor([negatives / positives], dtype=torch.float32, device=device)
+        positives = max(float(sum(fit_labels)), 1.0)
+        negatives = max(float(len(fit_labels) - sum(fit_labels)), 1.0)
+        pos_weight = torch.tensor([min(negatives / positives, 20.0)], dtype=torch.float32, device=device)
         model = build_model().to(device)
         optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
         losses = []
         for _ in range(epochs):
             losses.append(run_epoch(model, train_loader, optimizer, device, pos_weight, use_amp=amp_enabled, scaler=scaler))
+        val_true, val_prob = predict(model, val_loader, device)
         y_true, y_prob = predict(model, test_loader, device)
         metrics = evaluate(y_true, y_prob)
-        metrics.update({"fold": fold, "train_n": len(train_idx), "test_n": len(test_idx), "loss_last": losses[-1] if losses else None})
+        threshold_eval = evaluate_with_train_selected_threshold(
+            validation_y=val_true,
+            validation_prob=val_prob,
+            test_y=y_true,
+            test_prob=y_prob,
+        )
+        threshold_rows.append({"fold": fold, **threshold_eval})
+        metrics.update(
+            {
+                "fold": fold,
+                "train_n": len(fit_idx),
+                "val_n": len(val_idx),
+                "test_n": len(test_idx),
+                "loss_last": losses[-1] if losses else None,
+                "threshold_metrics": threshold_eval,
+            }
+        )
         fold_results.append(metrics)
         all_y.extend(y_true)
         all_p.extend(y_prob)
@@ -273,6 +312,11 @@ def main() -> int:
 
     aggregate = evaluate(all_y, all_p)
     peak_vram_gb = float(torch.cuda.max_memory_allocated() / (1024**3)) if device.type == "cuda" else None
+    
+    from src.evaluation.conformal_prediction import evaluate_conformal_prediction, conformal_risk_control
+    conformal_eval = evaluate_conformal_prediction(all_y, all_p, alpha=0.1)
+    conformal_risk = conformal_risk_control(all_y, all_p, target_error_rate=0.1)
+    
     aggregate.update(
         {
             "mode": mode,
@@ -282,6 +326,7 @@ def main() -> int:
             "device_requested": args.device,
             "amp_enabled": amp_enabled,
             "num_workers": args.num_workers,
+            "val_fraction": args.val_fraction,
             "epochs": epochs,
             "folds": folds,
             "batch_size": args.batch_size,
@@ -295,6 +340,18 @@ def main() -> int:
             "readiness_status": readiness.get("status"),
             "peak_vram_gb": peak_vram_gb,
             "checkpoints": checkpoint_paths,
+            "augmentation": build_augmentation_policy(
+                enabled=args.monai_augment,
+                real_train_n=real_train_fold_exposures,
+                exposures_per_real=args.augmentation_exposures_per_real,
+            ),
+            "threshold_selection": {
+                "source": "fold_internal_validation",
+                "test_labels_used_for_threshold_selection": False,
+                "folds": threshold_rows,
+            },
+            "conformal_prediction": conformal_eval,
+            "conformal_risk_control": conformal_risk,
         }
     )
     summary = {"status": aggregate["status"], "aggregate": aggregate, "folds": fold_results}
@@ -312,6 +369,9 @@ def main() -> int:
         f"- amp_enabled: `{aggregate['amp_enabled']}`\n",
         "- method_x_claim_unchanged: `True`\n",
         "- clinical_alzheimer_diagnosis_allowed: `False`\n",
+        f"- conformal_coverage: `{conformal_eval['empirical_coverage']}`\n",
+        f"- conformal_avg_set_size: `{conformal_eval['average_prediction_set_size']}`\n",
+        f"- conformal_risk_error_rate: `{conformal_risk['empirical_error_rate']}`\n",
     ]
     atomic_write_text(out_dir / "method_y_pet_metrics.md", "".join(lines))
     write_run_manifest("results/logs/method_y_pet_training_manifest.json", stage="method_y_pet_train", data_root=None, extra={"aggregate": aggregate})
