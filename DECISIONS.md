@@ -1,4 +1,4 @@
-﻿# Decisions
+# Decisions
 
 ## 2026-05-25 - Add Method X-Cog as Separate Cognitive/Clinical Fusion Extension
 
@@ -138,4 +138,38 @@
 - Reason: The current tau regression artifact reports the tau target file as unavailable at stage execution time, while Method X primary AB pipeline, calibration, final analysis, public bundle, and tests completed successfully.
 - Alternatives: Block the whole project until the tau target file is revalidated, or report only the feasibility table without a tau regression artifact.
 - Impact: Primary Method X results are unaffected. Tau remains exploratory and must be described as skipped in the final reporting unless the tau target file is made available and `scripts/run_project_stage.py --run_all --data_root ...` is rerun.
+
+## 2026-06-14 - Blood Biomarker Integration
+
+- Decision: Add pTau217, GFAP, AB42/40 ratio, APOE4 as blood biomarker features.
+- Reason: pTau217 is the strongest single blood AD biomarker (AUC > 0.90 in literature). Integrating blood features provides a minimally invasive benchmark.
+- Implementation: `scripts/build_blood_features.py` extracts features, `scripts/train_baseline_blood.py` trains models.
+- Impact: Blood baseline AUC=0.999 (with pTau217-based labels). 1083 subjects with blood biomarkers.
+
+## 2026-06-14 - FLAIR WMH Feature Integration
+
+- Decision: Extract white matter hyperintensity features from FLAIR data.
+- Reason: WMH correlates with AD pathology and provides structural complement to T1 MRI.
+- Implementation: `scripts/extract_flair_wmh_features.py` extracts WMH volume, ICV, corrected, ratio.
+- Impact: FLAIR baseline AUC=0.543 (modest signal). 1754 subjects with FLAIR features.
+
+## 2026-06-14 - Method Y PET Training Completed
+
+- Decision: Train PET-only model on Method Y branch.
+- Reason: Complete the exploratory PET-assisted branch as specified in preregistration.
+- Implementation: `scripts/train_pet_method_y.py` with 233 PET samples, 3-fold CV, 10 epochs.
+- Impact: PET-only AUC=0.819. Tautology caveat applies (PET-derived labels used for training).
+
+## 2026-06-14 - Bug Fixes Applied
+
+- Decision: Fix critical bugs in SynIB loss, conformal prediction, cross-attention, scheduler.
+- Reason: These bugs affected training dynamics and evaluation validity.
+- Changes: pos_weight in SynIB, inverted conformal sets, multi-query cross-attention, SequentialLR scheduler.
+- Impact: All 235 tests pass. Training dynamics improved.
+
+## 2026-06-14 - Unified Execution Program Created
+
+- Decision: Create consolidated execution program in `docs/UNIFIED_EXECUTION_PROGRAM.md`.
+- Reason: Multiple documents (proposal, patches, execution programs) needed consolidation.
+- Impact: Single source of truth for project state and next steps.
 

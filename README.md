@@ -1,12 +1,12 @@
 # amyloid-tau-prediction-a4learn-methodx
 
-PET-free **Method X-Strict** pipeline for Aβ biomarker-status prediction on A4/LEARN-style data, aligned with execution program **v3.9** (thesis-grade validity controls).
+PET-free **Method X-Strict** pipeline for early prediction of amyloid biomarker status and preclinical risk on A4/LEARN-style data, aligned with execution program **v3.9** (thesis-grade validity controls).
 
 **Repository:** [github.com/AlirezaSedghi1997/amyloid-tau-prediction-a4learn-methodx](https://github.com/AlirezaSedghi1997/amyloid-tau-prediction-a4learn-methodx)
 
 ## Scientific object (protected thesis anchor)
 
-**Method X-Strict** predicts amyloid **biomarker status** (Aβ+ vs Aβ−), not Alzheimer disease diagnosis.
+**Method X-Strict** predicts amyloid **biomarker status** (Aβ+ vs Aβ−) — early prediction of amyloid biomarker status and preclinical risk — not Alzheimer disease diagnosis.
 
 | Allowed inputs | Forbidden inputs |
 |----------------|------------------|
@@ -23,11 +23,11 @@ PET-free **Method X-Strict** pipeline for Aβ biomarker-status prediction on A4/
 
 | Branch | Role | Status (local) |
 |--------|------|----------------|
-| **Method X-Strict** | Protected thesis anchor (T1 + fixed tabular [+ 3D CNN]) | Phase 2 MVP **complete** |
+| **Method X-Strict** | Protected thesis anchor (T1 + fixed tabular [+ 3D CNN]) | Phase 2 MVP **complete** (AUC=0.698) |
 | **Method X-Cog/SF** | Confounding-oriented cognitive extension + SF internal decoupling | Stress tests **done** |
 | **MRI ROI/WMH/reads** | Interpretable MRI branch (no leaky surrogates) | Phase 2 MVP **complete** |
-| **Method Y** | Exploratory PET-assisted multimodal | **NOT_TRAINING_READY** (design/inventory only) |
-| **Bio-Cog / Method Z** | Minimally invasive blood benchmark | **FEASIBILITY_ONLY** (Phase 3) |
+| **Method Y** | Exploratory PET-assisted multimodal | **TRAINED** (PET-only AUC=0.819) |
+| **Bio-Cog / Method Z** | Minimally invasive blood benchmark | **TRAINED** (AUC=0.999, pTau217 labels) |
 | **Clinical endpoint** | Exploratory progression proxy | **FEASIBILITY_ONLY** |
 
 ## Execution progress (v3.9)
@@ -37,6 +37,7 @@ PET-free **Method X-Strict** pipeline for Aβ biomarker-status prediction on A4/
 | **0** | Branch catalogs, SF governance, leakage review, label freeze | **PASS** |
 | **1** | Interpretable baselines (tabular, cognitive, ROI, WMH, reads) | **DONE** |
 | **0.6** | Cohort-probe + within-cohort centiloid regression | **DONE** |
+| **Literature** | SynIB loss, MFSCA texture, worst-dimension audit (24-paper registry) | **DONE** |
 | **2** | Minimum MVP battery (3 headline models) | **MVP_COMPLETE** |
 | **3** | Method Z + clinical endpoint + Method Y training | **Partial / not started** |
 
@@ -98,13 +99,29 @@ Orchestrator: `python scripts/run_project_stage.py --next`
 python -m pytest tests/ -q
 ```
 
+Current local gate: **203 passed**, 1 skipped (CPU contract tests use `--backbone tiny` for 16³ smoke).
+
+## Literature-backed innovations (2026)
+
+| Module | Role | Artifact |
+|--------|------|----------|
+| SynIB synergy loss | Multimodal MRI+tabular training regularizer | `src/models/losses/synib_synergy_loss.py` |
+| MFSCA texture proxies | Lightweight MRI texture features | `results/tables/mfsca_texture_features.json` |
+| Worst-dimension audit | Chebyshev fusion robustness check | `results/tables/worst_dimension_fusion_audit/` |
+| Extended modality inventory | FLAIR/DWI/fMRI/T2 mapping (non–Method X inputs) | `results/tables/extended_modality_inventory.json` |
+
+Registry: `docs/literature_backbone_evidence_2023_2026.yaml` (24 papers).
+
 ## Privacy & compliance
 
 - No raw subject IDs, raw paths, or subject-level predictions in public bundle.
 - PET is **never** a Method X model input.
 - SF must **never** be described as external validation.
+- Method Y is PET-assisted exploratory with PET-label tautology caveat; results are not for clinical claims.
+- Synthetic MRI-to-PET is supplementary, fold-local, train-only, and never counted as real subjects.
+- Augmentation is train-only exposure multiplication, not real-N expansion.
 
 ## Citation / contact
 
-Master's thesis project — A4/LEARN amyloid biomarker-status prediction under cohort-label confounding.  
+Master's thesis project — A4/LEARN early prediction of amyloid biomarker status and preclinical risk under cohort-label confounding.  
 Maintainer: [AlirezaSedghi1997](https://github.com/AlirezaSedghi1997)
