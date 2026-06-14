@@ -7,4 +7,6 @@ h5py
 nibabel
 torch
 monai
+imbalanced-learn
+synthstrip
 

@@ -1,91 +1,137 @@
 from __future__ import annotations
 
-import torch
-import torch.nn as nn
+try:
+    import torch
+    from torch import nn
+except Exception:  # pragma: no cover
+    torch = None
+    nn = object
 
+from src.models.backbones.backbone_factory import build_3d_backbone
 from src.models.fusion.bottleneck_cross_attention import BottleneckCrossAttention
+from src.models.fusion.moe_fusion import MoEFusion
 
 
 class Lightweight3DEncoder(nn.Module):
-    def __init__(self, in_channels: int = 1, base_channels: int = 8, out_dim: int = 64) -> None:
+    """Small 3D CNN encoder used for CPU smoke and tiny-backbone ablations."""
+
+    def __init__(self, in_channels: int = 1, base_channels: int = 8, out_dim: int = 128) -> None:
+        if torch is None:
+            raise RuntimeError("PyTorch is required for Lightweight3DEncoder")
         super().__init__()
+        channels = int(base_channels)
+        hidden = max(channels * 2, 4)
         self.net = nn.Sequential(
-            nn.Conv3d(in_channels, base_channels, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm3d(base_channels),
-            nn.GELU(),
+            nn.Conv3d(in_channels, channels, kernel_size=3, padding=1),
+            nn.BatchNorm3d(channels),
+            nn.ReLU(inplace=True),
             nn.MaxPool3d(2),
-            nn.Conv3d(base_channels, base_channels * 2, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm3d(base_channels * 2),
-            nn.GELU(),
-            nn.MaxPool3d(2),
-            nn.Conv3d(base_channels * 2, base_channels * 4, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm3d(base_channels * 4),
-            nn.GELU(),
+            nn.Conv3d(channels, hidden, kernel_size=3, padding=1),
+            nn.BatchNorm3d(hidden),
+            nn.ReLU(inplace=True),
             nn.AdaptiveAvgPool3d(1),
             nn.Flatten(),
-            nn.Linear(base_channels * 4, out_dim),
-            nn.GELU(),
+            nn.Linear(hidden, out_dim),
         )
         self.out_dim = out_dim
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        if x.ndim != 5:
-            raise ValueError("Expected MRI tensor shaped (B, C, D, H, W)")
-        return self.net(x)
+    def forward(self, image):
+        return self.net(image)
 
 
 class MethodX3DClassifier(nn.Module):
+    """Method X 3D MRI + tabular classifier (PET-free)."""
+
     def __init__(
         self,
-        tab_dim: int = 5,
+        in_channels: int = 1,
         base_channels: int = 8,
-        latent_dim: int = 64,
+        latent_dim: int = 128,
         tab_hidden_dim: int = 32,
+        tab_dim: int = 5,
         fusion: str = "cross_attention",
-        dropout: float = 0.15,
+        dropout: float = 0.1,
+        backbone: str = "efficientnet3d_b0",
+        align_dim: int | None = None,
+        bottleneck_dim: int = 32,
+        fusion_hidden_dim: int | None = None,
     ) -> None:
+        if torch is None:
+            raise RuntimeError("PyTorch is required for MethodX3DClassifier")
         super().__init__()
-        self.encoder = Lightweight3DEncoder(base_channels=base_channels, out_dim=latent_dim)
+        self.fusion = fusion.lower().strip()
+        self.latent_dim = int(latent_dim)
+        self.tab_hidden_dim = int(tab_hidden_dim)
+        self.backbone_name = backbone.lower().strip()
+        hidden = int(fusion_hidden_dim if fusion_hidden_dim is not None else latent_dim)
+        concat_align = int(align_dim if align_dim is not None else max(latent_dim // 2, tab_hidden_dim))
+
+        if self.backbone_name == "tiny":
+            self.encoder = Lightweight3DEncoder(
+                in_channels=in_channels,
+                base_channels=base_channels,
+                out_dim=self.latent_dim,
+            )
+        else:
+            self.encoder = build_3d_backbone(self.backbone_name, in_channels=in_channels, out_dim=self.latent_dim)
+
         self.tab_encoder = nn.Sequential(
             nn.Linear(tab_dim, tab_hidden_dim),
-            nn.GELU(),
+            nn.ReLU(inplace=True),
             nn.Dropout(dropout),
             nn.Linear(tab_hidden_dim, tab_hidden_dim),
-            nn.GELU(),
         )
-        self.alignment_projection = nn.Identity() if tab_hidden_dim == latent_dim else nn.Linear(tab_hidden_dim, latent_dim)
-        self.fusion = fusion
-        if fusion == "cross_attention":
+        if self.fusion == "concat":
+            self.fuser = None
+            self.alignment_projection = nn.Linear(tab_hidden_dim, concat_align)
+            self.head = nn.Sequential(nn.Dropout(dropout), nn.Linear(self.latent_dim + concat_align, 1))
+            self._concat_align_dim = concat_align
+        elif self.fusion in {"cross_attention", "cross-attention"}:
+            self.alignment_projection = nn.Linear(tab_hidden_dim, self.latent_dim)
             self.fuser = BottleneckCrossAttention(
-                mri_dim=latent_dim,
+                mri_dim=self.latent_dim,
                 tab_dim=tab_hidden_dim,
-                hidden_dim=latent_dim,
-                bottleneck_dim=32,
-                num_heads=4,
+                hidden_dim=hidden,
+                bottleneck_dim=bottleneck_dim,
+                num_heads=2,
                 dropout=dropout,
             )
-            head_in = self.fuser.out_dim
-        elif fusion == "concat":
-            self.fuser = None
-            head_in = latent_dim + tab_hidden_dim
+            self.head = nn.Sequential(nn.Dropout(dropout), nn.Linear(hidden, 1))
+        elif self.fusion == "moe":
+            self.alignment_projection = nn.Linear(tab_hidden_dim, self.latent_dim)
+            self.fuser = MoEFusion(
+                mri_dim=self.latent_dim,
+                tab_dim=tab_hidden_dim,
+                n_experts=4,
+                out_dim=hidden,
+                dropout=dropout,
+            )
+            self.head = nn.Sequential(nn.Dropout(dropout), nn.Linear(hidden, 1))
         else:
-            raise ValueError(f"Unknown fusion mode: {fusion}")
-        self.head = nn.Sequential(nn.Dropout(dropout), nn.Linear(head_in, 1))
+            raise ValueError(f"Unsupported fusion mode: {fusion}")
 
-    def encode_latents(self, image: torch.Tensor, tabular: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+    def encode(self, image, tabular):
         mri_latent = self.encoder(image)
+        if mri_latent.ndim > 2:
+            mri_latent = mri_latent.view(mri_latent.size(0), -1)
         tab_latent = self.tab_encoder(tabular)
         return mri_latent, tab_latent
 
-    def forward_with_latents(self, image: torch.Tensor, tabular: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-        mri_latent, tab_latent = self.encode_latents(image, tabular)
+    def fused_features(self, mri_latent, tab_latent, tab_presence=None):
         if self.fuser is None:
-            fused = torch.cat([mri_latent, tab_latent], dim=-1)
-        else:
-            fused = self.fuser(mri_latent, tab_latent)
-        logits = self.head(fused).squeeze(-1)
-        return logits, mri_latent, self.alignment_projection(tab_latent)
+            aligned = self.alignment_projection(tab_latent)
+            return torch.cat([mri_latent, aligned], dim=-1)
+        return self.fuser(mri_latent, tab_latent, tab_presence=tab_presence)
 
-    def forward(self, image: torch.Tensor, tabular: torch.Tensor) -> torch.Tensor:
-        logits, _, _ = self.forward_with_latents(image, tabular)
-        return logits
+    def logits_from_latents(self, mri_latent, tab_latent, tab_presence=None):
+        features = self.fused_features(mri_latent, tab_latent, tab_presence=tab_presence)
+        return self.head(features).squeeze(-1)
+
+    def forward_with_latents(self, image, tabular, tab_presence=None):
+        mri_latent, tab_latent = self.encode(image, tabular)
+        logits = self.logits_from_latents(mri_latent, tab_latent, tab_presence=tab_presence)
+        aligned_tab = self.alignment_projection(tab_latent)
+        return logits, mri_latent, aligned_tab
+
+    def forward(self, image, tabular, tab_presence=None):
+        return self.forward_with_latents(image, tabular, tab_presence=tab_presence)[0]

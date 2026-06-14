@@ -3,7 +3,7 @@ from __future__ import annotations
 import torch.nn as nn
 
 
-def build_3d_backbone(name: str, in_channels: int = 1, out_dim: int = 128) -> nn.Module:
+def build_3d_backbone(name: str, in_channels: int = 1, out_dim: int = 128, pretrained_path: str | None = None) -> nn.Module:
     """Build a PET-free 3D MRI encoder for Method X."""
     name = name.lower().strip()
 
@@ -17,6 +17,20 @@ def build_3d_backbone(name: str, in_channels: int = 1, out_dim: int = 128) -> nn
         except Exception as exc:
             raise ImportError("MONAI is required for resnet10_3d. Install monai or use --backbone tiny.") from exc
         return resnet10(spatial_dims=3, n_input_channels=in_channels, num_classes=out_dim)
+
+    if name == "resnet18_3d":
+        try:
+            from monai.networks.nets import resnet18
+        except Exception as exc:
+            raise ImportError("MONAI is required for resnet18_3d. Install monai or use --backbone tiny.") from exc
+        return resnet18(spatial_dims=3, n_input_channels=in_channels, num_classes=out_dim)
+
+    if name == "densenet121_3d":
+        try:
+            from monai.networks.nets import DenseNet121
+        except Exception as exc:
+            raise ImportError("MONAI is required for densenet121_3d. Install monai or use --backbone tiny.") from exc
+        return DenseNet121(spatial_dims=3, in_channels=in_channels, out_channels=out_dim)
 
     if name == "efficientnet3d_b0":
         try:

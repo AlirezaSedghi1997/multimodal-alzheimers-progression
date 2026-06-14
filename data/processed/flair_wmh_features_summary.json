@@ -1,0 +1,12 @@
+{
+  "n_subjects": 1754,
+  "wmh_volume_mean": 5542.461231470924,
+  "wmh_volume_std": 7186.02695282463,
+  "wmh_icv_ratio_mean": 0.003857648829817613,
+  "feature_columns": [
+    "WMHvol_masked",
+    "ICV",
+    "WMH_corrected",
+    "WMH_ICV_ratio"
+  ]
+}
