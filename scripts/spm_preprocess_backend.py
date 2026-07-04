@@ -101,7 +101,7 @@ def write_spm_batch(
     batch_path.write_text(
         f"""
 addpath('{spm_dir_m}');
-spm('Defaults', 'fmri');
+spm('Defaults', 'PET');
 spm_jobman('initcfg');
 input_nii = '{input_m}';
 output_nii = '{output_m}';
@@ -302,7 +302,7 @@ def write_spm_pet_t1_mni_batch(
     batch_path.write_text(
         f"""
 addpath('{spm_dir_m}');
-spm('Defaults', 'fmri');
+spm('Defaults', 'PET');
 spm_jobman('initcfg');
 t1_nii = '{t1_m}';
 pet_nii = '{pet_m}';
@@ -446,7 +446,7 @@ def write_spm_t1_deform_batch(
     batch_path.write_text(
         f"""
 addpath('{spm_dir_m}');
-spm('Defaults', 'fmri');
+spm('Defaults', 'PET');
 spm_jobman('initcfg');
 t1_nii = '{t1_m}';
 deform_cache = '{deform_cache_m}';
@@ -520,7 +520,7 @@ def write_spm_pet_mni_write_batch(
     batch_path.write_text(
         f"""
 addpath('{spm_dir_m}');
-spm('Defaults', 'fmri');
+spm('Defaults', 'PET');
 spm_jobman('initcfg');
 coreg_pet_nii = '{coreg_pet_m}';
 output_nii = '{output_m}';
