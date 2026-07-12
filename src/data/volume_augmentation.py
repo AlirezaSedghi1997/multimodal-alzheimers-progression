@@ -1,7 +1,16 @@
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Iterable, Sequence
+
+
+_DEFAULT_BASE_PROB = 0.2
+
+
+def _scaled_probability(base: float, prob: float) -> float:
+    scale = max(float(prob), 0.0) / _DEFAULT_BASE_PROB
+    return min(max(float(base) * scale, 0.0), 1.0)
 
 
 def build_monai_volume_transform(*, split: str, enabled: bool, prob: float = 0.2):
@@ -16,30 +25,28 @@ def build_monai_volume_transform(*, split: str, enabled: bool, prob: float = 0.2
     try:
         from monai.transforms import (
             Compose,
-            RandAdjustContrast,
             RandAffine,
             RandBiasField,
-            RandFlip,
-            RandGaussianNoise,
-            RandGaussianSmooth,
         )
     except Exception as exc:  # pragma: no cover - environment guard
         raise RuntimeError("MONAI is required for volume augmentation; install monai or disable augmentation.") from exc
+    # These volumes are affine-free, signed z-score HDF5 tensors.  We cannot
+    # prove which tensor axis is left-right here, so flips are intentionally
+    # excluded.  Global noise/offset/contrast transforms are also excluded:
+    # they can turn the zero background into nonzero voxels.  Materialized
+    # augmentation uses the mask-aware implementation in the cache builder.
+    medium_prob = _scaled_probability(0.25, prob)
+    light_prob = _scaled_probability(0.15, prob)
     return Compose(
         [
-            RandFlip(prob=0.5, spatial_axis=0),
-            RandFlip(prob=0.5, spatial_axis=1),
             RandAffine(
-                prob=0.3,
-                rotate_range=(0.1, 0.1, 0.1),
-                translate_range=(5, 5, 5),
-                scale_range=(0.05, 0.05, 0.05),
-                padding_mode="border",
+                prob=medium_prob,
+                rotate_range=(math.radians(3.0),) * 3,
+                translate_range=(2, 2, 2),
+                scale_range=(0.025, 0.025, 0.025),
+                padding_mode="zeros",
             ),
-            RandAdjustContrast(prob=0.3, gamma=(0.8, 1.2)),
-            RandGaussianSmooth(prob=0.2, sigma_x=(0.5, 1.0)),
-            RandGaussianNoise(prob=0.3, mean=0.0, std=0.02),
-            RandBiasField(prob=0.2),
+            RandBiasField(prob=light_prob, coeff_range=(0.0, 0.05)),
         ]
     )
 
@@ -83,8 +90,8 @@ class TransformingDataset:
         return tuple(values)
 
 
-def maybe_wrap_train_dataset(base_dataset, *, enabled: bool, image_positions: Iterable[int]):
-    transform = build_monai_volume_transform(split="train", enabled=enabled)
+def maybe_wrap_train_dataset(base_dataset, *, enabled: bool, image_positions: Iterable[int], prob: float = 0.2):
+    transform = build_monai_volume_transform(split="train", enabled=enabled, prob=prob)
     if transform is None:
         return base_dataset
     return TransformingDataset(base_dataset, transform, tuple(image_positions))

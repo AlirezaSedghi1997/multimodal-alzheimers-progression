@@ -1,0 +1,45 @@
+dry_run: true
+teacher:
+  joint_ckpt: results/method_y_execution/broad_s1_fbp_only_hq_v1/checkpoints/joint_fold0_dryrun.pt
+  joint_ckpt_pattern: results/method_y_execution/broad_s1_fbp_only_hq_v1/checkpoints/joint_fold{fold}_dryrun.pt
+inputs:
+  pet_h5: caches/method_y/pet_mni_128_broad_s1_fbp_only_hq_v1.h5
+  pet_input_list: data/method_y/pet_input_list_broad_s1_fbp_only.csv
+  mri_h5: data/cached/archive/t1_volume_cache_128_real_20260712T203222Z_26fff22aa7de.h5
+  mri_ckpt: models/method_x/best.pt
+  stage_report_root: results/method_y_execution/broad_s1_fbp_only_hq_v1
+student:
+  mri_only_backbone: resnet18_3d
+losses:
+  kd_logits_weight: 1.0
+  kd_feature_weight: 0.5
+  supervised_weight: 1.0
+compute:
+  target_gpu_vram_gb: 8
+  batch_size: 1
+  grad_accum: 4
+  mri_backbone: resnet18_3d
+  gradient_checkpointing: true
+  vram_budget_gb: 7.0
+training:
+  dry_run_epochs: 1
+  train_epochs: 40
+folds:
+  manifest: results/method_y_execution/broad_s1_fbp_only_hq_v1/fold_manifest_s3.json
+  n_folds: 4
+  seed: 42
+acceptance_gate:
+  primary_metric: pet_free_auc_retention
+  target_fraction_of_teacher_auc: 0.95
+outputs:
+  stage_report_root: results/method_y_execution/broad_s1_fbp_only_hq_v1
+  plan_json: results/method_y_execution/broad_s1_fbp_only_hq_v1/method_y_stage_s3_plan.json
+  validation_dir: results/method_y_execution/broad_s1_fbp_only_hq_v1/validation_artifacts_s3
+  checkpoint_dir: results/method_y_execution/broad_s1_fbp_only_hq_v1/checkpoints
+claim_boundary:
+  allowed: PET-guided teacher for internal distillation only; student inference remains PET-free.
+  forbidden:
+    - cross-tracer amyloid claim
+    - Alzheimer disease diagnosis
+    - FTP as amyloid evidence
+    - PET input at Method X inference

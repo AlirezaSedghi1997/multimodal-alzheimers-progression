@@ -1202,7 +1202,7 @@ def train_joint_fold(fold_idx, train_ids, val_ids, h5_path, mri_ckpt, *, epochs,
                      device=None, amp=True, base_channels=4, hidden_dim=128, bottleneck_dim=16,
                      num_heads=2, batch_size=1, mri_backbone="resnet10_3d",
                      gradient_checkpointing=True, vram_budget_gb=7.0, mode: str = "train",
-                     mri_h5_path: str = "data/cached/t1_combined_foldlocal_4000_128.h5",
+                     mri_h5_path: str = "data/cached/archive/t1_volume_cache_128_real_20260712T203222Z_26fff22aa7de.h5",
                      pet_ckpt_path: str | None = None,
                      loss_weights: dict[str, float] | None = None,
                      validation_artifact_dir: str | Path = DEFAULT_VALIDATION_ARTIFACT_DIR,
@@ -1321,7 +1321,9 @@ def run_stage_s2(cfg: dict, *, mode: str, limit: int, epochs: int, s1_auroc: flo
     h5_path = cfg.get("inputs", {}).get("pet_h5", DEFAULT_METHOD_Y_PET_CACHE)
     pet_input_list_path = cfg.get("inputs", {}).get("pet_input_list", DEFAULT_PET_INPUT_LIST)
     mri_ckpt = cfg.get("inputs", {}).get("mri_ckpt", "models/method_x/best.pt")
-    mri_h5 = cfg.get("inputs", {}).get("mri_h5", "data/cached/t1_combined_foldlocal_4000_128.h5")
+    mri_h5 = cfg.get("inputs", {}).get(
+        "mri_h5", "data/cached/archive/t1_volume_cache_128_real_20260712T203222Z_26fff22aa7de.h5"
+    )
     input_cfg = cfg.get("inputs", {}) or {}
     pet_ckpt_pattern = input_cfg.get("s1_pet_ckpt_pattern", "models/method_y/pet_only_fold{fold}.pt")
     pet_ckpt_dryrun_suffix = bool(input_cfg.get("s1_pet_ckpt_dryrun_suffix", True))
@@ -1491,7 +1493,7 @@ def _try_write_calibration_input_artifact(
 def train_distill_fold(fold_idx, train_ids, val_ids, h5_path, teacher_ckpt, *, epochs, lr=1e-4, T=2.0,
                        device=None, amp=True, batch_size=1, grad_accum: int = 4, mri_backbone="resnet10_3d",
                        gradient_checkpointing=True, vram_budget_gb=7.0, mri_ckpt="models/method_x/best.pt",
-                       mode: str = "train", mri_h5_path: str = "data/cached/t1_combined_foldlocal_4000_128.h5",
+                       mode: str = "train", mri_h5_path: str = "data/cached/archive/t1_volume_cache_128_real_20260712T203222Z_26fff22aa7de.h5",
                        loss_weights: dict[str, float] | None = None,
                        validation_artifact_dir: str | Path = DEFAULT_VALIDATION_ARTIFACT_DIR,
                        checkpoint_dir: str | Path = "models/method_y",
@@ -1610,7 +1612,9 @@ def run_stage_s3(cfg: dict, *, mode: str, limit: int, epochs: int, teacher_auroc
     teacher_pattern = cfg.get("teacher", {}).get("joint_ckpt_pattern", "models/method_y/joint_fold{fold}.pt")
     profile = _compute_profile(cfg)
     mri_ckpt = cfg.get("inputs", {}).get("mri_ckpt", "models/method_x/best.pt")
-    mri_h5 = cfg.get("inputs", {}).get("mri_h5", "data/cached/t1_combined_foldlocal_4000_128.h5")
+    mri_h5 = cfg.get("inputs", {}).get(
+        "mri_h5", "data/cached/archive/t1_volume_cache_128_real_20260712T203222Z_26fff22aa7de.h5"
+    )
     dependency_root = _dependency_report_root(cfg)
     s2_report = _load_stage_report("S2", dependency_root)
     if s2_report.get("acceptance_gate_passed") is not True:

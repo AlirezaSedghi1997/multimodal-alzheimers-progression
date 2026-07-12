@@ -2,6 +2,9 @@ import csv
 import json
 from pathlib import Path
 
+import nibabel as nib
+import numpy as np
+
 from scripts.spm_completion_guard import spm_completion_ready, spm_completion_status
 
 
@@ -17,7 +20,11 @@ def write_manifest(path: Path, *, done: int, total: int, config_hash: str) -> No
 def write_preprocessed_files(path: Path, count: int) -> None:
     path.mkdir(parents=True, exist_ok=True)
     for idx in range(count):
-        (path / f"s_{idx:04d}.nii.gz").write_bytes(b"synthetic")
+        image = nib.Nifti1Image(
+            np.ones((128, 128, 128), dtype=np.float32),
+            np.diag([1.5, 1.5, 1.5, 1.0]),
+        )
+        nib.save(image, str(path / f"s_{idx:04d}.nii.gz"))
     scratch = path / "_scratch_spm"
     scratch.mkdir()
     (scratch / "s_ignored.nii.gz").write_bytes(b"synthetic")
@@ -88,6 +95,29 @@ def test_spm_completion_guard_blocks_incomplete_done_count(tmp_path):
     assert status["checks"]["done_count_ok"] is False
 
 
+def test_spm_completion_guard_accepts_terminal_rows_when_outputs_and_qc_reconcile(tmp_path):
+    manifest = tmp_path / "manifest.json"
+    preprocessed = tmp_path / "preprocessed"
+    write_manifest(manifest, done=2, total=2, config_hash="expected")
+    obj = json.loads(manifest.read_text(encoding="utf-8"))
+    obj["items"]["s_0001"]["status"] = "BLOCKED"
+    manifest.write_text(json.dumps(obj), encoding="utf-8")
+    write_preprocessed_files(preprocessed, 2)
+    write_qc_files(preprocessed, 2)
+
+    status = spm_completion_status(
+        manifest_path=manifest,
+        preprocessed_dir=preprocessed,
+        expected_config_hash="expected",
+        expected_total=2,
+    )
+
+    assert spm_completion_ready(status) is True
+    assert status["status"] == "SPM_COMPLETE_WITH_RECONCILED_TERMINAL_ROWS"
+    assert status["done_count"] == 1
+    assert status["manifest_terminal_count"] == 2
+
+
 def test_spm_completion_guard_blocks_wrong_config_hash(tmp_path):
     manifest = tmp_path / "manifest.json"
     preprocessed = tmp_path / "preprocessed"
@@ -128,8 +158,9 @@ def test_spm_completion_guard_counts_active_catalog_only(tmp_path):
     preprocessed = tmp_path / "preprocessed"
     catalog = tmp_path / "catalog.csv"
     preprocessed.mkdir(parents=True)
-    (preprocessed / "s_keep.nii.gz").write_bytes(b"synthetic")
-    (preprocessed / "s_excluded.nii.gz").write_bytes(b"synthetic")
+    image = nib.Nifti1Image(np.ones((128, 128, 128), dtype=np.float32), np.diag([1.5, 1.5, 1.5, 1.0]))
+    nib.save(image, str(preprocessed / "s_keep.nii.gz"))
+    nib.save(image, str(preprocessed / "s_excluded.nii.gz"))
     write_catalog(catalog, ["s_keep"])
     qc = preprocessed / "qc"
     qc.mkdir(parents=True)
@@ -146,6 +177,29 @@ def test_spm_completion_guard_counts_active_catalog_only(tmp_path):
 
     assert spm_completion_ready(status) is True
     assert status["expected_total"] == 1
+    assert status["preprocessed_qc_invalid_count"] == 0
+    assert status["preprocessed_qc_missing_count"] == 0
+
+
+def test_spm_completion_guard_reports_missing_qc_separately_from_invalid(tmp_path):
+    manifest = tmp_path / "manifest.json"
+    preprocessed = tmp_path / "preprocessed"
+    catalog = tmp_path / "catalog.csv"
+    write_manifest(manifest, done=1, total=2, config_hash="expected")
+    write_preprocessed_files(preprocessed, 1)
+    write_qc_files(preprocessed, 1)
+    write_catalog(catalog, ["s_0000", "s_0001"])
+
+    status = spm_completion_status(
+        manifest_path=manifest,
+        preprocessed_dir=preprocessed,
+        expected_config_hash="expected",
+        catalog_path=catalog,
+    )
+
+    assert spm_completion_ready(status) is False
+    assert status["preprocessed_qc_file_count"] == 1
+    assert status["preprocessed_qc_missing_count"] == 1
     assert status["preprocessed_qc_invalid_count"] == 0
 
 

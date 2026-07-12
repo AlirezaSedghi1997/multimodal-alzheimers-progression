@@ -7,10 +7,10 @@ from pathlib import Path
 from typing import Any
 
 
-EXPECTED_CONFIG_HASH = "4324429c60083666"
-EXPECTED_TOTAL = 1700
-MANIFEST_PATH = Path("results/logs/spm_mri_preprocess_v2_resume_wsl.json")
-PREPROCESSED_DIR = Path("data/preprocessed_mri_96")
+EXPECTED_CONFIG_HASH = "1017762cafcd82ee"
+EXPECTED_TOTAL = 1699
+MANIFEST_PATH = Path("results/logs/spm_mri_preprocess_v2_128_resume.json")
+PREPROCESSED_DIR = Path("data/preprocessed_mri_128")
 CATALOG_PATH = Path("data/processed/master_catalog.csv")
 BLOCKED_POST_SPM_STAGES = [
     "mri-volume-cache",
@@ -70,6 +70,29 @@ def manifest_counts(
     return None, None
 
 
+def manifest_terminal_count(
+    obj: dict[str, Any] | None,
+    expected_samples: set[str] | None = None,
+) -> int | None:
+    """Count catalog items whose preprocessing attempt reached a terminal state.
+
+    A resumable run may legitimately end with BLOCKED/FAILED items while later
+    output/QC reconciliation establishes a usable physical output.  Completion
+    must still require the file, numeric QC, and 128^3 output contracts below;
+    this count only prevents a stale ledger from masking PENDING/RUNNING work.
+    """
+    if not obj or not isinstance(obj.get("items"), dict):
+        return None
+    items = obj["items"]
+    sample_hashes = expected_samples if expected_samples is not None else set(items)
+    terminal = {"DONE", "BLOCKED", "FAILED"}
+    return sum(
+        1
+        for sample_hash in sample_hashes
+        if isinstance(items.get(sample_hash), dict) and items[sample_hash].get("status") in terminal
+    )
+
+
 def count_preprocessed_files(preprocessed_dir: Path, expected_samples: set[str] | None = None) -> int:
     if not preprocessed_dir.exists():
         return 0
@@ -78,16 +101,23 @@ def count_preprocessed_files(preprocessed_dir: Path, expected_samples: set[str] 
     return sum(1 for path in preprocessed_dir.glob("*.nii.gz") if path.is_file())
 
 
-def qc_counts(preprocessed_dir: Path, expected_samples: set[str] | None = None) -> tuple[int, int, int]:
+def qc_counts(preprocessed_dir: Path, expected_samples: set[str] | None = None) -> tuple[int, int, int, int]:
     qc_dir = preprocessed_dir / "qc"
     if not qc_dir.exists():
-        return 0, 0, 0
+        missing = len(expected_samples) if expected_samples is not None else 0
+        return 0, missing, 0, 0
     if expected_samples is None:
         qc_files = list(qc_dir.glob("*.json"))
     else:
         qc_files = [qc_dir / f"{sample_hash}.json" for sample_hash in sorted(expected_samples)]
+    existing_count = 0
+    missing = 0
     invalid = 0
     for path in qc_files:
+        if not path.exists():
+            missing += 1
+            continue
+        existing_count += 1
         obj = read_json(path)
         if not obj:
             invalid += 1
@@ -96,7 +126,38 @@ def qc_counts(preprocessed_dir: Path, expected_samples: set[str] | None = None) 
         normalized_std = float(obj.get("normalized_brain_std") or 0.0)
         if nonzero_fraction <= 0.0 or normalized_std <= 0.0:
             invalid += 1
-    return len(qc_files), invalid, len(qc_files) - invalid
+    return existing_count, missing, invalid, existing_count - invalid
+
+
+def output_contract_counts(preprocessed_dir: Path, expected_samples: set[str] | None = None) -> tuple[int, int]:
+    """Count present MRI files that satisfy the official 128^3/1.5mm contract."""
+    if expected_samples is None:
+        paths = sorted(preprocessed_dir.glob("*.nii.gz")) if preprocessed_dir.exists() else []
+    else:
+        paths = [preprocessed_dir / f"{sample_hash}.nii.gz" for sample_hash in sorted(expected_samples)]
+    try:
+        import nibabel as nib
+        import numpy as np
+    except Exception:
+        return 0, len(paths)
+    valid = 0
+    invalid = 0
+    for path in paths:
+        if not path.is_file():
+            invalid += 1
+            continue
+        try:
+            image = nib.load(str(path))
+            shape = tuple(int(v) for v in image.shape)
+            zooms = tuple(float(v) for v in image.header.get_zooms()[:3])
+            data = np.asarray(image.dataobj, dtype=np.float32)
+            ok = shape == (128, 128, 128) and all(abs(v - 1.5) < 1e-4 for v in zooms)
+            ok = ok and bool(np.isfinite(data).all()) and int(np.count_nonzero(data)) > 0
+            valid += int(ok)
+            invalid += int(not ok)
+        except Exception:
+            invalid += 1
+    return valid, invalid
 
 
 def spm_completion_status(
@@ -116,25 +177,42 @@ def spm_completion_status(
         expected_total = len(catalog_samples) if catalog_samples is not None else EXPECTED_TOTAL
     manifest = read_json(manifest_path)
     done_count, manifest_total = manifest_counts(manifest, expected_sample_set)
+    terminal_count = manifest_terminal_count(manifest, expected_sample_set)
     file_count = count_preprocessed_files(preprocessed_dir, expected_sample_set)
-    qc_file_count, invalid_qc_count, valid_qc_count = qc_counts(preprocessed_dir, expected_sample_set)
+    qc_file_count, missing_qc_count, invalid_qc_count, valid_qc_count = qc_counts(preprocessed_dir, expected_sample_set)
+    output_contract_valid_count, output_contract_invalid_count = output_contract_counts(
+        preprocessed_dir, expected_sample_set
+    )
     config_hash = manifest.get("config_hash") if manifest else None
-    qc_validation_available = qc_file_count > 0
+    qc_validation_available = qc_file_count > 0 or expected_sample_set is not None
     manifest_item_count = len(manifest.get("items", {})) if isinstance(manifest, dict) and isinstance(manifest.get("items"), dict) else manifest_total
 
     checks = {
         "manifest_exists": manifest_path.exists(),
         "manifest_readable": manifest is not None,
         "config_hash_ok": config_hash == expected_config_hash,
-        "done_count_ok": done_count == expected_total,
+        # Exact DONE is ideal.  A fully terminal ledger is also complete when
+        # all independent output/QC contracts pass (recovered/reassessed rows).
+        "done_count_ok": done_count == expected_total or terminal_count == expected_total,
         "manifest_total_ok": manifest_total == expected_total,
         "preprocessed_file_count_ok": file_count == expected_total,
-        "preprocessed_qc_ok": (invalid_qc_count == 0 and valid_qc_count == expected_total) if qc_validation_available else True,
+        "preprocessed_output_contract_ok": output_contract_valid_count == expected_total,
+        "preprocessed_qc_ok": (
+            missing_qc_count == 0 and invalid_qc_count == 0 and valid_qc_count == expected_total
+        )
+        if qc_validation_available
+        else True,
     }
     ready = all(checks.values())
     return {
         "ready": ready,
-        "status": "SPM_COMPLETE" if ready else "SPM_INCOMPLETE",
+        "status": (
+            "SPM_COMPLETE"
+            if ready and done_count == expected_total
+            else "SPM_COMPLETE_WITH_RECONCILED_TERMINAL_ROWS"
+            if ready
+            else "SPM_INCOMPLETE"
+        ),
         "manifest_path": str(manifest_path),
         "preprocessed_dir": str(preprocessed_dir),
         "expected_config_hash": expected_config_hash,
@@ -143,12 +221,16 @@ def spm_completion_status(
         "expected_total_source": expected_total_source,
         "catalog_path": str(catalog_path) if catalog_path else None,
         "done_count": done_count,
+        "manifest_terminal_count": terminal_count,
         "manifest_total": manifest_total,
         "manifest_item_count": manifest_item_count,
         "preprocessed_file_count": file_count,
         "preprocessed_qc_file_count": qc_file_count,
+        "preprocessed_qc_missing_count": missing_qc_count,
         "preprocessed_qc_invalid_count": invalid_qc_count,
         "preprocessed_qc_valid_count": valid_qc_count,
+        "preprocessed_output_contract_valid_count": output_contract_valid_count,
+        "preprocessed_output_contract_invalid_count": output_contract_invalid_count,
         "active_catalog_sample_count": len(catalog_samples) if catalog_samples is not None else None,
         "checks": checks,
         "blocked_post_spm_stages": BLOCKED_POST_SPM_STAGES,

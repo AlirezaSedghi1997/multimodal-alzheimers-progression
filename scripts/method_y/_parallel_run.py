@@ -163,7 +163,7 @@ def selected_input_paths(stage: str, cfg: dict[str, Any], config_path: str | Pat
         _maybe_add_path(paths, "pet_input_list", inputs.get("pet_input_list", DEFAULT_METHOD_Y_PET_INPUT_LIST))
         _maybe_add_path(paths, "fold_manifest", folds.get("manifest", "results/method_y_execution/fold_manifest.json"))
     if stage in {"S2", "S3"}:
-        _maybe_add_path(paths, "mri_h5", inputs.get("mri_h5", "data/cached/t1_combined_foldlocal_4000_128.h5"))
+        _maybe_add_path(paths, "mri_h5", inputs.get("mri_h5", "data/cached/archive/t1_volume_cache_128_real_20260712T203222Z_26fff22aa7de.h5"))
         _maybe_add_path(paths, "mri_ckpt", inputs.get("mri_ckpt", "models/method_x/best.pt"))
     if stage == "S2":
         pattern = str(inputs.get("s1_pet_ckpt_pattern", "models/method_y/pet_only_fold{fold}.pt"))

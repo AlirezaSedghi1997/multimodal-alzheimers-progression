@@ -7,9 +7,10 @@ MATLAB_BIN ?= C:/Program Files/MATLAB/R2024a/bin/matlab.exe
 SPM_DIR ?= D:/Matlab & Tolboxes/spm_25.01.02/spm
 SPM_MANIFEST ?= results/logs/spm_mri_preprocess_v2_resume_wsl.json
 SPM_BATCH_SIZE ?= 10
+TRAIN_3D_MAX_RUNTIME_ARG := $(if $(MAX_RUNTIME_MINUTES),--max_runtime_minutes $(MAX_RUNTIME_MINUTES),)
 export WANDB_MODE := offline
 
-.PHONY: test preflight inventory catalog preprocess preprocess-toolchain-check preprocess-spm-toolchain-check preprocess-full-mri preprocess-full-mri-spm preprocess-full-mri-spm-auto spm-completion-guard mri-volume-cache mri-volume-cache-96 mri-volume-cache-smoke mri-features mri-feature-baseline train-3d three-d-ablation xai-summary splits baseline cross-cohort-bias optuna fusion external-eval calibration final-analysis public-bundle tau external-drive-check compute-plan phase0-governance label-freeze method-x-feature-matrix method-x-feature-check phase0-readiness power-analysis site-drift subgroup-audit gap-matrix method-y-pet-inventory method-y-multimodal-design clinical-ad-feasibility run-stage run-next-stage run-all-stages preprocess-quality-audit visual-qc-manifest method-y-battery build-flair-index
+.PHONY: test preflight inventory catalog preprocess preprocess-toolchain-check preprocess-spm-toolchain-check preprocess-full-mri preprocess-full-mri-spm preprocess-full-mri-spm-auto spm-completion-guard mri-volume-cache mri-volume-cache-96 mri-volume-cache-128 mri-volume-cache-smoke mri-features mri-feature-baseline train-3d train-3d-128 train-3d-augmented-final train-3d-augmented-search train-with-synthetic three-d-ablation xai-summary splits baseline cross-cohort-bias optuna fusion external-eval calibration final-analysis public-bundle tau external-drive-check compute-plan phase0-governance label-freeze method-x-feature-matrix method-x-feature-check phase0-readiness power-analysis site-drift subgroup-audit gap-matrix method-y-pet-inventory method-y-multimodal-design clinical-ad-feasibility run-stage run-next-stage run-all-stages preprocess-quality-audit visual-qc-manifest method-y-battery build-flair-index
 
 test:
 	$(PY) -m pytest tests/ -q
@@ -48,7 +49,7 @@ phase1-incremental-value:
 
 extract-3d-embeddings-oof:
 	$(PY) scripts/gpu_preflight_check.py
-	$(PY) scripts/extract_3d_mri_embeddings_oof.py --cache data/cached/t1_volume_cache_96.h5
+	$(PY) scripts/extract_3d_mri_embeddings_oof.py --cache data/cached/t1_volume_cache_128.h5
 
 cohort-probe:
 	$(PY) scripts/run_cohort_probe.py
@@ -100,7 +101,7 @@ thesis-grade-report:
 
 three-d-ablation:
 	$(PY) scripts/gpu_preflight_check.py
-	$(PY) scripts/run_3d_ablation.py --cache data/cached/t1_volume_cache_96.h5 --folds 5 --epochs 4 --batch_size 1
+	$(PY) scripts/run_3d_ablation.py --cache data/cached/t1_volume_cache_128.h5 --folds 4 --epochs 4 --batch_size 1
 
 label-freeze:
 	@test -n "$(CENTILOID_CUTOFF)" || (echo "Set CENTILOID_CUTOFF before freezing the label." && exit 2)
@@ -149,14 +150,18 @@ spm-completion-guard:
 
 mri-volume-cache:
 	$(PY) scripts/spm_completion_guard.py
-	$(PY) scripts/build_mri_volume_cache.py --data_root "$(DATA_ROOT)"
+	$(PY) scripts/build_mri_volume_cache.py --preprocessed_dir data/preprocessed_mri_128 --qc_dir data/preprocessed_mri_128/qc --out data/cached/t1_volume_cache_128.h5 --resolution 128 --device auto
 
 mri-volume-cache-96:
+	@echo "mri-volume-cache-96 is legacy/debug only and is disabled for the official redesign contract; use make mri-volume-cache or make mri-volume-cache-128."
+	@exit 2
+
+mri-volume-cache-128:
 	$(PY) scripts/spm_completion_guard.py
-	$(PY) scripts/build_mri_volume_cache.py --preprocessed_dir data/preprocessed_mri_96 --qc_dir data/preprocessed_mri_96/qc --out data/cached/t1_volume_cache_96.h5 --resolution 96
+	$(PY) scripts/build_mri_volume_cache.py --preprocessed_dir data/preprocessed_mri_128 --qc_dir data/preprocessed_mri_128/qc --out data/cached/t1_volume_cache_128.h5 --resolution 128
 
 mri-volume-cache-smoke:
-	$(PY) scripts/mri_volume_cache_smoke.py --preprocessed_dir data/preprocessed_mri_96 --resolution 96 --device auto
+	$(PY) scripts/mri_volume_cache_smoke.py --preprocessed_dir data/preprocessed_mri_128 --resolution 128 --device auto
 
 mri-features:
 	$(PY) scripts/extract_mri_features.py --data_root "$(DATA_ROOT)"
@@ -166,15 +171,39 @@ mri-feature-baseline:
 
 train-3d:
 	$(PY) scripts/spm_completion_guard.py
-	$(PY) scripts/train_3d_mri.py
+	$(PY) scripts/gpu_preflight_check.py --cache data/cached/t1_volume_cache_128.h5 --require_gpu
+	$(PY) scripts/train_3d_mri.py --cache data/cached/t1_volume_cache_128.h5 --phase final --resolution 128 --folds 5 --device cuda --require_gpu --amp --checkpoint --grad_accum 8
+
+train-3d-128:
+	$(PY) scripts/gpu_preflight_check.py --cache data/cached/t1_volume_cache_128.h5 --require_gpu
+	$(PY) scripts/train_3d_mri.py --cache data/cached/t1_volume_cache_128.h5 --resolution 128 --phase dev --backbone resnet18_3d --folds 5 --amp --checkpoint --grad_accum 8 --device cuda --require_gpu --out_dir results/final_results/three_d_128_dev $(TRAIN_3D_MAX_RUNTIME_ARG)
+
+train-3d-augmented-final:
+	$(PY) scripts/gpu_preflight_check.py --cache data/cached/t1_volume_cache_128.h5 --require_gpu
+	$(PY) scripts/train_3d_mri.py --cache data/cached/t1_volume_cache_128.h5 --resolution 128 --phase final --backbone resnet18_3d --folds 5 --epochs 40 --amp --checkpoint --grad_accum 8 --device cuda --require_gpu --out_dir results/final_results/three_d_foldlocal_augmented_materialized_resnet18_3d_128 $(TRAIN_3D_MAX_RUNTIME_ARG)
+
+train-3d-augmented-search:
+	$(PY) scripts/gpu_preflight_check.py --cache data/cached/t1_volume_cache_128.h5 --require_gpu
+	$(PY) scripts/run_3d_hyperparameter_search.py --epochs 40 --folds 5 --real_cache data/cached/t1_volume_cache_128.h5 --grad_accum 8 $(TRAIN_3D_MAX_RUNTIME_ARG)
+
+train-3d-combined-128:
+	$(PY) scripts/gpu_preflight_check.py --cache data/cached/t1_volume_cache_128.h5 --require_gpu
+	$(PY) scripts/train_3d_mri.py --cache data/cached/t1_volume_cache_128.h5 --resolution 128 --phase final --backbone resnet18_3d --folds 5 --epochs 40 --amp --checkpoint --grad_accum 8 --device cuda --require_gpu --out_dir results/final_results/three_d_materialized_combined_128
+
+run-full-pipeline:
+	$(PY) scripts/run_full_pipeline.py --data_root "$(DATA_ROOT)" --folds 5 --skip_cache
+
+train-with-synthetic:
+	$(PY) scripts/gpu_preflight_check.py --cache data/cached/t1_volume_cache_128.h5 --require_gpu
+	$(PY) scripts/train_with_synthetic.py --cache data/cached/t1_volume_cache_128.h5 --backbone resnet18_3d --folds 4 --device cuda --require_gpu
 
 three-d-ablation:
 	$(PY) scripts/spm_completion_guard.py
-	$(PY) scripts/run_3d_ablation.py --cache data/cached/t1_volume_cache_96.h5 --folds 5 --epochs 4 --batch_size 1
+	$(PY) scripts/run_3d_ablation.py --cache data/cached/t1_volume_cache_128.h5 --folds 4 --epochs 4 --batch_size 1
 
 xai-summary:
 	$(PY) scripts/spm_completion_guard.py
-	$(PY) scripts/run_xai_summary.py --cache data/cached/t1_volume_cache_96.h5
+	$(PY) scripts/run_xai_summary.py --cache data/cached/t1_volume_cache_128.h5
 
 splits:
 	$(PY) scripts/make_splits.py
@@ -231,7 +260,7 @@ method-y-pet-inventory:
 method-y-multimodal-design:
 	$(PY) scripts/method_y_multimodal_design.py
 
-.PHONY: validity-audit temporal-window-sensitivity optuna-nested external-final cognitive-family-ablation three-d-final-contract thesis-report v36-tests v38-tests v38-method-x-validity v38-pet-gap v38-pet-manifest v38-pet-dry v38-pet-execute-smoke v38-pet-cache v38-pet-readiness v38-pet-train v38-agent-summary method-y-gap-filter method-y-pet-manifest method-y-pet-dry method-y-pet-dry-run method-y-pet-execute method-y-pet-execute-smoke method-y-pet-execute-spm method-y-pet-execute-spm-smoke method-y-pet-execute-spm-full method-y-pet-execute-spm-auto method-y-pet-cache method-y-readiness method-y-pet-train method-y-summary method-y-phase2-tests final-comprehensive-tests final-method-x-sequence final-method-y-pet-sequence final-agent-summary
+.PHONY: validity-audit temporal-window-sensitivity optuna-nested external-final cognitive-family-ablation three-d-final-contract thesis-report v36-tests v38-tests v38-method-x-validity v38-pet-gap v38-pet-manifest v38-pet-dry v38-pet-execute-smoke v38-pet-cache v38-pet-readiness v38-pet-train v38-agent-summary method-y-gap-filter method-y-pet-manifest method-y-pet-dry method-y-pet-dry-run method-y-pet-execute method-y-pet-execute-smoke method-y-pet-execute-spm method-y-pet-execute-spm-smoke method-y-pet-execute-spm-full method-y-pet-execute-spm-auto method-y-pet-execute-spm-target-1700 method-y-pet-cache method-y-readiness method-y-pet-train method-y-summary method-y-phase2-tests final-comprehensive-tests final-method-x-sequence final-method-y-pet-sequence final-agent-summary
 
 validity-audit:
 	$(PY) scripts/run_validity_audit.py
@@ -263,7 +292,7 @@ cognitive-family-ablation:
 	$(PY) scripts/run_cognitive_family_ablation.py
 
 three-d-final-contract:
-	$(PY) scripts/train_3d_mri.py --phase final --resolution 96 --folds 5 --input_mode mri_plus_tabular --fusion cross_attention --device auto --amp
+	$(PY) scripts/train_3d_mri.py --cache data/cached/t1_volume_cache_128.h5 --phase final --resolution 128 --folds 4 --input_mode mri_plus_tabular --fusion cross_attention --device cuda --require_gpu --amp --checkpoint --grad_accum 8
 
 thesis-report:
 	$(PY) scripts/build_thesis_grade_report.py
@@ -309,6 +338,9 @@ method-y-pet-execute-spm-full:
 	$(PY) -u scripts/preprocess_pet_spatial.py --data_root "$(DATA_ROOT)" --tracer fbp --tier primary_feasible_90 --execute --spatial_mode spm_pet_t1_mni --matlab "$(MATLAB_BIN)" --spm_dir "$(SPM_DIR)" --n_jobs 1 --auto_batches --batch_size 10 --overwrite_resume
 
 method-y-pet-execute-spm-auto: method-y-pet-execute-spm-full
+
+method-y-pet-execute-spm-target-1700:
+	$(PY) -u scripts/preprocess_pet_spatial.py --data_root "$(DATA_ROOT)" --tracer fbp --tier all --execute --spatial_mode spm_pet_t1_mni --normalization suvr_image --matlab "$(MATLAB_BIN)" --spm_dir "$(SPM_DIR)" --n_jobs 1 --auto_batches --batch_size $(or $(SPM_PET_BATCH_SIZE),10) --target_total_done $(or $(PET_TARGET_TOTAL_DONE),1700) --retry_failed --overwrite_resume
 
 method-y-pet-execute-spm-batch:
 	$(PY) scripts/preprocess_pet_spatial.py --data_root "$(DATA_ROOT)" --tracer fbp --tier primary_feasible_90 --execute --spatial_mode spm_pet_t1_mni --matlab "$(MATLAB_BIN)" --spm_dir "$(SPM_DIR)" --n_jobs 1 --batch_size $(or $(SPM_PET_BATCH_SIZE),10)
@@ -384,5 +416,3 @@ run-next-stage:
 
 run-all-stages:
 	$(PY) scripts/run_project_stage.py --run_all --data_root "$(DATA_ROOT)"
-
-
