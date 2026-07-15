@@ -63,6 +63,23 @@ def test_amyloid_scanner_linkage_does_not_guess_from_another_visit():
     assert audit["missing_exact_scan_link"] == 1
 
 
+def test_amyloid_scanner_linkage_accepts_exact_subject_visit_tracer_when_day_origins_differ():
+    from scripts.build_method_y_tau_progression import patient_hash_for_key
+    from src.method_y_revival.scanner_audit import link_amyloid_scanner_rows
+
+    patient = patient_hash_for_key(("A4", "1"))
+    first = {("A4", "1"): {"subject_key": ("A4", "1"), "viscode": "2", "scan_date": 20.0}}
+    private = [{"patient_hash": patient, "visit_code": "2", "pet_day": "1481", "sample_hash": "same-session"}]
+    pet_input = [{"subject_id_hash": "same-session", "tracer": "FBP", "scanner": "Philips"}]
+
+    rows, audit = link_amyloid_scanner_rows(first, private, pet_input, {patient})
+
+    assert rows[0]["manufacturer"] == "PHILIPS"
+    assert rows[0]["linkage_status"] == "EXACT_SUBJECT_VISIT_TRACER"
+    assert rows[0]["scanner_sensitivity_eligible"] is True
+    assert audit["exact_subject_visit_tracer"] == 1
+
+
 def test_tau_scanner_linkage_excludes_qc_failure_and_keeps_unknown_unknown():
     from src.method_y_revival.scanner_audit import link_tau_scanner_rows
 

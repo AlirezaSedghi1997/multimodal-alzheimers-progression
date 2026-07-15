@@ -71,6 +71,15 @@ def link_amyloid_scanner_rows(
                 or str(row.get("visit_code", "")).strip() == visit
             )
         ]
+        fallback_status = False
+        if not candidates and visit:
+            candidates = [
+                row
+                for row in private_by_patient.get(patient_hash, [])
+                if str(row.get("visit_code", "")).strip() == visit
+                and str(row.get("sample_hash", "")) in scanner_by_sample
+            ]
+            fallback_status = bool(candidates)
         if not candidates:
             manufacturer = "UNKNOWN"
             status = "MISSING_EXACT_SCAN_LINK"
@@ -83,8 +92,12 @@ def link_amyloid_scanner_rows(
             known = {value for value in manufacturers if value != "UNKNOWN"}
             if len(known) == 1:
                 manufacturer = next(iter(known))
-                status = "EXACT"
-                counts["exact"] += 1
+                if fallback_status:
+                    status = "EXACT_SUBJECT_VISIT_TRACER"
+                    counts["exact_subject_visit_tracer"] += 1
+                else:
+                    status = "EXACT"
+                    counts["exact"] += 1
             elif len(known) > 1:
                 manufacturer = "UNKNOWN"
                 status = "AMBIGUOUS_EXACT_SCAN_METADATA"
@@ -99,7 +112,8 @@ def link_amyloid_scanner_rows(
                 "patient_hash": patient_hash,
                 "manufacturer": manufacturer,
                 "linkage_status": status,
-                "scanner_sensitivity_eligible": status == "EXACT",
+                "scanner_sensitivity_eligible": status
+                in {"EXACT", "EXACT_SUBJECT_VISIT_TRACER"},
             }
         )
     return rows, {
