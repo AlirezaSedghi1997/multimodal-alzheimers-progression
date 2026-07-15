@@ -20,6 +20,9 @@ from src.method_y_revival.atomic_io import atomic_write_json, atomic_write_bytes
 from src.method_y_revival.endpoint_builder import build_tau_endpoint_from_sources
 from src.method_y_revival.orchestrator import initialize_run
 from src.method_y_revival.process_guard import WriterLock
+from src.method_y_revival.regional_training import (
+    run_tau_regional_development_from_locked_endpoint,
+)
 
 
 def _git(*arguments: str) -> str | None:
@@ -126,6 +129,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--output-root")
     parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--build-tau-endpoint", action="store_true")
+    parser.add_argument("--train-tau-regional", action="store_true")
     return parser
 
 
@@ -145,6 +149,15 @@ def main(argv: list[str] | None = None) -> int:
             endpoint = build_tau_endpoint_from_sources(config=config, output_root=output_root)
             report["tau_endpoint_status"] = endpoint["status"]
             report["tau_endpoint_contract_sha256"] = endpoint["contract"]["contract_sha256"]
+            atomic_write_json(output_root / "provenance" / "preflight_report.json", report)
+        if args.train_tau_regional:
+            training = run_tau_regional_development_from_locked_endpoint(
+                config=config,
+                output_root=output_root,
+                project_root=PROJECT_ROOT,
+            )
+            report["tau_regional_training_status"] = training["status"]
+            report["tau_regional_claim_status"] = training["claim_status"]
             atomic_write_json(output_root / "provenance" / "preflight_report.json", report)
     print(json.dumps(report, ensure_ascii=False, sort_keys=True), flush=True)
     return 0 if report["status"] == "PREFLIGHT_DONE" else 2

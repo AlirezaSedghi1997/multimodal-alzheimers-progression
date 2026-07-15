@@ -24,6 +24,7 @@ if ($PreflightOnly) {
 }
 else {
     $Arguments += "--build-tau-endpoint"
+    $Arguments += "--train-tau-regional"
 }
 
 & $Python @Arguments
