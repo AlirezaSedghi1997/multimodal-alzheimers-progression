@@ -48,3 +48,14 @@ def test_preflight_cli_writes_truthful_pending_and_blocked_artifacts(tmp_path):
     assert report["image_path_status"] == "BLOCKED_REFERENCE_TEMPLATE_NOT_LOCKED"
     assert report["external_validation_status"] == "EXTERNAL_PENDING"
     assert report["raw_root_mutated"] is False
+
+    second_exit_code = main(
+        [
+            "--config",
+            "configs/method_y_revival_v1.yaml",
+            "--output-root",
+            str(output),
+            "--preflight-only",
+        ]
+    )
+    assert second_exit_code == 0

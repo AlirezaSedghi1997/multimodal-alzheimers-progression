@@ -83,7 +83,14 @@ def initialize_run(
     ):
         (root / relative).mkdir(parents=True, exist_ok=True)
 
-    contract = RunContract.from_mapping({"config": config, "repository": repo_snapshot})
+    repository_contract = {
+        key: repo_snapshot.get(key)
+        for key in ("git_commit", "git_branch", "dirty", "dirty_tree_digest")
+        if key in repo_snapshot
+    }
+    contract = RunContract.from_mapping(
+        {"config": config, "repository": repository_contract}
+    )
     contract_path = root / "run_contract.json"
     if contract_path.exists():
         existing_payload = read_json(contract_path)
