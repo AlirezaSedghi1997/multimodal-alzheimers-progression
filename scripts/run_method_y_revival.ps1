@@ -28,6 +28,7 @@ else {
     $Arguments += "--build-amyloid-endpoint"
     $Arguments += "--train-amyloid-regional"
     $Arguments += "--build-scanner-audit"
+    $Arguments += "--run-scanner-sensitivity"
 }
 
 & $Python @Arguments

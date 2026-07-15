@@ -18,15 +18,43 @@ from .regional_training import (
     _evaluate_model,
     _make_y,
     _pipeline,
+    _read_locked_endpoint,
     _select_alpha,
     _sha256_file,
 )
 from .scanner_audit import scanner_sensitivity_feasibility
-from .science_gates import cached_paired_oof_bootstrap
+from .science_gates import cached_paired_oof_bootstrap, incremental_value_gate
 
 
 class ScannerSensitivityError(ValueError):
     """Raised when a leave-manufacturer-out contract cannot be evaluated safely."""
+
+
+def apply_scanner_gate_to_branch_report(
+    report: dict[str, Any],
+    *,
+    augmented_variant: str,
+    expected_outer_folds: int,
+    scanner_sensitivity_passed: bool,
+    quantitative_feature_provenance_passed: bool,
+) -> dict[str, Any]:
+    bootstrap = report["paired_bootstrap"]
+    gate = incremental_value_gate(
+        delta_ibs_ci=tuple(bootstrap["delta_ibs_95ci"]),
+        delta_cindex_ci=tuple(bootstrap["delta_cindex_95ci"]),
+        outer_folds_completed=int(
+            report["variants"][augmented_variant]["outer_folds_completed"]
+        ),
+        expected_outer_folds=int(expected_outer_folds),
+        scanner_sensitivity_passed=bool(scanner_sensitivity_passed),
+    )
+    if not quantitative_feature_provenance_passed:
+        gate["blockers"].append(
+            "QUANTITATIVE_PET_FEATURE_PROVENANCE_NOT_FORMALLY_VALIDATED"
+        )
+        gate["science_gate_status"] = "FAIL"
+        gate["claim_status"] = "EXPLORATORY"
+    return gate
 
 
 def _inner_memberships(frame: pd.DataFrame, *, folds: int, seed: int) -> list[dict[str, Any]]:
@@ -253,3 +281,114 @@ def run_leave_manufacturer_out_sensitivity(
     }
     atomic_write_json(root / "reports" / f"{branch}_scanner_sensitivity.json", report)
     return report
+
+
+def run_locked_scanner_sensitivities(
+    *, config: dict[str, Any], output_root: str | Path, project_root: str | Path
+) -> dict[str, Any]:
+    root = Path(output_root)
+    linkage_path = root / "qc" / "scanner_linkage_private.csv"
+    if not linkage_path.is_file():
+        raise ScannerSensitivityError("SCANNER_LINKAGE_AUDIT_REQUIRED")
+    linkage = pd.read_csv(linkage_path)
+    thresholds = config["scanner_sensitivity"]
+    common = {
+        "output_root": root,
+        "inner_folds": int(config["validation"]["inner_folds"]),
+        "seed": int(config["seed"]),
+        "alpha_grid": [float(value) for value in config["hpo"]["cox"]["alpha"]],
+        "requested_horizons": [
+            float(value) for value in config["validation"]["requested_horizons_days"]
+        ],
+        "min_at_risk": int(config["validation"]["minimum_at_risk_per_horizon"]),
+        "bootstrap_iterations": int(config["validation"]["bootstrap_iterations"]),
+        "minimum_subjects": int(thresholds["minimum_subjects_per_manufacturer"]),
+        "minimum_events": int(thresholds["minimum_events_per_manufacturer"]),
+        "minimum_manufacturers": int(thresholds["minimum_eligible_manufacturers"]),
+    }
+    base_candidates = [
+        "treatment_active",
+        "age",
+        "sex_binary",
+        "education_years",
+        "apoe4_carrier",
+        "baseline_pacc_raw",
+        "baseline_fctotal96",
+        "baseline_ldeltotal",
+        "baseline_digittotal",
+        "baseline_mmscore",
+        "baseline_cdrsb",
+    ]
+
+    amyloid = _read_locked_endpoint(root, "amyloid")
+    amyloid_base = [feature for feature in base_candidates if feature in amyloid.columns]
+    amyloid_features = {
+        "clinical_cognition": amyloid_base,
+        "clinical_cognition_amyloid": [
+            *amyloid_base,
+            "baseline_amyloid_centiloid",
+        ],
+    }
+    amyloid_sensitivity = run_leave_manufacturer_out_sensitivity(
+        frame=amyloid,
+        linkage_rows=linkage.loc[linkage["branch"] == "amyloid"].to_dict("records"),
+        feature_sets=amyloid_features,
+        base_variant="clinical_cognition",
+        augmented_variant="clinical_cognition_amyloid",
+        branch="amyloid",
+        **common,
+    )
+
+    tau = _read_locked_endpoint(root, "tau")
+    regional_path = Path(project_root) / config["paths"]["tau_regional_features"]
+    regional = pd.read_csv(regional_path)
+    tau = tau.merge(regional, on="patient_hash", how="inner", validate="one_to_one")
+    tau_base = [feature for feature in base_candidates if feature in tau.columns]
+    tau_pet = [feature for feature in regional.columns if feature != "patient_hash"]
+    tau_features = {
+        "clinical_cognition": tau_base,
+        "clinical_cognition_pet": [*tau_base, *tau_pet],
+    }
+    tau_sensitivity = run_leave_manufacturer_out_sensitivity(
+        frame=tau,
+        linkage_rows=linkage.loc[linkage["branch"] == "tau"].to_dict("records"),
+        feature_sets=tau_features,
+        base_variant="clinical_cognition",
+        augmented_variant="clinical_cognition_pet",
+        branch="tau",
+        **common,
+    )
+
+    provenance_passed = bool(
+        config.get("science_gates", {}).get(
+            "quantitative_feature_provenance_passed", False
+        )
+    )
+    for branch, augmented, sensitivity in (
+        ("amyloid", "clinical_cognition_amyloid", amyloid_sensitivity),
+        ("tau", "clinical_cognition_pet", tau_sensitivity),
+    ):
+        report_path = root / "reports" / f"{branch}_regional_development.json"
+        report = read_json(report_path)
+        gate = apply_scanner_gate_to_branch_report(
+            report,
+            augmented_variant=augmented,
+            expected_outer_folds=int(config["validation"]["outer_folds"]),
+            scanner_sensitivity_passed=bool(
+                sensitivity.get("scanner_sensitivity_passed", False)
+            ),
+            quantitative_feature_provenance_passed=provenance_passed,
+        )
+        report["scanner_sensitivity"] = sensitivity
+        report["science_gate"] = gate
+        report["science_gate_status"] = gate["science_gate_status"]
+        report["claim_status"] = gate["claim_status"]
+        atomic_write_json(report_path, report)
+    summary = {
+        "status": "COMPLETED_WITH_BRANCH_SPECIFIC_BLOCKERS",
+        "amyloid": amyloid_sensitivity,
+        "tau": tau_sensitivity,
+        "quantitative_feature_provenance_passed": provenance_passed,
+    }
+    atomic_write_json(root / "reports" / "scanner_sensitivity_summary.json", summary)
+    return summary

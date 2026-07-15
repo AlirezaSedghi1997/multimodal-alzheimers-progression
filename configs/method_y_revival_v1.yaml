@@ -99,6 +99,7 @@ science_gates:
   incremental_cindex_lower_ci_at_least_zero: true
   require_scanner_sensitivity_pass: true
   completion_does_not_imply_claim: true
+  quantitative_feature_provenance_passed: false
 
 scanner_sensitivity:
   minimum_subjects_per_manufacturer: 30

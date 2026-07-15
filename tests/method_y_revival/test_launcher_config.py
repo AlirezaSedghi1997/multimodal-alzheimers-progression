@@ -29,6 +29,7 @@ def test_powershell_launcher_is_resumable_and_has_no_runtime_limit():
     assert "--build-amyloid-endpoint" in text
     assert "--train-amyloid-regional" in text
     assert "--build-scanner-audit" in text
+    assert "--run-scanner-sensitivity" in text
     assert "max_runtime" not in text.casefold()
     assert "no_resume" not in text.casefold()
     assert "--output-root" not in text or "method_y_revival_v1" in text

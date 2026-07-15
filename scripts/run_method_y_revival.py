@@ -16,7 +16,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.method_y_revival.atomic_io import atomic_write_json, atomic_write_bytes
+from src.method_y_revival.atomic_io import atomic_write_json, atomic_write_bytes, read_json
 from src.method_y_revival.endpoint_builder import (
     build_amyloid_endpoint_from_sources,
     build_tau_endpoint_from_sources,
@@ -28,6 +28,7 @@ from src.method_y_revival.regional_training import (
     run_tau_regional_development_from_locked_endpoint,
 )
 from src.method_y_revival.scanner_audit import build_scanner_audit_from_sources
+from src.method_y_revival.scanner_sensitivity import run_locked_scanner_sensitivities
 
 
 def _git(*arguments: str) -> str | None:
@@ -138,6 +139,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--build-amyloid-endpoint", action="store_true")
     parser.add_argument("--train-amyloid-regional", action="store_true")
     parser.add_argument("--build-scanner-audit", action="store_true")
+    parser.add_argument("--run-scanner-sensitivity", action="store_true")
     return parser
 
 
@@ -201,6 +203,26 @@ def main(argv: list[str] | None = None) -> int:
             report["tau_scanner_sensitivity_status"] = scanner_audit[
                 "tau_sensitivity_feasibility"
             ]["status"]
+            atomic_write_json(output_root / "provenance" / "preflight_report.json", report)
+        if args.run_scanner_sensitivity:
+            sensitivity = run_locked_scanner_sensitivities(
+                config=config,
+                output_root=output_root,
+                project_root=PROJECT_ROOT,
+            )
+            report["scanner_sensitivity_status"] = sensitivity["status"]
+            report["amyloid_scanner_sensitivity_passed"] = bool(
+                sensitivity["amyloid"].get("scanner_sensitivity_passed", False)
+            )
+            report["tau_scanner_sensitivity_passed"] = bool(
+                sensitivity["tau"].get("scanner_sensitivity_passed", False)
+            )
+            report["amyloid_regional_claim_status"] = read_json(
+                output_root / "reports" / "amyloid_regional_development.json"
+            )["claim_status"]
+            report["tau_regional_claim_status"] = read_json(
+                output_root / "reports" / "tau_regional_development.json"
+            )["claim_status"]
             atomic_write_json(output_root / "provenance" / "preflight_report.json", report)
     print(json.dumps(report, ensure_ascii=False, sort_keys=True), flush=True)
     return 0 if report["status"] == "PREFLIGHT_DONE" else 2
