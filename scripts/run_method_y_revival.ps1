@@ -25,6 +25,8 @@ if ($PreflightOnly) {
 else {
     $Arguments += "--build-tau-endpoint"
     $Arguments += "--train-tau-regional"
+    $Arguments += "--build-amyloid-endpoint"
+    $Arguments += "--train-amyloid-regional"
 }
 
 & $Python @Arguments

@@ -17,10 +17,14 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.method_y_revival.atomic_io import atomic_write_json, atomic_write_bytes
-from src.method_y_revival.endpoint_builder import build_tau_endpoint_from_sources
+from src.method_y_revival.endpoint_builder import (
+    build_amyloid_endpoint_from_sources,
+    build_tau_endpoint_from_sources,
+)
 from src.method_y_revival.orchestrator import initialize_run
 from src.method_y_revival.process_guard import WriterLock
 from src.method_y_revival.regional_training import (
+    run_amyloid_regional_development_from_locked_endpoint,
     run_tau_regional_development_from_locked_endpoint,
 )
 
@@ -130,6 +134,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--build-tau-endpoint", action="store_true")
     parser.add_argument("--train-tau-regional", action="store_true")
+    parser.add_argument("--build-amyloid-endpoint", action="store_true")
+    parser.add_argument("--train-amyloid-regional", action="store_true")
     return parser
 
 
@@ -158,6 +164,27 @@ def main(argv: list[str] | None = None) -> int:
             )
             report["tau_regional_training_status"] = training["status"]
             report["tau_regional_claim_status"] = training["claim_status"]
+            atomic_write_json(output_root / "provenance" / "preflight_report.json", report)
+        if args.build_amyloid_endpoint:
+            endpoint = build_amyloid_endpoint_from_sources(
+                config=config,
+                output_root=output_root,
+            )
+            report["amyloid_endpoint_status"] = endpoint["status"]
+            report["amyloid_endpoint_contract_sha256"] = endpoint["contract"][
+                "contract_sha256"
+            ]
+            atomic_write_json(output_root / "provenance" / "preflight_report.json", report)
+        if args.train_amyloid_regional:
+            training = run_amyloid_regional_development_from_locked_endpoint(
+                config=config,
+                output_root=output_root,
+            )
+            report["amyloid_regional_training_status"] = training["status"]
+            report["amyloid_regional_claim_status"] = training["claim_status"]
+            report["amyloid_internal_transport_status"] = training[
+                "internal_transport_status"
+            ]
             atomic_write_json(output_root / "provenance" / "preflight_report.json", report)
     print(json.dumps(report, ensure_ascii=False, sort_keys=True), flush=True)
     return 0 if report["status"] == "PREFLIGHT_DONE" else 2
