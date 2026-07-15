@@ -65,6 +65,8 @@ def test_nested_regional_training_completes_every_fold_and_locks_winners(tmp_pat
     locked = json.loads((tmp_path / "locked" / "tau_locked_config.json").read_text(encoding="utf-8"))
     assert locked["outer_folds"] == 3
     assert locked["selection_source"] == "inner_validation_ibs_only"
+    assert (tmp_path / "splits" / "tau_split_contract.json").is_file()
+    assert (tmp_path / "outer_evaluation" / "tau" / "clinical_cognition").is_dir()
 
     def fail_if_hpo_repeated(*args, **kwargs):
         raise AssertionError("inner HPO must be reused after checkpoint lock")
@@ -104,3 +106,47 @@ def test_regional_training_rejects_outcome_columns_as_features(tmp_path):
             requested_horizons=[300.0],
             min_at_risk=2,
         )
+
+
+def test_amyloid_training_uses_a4_only_and_adds_only_continuous_centiloid(tmp_path):
+    from src.method_y_revival.endpoint_builder import write_locked_endpoint
+    from src.method_y_revival.regional_training import (
+        run_amyloid_regional_development_from_locked_endpoint,
+    )
+
+    frame = _synthetic_survival_frame(54).rename(columns={"tau_meta_roi": "baseline_amyloid_centiloid"})
+    frame["cohort"] = ["A4"] * 48 + ["LEARN"] * 6
+    frame["sex_binary"] = 0.0
+    frame["education_years"] = 16.0
+    rows = frame.to_dict(orient="records")
+    write_locked_endpoint(
+        rows,
+        output_path=tmp_path / "endpoints" / "amyloid_progression_endpoint.parquet",
+        contract_path=tmp_path / "endpoints" / "amyloid_endpoint_contract.json",
+        source_hashes={"amyloid": "a" * 64},
+        endpoint_definition={"tracer": "FBP", "target_source": "future_progression"},
+    )
+    config = {
+        "seed": 19,
+        "validation": {
+            "outer_folds": 3,
+            "inner_folds": 2,
+            "requested_horizons_days": [300.0, 600.0],
+            "minimum_at_risk_per_horizon": 2,
+        },
+        "hpo": {"cox": {"alpha": [0.1]}},
+    }
+
+    report = run_amyloid_regional_development_from_locked_endpoint(
+        config=config,
+        output_root=tmp_path,
+    )
+
+    assert report["development_cohort"] == "A4"
+    assert report["development_membership_count"] == 48
+    assert report["internal_transport_membership_count"] == 6
+    features = report["locked_config"]["feature_sets"]
+    added = set(features["clinical_cognition_amyloid"]) - set(features["clinical_cognition"])
+    assert added == {"baseline_amyloid_centiloid"}
+    assert report["claim_status"] == "EXPLORATORY"
+    assert (tmp_path / "locked" / "amyloid_locked_config.json").is_file()

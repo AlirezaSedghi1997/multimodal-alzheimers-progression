@@ -197,7 +197,10 @@ def run_regional_nested_cv(
     alpha_grid: list[float],
     requested_horizons: list[float],
     min_at_risk: int,
+    branch: str = "tau",
 ) -> dict[str, Any]:
+    if branch not in {"amyloid", "tau", "paired_at"}:
+        raise RegionalTrainingError(f"UNSUPPORTED_REGIONAL_BRANCH:{branch}")
     required = {"patient_hash", "event", "time_days", "treatment_arm"}
     missing = sorted(required.difference(frame.columns))
     if missing:
@@ -223,7 +226,7 @@ def run_regional_nested_cv(
         split_rows, outer_folds=outer_folds, inner_folds=inner_folds, seed=seed
     )
     root = Path(output_root)
-    atomic_write_json(root / "splits" / "split_contract.json", splits)
+    atomic_write_json(root / "splits" / f"{branch}_split_contract.json", splits)
     training_contract = RunContract.from_mapping(
         {
             "split_digest": splits["split_digest"],
@@ -231,6 +234,7 @@ def run_regional_nested_cv(
             "alpha_grid": alpha_grid,
             "seed": seed,
             "model_family": "CoxPHSurvivalAnalysis",
+            "branch": branch,
         }
     )
     by_subject = frame.set_index("patient_hash", drop=False)
@@ -242,7 +246,7 @@ def run_regional_nested_cv(
         for outer in splits["outer_folds"]:
             train = by_subject.loc[outer["train_subjects"]]
             test = by_subject.loc[outer["test_subjects"]]
-            fold_directory = root / "development" / variant / f"fold_{outer['fold']}"
+            fold_directory = root / "development" / branch / variant / f"fold_{outer['fold']}"
             checkpoint = fold_directory / "checkpoint.joblib"
             selection_path = fold_directory / "inner_selection.json"
             if checkpoint.exists() and selection_path.exists():
@@ -280,7 +284,7 @@ def run_regional_nested_cv(
                     },
                 )
             store = OuterEvaluationStore(
-                root / "outer_evaluation" / variant,
+                root / "outer_evaluation" / branch / variant,
                 fold=int(outer["fold"]),
                 run_contract_digest=training_contract.digest,
             )
@@ -324,7 +328,7 @@ def run_regional_nested_cv(
         "fold_selected_configs": all_selected,
         "feature_sets": feature_sets,
     }
-    atomic_write_json(root / "locked" / "tau_locked_config.json", locked)
+    atomic_write_json(root / "locked" / f"{branch}_locked_config.json", locked)
     report = {
         "status": "OUTER_EVALUATION_DONE",
         "science_gate_status": "NOT_EVALUATED",
@@ -332,7 +336,7 @@ def run_regional_nested_cv(
         "variants": variant_reports,
         "locked_config": locked,
     }
-    atomic_write_json(root / "reports" / "tau_regional_development.json", report)
+    atomic_write_json(root / "reports" / f"{branch}_regional_development.json", report)
     return report
 
 
@@ -340,7 +344,7 @@ def run_tau_regional_development_from_locked_endpoint(
     *, config: dict[str, Any], output_root: str | Path, project_root: str | Path
 ) -> dict[str, Any]:
     root = Path(output_root)
-    endpoint_contract_path = root / "endpoints" / "endpoint_contract.json"
+    endpoint_contract_path = root / "endpoints" / "tau_endpoint_contract.json"
     if not endpoint_contract_path.is_file():
         raise RegionalTrainingError("LOCKED_TAU_ENDPOINT_REQUIRED")
     endpoint_contract = read_json(endpoint_contract_path)
@@ -393,6 +397,7 @@ def run_tau_regional_development_from_locked_endpoint(
             float(value) for value in config["validation"]["requested_horizons_days"]
         ],
         min_at_risk=int(config["validation"]["minimum_at_risk_per_horizon"]),
+        branch="tau",
     )
     base = report["variants"]["clinical_cognition"]
     augmented = report["variants"]["clinical_cognition_pet"]
@@ -415,4 +420,93 @@ def run_tau_regional_development_from_locked_endpoint(
     }
     atomic_write_json(root / "reports" / "tau_added_value_preliminary.json", preliminary)
     report["preliminary_added_value"] = preliminary
+    return report
+
+
+def _read_locked_endpoint(root: Path, branch: str) -> pd.DataFrame:
+    contract_path = root / "endpoints" / f"{branch}_endpoint_contract.json"
+    if not contract_path.is_file():
+        raise RegionalTrainingError(f"LOCKED_{branch.upper()}_ENDPOINT_REQUIRED")
+    contract = read_json(contract_path)
+    if not contract.get("locked"):
+        raise RegionalTrainingError(f"{branch.upper()}_ENDPOINT_NOT_LOCKED")
+    endpoint_path = root / "endpoints" / str(contract["endpoint_path"])
+    if not endpoint_path.is_file() or _sha256_file(endpoint_path) != contract.get("endpoint_sha256"):
+        raise RegionalTrainingError(f"{branch.upper()}_ENDPOINT_HASH_MISMATCH")
+    if contract.get("storage_format") == "parquet":
+        return pd.read_parquet(endpoint_path)
+    if contract.get("storage_format") == "csv_fallback":
+        return pd.read_csv(endpoint_path)
+    raise RegionalTrainingError("UNSUPPORTED_ENDPOINT_STORAGE_FORMAT")
+
+
+def run_amyloid_regional_development_from_locked_endpoint(
+    *, config: dict[str, Any], output_root: str | Path
+) -> dict[str, Any]:
+    root = Path(output_root)
+    endpoint = _read_locked_endpoint(root, "amyloid")
+    if "cohort" not in endpoint.columns:
+        raise RegionalTrainingError("AMYLOID_ENDPOINT_COHORT_REQUIRED")
+    development = endpoint.loc[endpoint["cohort"].astype(str) == "A4"].copy()
+    transport = endpoint.loc[endpoint["cohort"].astype(str) == "LEARN"].copy()
+    if development.empty:
+        raise RegionalTrainingError("NO_A4_AMYLOID_DEVELOPMENT_SUBJECTS")
+    if "baseline_amyloid_centiloid" not in development.columns:
+        raise RegionalTrainingError("CONTINUOUS_CENTILOID_REQUIRED")
+    base_candidates = [
+        "age",
+        "sex_binary",
+        "education_years",
+        "apoe4_carrier",
+        "baseline_pacc_raw",
+        "baseline_fctotal96",
+        "baseline_ldeltotal",
+        "baseline_digittotal",
+        "baseline_mmscore",
+        "baseline_cdrsb",
+    ]
+    base_features = [feature for feature in base_candidates if feature in development.columns]
+    feature_sets = {
+        "clinical_cognition": base_features,
+        "clinical_cognition_amyloid": [*base_features, "baseline_amyloid_centiloid"],
+    }
+    report = run_regional_nested_cv(
+        frame=development,
+        feature_sets=feature_sets,
+        output_root=root,
+        outer_folds=int(config["validation"]["outer_folds"]),
+        inner_folds=int(config["validation"]["inner_folds"]),
+        seed=int(config["seed"]),
+        alpha_grid=[float(value) for value in config["hpo"]["cox"]["alpha"]],
+        requested_horizons=[
+            float(value) for value in config["validation"]["requested_horizons_days"]
+        ],
+        min_at_risk=int(config["validation"]["minimum_at_risk_per_horizon"]),
+        branch="amyloid",
+    )
+    base = report["variants"]["clinical_cognition"]
+    augmented = report["variants"]["clinical_cognition_amyloid"]
+    report.update(
+        {
+            "development_cohort": "A4",
+            "development_membership_count": int(len(development)),
+            "internal_transport_cohort": "LEARN",
+            "internal_transport_membership_count": int(len(transport)),
+            "internal_transport_status": "PENDING_LOCKED_GLOBAL_MODEL",
+            "science_gate_status": "BLOCKED",
+            "claim_status": "EXPLORATORY",
+            "preliminary_added_value": {
+                "status": "PAIRED_SUBJECT_BOOTSTRAP_AND_SCANNER_SENSITIVITY_PENDING",
+                "delta_mean_uno_c_index": (
+                    augmented["mean_uno_c_index"] - base["mean_uno_c_index"]
+                ),
+                "delta_mean_integrated_brier_score": (
+                    augmented["mean_integrated_brier_score"]
+                    - base["mean_integrated_brier_score"]
+                ),
+                "same_pet_derived_target_used": False,
+            },
+        }
+    )
+    atomic_write_json(root / "reports" / "amyloid_regional_development.json", report)
     return report
