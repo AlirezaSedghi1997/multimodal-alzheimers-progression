@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 from collections import Counter
+from pathlib import Path
 from typing import Any
 
 import numpy as np
 from sksurv.metrics import concordance_index_ipcw, integrated_brier_score
 from sksurv.util import Surv
+
+from .atomic_io import atomic_write_json, read_json
+from .contracts import sha256_mapping
 
 
 class ScienceGateError(ValueError):
@@ -152,6 +156,46 @@ def paired_oof_bootstrap(
         "delta_cindex_95ci": [float(value) for value in cindex_ci],
         "subject_count": int(len(subjects)),
     }
+
+
+def cached_paired_oof_bootstrap(
+    base_variant: dict[str, Any],
+    augmented_variant: dict[str, Any],
+    *,
+    output_path: str | Path,
+    iterations: int,
+    seed: int,
+) -> dict[str, Any]:
+    evidence_digest = sha256_mapping(
+        {
+            "base_folds": base_variant.get("folds", []),
+            "augmented_folds": augmented_variant.get("folds", []),
+        }
+    )
+    target = Path(output_path)
+    if target.is_file():
+        existing = read_json(target)
+        if existing.get("input_evidence_sha256") != evidence_digest:
+            raise ScienceGateError("PAIRED_BOOTSTRAP_INPUT_EVIDENCE_MISMATCH")
+        if int(existing.get("requested_iterations", -1)) != int(iterations):
+            raise ScienceGateError("PAIRED_BOOTSTRAP_ITERATION_CONTRACT_MISMATCH")
+        if int(existing.get("seed", -1)) != int(seed):
+            raise ScienceGateError("PAIRED_BOOTSTRAP_SEED_CONTRACT_MISMATCH")
+        if existing.get("status") != "COMPLETED":
+            raise ScienceGateError("PAIRED_BOOTSTRAP_CACHE_NOT_COMPLETED")
+        return existing
+    result = paired_oof_bootstrap(
+        base_variant,
+        augmented_variant,
+        iterations=int(iterations),
+        seed=int(seed),
+    )
+    result["requested_iterations"] = int(iterations)
+    result["seed"] = int(seed)
+    result["input_evidence_sha256"] = evidence_digest
+    result["cache_status"] = "COMPUTED_AND_LOCKED"
+    atomic_write_json(target, result)
+    return result
 
 
 def incremental_value_gate(

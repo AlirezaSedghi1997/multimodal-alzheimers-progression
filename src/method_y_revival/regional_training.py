@@ -21,7 +21,7 @@ from .atomic_io import atomic_write_json, read_json
 from .contracts import RunContract
 from .evaluation import OuterEvaluationStore, valid_survival_horizons
 from .regional_features import FORBIDDEN_FEATURE_TOKENS
-from .science_gates import incremental_value_gate, paired_oof_bootstrap
+from .science_gates import cached_paired_oof_bootstrap, incremental_value_gate
 from .splits import build_nested_subject_splits
 from .survival_models import select_inner_winner
 
@@ -424,9 +424,10 @@ def run_tau_regional_development_from_locked_endpoint(
     )
     base = report["variants"]["clinical_cognition"]
     augmented = report["variants"]["clinical_cognition_pet"]
-    bootstrap = paired_oof_bootstrap(
+    bootstrap = cached_paired_oof_bootstrap(
         base,
         augmented,
+        output_path=root / "reports" / "tau_paired_bootstrap.json",
         iterations=int(config["validation"]["bootstrap_iterations"]),
         seed=int(config["seed"]) + 1000,
     )
@@ -526,9 +527,10 @@ def run_amyloid_regional_development_from_locked_endpoint(
     )
     base = report["variants"]["clinical_cognition"]
     augmented = report["variants"]["clinical_cognition_amyloid"]
-    bootstrap = paired_oof_bootstrap(
+    bootstrap = cached_paired_oof_bootstrap(
         base,
         augmented,
+        output_path=root / "reports" / "amyloid_paired_bootstrap.json",
         iterations=int(config["validation"]["bootstrap_iterations"]),
         seed=int(config["seed"]) + 2000,
     )

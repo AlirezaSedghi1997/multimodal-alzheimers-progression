@@ -85,6 +85,38 @@ def test_incremental_value_gate_requires_all_fold_science_conditions():
     assert failed["claim_status"] == "EXPLORATORY"
 
 
+def test_paired_bootstrap_cache_reuses_only_matching_locked_evidence(tmp_path, monkeypatch):
+    import src.method_y_revival.science_gates as gates
+
+    calls = {"count": 0}
+
+    def fake_bootstrap(base, augmented, *, iterations, seed):
+        calls["count"] += 1
+        return {
+            "status": "COMPLETED",
+            "successful_iterations": iterations,
+            "seed": seed,
+            "delta_ibs_95ci": [-0.02, -0.01],
+            "delta_cindex_95ci": [0.01, 0.03],
+        }
+
+    monkeypatch.setattr(gates, "paired_oof_bootstrap", fake_bootstrap)
+    base = {"folds": [{"fold": 0, "oof_predictions": [{"patient_hash": "p1"}]}]}
+    augmented = {"folds": [{"fold": 0, "oof_predictions": [{"patient_hash": "p1"}]}]}
+    path = tmp_path / "bootstrap.json"
+
+    first = gates.cached_paired_oof_bootstrap(
+        base, augmented, output_path=path, iterations=2000, seed=17
+    )
+    second = gates.cached_paired_oof_bootstrap(
+        base, augmented, output_path=path, iterations=2000, seed=17
+    )
+
+    assert first == second
+    assert calls["count"] == 1
+    assert first["cache_status"] == "COMPUTED_AND_LOCKED"
+
+
 def test_external_policy_forbids_refit_and_only_promotes_a_passed_internal_model():
     from src.method_y_revival.external_validation import ExternalValidationError, external_claim_status
 
