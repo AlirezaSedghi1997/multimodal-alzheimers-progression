@@ -19,12 +19,14 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.method_y_revival.atomic_io import atomic_write_json, atomic_write_bytes, read_json
 from src.method_y_revival.endpoint_builder import (
     build_amyloid_endpoint_from_sources,
+    build_paired_at_endpoint_from_sources,
     build_tau_endpoint_from_sources,
 )
 from src.method_y_revival.orchestrator import initialize_run
 from src.method_y_revival.process_guard import WriterLock
 from src.method_y_revival.regional_training import (
     run_amyloid_regional_development_from_locked_endpoint,
+    run_paired_at_regional_development_from_locked_endpoint,
     run_tau_regional_development_from_locked_endpoint,
 )
 from src.method_y_revival.scanner_audit import build_scanner_audit_from_sources
@@ -140,6 +142,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--train-amyloid-regional", action="store_true")
     parser.add_argument("--build-scanner-audit", action="store_true")
     parser.add_argument("--run-scanner-sensitivity", action="store_true")
+    parser.add_argument("--build-paired-at-endpoint", action="store_true")
+    parser.add_argument("--train-paired-at-regional", action="store_true")
     return parser
 
 
@@ -189,6 +193,24 @@ def main(argv: list[str] | None = None) -> int:
             report["amyloid_internal_transport_status"] = training[
                 "internal_transport_status"
             ]
+            atomic_write_json(output_root / "provenance" / "preflight_report.json", report)
+        if args.build_paired_at_endpoint:
+            endpoint = build_paired_at_endpoint_from_sources(
+                config=config,
+                output_root=output_root,
+            )
+            report["paired_at_endpoint_status"] = endpoint["status"]
+            report["paired_at_endpoint_contract_sha256"] = endpoint["contract"][
+                "contract_sha256"
+            ]
+            atomic_write_json(output_root / "provenance" / "preflight_report.json", report)
+        if args.train_paired_at_regional:
+            training = run_paired_at_regional_development_from_locked_endpoint(
+                config=config,
+                output_root=output_root,
+            )
+            report["paired_at_regional_training_status"] = training["status"]
+            report["paired_at_claim_status"] = training["claim_status"]
             atomic_write_json(output_root / "provenance" / "preflight_report.json", report)
         if args.build_scanner_audit:
             scanner_audit = build_scanner_audit_from_sources(

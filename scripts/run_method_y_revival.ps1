@@ -27,6 +27,8 @@ else {
     $Arguments += "--train-tau-regional"
     $Arguments += "--build-amyloid-endpoint"
     $Arguments += "--train-amyloid-regional"
+    $Arguments += "--build-paired-at-endpoint"
+    $Arguments += "--train-paired-at-regional"
     $Arguments += "--build-scanner-audit"
     $Arguments += "--run-scanner-sensitivity"
 }
