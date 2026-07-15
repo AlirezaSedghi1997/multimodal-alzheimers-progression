@@ -70,3 +70,27 @@ def test_endpoint_writer_rejects_raw_identifiers_and_paths(tmp_path):
             source_hashes={},
             endpoint_definition={},
         )
+
+
+def test_revival_to_legacy_endpoint_adapter_contains_every_required_field():
+    from src.method_y_revival.endpoint_builder import compatibility_endpoint_config
+
+    config = {
+        "endpoint": {
+            "primary_name": "sustained_cdr_global_progression",
+            "pet_to_baseline_window_days": 183,
+            "followup_window_days": 1640.0,
+            "baseline_cdr_required": 0.0,
+            "event_time_rule": "first_increase_if_confirmed_by_next_visit",
+            "forbidden_label_sources": ["CDEVENT", "CDOLEEVENT"],
+        },
+        "validation": {
+            "minimum_total_events": 60,
+            "minimum_events_per_treatment_arm": 20,
+        }
+    }
+    adapted = compatibility_endpoint_config(config)
+
+    assert adapted["endpoint"]["primary_name"] == "sustained_cdr_global_progression"
+    assert adapted["endpoint"]["event_time_rule"] == "first_increase_if_confirmed_by_next_visit"
+    assert adapted["validation"]["min_total_events"] == 60

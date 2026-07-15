@@ -45,6 +45,7 @@ branches:
     minimum_power: 0.80
 
 endpoint:
+  primary_name: sustained_cdr_global_progression
   baseline_cdr_required: 0.0
   pet_to_baseline_window_days: 183
   followup_window_days: 1640.0
@@ -79,6 +80,8 @@ validation:
   requested_horizons_days: [547.875, 1095.75, 1640.0]
   minimum_at_risk_per_horizon: 20
   bootstrap_iterations: 2000
+  minimum_total_events: 60
+  minimum_events_per_treatment_arm: 20
 
 hpo:
   cox:

@@ -21,6 +21,36 @@ PRIVATE_ENDPOINT_FIELDS = frozenset(
 )
 
 
+def compatibility_endpoint_config(config: dict[str, Any]) -> dict[str, Any]:
+    endpoint = config["endpoint"]
+    validation = config["validation"]
+    return {
+        "inputs": {
+            "tau_primary_suvr_column": "suvr_persi",
+            "tau_sensitivity_suvr_column": "suvr_crus",
+            "tau_unavailable_suvr_column": "suvr_cer",
+            "tau_scan_analyzed_required": "Yes",
+            "tau_ligand_required": "Flortaucipir",
+        },
+        "endpoint": {
+            "primary_name": endpoint["primary_name"],
+            "event_definition": "first post-PET CDR increase confirmed by the next visit",
+            "index_date_rule": "max(first analyzed FTP scan date, selected baseline CDR date)",
+            "forbidden_label_sources": endpoint["forbidden_label_sources"],
+            "baseline_tau_to_cdr_window_days": endpoint["pet_to_baseline_window_days"],
+            "followup_window_days": endpoint["followup_window_days"],
+            "baseline_cdr_required": endpoint["baseline_cdr_required"],
+            "event_time_rule": endpoint["event_time_rule"],
+        },
+        "validation": {
+            "min_total_events": validation["minimum_total_events"],
+            "min_events_per_heldout_arm": validation[
+                "minimum_events_per_treatment_arm"
+            ],
+        },
+    }
+
+
 def sha256_file(path: str | Path) -> str:
     digest = hashlib.sha256()
     with Path(path).open("rb") as handle:
@@ -148,23 +178,7 @@ def build_tau_endpoint_from_sources(
         summary["status"] = "ENDPOINT_LOCKED_REUSED"
         return summary
 
-    compatibility_config = {
-        "inputs": {
-            "tau_primary_suvr_column": "suvr_persi",
-            "tau_sensitivity_suvr_column": "suvr_crus",
-            "tau_unavailable_suvr_column": "suvr_cer",
-            "tau_scan_analyzed_required": "Yes",
-            "tau_ligand_required": "Flortaucipir",
-        },
-        "endpoint": {
-            "baseline_tau_to_cdr_window_days": config["endpoint"][
-                "pet_to_baseline_window_days"
-            ],
-            "followup_window_days": config["endpoint"]["followup_window_days"],
-            "baseline_cdr_required": config["endpoint"]["baseline_cdr_required"],
-            "event_time_rule": config["endpoint"]["event_time_rule"],
-        },
-    }
+    compatibility_config = compatibility_endpoint_config(config)
     first_tau, tau_audit = load_first_tau_scans(
         sources["tau_suvr_csv"], compatibility_config
     )
