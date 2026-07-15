@@ -156,3 +156,47 @@ def test_scanner_audit_builder_writes_only_hashed_private_linkage(tmp_path):
     }
     assert audit["amyloid"]["exact"] == 1
     assert audit["tau"]["eligible"] == 1
+    assert audit["amyloid_sensitivity_feasibility"]["status"].startswith("BLOCKED")
+    assert audit["tau_sensitivity_feasibility"]["status"].startswith("BLOCKED")
+
+
+def test_scanner_feasibility_requires_two_manufacturers_with_enough_events():
+    import pandas as pd
+
+    from src.method_y_revival.scanner_audit import scanner_sensitivity_feasibility
+
+    endpoint = pd.DataFrame(
+        {
+            "patient_hash": [f"p{i}" for i in range(12)],
+            "event": [1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+            "cohort": ["A4"] * 12,
+        }
+    )
+    linkage = [
+        {
+            "patient_hash": f"p{i}",
+            "manufacturer": "GE" if i < 6 else "SIEMENS",
+            "scanner_sensitivity_eligible": True,
+        }
+        for i in range(12)
+    ]
+
+    ready = scanner_sensitivity_feasibility(
+        endpoint,
+        linkage,
+        development_cohort="A4",
+        minimum_subjects=5,
+        minimum_events=2,
+        minimum_manufacturers=2,
+    )
+    blocked = scanner_sensitivity_feasibility(
+        endpoint,
+        linkage,
+        development_cohort="A4",
+        minimum_subjects=5,
+        minimum_events=3,
+        minimum_manufacturers=2,
+    )
+
+    assert ready["status"] == "READY_FOR_LEAVE_MANUFACTURER_OUT"
+    assert blocked["status"] == "BLOCKED_INSUFFICIENT_MANUFACTURER_EVENT_SUPPORT"

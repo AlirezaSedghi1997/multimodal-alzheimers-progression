@@ -100,6 +100,13 @@ science_gates:
   require_scanner_sensitivity_pass: true
   completion_does_not_imply_claim: true
 
+scanner_sensitivity:
+  minimum_subjects_per_manufacturer: 30
+  minimum_events_per_manufacturer: 10
+  minimum_eligible_manufacturers: 2
+  unknown_policy: exclude_without_imputation
+  readiness_does_not_imply_gate_pass: true
+
 external_validation:
   priority: [ADNI, OASIS3]
   allow_refit: false

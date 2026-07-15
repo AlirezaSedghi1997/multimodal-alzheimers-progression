@@ -27,6 +27,7 @@ from src.method_y_revival.regional_training import (
     run_amyloid_regional_development_from_locked_endpoint,
     run_tau_regional_development_from_locked_endpoint,
 )
+from src.method_y_revival.scanner_audit import build_scanner_audit_from_sources
 
 
 def _git(*arguments: str) -> str | None:
@@ -136,6 +137,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--train-tau-regional", action="store_true")
     parser.add_argument("--build-amyloid-endpoint", action="store_true")
     parser.add_argument("--train-amyloid-regional", action="store_true")
+    parser.add_argument("--build-scanner-audit", action="store_true")
     return parser
 
 
@@ -185,6 +187,20 @@ def main(argv: list[str] | None = None) -> int:
             report["amyloid_internal_transport_status"] = training[
                 "internal_transport_status"
             ]
+            atomic_write_json(output_root / "provenance" / "preflight_report.json", report)
+        if args.build_scanner_audit:
+            scanner_audit = build_scanner_audit_from_sources(
+                config=config,
+                output_root=output_root,
+                project_root=PROJECT_ROOT,
+            )
+            report["scanner_metadata_audit_status"] = scanner_audit["status"]
+            report["amyloid_scanner_sensitivity_status"] = scanner_audit[
+                "amyloid_sensitivity_feasibility"
+            ]["status"]
+            report["tau_scanner_sensitivity_status"] = scanner_audit[
+                "tau_sensitivity_feasibility"
+            ]["status"]
             atomic_write_json(output_root / "provenance" / "preflight_report.json", report)
     print(json.dumps(report, ensure_ascii=False, sort_keys=True), flush=True)
     return 0 if report["status"] == "PREFLIGHT_DONE" else 2

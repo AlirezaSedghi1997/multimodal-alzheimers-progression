@@ -172,7 +172,7 @@ def link_tau_scanner_rows(
     }
 
 
-def _read_endpoint_hashes(output_root: Path, branch: str) -> set[str]:
+def _read_endpoint_frame(output_root: Path, branch: str) -> pd.DataFrame:
     contract_path = output_root / "endpoints" / f"{branch}_endpoint_contract.json"
     if not contract_path.is_file():
         raise ValueError(f"LOCKED_{branch.upper()}_ENDPOINT_REQUIRED")
@@ -186,7 +186,11 @@ def _read_endpoint_hashes(output_root: Path, branch: str) -> set[str]:
         frame = pd.read_csv(endpoint_path)
     else:
         raise ValueError("UNSUPPORTED_ENDPOINT_STORAGE_FORMAT")
-    return set(frame["patient_hash"].astype(str))
+    return frame
+
+
+def _read_endpoint_hashes(output_root: Path, branch: str) -> set[str]:
+    return set(_read_endpoint_frame(output_root, branch)["patient_hash"].astype(str))
 
 
 def _atomic_write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -201,6 +205,57 @@ def _atomic_write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         os.replace(temporary, path)
     finally:
         temporary.unlink(missing_ok=True)
+
+
+def scanner_sensitivity_feasibility(
+    endpoint: pd.DataFrame,
+    linkage_rows: Iterable[dict[str, Any]],
+    *,
+    development_cohort: str | None,
+    minimum_subjects: int,
+    minimum_events: int,
+    minimum_manufacturers: int,
+) -> dict[str, Any]:
+    linkage = pd.DataFrame(list(linkage_rows))
+    required = {"patient_hash", "manufacturer", "scanner_sensitivity_eligible"}
+    if not required.issubset(linkage.columns):
+        raise ValueError(f"SCANNER_LINKAGE_COLUMNS_MISSING:{sorted(required - set(linkage.columns))}")
+    frame = endpoint.merge(linkage[list(required)], on="patient_hash", how="inner")
+    if development_cohort is not None:
+        frame = frame.loc[frame["cohort"].astype(str) == str(development_cohort)]
+    eligible = frame.loc[frame["scanner_sensitivity_eligible"].astype(bool)].copy()
+    grouped: dict[str, dict[str, Any]] = {}
+    for manufacturer, group in eligible.groupby("manufacturer", sort=True):
+        subjects = int(len(group))
+        events = int(group["event"].astype(int).sum())
+        grouped[str(manufacturer)] = {
+            "subjects": subjects,
+            "events": events,
+            "gate_eligible": subjects >= int(minimum_subjects)
+            and events >= int(minimum_events),
+        }
+    eligible_manufacturers = sorted(
+        name for name, values in grouped.items() if values["gate_eligible"]
+    )
+    ready = len(eligible_manufacturers) >= int(minimum_manufacturers)
+    return {
+        "status": (
+            "READY_FOR_LEAVE_MANUFACTURER_OUT"
+            if ready
+            else "BLOCKED_INSUFFICIENT_MANUFACTURER_EVENT_SUPPORT"
+        ),
+        "development_cohort": development_cohort,
+        "endpoint_rows": int(len(endpoint)),
+        "linked_development_rows": int(len(frame)),
+        "scanner_eligible_rows": int(len(eligible)),
+        "minimum_subjects_per_manufacturer": int(minimum_subjects),
+        "minimum_events_per_manufacturer": int(minimum_events),
+        "minimum_eligible_manufacturers": int(minimum_manufacturers),
+        "eligible_manufacturers": eligible_manufacturers,
+        "manufacturer_support": grouped,
+        "unknown_imputed": False,
+        "readiness_does_not_imply_science_gate_pass": True,
+    }
 
 
 def build_scanner_audit_from_sources(
@@ -221,8 +276,10 @@ def build_scanner_audit_from_sources(
     if missing:
         raise ValueError(f"MISSING_SCANNER_AUDIT_SOURCES:{missing}")
 
-    amyloid_hashes = _read_endpoint_hashes(root, "amyloid")
-    tau_hashes = _read_endpoint_hashes(root, "tau")
+    amyloid_endpoint = _read_endpoint_frame(root, "amyloid")
+    tau_endpoint = _read_endpoint_frame(root, "tau")
+    amyloid_hashes = set(amyloid_endpoint["patient_hash"].astype(str))
+    tau_hashes = set(tau_endpoint["patient_hash"].astype(str))
     first_amyloid, source_audit = load_first_amyloid_scans(
         pd.read_csv(amyloid_source, low_memory=False).to_dict(orient="records")
     )
@@ -246,10 +303,32 @@ def build_scanner_audit_from_sources(
     } for row in combined):
         raise ValueError("SCANNER_LINKAGE_PRIVATE_SCHEMA_VIOLATION")
     _atomic_write_csv(root / "qc" / "scanner_linkage_private.csv", combined)
+    thresholds = config.get("scanner_sensitivity", {})
+    minimum_subjects = int(thresholds.get("minimum_subjects_per_manufacturer", 30))
+    minimum_events = int(thresholds.get("minimum_events_per_manufacturer", 10))
+    minimum_manufacturers = int(thresholds.get("minimum_eligible_manufacturers", 2))
+    amyloid_feasibility = scanner_sensitivity_feasibility(
+        amyloid_endpoint,
+        amyloid_rows,
+        development_cohort="A4",
+        minimum_subjects=minimum_subjects,
+        minimum_events=minimum_events,
+        minimum_manufacturers=minimum_manufacturers,
+    )
+    tau_feasibility = scanner_sensitivity_feasibility(
+        tau_endpoint,
+        tau_rows,
+        development_cohort=None,
+        minimum_subjects=minimum_subjects,
+        minimum_events=minimum_events,
+        minimum_manufacturers=minimum_manufacturers,
+    )
     audit = {
         "status": "COMPLETED",
         "amyloid": amyloid_audit,
         "tau": tau_audit,
+        "amyloid_sensitivity_feasibility": amyloid_feasibility,
+        "tau_sensitivity_feasibility": tau_feasibility,
         "amyloid_source_audit": source_audit,
         "unknown_scanner_imputed": False,
         "raw_identifiers_exported": False,

@@ -17,6 +17,7 @@ def test_revival_config_separates_tracers_targets_and_claims():
     assert config["validation"]["outer_folds"] == 5
     assert config["validation"]["inner_folds"] == 3
     assert config["external_validation"]["allow_refit"] is False
+    assert config["scanner_sensitivity"]["minimum_events_per_manufacturer"] == 10
 
 
 def test_powershell_launcher_is_resumable_and_has_no_runtime_limit():
@@ -27,6 +28,7 @@ def test_powershell_launcher_is_resumable_and_has_no_runtime_limit():
     assert "--train-tau-regional" in text
     assert "--build-amyloid-endpoint" in text
     assert "--train-amyloid-regional" in text
+    assert "--build-scanner-audit" in text
     assert "max_runtime" not in text.casefold()
     assert "no_resume" not in text.casefold()
     assert "--output-root" not in text or "method_y_revival_v1" in text
