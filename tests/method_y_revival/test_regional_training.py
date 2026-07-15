@@ -62,11 +62,32 @@ def test_nested_regional_training_completes_every_fold_and_locks_winners(tmp_pat
     for variant in report["variants"].values():
         assert variant["outer_folds_completed"] == 3
         assert all(fold["status"] == "COMPLETED" for fold in variant["folds"])
+        assert sum(len(fold["oof_predictions"]) for fold in variant["folds"]) == len(
+            _synthetic_survival_frame()
+        )
+        assert all(
+            set(fold["oof_predictions"][0])
+            >= {"patient_hash", "event", "time_days", "risk_score", "survival_probabilities"}
+            for fold in variant["folds"]
+        )
     locked = json.loads((tmp_path / "locked" / "tau_locked_config.json").read_text(encoding="utf-8"))
     assert locked["outer_folds"] == 3
     assert locked["selection_source"] == "inner_validation_ibs_only"
     assert (tmp_path / "splits" / "tau_split_contract.json").is_file()
     assert (tmp_path / "outer_evaluation" / "tau" / "clinical_cognition").is_dir()
+
+    from src.method_y_revival.science_gates import paired_oof_bootstrap
+
+    bootstrap = paired_oof_bootstrap(
+        report["variants"]["clinical_cognition"],
+        report["variants"]["clinical_cognition_pet"],
+        iterations=20,
+        seed=23,
+    )
+    assert bootstrap["status"] == "COMPLETED"
+    assert bootstrap["successful_iterations"] == 20
+    assert len(bootstrap["delta_ibs_95ci"]) == 2
+    assert len(bootstrap["delta_cindex_95ci"]) == 2
 
     def fail_if_hpo_repeated(*args, **kwargs):
         raise AssertionError("inner HPO must be reused after checkpoint lock")
@@ -133,6 +154,7 @@ def test_amyloid_training_uses_a4_only_and_adds_only_continuous_centiloid(tmp_pa
             "inner_folds": 2,
             "requested_horizons_days": [300.0, 600.0],
             "minimum_at_risk_per_horizon": 2,
+            "bootstrap_iterations": 20,
         },
         "hpo": {"cox": {"alpha": [0.1]}},
     }
@@ -149,4 +171,6 @@ def test_amyloid_training_uses_a4_only_and_adds_only_continuous_centiloid(tmp_pa
     added = set(features["clinical_cognition_amyloid"]) - set(features["clinical_cognition"])
     assert added == {"baseline_amyloid_centiloid"}
     assert report["claim_status"] == "EXPLORATORY"
+    assert report["paired_bootstrap"]["status"] == "COMPLETED"
+    assert "SCANNER_SHORTCUT_NOT_CONTROLLED" in report["science_gate"]["blockers"]
     assert (tmp_path / "locked" / "amyloid_locked_config.json").is_file()

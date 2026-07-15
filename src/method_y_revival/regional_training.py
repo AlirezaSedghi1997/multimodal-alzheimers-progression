@@ -21,6 +21,7 @@ from .atomic_io import atomic_write_json, read_json
 from .contracts import RunContract
 from .evaluation import OuterEvaluationStore, valid_survival_horizons
 from .regional_features import FORBIDDEN_FEATURE_TOKENS
+from .science_gates import incremental_value_gate, paired_oof_bootstrap
 from .splits import build_nested_subject_splits
 from .survival_models import select_inner_winner
 
@@ -102,6 +103,23 @@ def _evaluate_model(
         requested_horizons=requested_horizons,
         min_at_risk=min_at_risk,
     )
+    effective_events = evaluation_test["event"].astype(int).to_numpy()
+    effective_times = evaluation_test["time_days"].astype(float).to_numpy()
+    original_events = test["event"].astype(int).to_numpy()
+    original_times = test["time_days"].astype(float).to_numpy()
+    patient_hashes = test["patient_hash"].astype(str).to_numpy()
+    oof_predictions = [
+        {
+            "patient_hash": str(patient_hashes[index]),
+            "event": int(effective_events[index]),
+            "time_days": float(effective_times[index]),
+            "original_event": int(original_events[index]),
+            "original_time_days": float(original_times[index]),
+            "risk_score": float(risk[index]),
+            "survival_probabilities": [float(value) for value in survival[index]],
+        }
+        for index in range(len(test))
+    ]
     return {
         "uno_c_index": uno,
         "integrated_brier_score": ibs,
@@ -115,6 +133,11 @@ def _evaluate_model(
         "test_rows_administratively_censored": int(
             np.sum(test["time_days"].astype(float).to_numpy() >= cutoff)
         ),
+        "oof_predictions": oof_predictions,
+        "censoring_reference": [
+            {"event": int(row.event), "time_days": float(row.time_days)}
+            for row in evaluation_train[["event", "time_days"]].itertuples(index=False)
+        ],
     }
 
 
@@ -401,10 +424,23 @@ def run_tau_regional_development_from_locked_endpoint(
     )
     base = report["variants"]["clinical_cognition"]
     augmented = report["variants"]["clinical_cognition_pet"]
+    bootstrap = paired_oof_bootstrap(
+        base,
+        augmented,
+        iterations=int(config["validation"]["bootstrap_iterations"]),
+        seed=int(config["seed"]) + 1000,
+    )
+    science_gate = incremental_value_gate(
+        delta_ibs_ci=tuple(bootstrap["delta_ibs_95ci"]),
+        delta_cindex_ci=tuple(bootstrap["delta_cindex_95ci"]),
+        outer_folds_completed=int(augmented["outer_folds_completed"]),
+        expected_outer_folds=int(config["validation"]["outer_folds"]),
+        scanner_sensitivity_passed=False,
+    )
     preliminary = {
-        "status": "PAIRED_SUBJECT_BOOTSTRAP_AND_SCANNER_SENSITIVITY_PENDING",
-        "science_gate_status": "BLOCKED",
-        "claim_status": "EXPLORATORY",
+        "status": "PAIRED_BOOTSTRAP_COMPLETED_SCANNER_SENSITIVITY_PENDING",
+        "science_gate_status": science_gate["science_gate_status"],
+        "claim_status": science_gate["claim_status"],
         "delta_mean_uno_c_index": augmented["mean_uno_c_index"] - base["mean_uno_c_index"],
         "delta_mean_integrated_brier_score": (
             augmented["mean_integrated_brier_score"]
@@ -413,13 +449,17 @@ def run_tau_regional_development_from_locked_endpoint(
         "regional_feature_count": len(pet_features),
         "endpoint_membership_count": len(frame),
         "required_before_positive_claim": [
-            "PAIRED_SUBJECT_BOOTSTRAP_95CI",
             "SCANNER_SENSITIVITY_PASS",
             "EXTERNAL_VALIDATION",
         ],
     }
     atomic_write_json(root / "reports" / "tau_added_value_preliminary.json", preliminary)
     report["preliminary_added_value"] = preliminary
+    report["paired_bootstrap"] = bootstrap
+    report["science_gate"] = science_gate
+    report["science_gate_status"] = science_gate["science_gate_status"]
+    report["claim_status"] = science_gate["claim_status"]
+    atomic_write_json(root / "reports" / "tau_regional_development.json", report)
     return report
 
 
@@ -486,6 +526,19 @@ def run_amyloid_regional_development_from_locked_endpoint(
     )
     base = report["variants"]["clinical_cognition"]
     augmented = report["variants"]["clinical_cognition_amyloid"]
+    bootstrap = paired_oof_bootstrap(
+        base,
+        augmented,
+        iterations=int(config["validation"]["bootstrap_iterations"]),
+        seed=int(config["seed"]) + 2000,
+    )
+    science_gate = incremental_value_gate(
+        delta_ibs_ci=tuple(bootstrap["delta_ibs_95ci"]),
+        delta_cindex_ci=tuple(bootstrap["delta_cindex_95ci"]),
+        outer_folds_completed=int(augmented["outer_folds_completed"]),
+        expected_outer_folds=int(config["validation"]["outer_folds"]),
+        scanner_sensitivity_passed=False,
+    )
     report.update(
         {
             "development_cohort": "A4",
@@ -493,10 +546,12 @@ def run_amyloid_regional_development_from_locked_endpoint(
             "internal_transport_cohort": "LEARN",
             "internal_transport_membership_count": int(len(transport)),
             "internal_transport_status": "PENDING_LOCKED_GLOBAL_MODEL",
-            "science_gate_status": "BLOCKED",
-            "claim_status": "EXPLORATORY",
+            "science_gate_status": science_gate["science_gate_status"],
+            "claim_status": science_gate["claim_status"],
+            "paired_bootstrap": bootstrap,
+            "science_gate": science_gate,
             "preliminary_added_value": {
-                "status": "PAIRED_SUBJECT_BOOTSTRAP_AND_SCANNER_SENSITIVITY_PENDING",
+                "status": "PAIRED_BOOTSTRAP_COMPLETED_SCANNER_SENSITIVITY_PENDING",
                 "delta_mean_uno_c_index": (
                     augmented["mean_uno_c_index"] - base["mean_uno_c_index"]
                 ),
