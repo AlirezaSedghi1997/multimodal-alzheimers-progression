@@ -22,6 +22,9 @@ $Arguments = @(
 if ($PreflightOnly) {
     $Arguments += "--preflight-only"
 }
+else {
+    $Arguments += "--build-tau-endpoint"
+}
 
 & $Python @Arguments
 exit $LASTEXITCODE

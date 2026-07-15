@@ -8,7 +8,7 @@ from typing import Any, Iterable
 
 import pandas as pd
 
-from .atomic_io import atomic_write_json
+from .atomic_io import atomic_write_json, read_json
 from .contracts import sha256_mapping
 
 
@@ -121,6 +121,33 @@ def build_tau_endpoint_from_sources(
     missing = [name for name, path in sources.items() if not path.is_file()]
     if missing:
         raise EndpointBuildError(f"MISSING_ENDPOINT_SOURCES:{missing}")
+    source_hashes = {name: sha256_file(path) for name, path in sources.items()}
+    endpoint_definition = {
+        "primary_name": "sustained_cdr_global_progression",
+        "event_time_rule": config["endpoint"]["event_time_rule"],
+        "baseline_cdr_required": config["endpoint"]["baseline_cdr_required"],
+        "pet_to_baseline_window_days": config["endpoint"][
+            "pet_to_baseline_window_days"
+        ],
+        "followup_window_days": config["endpoint"]["followup_window_days"],
+        "forbidden_label_sources": config["endpoint"]["forbidden_label_sources"],
+    }
+    output_directory = Path(output_root) / "endpoints"
+    contract_path = output_directory / "endpoint_contract.json"
+    summary_path = output_directory / "tau_endpoint_summary.json"
+    if contract_path.exists():
+        existing = read_json(contract_path)
+        if existing.get("source_hashes") != source_hashes:
+            raise EndpointBuildError("LOCKED_ENDPOINT_SOURCE_HASH_MISMATCH")
+        if existing.get("endpoint_definition") != endpoint_definition:
+            raise EndpointBuildError("LOCKED_ENDPOINT_DEFINITION_MISMATCH")
+        stored = output_directory / str(existing.get("endpoint_path", ""))
+        if not stored.is_file() or sha256_file(stored) != existing.get("endpoint_sha256"):
+            raise EndpointBuildError("LOCKED_ENDPOINT_ARTIFACT_HASH_MISMATCH")
+        summary = read_json(summary_path) if summary_path.exists() else {"contract": existing}
+        summary["status"] = "ENDPOINT_LOCKED_REUSED"
+        return summary
+
     compatibility_config = {
         "inputs": {
             "tau_primary_suvr_column": "suvr_persi",
@@ -148,23 +175,13 @@ def build_tau_endpoint_from_sources(
         read_csv_rows(sources["pacc_csv"]),
         compatibility_config,
     )
-    output = Path(output_root) / "endpoints" / "tau_progression_endpoint.parquet"
-    contract_path = Path(output_root) / "endpoints" / "endpoint_contract.json"
+    output = output_directory / "tau_progression_endpoint.parquet"
     contract = write_locked_endpoint(
         rows,
         output_path=output,
         contract_path=contract_path,
-        source_hashes={name: sha256_file(path) for name, path in sources.items()},
-        endpoint_definition={
-            "primary_name": "sustained_cdr_global_progression",
-            "event_time_rule": config["endpoint"]["event_time_rule"],
-            "baseline_cdr_required": config["endpoint"]["baseline_cdr_required"],
-            "pet_to_baseline_window_days": config["endpoint"][
-                "pet_to_baseline_window_days"
-            ],
-            "followup_window_days": config["endpoint"]["followup_window_days"],
-            "forbidden_label_sources": config["endpoint"]["forbidden_label_sources"],
-        },
+        source_hashes=source_hashes,
+        endpoint_definition=endpoint_definition,
     )
     summary = {
         "status": "ENDPOINT_LOCKED",
@@ -175,5 +192,5 @@ def build_tau_endpoint_from_sources(
         "raw_identifiers_exported": False,
         "raw_paths_exported": False,
     }
-    atomic_write_json(Path(output_root) / "endpoints" / "tau_endpoint_summary.json", summary)
+    atomic_write_json(summary_path, summary)
     return summary

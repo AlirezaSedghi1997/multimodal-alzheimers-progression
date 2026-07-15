@@ -17,6 +17,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.method_y_revival.atomic_io import atomic_write_json, atomic_write_bytes
+from src.method_y_revival.endpoint_builder import build_tau_endpoint_from_sources
 from src.method_y_revival.orchestrator import initialize_run
 from src.method_y_revival.process_guard import WriterLock
 
@@ -124,6 +125,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--config", default=str(PROJECT_ROOT / "configs" / "method_y_revival_v1.yaml"))
     parser.add_argument("--output-root")
     parser.add_argument("--preflight-only", action="store_true")
+    parser.add_argument("--build-tau-endpoint", action="store_true")
     return parser
 
 
@@ -139,6 +141,11 @@ def main(argv: list[str] | None = None) -> int:
     lock = WriterLock(output_root / ".writer.lock", output_root=output_root)
     with lock:
         report = run_preflight(config, output_root, preflight_only=bool(args.preflight_only))
+        if args.build_tau_endpoint:
+            endpoint = build_tau_endpoint_from_sources(config=config, output_root=output_root)
+            report["tau_endpoint_status"] = endpoint["status"]
+            report["tau_endpoint_contract_sha256"] = endpoint["contract"]["contract_sha256"]
+            atomic_write_json(output_root / "provenance" / "preflight_report.json", report)
     print(json.dumps(report, ensure_ascii=False, sort_keys=True), flush=True)
     return 0 if report["status"] == "PREFLIGHT_DONE" else 2
 

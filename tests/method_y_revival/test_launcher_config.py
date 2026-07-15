@@ -23,6 +23,7 @@ def test_powershell_launcher_is_resumable_and_has_no_runtime_limit():
     text = Path("scripts/run_method_y_revival.ps1").read_text(encoding="utf-8")
 
     assert "run_method_y_revival.py" in text
+    assert "--build-tau-endpoint" in text
     assert "max_runtime" not in text.casefold()
     assert "no_resume" not in text.casefold()
     assert "--output-root" not in text or "method_y_revival_v1" in text
