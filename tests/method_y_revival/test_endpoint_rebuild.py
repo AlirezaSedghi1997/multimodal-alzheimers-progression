@@ -94,3 +94,10 @@ def test_revival_to_legacy_endpoint_adapter_contains_every_required_field():
     assert adapted["endpoint"]["primary_name"] == "sustained_cdr_global_progression"
     assert adapted["endpoint"]["event_time_rule"] == "first_increase_if_confirmed_by_next_visit"
     assert adapted["validation"]["min_total_events"] == 60
+
+
+def test_endpoint_contract_paths_are_branch_specific(tmp_path):
+    from src.method_y_revival.endpoint_builder import endpoint_contract_path
+
+    assert endpoint_contract_path(tmp_path, "tau").name == "tau_endpoint_contract.json"
+    assert endpoint_contract_path(tmp_path, "amyloid").name == "amyloid_endpoint_contract.json"

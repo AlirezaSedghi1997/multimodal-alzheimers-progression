@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import os
 import tempfile
+from collections import Counter
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -19,6 +20,12 @@ class EndpointBuildError(ValueError):
 PRIVATE_ENDPOINT_FIELDS = frozenset(
     {"raw_path", "source_subject_id", "BID", "SUBSTUDY", "sidecar_path"}
 )
+
+
+def endpoint_contract_path(output_root: str | Path, branch: str) -> Path:
+    if branch not in {"amyloid", "tau", "paired_at"}:
+        raise EndpointBuildError(f"UNSUPPORTED_ENDPOINT_BRANCH:{branch}")
+    return Path(output_root) / "endpoints" / f"{branch}_endpoint_contract.json"
 
 
 def compatibility_endpoint_config(config: dict[str, Any]) -> dict[str, Any]:
@@ -57,6 +64,282 @@ def sha256_file(path: str | Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def load_first_amyloid_scans(
+    source_rows: Iterable[dict[str, Any]],
+) -> tuple[dict[tuple[str, str], dict[str, Any]], dict[str, Any]]:
+    from scripts.build_method_y_tau_progression import norm, safe_float, subject_key
+
+    groups: dict[tuple[tuple[str, str], str, str, float], dict[str, Any]] = {}
+    counts: Counter[str] = Counter()
+    total = 0
+    for source in source_rows:
+        total += 1
+        ligand = norm(source.get("ligand"))
+        analyzed = norm(source.get("scan_analyzed"))
+        if ligand.casefold() != "florbetapir":
+            counts["rejected_non_fbp_rows"] += 1
+            continue
+        if analyzed.casefold() != "yes":
+            counts["rejected_not_analyzed_rows"] += 1
+            continue
+        scan_date = safe_float(source.get("scan_date_DAYS_T0"))
+        key = subject_key(source)
+        if scan_date is None or not key[0] or not key[1]:
+            counts["rejected_missing_key_or_date_rows"] += 1
+            continue
+        viscode = norm(source.get("VISCODE"))
+        scan_number = norm(source.get("scan_number"))
+        group_key = (key, viscode, scan_number, scan_date)
+        group = groups.setdefault(
+            group_key,
+            {
+                "subject_key": key,
+                "viscode": viscode,
+                "scan_number": scan_number,
+                "scan_date": scan_date,
+                "regions": {},
+            },
+        )
+        region = norm(source.get("brain_region"))
+        if region:
+            group["regions"][region] = {
+                column: safe_float(source.get(column))
+                for column in ("suvr_cer", "suvr_persi", "suvr_crus")
+            }
+
+    first: dict[tuple[str, str], dict[str, Any]] = {}
+    for group in groups.values():
+        key = group["subject_key"]
+        order = (group["scan_date"], group["viscode"], group["scan_number"])
+        if key not in first or order < (
+            first[key]["scan_date"],
+            first[key]["viscode"],
+            first[key]["scan_number"],
+        ):
+            first[key] = group
+    audit = {
+        "tracer": "FBP",
+        "source_rows": total,
+        "eligible_scan_groups": len(groups),
+        "first_analyzed_fbp_subjects": len(first),
+        **dict(counts),
+    }
+    for key in (
+        "rejected_non_fbp_rows",
+        "rejected_not_analyzed_rows",
+        "rejected_missing_key_or_date_rows",
+    ):
+        audit.setdefault(key, 0)
+    return first, audit
+
+
+def build_amyloid_endpoint_rows(
+    first_amyloid: dict[tuple[str, str], dict[str, Any]],
+    subject_rows: list[dict[str, Any]],
+    cdr_rows: list[dict[str, Any]],
+    pacc_rows: list[dict[str, Any]],
+    config: dict[str, Any],
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    from scripts.build_method_y_tau_progression import (
+        add_numeric,
+        detect_sustained_event,
+        index_rows,
+        norm,
+        patient_hash_for_key,
+        safe_float,
+        select_baseline_cdr,
+        selected_pacc_row,
+        sorted_cdr_rows,
+        subject_key,
+    )
+
+    endpoint = config["endpoint"]
+    subject_by_key = {subject_key(row): row for row in subject_rows}
+    cdr_by_key = {key: sorted_cdr_rows(rows) for key, rows in index_rows(cdr_rows).items()}
+    pacc_by_key = index_rows(pacc_rows)
+    allowed_cohorts = {"A4", "LEARN"}
+    exclusions: Counter[str] = Counter()
+    excluded_cohorts: Counter[str] = Counter()
+    output: list[dict[str, Any]] = []
+    for key, scan in sorted(first_amyloid.items(), key=lambda item: patient_hash_for_key(item[0])):
+        source_cohort = str(key[0]).upper()
+        if source_cohort not in allowed_cohorts:
+            excluded_cohorts[source_cohort] += 1
+            continue
+        subject = subject_by_key.get(key)
+        if subject is None:
+            exclusions["missing_subjinfo"] += 1
+            continue
+        centiloid = safe_float(subject.get("AMYLCENT"))
+        if centiloid is None:
+            exclusions["missing_continuous_centiloid"] += 1
+            continue
+        series = cdr_by_key.get(key, [])
+        baseline, gap = select_baseline_cdr(
+            series,
+            float(scan["scan_date"]),
+            float(endpoint["pet_to_baseline_window_days"]),
+        )
+        if baseline is None:
+            exclusions["missing_baseline_cdr_within_window"] += 1
+            continue
+        if float(baseline["_cdglobal"]) != float(endpoint["baseline_cdr_required"]):
+            exclusions["baseline_cdr_not_zero"] += 1
+            continue
+        index_date = max(float(scan["scan_date"]), float(baseline["_date"]))
+        followups = [
+            row
+            for row in series
+            if index_date < float(row["_date"]) <= index_date + float(endpoint["followup_window_days"])
+        ]
+        if not followups:
+            exclusions["no_post_index_cdr_followup"] += 1
+            continue
+        has_event, event_date = detect_sustained_event(
+            followups,
+            event_time_rule=str(endpoint["event_time_rule"]),
+        )
+        observed_time = (
+            float(event_date) - index_date
+            if has_event and event_date is not None
+            else min(
+                float(endpoint["followup_window_days"]),
+                float(followups[-1]["_date"]) - index_date,
+            )
+        )
+        if observed_time <= 0:
+            exclusions["nonpositive_observed_time"] += 1
+            continue
+        pacc = selected_pacc_row(pacc_by_key.get(key, []), str(scan["viscode"]))
+        composite = scan["regions"].get("Composite_Summary", {})
+        row: dict[str, Any] = {
+            "patient_hash": patient_hash_for_key(key),
+            "cohort": source_cohort,
+            "treatment_arm": norm(subject.get("TX")) or "NA",
+            "baseline_gap_days_abs": round(float(gap or 0.0), 6),
+            "index_source": "max_fbp_scan_and_baseline_cdr_dates",
+            "event": int(has_event),
+            "time_days": round(float(observed_time), 6),
+            "censoring_rule": "event_time" if has_event else "right_censored",
+            "followup_cdr_visits": len(followups),
+            "baseline_cdglobal": float(baseline["_cdglobal"]),
+            "baseline_cdrsb": "" if baseline.get("_cdrsb") is None else float(baseline["_cdrsb"]),
+            "baseline_amyloid_centiloid": centiloid,
+            "global_amyloid_suvr_persi": "" if composite.get("suvr_persi") is None else float(composite["suvr_persi"]),
+            "uses_raw_identifier": False,
+            "uses_raw_path": False,
+        }
+        add_numeric(row, "age", subject.get("AGEYR"))
+        sex = norm(subject.get("SEX"))
+        row["sex_binary"] = 1.0 if sex in {"2", "M", "Male", "male"} else 0.0 if sex else ""
+        add_numeric(row, "education_years", subject.get("EDCCNTU"))
+        carrier = safe_float(subject.get("AAPOEGNPRSNFLG"))
+        if carrier is None:
+            carrier = safe_float(subject.get("APOEGNPRSNFLG"))
+        row["apoe4_carrier"] = "" if carrier is None else carrier
+        for output_name, source_name in {
+            "baseline_pacc_raw": "PACC.raw",
+            "baseline_pacc_change": "PACC",
+            "baseline_fctotal96": "FCTOTAL96",
+            "baseline_ldeltotal": "LDELTOTAL",
+            "baseline_digittotal": "DIGITTOTAL",
+            "baseline_mmscore": "MMSCORE",
+        }.items():
+            add_numeric(row, output_name, pacc.get(source_name) if pacc else None)
+        output.append(row)
+    output.sort(key=lambda row: str(row["patient_hash"]))
+    audit = {
+        "status": "COMPLETED",
+        "tracer": "FBP",
+        "development_cohort": "A4",
+        "internal_transport_cohort": "LEARN",
+        "eligible_rows": len(output),
+        "events": sum(int(row["event"]) for row in output),
+        "cohort_counts": dict(Counter(str(row["cohort"]) for row in output)),
+        "event_counts_by_cohort": dict(
+            Counter(str(row["cohort"]) for row in output if int(row["event"]) == 1)
+        ),
+        "exclusions": dict(exclusions),
+        "excluded_cohorts": dict(excluded_cohorts),
+        "forbidden_label_sources_not_used": endpoint["forbidden_label_sources"],
+        "same_pet_derived_target_used": False,
+    }
+    return output, audit
+
+
+def build_amyloid_endpoint_from_sources(
+    *, config: dict[str, Any], output_root: str | Path
+) -> dict[str, Any]:
+    from scripts.build_method_y_tau_progression import read_csv_rows
+
+    raw_root = Path(config["paths"]["raw_root"])
+    sources = {
+        "amyloid_suvr_csv": raw_root / config["clinical_sources"]["amyloid_suvr"],
+        "cdr_csv": raw_root / config["clinical_sources"]["cdr"],
+        "pacc_csv": raw_root / config["clinical_sources"]["pacc"],
+        "subjinfo_csv": raw_root / config["clinical_sources"]["subject_info"],
+    }
+    missing = [name for name, path in sources.items() if not path.is_file()]
+    if missing:
+        raise EndpointBuildError(f"MISSING_ENDPOINT_SOURCES:{missing}")
+    source_hashes = {name: sha256_file(path) for name, path in sources.items()}
+    endpoint_definition = {
+        "primary_name": config["endpoint"]["primary_name"],
+        "tracer": "FBP",
+        "predictor": "continuous_centiloid",
+        "target_source": "future_sustained_cdr_global_progression",
+        "event_time_rule": config["endpoint"]["event_time_rule"],
+        "baseline_cdr_required": config["endpoint"]["baseline_cdr_required"],
+        "pet_to_baseline_window_days": config["endpoint"]["pet_to_baseline_window_days"],
+        "followup_window_days": config["endpoint"]["followup_window_days"],
+        "development_cohort": "A4",
+        "internal_transport_cohort": "LEARN",
+        "forbidden_label_sources": config["endpoint"]["forbidden_label_sources"],
+        "same_pet_derived_target_used": False,
+    }
+    output_directory = Path(output_root) / "endpoints"
+    contract_path = endpoint_contract_path(output_root, "amyloid")
+    summary_path = output_directory / "amyloid_endpoint_summary.json"
+    if contract_path.exists():
+        existing = read_json(contract_path)
+        if existing.get("source_hashes") != source_hashes:
+            raise EndpointBuildError("LOCKED_AMYLOID_ENDPOINT_SOURCE_HASH_MISMATCH")
+        if existing.get("endpoint_definition") != endpoint_definition:
+            raise EndpointBuildError("LOCKED_AMYLOID_ENDPOINT_DEFINITION_MISMATCH")
+        stored = output_directory / str(existing.get("endpoint_path", ""))
+        if not stored.is_file() or sha256_file(stored) != existing.get("endpoint_sha256"):
+            raise EndpointBuildError("LOCKED_AMYLOID_ENDPOINT_ARTIFACT_HASH_MISMATCH")
+        summary = read_json(summary_path) if summary_path.exists() else {"contract": existing}
+        summary["status"] = "ENDPOINT_LOCKED_REUSED"
+        return summary
+
+    first, source_audit = load_first_amyloid_scans(read_csv_rows(sources["amyloid_suvr_csv"]))
+    rows, endpoint_audit = build_amyloid_endpoint_rows(
+        first,
+        read_csv_rows(sources["subjinfo_csv"]),
+        read_csv_rows(sources["cdr_csv"]),
+        read_csv_rows(sources["pacc_csv"]),
+        config,
+    )
+    contract = write_locked_endpoint(
+        rows,
+        output_path=output_directory / "amyloid_progression_endpoint.parquet",
+        contract_path=contract_path,
+        source_hashes=source_hashes,
+        endpoint_definition=endpoint_definition,
+    )
+    summary = {
+        "status": "ENDPOINT_LOCKED",
+        "contract": contract,
+        "amyloid_source_audit": source_audit,
+        "endpoint_audit": endpoint_audit,
+        "raw_identifiers_exported": False,
+        "raw_paths_exported": False,
+    }
+    atomic_write_json(summary_path, summary)
+    return summary
 
 
 def write_locked_endpoint(
@@ -163,7 +446,7 @@ def build_tau_endpoint_from_sources(
         "forbidden_label_sources": config["endpoint"]["forbidden_label_sources"],
     }
     output_directory = Path(output_root) / "endpoints"
-    contract_path = output_directory / "endpoint_contract.json"
+    contract_path = endpoint_contract_path(output_root, "tau")
     summary_path = output_directory / "tau_endpoint_summary.json"
     if contract_path.exists():
         existing = read_json(contract_path)
