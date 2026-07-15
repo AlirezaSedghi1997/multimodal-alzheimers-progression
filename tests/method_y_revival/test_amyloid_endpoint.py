@@ -65,9 +65,20 @@ def test_amyloid_endpoint_is_future_facing_and_excludes_sf():
     assert all(row["event"] == 1 and row["time_days"] == 100.0 for row in rows)
     assert all("CDEVENT" not in row and "CDOLEEVENT" not in row for row in rows)
     assert {row["baseline_amyloid_centiloid"] for row in rows} == {42.0, 12.0}
+    assert next(row for row in rows if row["cohort"] == "A4")["treatment_active"] == 0.0
+    assert next(row for row in rows if row["cohort"] == "LEARN")["treatment_active"] == ""
     assert audit["excluded_cohorts"] == {"SF": 1}
     assert audit["development_cohort"] == "A4"
     assert audit["internal_transport_cohort"] == "LEARN"
+
+
+def test_treatment_structure_is_encoded_without_treating_unknown_as_placebo():
+    from src.method_y_revival.endpoint_builder import treatment_active_value
+
+    assert treatment_active_value("PLACEBO") == 0.0
+    assert treatment_active_value("SOLANEZUMAB") == 1.0
+    assert treatment_active_value("active treatment") == 1.0
+    assert treatment_active_value("NA") == ""
 
 
 def _write_csv(path, rows):
@@ -115,5 +126,6 @@ def test_amyloid_endpoint_builder_locks_a_separate_artifact(tmp_path):
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
     assert contract["row_count"] == 1
     assert contract["endpoint_definition"]["tracer"] == "FBP"
+    assert contract["endpoint_definition"]["treatment_structure"] == "active_vs_placebo_covariate"
     assert summary["status"] == "ENDPOINT_LOCKED"
     assert not (tmp_path / "out" / "endpoints" / "tau_endpoint_contract.json").exists()

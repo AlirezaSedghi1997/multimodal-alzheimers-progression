@@ -28,6 +28,17 @@ def endpoint_contract_path(output_root: str | Path, branch: str) -> Path:
     return Path(output_root) / "endpoints" / f"{branch}_endpoint_contract.json"
 
 
+def treatment_active_value(value: object) -> float | str:
+    text = "" if value is None else str(value).strip().upper()
+    if not text or text in {"NA", "N/A", "UNKNOWN", "NONE"}:
+        return ""
+    if "PLACEBO" in text:
+        return 0.0
+    if "SOLANEZUMAB" in text or "ACTIVE" in text or "TREATMENT" in text:
+        return 1.0
+    return ""
+
+
 def compatibility_endpoint_config(config: dict[str, Any]) -> dict[str, Any]:
     endpoint = config["endpoint"]
     validation = config["validation"]
@@ -218,6 +229,7 @@ def build_amyloid_endpoint_rows(
             "patient_hash": patient_hash_for_key(key),
             "cohort": source_cohort,
             "treatment_arm": norm(subject.get("TX")) or "NA",
+            "treatment_active": treatment_active_value(subject.get("TX")),
             "baseline_gap_days_abs": round(float(gap or 0.0), 6),
             "index_source": "max_fbp_scan_and_baseline_cdr_dates",
             "event": int(has_event),
@@ -265,6 +277,7 @@ def build_amyloid_endpoint_rows(
         "excluded_cohorts": dict(excluded_cohorts),
         "forbidden_label_sources_not_used": endpoint["forbidden_label_sources"],
         "same_pet_derived_target_used": False,
+        "treatment_structure": "active_vs_placebo_covariate",
     }
     return output, audit
 
@@ -297,6 +310,7 @@ def build_amyloid_endpoint_from_sources(
         "development_cohort": "A4",
         "internal_transport_cohort": "LEARN",
         "forbidden_label_sources": config["endpoint"]["forbidden_label_sources"],
+        "treatment_structure": "active_vs_placebo_covariate",
         "same_pet_derived_target_used": False,
     }
     output_directory = Path(output_root) / "endpoints"
@@ -444,6 +458,7 @@ def build_tau_endpoint_from_sources(
         ],
         "followup_window_days": config["endpoint"]["followup_window_days"],
         "forbidden_label_sources": config["endpoint"]["forbidden_label_sources"],
+        "treatment_structure": "active_vs_placebo_covariate",
     }
     output_directory = Path(output_root) / "endpoints"
     contract_path = endpoint_contract_path(output_root, "tau")
@@ -472,6 +487,8 @@ def build_tau_endpoint_from_sources(
         read_csv_rows(sources["pacc_csv"]),
         compatibility_config,
     )
+    for row in rows:
+        row["treatment_active"] = treatment_active_value(row.get("treatment_arm"))
     output = output_directory / "tau_progression_endpoint.parquet"
     contract = write_locked_endpoint(
         rows,

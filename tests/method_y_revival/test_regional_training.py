@@ -18,6 +18,7 @@ def _synthetic_survival_frame(n: int = 48) -> pd.DataFrame:
             "time_days": time,
             "treatment_arm": ["placebo" if index % 2 else "treatment" for index in range(n)],
             "age": 65.0 + rng.normal(size=n),
+            "treatment_active": [0.0 if index % 2 else 1.0 for index in range(n)],
             "baseline_pacc_raw": rng.normal(size=n),
             "tau_meta_roi": pet,
         }
@@ -170,6 +171,7 @@ def test_amyloid_training_uses_a4_only_and_adds_only_continuous_centiloid(tmp_pa
     features = report["locked_config"]["feature_sets"]
     added = set(features["clinical_cognition_amyloid"]) - set(features["clinical_cognition"])
     assert added == {"baseline_amyloid_centiloid"}
+    assert "treatment_active" in features["clinical_cognition"]
     assert report["claim_status"] == "EXPLORATORY"
     assert report["paired_bootstrap"]["status"] == "COMPLETED"
     assert "SCANNER_SHORTCUT_NOT_CONTROLLED" in report["science_gate"]["blockers"]

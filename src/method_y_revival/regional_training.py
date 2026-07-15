@@ -390,6 +390,7 @@ def run_tau_regional_development_from_locked_endpoint(
             f"REGIONAL_ENDPOINT_MEMBERSHIP_MISMATCH:endpoint={len(endpoint)}:joined={len(frame)}"
         )
     base_candidates = [
+        "treatment_active",
         "age",
         "sex_binary",
         "education_years",
@@ -495,6 +496,7 @@ def run_amyloid_regional_development_from_locked_endpoint(
     if "baseline_amyloid_centiloid" not in development.columns:
         raise RegionalTrainingError("CONTINUOUS_CENTILOID_REQUIRED")
     base_candidates = [
+        "treatment_active",
         "age",
         "sex_binary",
         "education_years",
