@@ -130,6 +130,45 @@ def test_regional_training_rejects_outcome_columns_as_features(tmp_path):
         )
 
 
+def test_inner_hpo_rejects_numerically_unstable_candidate(monkeypatch):
+    import src.method_y_revival.regional_training as module
+
+    frame = _synthetic_survival_frame(12)
+    by_subject = frame.set_index("patient_hash", drop=False)
+    inner = [
+        {
+            "train_subjects": frame.patient_hash.iloc[:8].tolist(),
+            "validation_subjects": frame.patient_hash.iloc[8:].tolist(),
+        }
+    ]
+
+    class FakeModel:
+        def __init__(self, alpha):
+            self.alpha = alpha
+
+        def fit(self, x, y):
+            return self
+
+    monkeypatch.setattr(module, "_pipeline", lambda alpha: FakeModel(alpha))
+
+    def fake_evaluate(model, *args, **kwargs):
+        if model.alpha < 1.0:
+            raise ValueError("Input estimate contains infinity")
+        return {"integrated_brier_score": 0.2}
+
+    monkeypatch.setattr(module, "_evaluate_model", fake_evaluate)
+    winner, candidates = module._select_alpha(
+        by_subject.reset_index(drop=True),
+        features=["age"],
+        inner_folds=inner,
+        alpha_grid=[0.001, 1.0],
+    )
+
+    assert winner["alpha"] == 1.0
+    assert candidates[0]["status"] == "REJECTED_NUMERICAL_INSTABILITY"
+    assert candidates[1]["status"] == "COMPLETED"
+
+
 def test_amyloid_training_uses_a4_only_and_adds_only_continuous_centiloid(tmp_path):
     from src.method_y_revival.endpoint_builder import write_locked_endpoint
     from src.method_y_revival.regional_training import (

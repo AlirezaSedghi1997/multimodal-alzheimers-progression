@@ -4,6 +4,7 @@ import hashlib
 import math
 import os
 import tempfile
+import warnings
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -179,20 +180,41 @@ def _select_alpha(
     candidates: list[dict[str, Any]] = []
     for alpha in alpha_grid:
         scores: list[float] = []
+        failure_reason: str | None = None
         for fold in inner_folds:
             train = by_subject.loc[fold["train_subjects"]]
             validation = by_subject.loc[fold["validation_subjects"]]
             model = _pipeline(alpha)
-            model.fit(train[features], _make_y(train))
-            score = _evaluate_model(
-                model,
-                train,
-                validation,
-                features,
-                requested_horizons=[],
-                min_at_risk=1,
-            )["integrated_brier_score"]
-            scores.append(float(score))
+            try:
+                with warnings.catch_warnings():
+                    warnings.simplefilter("error", RuntimeWarning)
+                    model.fit(train[features], _make_y(train))
+                    score = _evaluate_model(
+                        model,
+                        train,
+                        validation,
+                        features,
+                        requested_horizons=[],
+                        min_at_risk=1,
+                    )["integrated_brier_score"]
+                if not np.isfinite(float(score)):
+                    raise FloatingPointError("NONFINITE_INNER_VALIDATION_IBS")
+                scores.append(float(score))
+            except (ValueError, FloatingPointError, RuntimeWarning) as exc:
+                failure_reason = f"{type(exc).__name__}:{exc}"
+                break
+        if failure_reason is not None:
+            candidates.append(
+                {
+                    "candidate_id": f"cox_alpha_{alpha:g}",
+                    "alpha": float(alpha),
+                    "status": "REJECTED_NUMERICAL_INSTABILITY",
+                    "failure_reason": failure_reason,
+                    "inner_fold_ibs": scores,
+                    "complexity_rank": int(alpha_grid.index(alpha)),
+                }
+            )
+            continue
         standard_error = (
             float(np.std(scores, ddof=1) / math.sqrt(len(scores))) if len(scores) > 1 else 0.0
         )
@@ -204,9 +226,13 @@ def _select_alpha(
                 "standard_error": standard_error,
                 "complexity_rank": int(alpha_grid.index(alpha)),
                 "inner_fold_ibs": scores,
+                "status": "COMPLETED",
             }
         )
-    return select_inner_winner(candidates), candidates
+    completed = [candidate for candidate in candidates if candidate["status"] == "COMPLETED"]
+    if not completed:
+        raise RegionalTrainingError("NO_NUMERICALLY_STABLE_INNER_HPO_CANDIDATE")
+    return select_inner_winner(completed), candidates
 
 
 def run_regional_nested_cv(
