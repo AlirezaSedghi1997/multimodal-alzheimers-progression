@@ -356,6 +356,144 @@ def build_amyloid_endpoint_from_sources(
     return summary
 
 
+def build_paired_at_endpoint_rows(
+    first_amyloid: dict[tuple[str, str], dict[str, Any]],
+    first_tau: dict[tuple[str, str], dict[str, Any]],
+    subject_rows: list[dict[str, Any]],
+    cdr_rows: list[dict[str, Any]],
+    pacc_rows: list[dict[str, Any]],
+    config: dict[str, Any],
+) -> tuple[list[dict[str, Any]], dict[str, Any], list[str]]:
+    from scripts.build_method_y_tau_progression import build_label_rows, patient_hash_for_key
+
+    window = float(config["branches"]["paired_at"]["scan_window_days"])
+    combined: dict[tuple[str, str], dict[str, Any]] = {}
+    gap_by_hash: dict[str, float] = {}
+    excluded_outside = 0
+    for key in sorted(set(first_amyloid).intersection(first_tau)):
+        amyloid = first_amyloid[key]
+        tau = first_tau[key]
+        gap = abs(float(amyloid["scan_date"]) - float(tau["scan_date"]))
+        if gap > window:
+            excluded_outside += 1
+            continue
+        later_is_amyloid = float(amyloid["scan_date"]) >= float(tau["scan_date"])
+        combined[key] = {
+            **tau,
+            "scan_date": max(float(amyloid["scan_date"]), float(tau["scan_date"])),
+            "viscode": amyloid["viscode"] if later_is_amyloid else tau["viscode"],
+        }
+        gap_by_hash[patient_hash_for_key(key)] = gap
+    if not combined:
+        return [], {
+            "status": "BLOCKED_NO_PAIRED_AT_WITHIN_WINDOW",
+            "paired_within_window": 0,
+            "excluded_outside_scan_window": excluded_outside,
+            "time_zero_after_both_pet_scans": True,
+        }, []
+    compatibility = compatibility_endpoint_config(config)
+    rows, endpoint_audit, region_features = build_label_rows(
+        combined,
+        subject_rows,
+        cdr_rows,
+        pacc_rows,
+        compatibility,
+    )
+    for row in rows:
+        row["paired_fbp_ftp_gap_days"] = float(gap_by_hash[str(row["patient_hash"])])
+        row["index_source"] = "max_fbp_ftp_and_baseline_cdr_dates"
+        row["treatment_active"] = treatment_active_value(row.get("treatment_arm"))
+    audit = {
+        **endpoint_audit,
+        "paired_within_window": len(combined),
+        "paired_endpoint_rows": len(rows),
+        "excluded_outside_scan_window": excluded_outside,
+        "scan_window_days": window,
+        "time_zero_after_both_pet_scans": True,
+    }
+    return rows, audit, region_features
+
+
+def build_paired_at_endpoint_from_sources(
+    *, config: dict[str, Any], output_root: str | Path
+) -> dict[str, Any]:
+    from scripts.build_method_y_tau_progression import (
+        load_first_tau_scans,
+        read_csv_rows,
+    )
+
+    raw_root = Path(config["paths"]["raw_root"])
+    sources = {
+        "amyloid_suvr_csv": raw_root / config["clinical_sources"]["amyloid_suvr"],
+        "tau_suvr_csv": raw_root / config["clinical_sources"]["tau_suvr"],
+        "cdr_csv": raw_root / config["clinical_sources"]["cdr"],
+        "pacc_csv": raw_root / config["clinical_sources"]["pacc"],
+        "subjinfo_csv": raw_root / config["clinical_sources"]["subject_info"],
+    }
+    missing = [name for name, path in sources.items() if not path.is_file()]
+    if missing:
+        raise EndpointBuildError(f"MISSING_PAIRED_AT_SOURCES:{missing}")
+    source_hashes = {name: sha256_file(path) for name, path in sources.items()}
+    endpoint_definition = {
+        "branch": "paired_at",
+        "tracers": ["FBP", "FTP"],
+        "scan_window_days": config["branches"]["paired_at"]["scan_window_days"],
+        "time_zero_rule": "max_fbp_ftp_and_baseline_cdr_dates",
+        "event_time_rule": config["endpoint"]["event_time_rule"],
+        "followup_window_days": config["endpoint"]["followup_window_days"],
+        "treatment_structure": "active_vs_placebo_covariate",
+        "same_pet_derived_target_used": False,
+    }
+    output_directory = Path(output_root) / "endpoints"
+    contract_path = endpoint_contract_path(output_root, "paired_at")
+    summary_path = output_directory / "paired_at_endpoint_summary.json"
+    if contract_path.exists():
+        existing = read_json(contract_path)
+        if existing.get("source_hashes") != source_hashes:
+            raise EndpointBuildError("LOCKED_PAIRED_AT_SOURCE_HASH_MISMATCH")
+        if existing.get("endpoint_definition") != endpoint_definition:
+            raise EndpointBuildError("LOCKED_PAIRED_AT_DEFINITION_MISMATCH")
+        stored = output_directory / str(existing.get("endpoint_path", ""))
+        if not stored.is_file() or sha256_file(stored) != existing.get("endpoint_sha256"):
+            raise EndpointBuildError("LOCKED_PAIRED_AT_ARTIFACT_HASH_MISMATCH")
+        summary = read_json(summary_path) if summary_path.exists() else {"contract": existing}
+        summary["status"] = "ENDPOINT_LOCKED_REUSED"
+        return summary
+    first_amyloid, amyloid_audit = load_first_amyloid_scans(
+        read_csv_rows(sources["amyloid_suvr_csv"])
+    )
+    first_tau, tau_audit = load_first_tau_scans(
+        sources["tau_suvr_csv"], compatibility_endpoint_config(config)
+    )
+    rows, endpoint_audit, region_features = build_paired_at_endpoint_rows(
+        first_amyloid,
+        first_tau,
+        read_csv_rows(sources["subjinfo_csv"]),
+        read_csv_rows(sources["cdr_csv"]),
+        read_csv_rows(sources["pacc_csv"]),
+        config,
+    )
+    contract = write_locked_endpoint(
+        rows,
+        output_path=output_directory / "paired_at_progression_endpoint.parquet",
+        contract_path=contract_path,
+        source_hashes=source_hashes,
+        endpoint_definition=endpoint_definition,
+    )
+    summary = {
+        "status": "ENDPOINT_LOCKED",
+        "contract": contract,
+        "endpoint_audit": endpoint_audit,
+        "amyloid_source_audit": amyloid_audit,
+        "tau_source_audit": tau_audit,
+        "regional_feature_count": len(region_features),
+        "raw_identifiers_exported": False,
+        "raw_paths_exported": False,
+    }
+    atomic_write_json(summary_path, summary)
+    return summary
+
+
 def write_locked_endpoint(
     rows: Iterable[dict[str, Any]],
     *,

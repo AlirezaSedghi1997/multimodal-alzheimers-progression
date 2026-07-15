@@ -569,3 +569,70 @@ def run_amyloid_regional_development_from_locked_endpoint(
     )
     atomic_write_json(root / "reports" / "amyloid_regional_development.json", report)
     return report
+
+
+def run_paired_at_regional_development_from_locked_endpoint(
+    *, config: dict[str, Any], output_root: str | Path
+) -> dict[str, Any]:
+    root = Path(output_root)
+    endpoint = _read_locked_endpoint(root, "paired_at")
+    base_candidates = [
+        "treatment_active",
+        "age",
+        "sex_binary",
+        "education_years",
+        "apoe4_carrier",
+        "baseline_pacc_raw",
+        "baseline_fctotal96",
+        "baseline_ldeltotal",
+        "baseline_digittotal",
+        "baseline_mmscore",
+        "baseline_cdrsb",
+    ]
+    base = [feature for feature in base_candidates if feature in endpoint.columns]
+    amyloid = [*base, "baseline_amyloid_centiloid"]
+    tau_features = sorted(
+        column for column in endpoint.columns if str(column).startswith("tau_persi__")
+    )
+    if not tau_features:
+        raise RegionalTrainingError("NO_PAIRED_AT_TAU_REGIONAL_FEATURES")
+    feature_sets = {
+        "clinical_cognition": base,
+        "clinical_cognition_amyloid": amyloid,
+        "clinical_cognition_amyloid_tau": [*amyloid, *tau_features],
+    }
+    report = run_regional_nested_cv(
+        frame=endpoint,
+        feature_sets=feature_sets,
+        output_root=root,
+        outer_folds=int(config["validation"]["outer_folds"]),
+        inner_folds=int(config["validation"]["inner_folds"]),
+        seed=int(config["seed"]),
+        alpha_grid=[float(value) for value in config["hpo"]["cox"]["alpha"]],
+        requested_horizons=[
+            float(value) for value in config["validation"]["requested_horizons_days"]
+        ],
+        min_at_risk=int(config["validation"]["minimum_at_risk_per_horizon"]),
+        branch="paired_at",
+    )
+    bootstrap = cached_paired_oof_bootstrap(
+        report["variants"]["clinical_cognition_amyloid"],
+        report["variants"]["clinical_cognition_amyloid_tau"],
+        output_path=root / "reports" / "paired_at_tau_beyond_amyloid_bootstrap.json",
+        iterations=int(config["validation"]["bootstrap_iterations"]),
+        seed=int(config["seed"]) + 4000,
+    )
+    report.update(
+        {
+            "tau_beyond_amyloid_bootstrap": bootstrap,
+            "science_gate_status": "BLOCKED",
+            "claim_status": "EXPLORATORY",
+            "blockers": [
+                "PAIRED_AT_POWER_SIMULATION_NOT_COMPLETED",
+                "TAU_SCANNER_SENSITIVITY_INSUFFICIENT_EVENT_SUPPORT",
+                "QUANTITATIVE_PET_FEATURE_PROVENANCE_NOT_FORMALLY_VALIDATED",
+            ],
+        }
+    )
+    atomic_write_json(root / "reports" / "paired_at_regional_development.json", report)
+    return report
