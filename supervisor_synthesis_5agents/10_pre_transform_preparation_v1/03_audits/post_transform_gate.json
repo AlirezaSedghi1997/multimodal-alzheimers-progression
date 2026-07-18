@@ -1,0 +1,7 @@
+{
+  "status": "BLOCKED_ACTIVE_WRITER",
+  "training_allowed": false,
+  "outer_test_allowed": false,
+  "claim_allowed": false,
+  "reason": "transform writer is still active"
+}

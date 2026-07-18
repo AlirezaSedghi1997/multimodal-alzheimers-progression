@@ -1,0 +1,5 @@
+claim_id,source_id,source_section_or_lines,evidence_label,required_action
+claim_002,src_13b28d833b7728a1,lines 6108-6110,AGENT_INFERENCE,Use exact event counts and preserve A4/LEARN transport distinction.
+claim_003,src_13b28d833b7728a1,lines 175-177,AGENT_INFERENCE,Keep tau model complexity proportional to 91 events.
+claim_009,src_f530a0e908dc05a1,lines 362-364,AGENT_INFERENCE,Use paired survival metrics and bootstrap confidence intervals.
+claim_011,src_13b28d833b7728a1,lines 24-26,AGENT_INFERENCE,Read before and after; attribute changes to the active writer.

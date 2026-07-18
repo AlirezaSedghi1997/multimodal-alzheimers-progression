@@ -1,0 +1,20 @@
+{
+  "cohorts": [
+    "SCAN_NACC",
+    "ADNI",
+    "OASIS3"
+  ],
+  "features": {
+    "amyloid_centiloid": null,
+    "t1_transform": null,
+    "tau_regional": null
+  },
+  "no_outcome_opening_before_model_lock": true,
+  "outcomes": {
+    "baseline_cdr": null,
+    "followup_cdr": null,
+    "visit_date": null
+  },
+  "schema_version": "1.0",
+  "status": "TEMPLATE_ONLY_DUA_PENDING"
+}

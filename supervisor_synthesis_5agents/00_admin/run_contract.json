@@ -1,0 +1,10 @@
+{
+  "agent_root": "C:\\Users\\USER\\Desktop\\خروجی ایجنت ها",
+  "brainstorm_prompt": "C:\\Users\\USER\\.codex\\attachments\\73677bed-b763-44df-ad5f-b937b7eb5b30\\pasted-text.txt",
+  "brainstorm_prompt_sha256": "ce2be447d493a6daabeb7c369fe75008613bdf89b55b103d2102e8cad1e9570a",
+  "created_utc": "2026-07-18T17:09:26+00:00",
+  "prior_codex": "H:\\New project\\research_outputs\\early_ad_innovation_20260718",
+  "project_root": "H:\\New project",
+  "supervisory_prompt": "C:\\Users\\USER\\Desktop\\final_codex_supervisory_prompt_fa.md",
+  "supervisory_prompt_sha256": "298328e3730214f99e8ded7443563cb8f6b935c5527bba594e930fd0126edaaa"
+}

@@ -1,0 +1,7 @@
+{
+  "active_writer_stopped": false,
+  "next_stage": "WAIT_FOR_TERMINAL_TRANSFORM_AND_RUN_POST_TRANSFORM_GATE",
+  "project_mutated": false,
+  "state": "PRE_TRANSFORM_PREPARATION_VERIFIED",
+  "updated_utc": "2026-07-18T17:39:02+00:00"
+}

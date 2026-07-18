@@ -1,0 +1,37 @@
+{
+  "active_writer": true,
+  "active_writer_processes": [
+    {
+      "CommandLine": "\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -ExecutionPolicy Bypass -File \"H:\\New project\\scripts\\run_method_y_transforms_manual.ps1\"",
+      "CreationDate": "/Date(1784372255153)/",
+      "Name": "powershell.exe",
+      "ParentProcessId": 2976,
+      "ProcessId": 10936
+    },
+    {
+      "CommandLine": "\"H:\\New project\\.venv\\Scripts\\python.exe\" \"H:\\New project\\scripts\\materialize_method_y_transforms_v2.py\" --output-root \"H:\\New project\\results\\method_y_revival_v2\"",
+      "CreationDate": "/Date(1784372256358)/",
+      "Name": "python.exe",
+      "ParentProcessId": 10936,
+      "ProcessId": 23476
+    },
+    {
+      "CommandLine": "\"C:\\Users\\USER\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe\"  \"H:\\New project\\scripts\\materialize_method_y_transforms_v2.py\" --output-root \"H:\\New project\\results\\method_y_revival_v2\"",
+      "CreationDate": "/Date(1784372256409)/",
+      "Name": "python.exe",
+      "ParentProcessId": 23476,
+      "ProcessId": 18228
+    }
+  ],
+  "captured_utc": "2026-07-18T17:38:59+00:00",
+  "manifest_parse_error": null,
+  "manifest_path": "H:\\New project\\results\\method_y_revival_v2\\transforms\\manifest.json",
+  "manifest_sha256": "544697dde585d404794fc6cbb923e512b4a7a7c413707aa549989aef30b992b2",
+  "row_count": 1044,
+  "status_counts": {
+    "FAIL": 2,
+    "PASS": 1042
+  },
+  "writer_was_modified": false,
+  "writer_was_stopped": false
+}

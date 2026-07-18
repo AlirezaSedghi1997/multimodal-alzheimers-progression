@@ -1,0 +1,33 @@
+{
+  "challengers": [
+    "rsf",
+    "gbsa"
+  ],
+  "contract_id": "method_y_nested_survival_v2_pretransform",
+  "equal_hpo_budget": true,
+  "group_unit": "subject_key",
+  "horizons_days": [
+    547.875,
+    1095.75,
+    1640.0
+  ],
+  "image_branch": "secondary_only_after_transform_roi_scanner_gates",
+  "inner_folds": 3,
+  "metrics": [
+    "uno_c_index",
+    "harrell_c_index",
+    "dynamic_auc",
+    "integrated_brier_score",
+    "calibration_slope",
+    "calibration_intercept"
+  ],
+  "outer_evaluation": "exactly_once_after_checkpoint_lock",
+  "outer_folds": 5,
+  "outer_test_access": "after_inner_selection_and_lock_only",
+  "preprocessing_fit_scope": "training_fold_only",
+  "primary_model": "coxnet",
+  "schema_version": "1.0",
+  "seed": 20260714,
+  "selection_metric": "integrated_brier_score",
+  "uncertainty": "clustered_subject_bootstrap"
+}

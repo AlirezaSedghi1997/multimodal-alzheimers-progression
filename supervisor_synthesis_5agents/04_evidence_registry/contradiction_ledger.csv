@@ -1,0 +1,8 @@
+contradiction_id,topic,source_A,claim_A,source_B,claim_B,resolution,evidence_used,unresolved_risk
+c01,endpoint,agent_02,MCI-to-AD ideal endpoint,live_project,local preclinical sustained CDR progression,Use local future-only endpoint; MCI-to-AD is future external track.,live endpoint feasibility artifacts,external mapping unavailable
+c02,timeline,agent packages,4-8 months,supervisory_prompt,4-6 weeks,Reject multi-month plan for primary; keep six-week MVP.,prompt G4 and current reuse map,DUA delay
+c03,novelty,agents,discordance is novel,primary references,close residual/conflict precedents exist,Claim only operationalization/matched incremental evidence.,ProMUSE; residual resilience,substantive difference must be ablated
+c04,statistics,agent_02,DeLong for C-index,biostatistics review,paired survival bootstrap,Use clustered bootstrap for survival deltas.,red-team statistical check,none for MVP
+c05,tau,tau-alone,tau-alone internal gain,locked paired A/T,tau beyond amyloid negative,Preserve both with different questions; no incremental positive claim.,locked v1 metrics,scanner/provenance
+c06,post_origin,agent_02,month-6 PET can solve immortal time,endpoint contract,post-origin predictor leakage,Reject post-origin PET from primary model.,index-time causal ordering audit,none
+c07,external,agents,conformal guarantee transports,red-team,coverage conditional under shift/censoring,No unconditional external conformal claim.,domain-shift audit principle,external data absent

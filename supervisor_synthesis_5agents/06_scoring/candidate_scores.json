@@ -1,0 +1,287 @@
+[
+  {
+    "cannot_be_primary": false,
+    "confidence": "A",
+    "gates": {
+      "G0": "PASS",
+      "G1": "PASS",
+      "G2": "PASS",
+      "G3": "PASS",
+      "G4": "PASS",
+      "G5": "PASS",
+      "G6": "CONDITIONAL",
+      "G7": "PASS",
+      "G8": "PASS"
+    },
+    "hard_fail_gates": [],
+    "idea_id": "continuation_prespecified_method_y",
+    "metadata": {
+      "core_innovation": "Matched, leakage-closed prognostic comparison with explicit negative-result handling.",
+      "hypothesis": "A prespecified future-progression survival analysis with locked negative tau increment is more defensible than a new complex model.",
+      "optional_extension": "Fold-local biology-function discordance as an audit/secondary feature.",
+      "precedents": "Existing Method Y v2 endpoints; external survival evaluation standards; residual/discordance literature.",
+      "required_data": "Existing A4 clinical, cognition, FBP and FTP tables; no new DUA for MVP."
+    },
+    "normalized_family": "continuation_without_pivot",
+    "penalties": [],
+    "practical_continuation_score": 84.0,
+    "scientific_from_scratch_score": 80.9,
+    "verdict": "ELIGIBLE",
+    "weighted_score": 84.0
+  },
+  {
+    "cannot_be_primary": false,
+    "confidence": "B",
+    "gates": {
+      "G0": "PASS",
+      "G1": "PASS",
+      "G2": "PASS",
+      "G3": "PASS",
+      "G4": "PASS",
+      "G5": "PASS",
+      "G6": "CONDITIONAL",
+      "G7": "PASS",
+      "G8": "PASS"
+    },
+    "hard_fail_gates": [],
+    "idea_id": "biology_function_discordance",
+    "metadata": {
+      "core_innovation": "Prespecified cross-fitted biology-function residual as a secondary prognostic feature.",
+      "hypothesis": "Fold-local residual mismatch between biomarker burden and cognitive function identifies heterogeneous progression risk beyond either raw component.",
+      "optional_extension": "Robustness to alternative normative specifications.",
+      "precedents": "Residual-based resilience/discordance studies; ProMUSE-style multimodal mismatch modeling.",
+      "required_data": "A4 clinical/cognitive + valid baseline FBP/FTP; no external data for MVP."
+    },
+    "normalized_family": "biology_function_discordance",
+    "penalties": [
+      {
+        "points": 6,
+        "reason": "direct_residual_discordance_precedent"
+      }
+    ],
+    "practical_continuation_score": 83.0,
+    "scientific_from_scratch_score": 87.4,
+    "verdict": "ELIGIBLE",
+    "weighted_score": 89.0
+  },
+  {
+    "cannot_be_primary": false,
+    "confidence": "B",
+    "gates": {
+      "G0": "PASS",
+      "G1": "PASS",
+      "G2": "PASS",
+      "G3": "PASS",
+      "G4": "PASS",
+      "G5": "PASS",
+      "G6": "CONDITIONAL",
+      "G7": "PASS",
+      "G8": "PASS"
+    },
+    "hard_fail_gates": [],
+    "idea_id": "conflict_aware_fusion",
+    "metadata": {
+      "core_innovation": "Audit-first disagreement feature, not a new opaque fusion network.",
+      "hypothesis": "Reliability-weighted disagreement between independently calibrated experts can identify uncertain subjects.",
+      "optional_extension": "Selective prediction only if action and risk-coverage are prespecified.",
+      "precedents": "ProMUSE and multimodal conflict-aware fusion.",
+      "required_data": "Existing calibrated MRI/PET/clinical scores."
+    },
+    "normalized_family": "conflict_aware_fusion",
+    "penalties": [
+      {
+        "points": 10,
+        "reason": "direct_multimodal_conflict_precedent"
+      }
+    ],
+    "practical_continuation_score": 67.0,
+    "scientific_from_scratch_score": 75.4,
+    "verdict": "ELIGIBLE",
+    "weighted_score": 77.0
+  },
+  {
+    "cannot_be_primary": true,
+    "confidence": "B",
+    "gates": {
+      "G0": "PASS",
+      "G1": "PASS",
+      "G2": "PASS",
+      "G3": "PASS",
+      "G4": "PASS",
+      "G5": "PASS",
+      "G6": "FAIL",
+      "G7": "PASS",
+      "G8": "PASS"
+    },
+    "hard_fail_gates": [],
+    "idea_id": "selective_prediction",
+    "metadata": {
+      "core_innovation": "Secondary safety analysis; no autonomous clinical abstention claim.",
+      "hypothesis": "A calibrated risk-coverage curve can expose cases where the model should not be trusted.",
+      "optional_extension": "Conditional conformal intervals after domain-shift audit.",
+      "precedents": "Selective prediction and conformal risk-control literature.",
+      "required_data": "Existing outcomes plus prespecified utility."
+    },
+    "normalized_family": "selective_prediction_abstention",
+    "penalties": [
+      {
+        "points": 8,
+        "reason": "direct_selective_prediction_precedent"
+      }
+    ],
+    "practical_continuation_score": 66.0,
+    "scientific_from_scratch_score": 71.5,
+    "verdict": "REJECTED_NOVELTY_GATE",
+    "weighted_score": 74.0
+  },
+  {
+    "cannot_be_primary": true,
+    "confidence": "C",
+    "gates": {
+      "G0": "PASS",
+      "G1": "FAIL",
+      "G2": "PASS",
+      "G3": "PASS",
+      "G4": "PASS",
+      "G5": "PASS",
+      "G6": "FAIL",
+      "G7": "PASS",
+      "G8": "PASS"
+    },
+    "hard_fail_gates": [
+      "G1"
+    ],
+    "idea_id": "value_of_pet",
+    "metadata": {
+      "core_innovation": "Decision-analytic incremental utility.",
+      "hypothesis": "PET changes a prespecified decision compared with a clinical-only model.",
+      "optional_extension": "Adaptive acquisition policy.",
+      "precedents": "Amyloid-PET decision-support studies.",
+      "required_data": "Action threshold, treatment utility, independent decision cohort; unavailable."
+    },
+    "normalized_family": "value_of_pet",
+    "penalties": [
+      {
+        "points": 15,
+        "reason": "external_decision_dataset_missing"
+      },
+      {
+        "points": 8,
+        "reason": "direct_precedent"
+      }
+    ],
+    "practical_continuation_score": 47.0,
+    "scientific_from_scratch_score": 68.3,
+    "verdict": "REJECTED_HARD_GATE",
+    "weighted_score": 70.0
+  },
+  {
+    "cannot_be_primary": false,
+    "confidence": "C",
+    "gates": {
+      "G0": "PASS",
+      "G1": "PASS",
+      "G2": "PASS",
+      "G3": "CONDITIONAL",
+      "G4": "PASS",
+      "G5": "PASS",
+      "G6": "CONDITIONAL",
+      "G7": "PASS",
+      "G8": "PASS"
+    },
+    "hard_fail_gates": [],
+    "idea_id": "two_visit_delta",
+    "metadata": {
+      "core_innovation": "Longitudinal delta feature.",
+      "hypothesis": "Within-person PET change predicts future progression better than baseline burden.",
+      "optional_extension": "Joint longitudinal-survival model.",
+      "precedents": "Longitudinal PET progression literature.",
+      "required_data": "Two valid scans per subject and censoring-complete outcomes; not yet locked."
+    },
+    "normalized_family": "two_visit_delta_biomarker_change",
+    "penalties": [
+      {
+        "points": 10,
+        "reason": "paired_availability_uncertain"
+      }
+    ],
+    "practical_continuation_score": 61.0,
+    "scientific_from_scratch_score": 69.4,
+    "verdict": "ELIGIBLE",
+    "weighted_score": 71.0
+  },
+  {
+    "cannot_be_primary": true,
+    "confidence": "C",
+    "gates": {
+      "G0": "FAIL",
+      "G1": "PASS",
+      "G2": "PASS",
+      "G3": "PASS",
+      "G4": "PASS",
+      "G5": "PASS",
+      "G6": "FAIL",
+      "G7": "PASS",
+      "G8": "PASS"
+    },
+    "hard_fail_gates": [
+      "G0"
+    ],
+    "idea_id": "faq_informant",
+    "metadata": {
+      "core_innovation": "Item-level discrepancy score.",
+      "hypothesis": "Self-informant discrepancy predicts progression.",
+      "optional_extension": "FAQ/ECog subtyping.",
+      "precedents": "Informant discrepancy studies.",
+      "required_data": "Validated item-level measures and non-circular endpoint; not ready."
+    },
+    "normalized_family": "informant_function_discordance",
+    "penalties": [
+      {
+        "points": 20,
+        "reason": "endpoint_not_locked"
+      }
+    ],
+    "practical_continuation_score": 42.0,
+    "scientific_from_scratch_score": 61.4,
+    "verdict": "REJECTED_HARD_GATE",
+    "weighted_score": 62.0
+  },
+  {
+    "cannot_be_primary": true,
+    "confidence": "C",
+    "gates": {
+      "G0": "PASS",
+      "G1": "FAIL",
+      "G2": "PASS",
+      "G3": "PASS",
+      "G4": "PASS",
+      "G5": "PASS",
+      "G6": "CONDITIONAL",
+      "G7": "PASS",
+      "G8": "PASS"
+    },
+    "hard_fail_gates": [
+      "G1"
+    ],
+    "idea_id": "underused_biomarkers",
+    "metadata": {
+      "core_innovation": "Prespecified regional MRI biomarker set.",
+      "hypothesis": "WMH/subfield/choroid-plexus features add low-cost signal.",
+      "optional_extension": "Multimodal residual.",
+      "precedents": "Regional volumetry and vascular burden studies.",
+      "required_data": "Validated MRI segmentation and quality-controlled ROI table; not currently locked."
+    },
+    "normalized_family": "low_cost_mri_biomarkers",
+    "penalties": [
+      {
+        "points": 12,
+        "reason": "roi_volumetry_not_ready"
+      }
+    ],
+    "practical_continuation_score": 49.0,
+    "scientific_from_scratch_score": 60.5,
+    "verdict": "REJECTED_HARD_GATE",
+    "weighted_score": 61.0
+  }
+]

@@ -1,0 +1,49 @@
+{
+  "baseline_requirement": "CDR_global_equals_0_at_or_near_index",
+  "branches": {
+    "amyloid": {
+      "features": [
+        "global_centiloid_or_valid_suvr",
+        "prespecified_spatial_extent_optional"
+      ],
+      "target": "future_clinical_only",
+      "tracer": "FBP"
+    },
+    "paired_at": {
+      "question": "tau_incremental_value_beyond_amyloid",
+      "target": "future_clinical_only",
+      "tracers": [
+        "FBP",
+        "FTP"
+      ]
+    },
+    "tau": {
+      "features": [
+        "CenTauR_or_valid_suvr_preserving_regional_features"
+      ],
+      "target": "future_clinical_only",
+      "tracer": "FTP"
+    }
+  },
+  "censoring_rule": "last_reliable_followup_or_death_with_provenance",
+  "claim_status_before_external_validation": "INTERNAL_ONLY_OR_EXPLORATORY",
+  "confirmation_rule": "first_worsening_followed_by_non-reversal_or_confirmatory_visit",
+  "contract_id": "method_y_future_progression_endpoint_v2_pretransform",
+  "forbidden_predictors": [
+    "post_origin_pet",
+    "future_visit_feature",
+    "future_diagnosis_note",
+    "cohort_imputed_label"
+  ],
+  "forbidden_targets": [
+    "same_pet_derived_label",
+    "amyloid_positivity_derived_from_same_pet",
+    "centiloid_threshold_derived_from_same_pet",
+    "post_origin_diagnosis_as_baseline_target"
+  ],
+  "index_date": "baseline_valid_pet_date",
+  "primary_endpoint": "first_confirmed_sustained_CDR_global_worsening_after_index_pet",
+  "schema_version": "1.0",
+  "secondary_endpoint": "future_PACC_decline_only_if_longitudinal_contract_passes",
+  "target_derivation": "future_clinical_only"
+}

@@ -1,0 +1,9 @@
+idea_id,normalized_family,scientific_from_scratch_score,practical_continuation_score,weighted_score,penalties,cannot_be_primary,hard_fail_gates,verdict,confidence
+continuation_prespecified_method_y,continuation_without_pivot,80.9,84.0,84.0,[],False,[],ELIGIBLE,A
+biology_function_discordance,biology_function_discordance,87.4,83.0,89.0,"[{""reason"": ""direct_residual_discordance_precedent"", ""points"": 6}]",False,[],ELIGIBLE,B
+conflict_aware_fusion,conflict_aware_fusion,75.4,67.0,77.0,"[{""reason"": ""direct_multimodal_conflict_precedent"", ""points"": 10}]",False,[],ELIGIBLE,B
+selective_prediction,selective_prediction_abstention,71.5,66.0,74.0,"[{""reason"": ""direct_selective_prediction_precedent"", ""points"": 8}]",True,[],REJECTED_NOVELTY_GATE,B
+value_of_pet,value_of_pet,68.3,47.0,70.0,"[{""reason"": ""external_decision_dataset_missing"", ""points"": 15}, {""reason"": ""direct_precedent"", ""points"": 8}]",True,"[""G1""]",REJECTED_HARD_GATE,C
+two_visit_delta,two_visit_delta_biomarker_change,69.4,61.0,71.0,"[{""reason"": ""paired_availability_uncertain"", ""points"": 10}]",False,[],ELIGIBLE,C
+faq_informant,informant_function_discordance,61.4,42.0,62.0,"[{""reason"": ""endpoint_not_locked"", ""points"": 20}]",True,"[""G0""]",REJECTED_HARD_GATE,C
+underused_biomarkers,low_cost_mri_biomarkers,60.5,49.0,61.0,"[{""reason"": ""roi_volumetry_not_ready"", ""points"": 12}]",True,"[""G1""]",REJECTED_HARD_GATE,C

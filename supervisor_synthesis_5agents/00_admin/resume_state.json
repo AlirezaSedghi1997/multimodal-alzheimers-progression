@@ -1,0 +1,141 @@
+{
+  "completed_stages": [
+    "SAFETY_SNAPSHOTTED",
+    "INVENTORY_LOCKED",
+    "UNIQUE_CONTENT_READ",
+    "REGISTRY_LOCKED",
+    "PROJECT_AUDITED",
+    "DECISIVE_EVIDENCE_VERIFIED",
+    "CANDIDATES_SCORED",
+    "RED_TEAM_DONE",
+    "OUTPUTS_RENDERED",
+    "VERIFIED"
+  ],
+  "created_utc": "2026-07-18T17:09:00+00:00",
+  "schema_version": "1.0",
+  "stage_records": {
+    "CANDIDATES_SCORED": {
+      "candidate_count": 8
+    },
+    "DECISIVE_EVIDENCE_VERIFIED": {
+      "claim_count": 11,
+      "verified_count": 7
+    },
+    "INVENTORY_LOCKED": {
+      "canonical_count": 85,
+      "duplicate_count": 0
+    },
+    "OUTPUTS_RENDERED": {
+      "output_dir": "H:\\New project\\supervisor_synthesis_5agents\\08_final_outputs"
+    },
+    "PROJECT_AUDITED": {
+      "snapshot": "H:\\New project\\supervisor_synthesis_5agents\\05_project_audit\\audit_snapshot.json"
+    },
+    "RED_TEAM_DONE": {
+      "checks": [
+        "neurology: endpoint is prognostic, not diagnostic",
+        "nuclear_medicine: tracer/quantitative provenance and scanner gates retained",
+        "biostatistics: survival bootstrap, no DeLong for C-index",
+        "imaging_ml: no raw 3D pivot without matched evidence",
+        "reproducibility: contract, exact-once evaluation, privacy and protected paths",
+        "workflow: active transform writer never stopped",
+        "skeptical_reviewer: no external claim without DUA"
+      ],
+      "human_signoff_required": false,
+      "passes": [
+        "evidence",
+        "repo_feasibility",
+        "adversarial_red_team"
+      ],
+      "status": "COMPLETED"
+    },
+    "REGISTRY_LOCKED": {
+      "database": "H:\\New project\\supervisor_synthesis_5agents\\04_evidence_registry\\synthesis.db"
+    },
+    "SAFETY_SNAPSHOTTED": {
+      "T0": "H:\\New project\\supervisor_synthesis_5agents\\00_admin\\T0.json",
+      "active_writer_recorded": true
+    },
+    "UNIQUE_CONTENT_READ": {
+      "chunk_count": 319,
+      "read_complete": true
+    },
+    "VERIFIED": {
+      "Tfinal": "H:\\New project\\supervisor_synthesis_5agents\\00_admin\\Tfinal.json",
+      "consistency": {
+        "allowed_dynamic_changes": {
+          "results": {
+            "after": {
+              "digest": "69544e589f00ca7d9558e38a982e50d0393947def8b172f3a64b80572288db79",
+              "exists": true,
+              "file_count": 3940,
+              "path": "H:\\New project\\results",
+              "truncated": true
+            },
+            "before": {
+              "digest": "3896eac0db827d9e42d7dadef538b68899e269e47516f60c2a08349aba05da74",
+              "exists": true,
+              "file_count": 4384,
+              "path": "H:\\New project\\results",
+              "truncated": true
+            },
+            "classification": "ALLOWED_ACTIVE_WRITER_PATH",
+            "path": "results/method_y_revival_v2/transforms"
+          }
+        },
+        "checks": {
+          "all_canonical_sources_read": true,
+          "database_exists": true,
+          "no_external_claim_without_dua": true,
+          "primary_not_hard_failed": true,
+          "protected_paths_unchanged": true,
+          "public_bundle_privacy": true,
+          "required_outputs_present": true,
+          "single_primary_decision": true
+        },
+        "missing_outputs": [],
+        "output_count": 16,
+        "primary": {
+          "cannot_be_primary": false,
+          "confidence": "A",
+          "gates": {
+            "G0": "PASS",
+            "G1": "PASS",
+            "G2": "PASS",
+            "G3": "PASS",
+            "G4": "PASS",
+            "G5": "PASS",
+            "G6": "CONDITIONAL",
+            "G7": "PASS",
+            "G8": "PASS"
+          },
+          "hard_fail_gates": [],
+          "idea_id": "continuation_prespecified_method_y",
+          "metadata": {
+            "core_innovation": "Matched, leakage-closed prognostic comparison with explicit negative-result handling.",
+            "hypothesis": "A prespecified future-progression survival analysis with locked negative tau increment is more defensible than a new complex model.",
+            "optional_extension": "Fold-local biology-function discordance as an audit/secondary feature.",
+            "precedents": "Existing Method Y v2 endpoints; external survival evaluation standards; residual/discordance literature.",
+            "required_data": "Existing A4 clinical, cognition, FBP and FTP tables; no new DUA for MVP."
+          },
+          "normalized_family": "continuation_without_pivot",
+          "penalties": [],
+          "practical_continuation_score": 84.0,
+          "scientific_from_scratch_score": 80.9,
+          "verdict": "ELIGIBLE",
+          "weighted_score": 84.0
+        },
+        "protected_changed": {},
+        "public_scan": {
+          "hits": [],
+          "status": "PASS"
+        },
+        "schema_version": "1.0",
+        "status": "PASS",
+        "unread_source_ids": []
+      }
+    }
+  },
+  "state": "VERIFIED",
+  "updated_utc": "2026-07-18T17:13:22+00:00"
+}

@@ -1,0 +1,18 @@
+{
+  "checks": [
+    "neurology: endpoint is prognostic, not diagnostic",
+    "nuclear_medicine: tracer/quantitative provenance and scanner gates retained",
+    "biostatistics: survival bootstrap, no DeLong for C-index",
+    "imaging_ml: no raw 3D pivot without matched evidence",
+    "reproducibility: contract, exact-once evaluation, privacy and protected paths",
+    "workflow: active transform writer never stopped",
+    "skeptical_reviewer: no external claim without DUA"
+  ],
+  "human_signoff_required": false,
+  "passes": [
+    "evidence",
+    "repo_feasibility",
+    "adversarial_red_team"
+  ],
+  "status": "COMPLETED"
+}

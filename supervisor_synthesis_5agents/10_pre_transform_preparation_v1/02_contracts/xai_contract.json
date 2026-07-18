@@ -1,0 +1,19 @@
+{
+  "checkpoint_loading": "strict",
+  "claim_status": "NO_CLAIM",
+  "methods": [
+    "integrated_gradients",
+    "occlusion_sensitivity",
+    "gradcam_plus_plus_if_valid_layer"
+  ],
+  "public_output": "aggregate_only",
+  "require_licensed_atlas": true,
+  "require_model_contract_hash": true,
+  "sanity_checks": [
+    "randomized_weights",
+    "label_permutation",
+    "top_roi_vs_random_roi_fidelity"
+  ],
+  "schema_version": "1.0",
+  "status": "TEMPLATE_ONLY"
+}

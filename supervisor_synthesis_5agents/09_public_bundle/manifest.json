@@ -1,0 +1,10 @@
+{
+  "claim_status": "INTERNAL_ONLY_OR_EXPLORATORY",
+  "contains_images": false,
+  "contains_individual_predictions": false,
+  "contains_raw_paths": false,
+  "primary_candidate": "continuation_prespecified_method_y",
+  "schema_version": "1.0",
+  "source_hashes_only": true,
+  "status": "AGGREGATE_ONLY"
+}

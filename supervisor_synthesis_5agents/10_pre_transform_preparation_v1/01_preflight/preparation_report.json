@@ -1,0 +1,274 @@
+{
+  "active_writer_policy": "never_stop_or_modify",
+  "completion_policy": {
+    "claim_allowed_now": false,
+    "external_validation_allowed_now": false,
+    "outer_test_allowed_now": false,
+    "training_allowed_now": false
+  },
+  "contract_check": {
+    "errors": [],
+    "status": "PASS"
+  },
+  "created_utc": "2026-07-18T17:38:59+00:00",
+  "disk": {
+    "C:\\": {
+      "free_bytes": 132621332480,
+      "total_bytes": 523622244352,
+      "used_bytes": 391000911872
+    },
+    "H:\\": {
+      "free_bytes": 352074772480,
+      "total_bytes": 1000186310656,
+      "used_bytes": 648111538176
+    }
+  },
+  "existing_live_status": {
+    "parse_error": null,
+    "payload": {
+      "agent_only_review": true,
+      "claim_status": "NO_CLAIM",
+      "downstream_stages_allowed": false,
+      "external_validation": "PENDING_DUA",
+      "schema_version": "1.0",
+      "science_gate_status": "BLOCKED",
+      "status": "RUNNING",
+      "transform": {
+        "failed_count": 1,
+        "scope": "FULL",
+        "source_eligible_count": 1317,
+        "terminal_reason": null,
+        "validated_count": 169
+      },
+      "transform_manifest_sha256": "da464b768f1b2f5a7b2121219c9fd640081dcccb995dcad3e8e3faa4fa00a1de"
+    }
+  },
+  "existing_provenance_reference": {
+    "parse_error": null,
+    "payload": {
+      "claim_status": "NO_CLAIM",
+      "raw_root_mutated": false,
+      "recomputed_in_v2": false,
+      "schema_version": "1.0",
+      "science_gate_status": "PASS",
+      "source_artifact": "H:\\New project\\results\\method_y_revival_v1\\completion_v1\\provenance\\quantitative_pet_feature_provenance.json",
+      "source_claim_status": "NO_CLAIM",
+      "source_science_gate_status": "PASS",
+      "source_sha256": "23e329c739b5b249f1e6df3865303d9700eefd4e0f899fde9908688c33cdfec5",
+      "source_status": "COMPLETED",
+      "status": "REFERENCE_LOCKED_NOT_RECOMPUTED"
+    }
+  },
+  "existing_v2_contract": {
+    "parse_error": null,
+    "readable": true,
+    "sha256": "083e5a7358dbe8f0152a779bbcf04095cab506b59f70e733de7b47cc02acfb0f"
+  },
+  "output_root": "H:\\New project\\supervisor_synthesis_5agents\\10_pre_transform_preparation_v1",
+  "preparation_id": "method_y_pre_transform_preparation_v1",
+  "project_root": "H:\\New project",
+  "protected_paths": {
+    "configs": {
+      "digest": "c0d0fcf87a91c652e1817b1e4dd086e0d235c71d3280a25e437175aa200211b2",
+      "exists": true,
+      "file_count": 56,
+      "path": "H:\\New project\\configs",
+      "truncated": false
+    },
+    "data": {
+      "digest": "0efc276c624970393416f09c3ff24b4d98dd1cd4e81fa64fbdbb1d68df7fa281",
+      "exists": true,
+      "file_count": 4960,
+      "path": "H:\\New project\\data",
+      "truncated": true
+    },
+    "results": {
+      "digest": "3896eac0db827d9e42d7dadef538b68899e269e47516f60c2a08349aba05da74",
+      "exists": true,
+      "file_count": 4384,
+      "path": "H:\\New project\\results",
+      "truncated": true
+    },
+    "scripts": {
+      "digest": "41b0b5e49bb9dc7178eacb1eb076dce489cb13ccd1c0ad2b28eb7727756cbd9b",
+      "exists": true,
+      "file_count": 567,
+      "path": "H:\\New project\\scripts",
+      "truncated": false
+    },
+    "src": {
+      "digest": "3cc607477a0ff6f95525bf149728dc9f17f6acf79c4a335d0821a841fdb8bed6",
+      "exists": true,
+      "file_count": 348,
+      "path": "H:\\New project\\src",
+      "truncated": false
+    }
+  },
+  "read_only_inputs": true,
+  "readiness": [
+    {
+      "blockers": [],
+      "mutation": "none",
+      "safe_before_transform_completion": true,
+      "status": "RUNNING",
+      "task_id": "T01_transform_resume"
+    },
+    {
+      "blockers": [
+        "manifest is live; do not train or claim",
+        "LIVE_STATUS_RECONCILIATION_REQUIRED"
+      ],
+      "mutation": "none",
+      "safe_before_transform_completion": true,
+      "status": "BLOCKED_UNTIL_MANIFEST_TERMINAL",
+      "task_id": "T02_transform_gate"
+    },
+    {
+      "blockers": [],
+      "mutation": "workspace_only",
+      "safe_before_transform_completion": true,
+      "status": "READY_PREPARED",
+      "task_id": "T03_endpoint_contract"
+    },
+    {
+      "blockers": [
+        "final membership digest must be locked after eligible transform/QC set is terminal"
+      ],
+      "mutation": "workspace_only",
+      "safe_before_transform_completion": true,
+      "status": "READY_TEMPLATE_ONLY",
+      "task_id": "T04_nested_split_contract"
+    },
+    {
+      "blockers": [
+        "no training before transform and endpoint gates"
+      ],
+      "mutation": "workspace_only",
+      "safe_before_transform_completion": true,
+      "status": "READY_TEMPLATE_ONLY",
+      "task_id": "T05_survival_model_contract"
+    },
+    {
+      "blockers": [
+        "transform terminal set",
+        "official atlas/space/license lock"
+      ],
+      "mutation": "none",
+      "safe_before_transform_completion": false,
+      "status": "BLOCKED",
+      "task_id": "T06_quantitative_pet_validation"
+    },
+    {
+      "blockers": [
+        "SCAN/NACC DUA",
+        "ADNI DUA",
+        "OASIS3 DUA"
+      ],
+      "mutation": "workspace_only",
+      "safe_before_transform_completion": true,
+      "status": "BLOCKED_DUA",
+      "task_id": "T07_external_validation"
+    },
+    {
+      "blockers": [
+        "locked checkpoint and licensed anatomical atlas"
+      ],
+      "mutation": "workspace_only",
+      "safe_before_transform_completion": true,
+      "status": "READY_TEMPLATE_ONLY",
+      "task_id": "T08_xai_contract"
+    },
+    {
+      "blockers": [],
+      "mutation": "workspace_only",
+      "safe_before_transform_completion": true,
+      "status": "READY_PREPARED",
+      "task_id": "T09_privacy_and_claim_policy"
+    }
+  ],
+  "resume_state": "PRE_TRANSFORM_PREPARATION_VERIFIED",
+  "schema_version": "1.0",
+  "status_consistency": {
+    "active_writer": true,
+    "flags": [
+      "STALE_VALIDATED_COUNT"
+    ],
+    "live_validated_count": 169,
+    "manifest_pass_count": 1042,
+    "status": "RECONCILIATION_REQUIRED"
+  },
+  "transform_t0": {
+    "active_writer": true,
+    "active_writer_processes": [
+      {
+        "CommandLine": "\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -ExecutionPolicy Bypass -File \"H:\\New project\\scripts\\run_method_y_transforms_manual.ps1\"",
+        "CreationDate": "/Date(1784372255153)/",
+        "Name": "powershell.exe",
+        "ParentProcessId": 2976,
+        "ProcessId": 10936
+      },
+      {
+        "CommandLine": "\"H:\\New project\\.venv\\Scripts\\python.exe\" \"H:\\New project\\scripts\\materialize_method_y_transforms_v2.py\" --output-root \"H:\\New project\\results\\method_y_revival_v2\"",
+        "CreationDate": "/Date(1784372256358)/",
+        "Name": "python.exe",
+        "ParentProcessId": 10936,
+        "ProcessId": 23476
+      },
+      {
+        "CommandLine": "\"C:\\Users\\USER\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe\"  \"H:\\New project\\scripts\\materialize_method_y_transforms_v2.py\" --output-root \"H:\\New project\\results\\method_y_revival_v2\"",
+        "CreationDate": "/Date(1784372256409)/",
+        "Name": "python.exe",
+        "ParentProcessId": 23476,
+        "ProcessId": 18228
+      }
+    ],
+    "captured_utc": "2026-07-18T17:38:59+00:00",
+    "manifest_parse_error": null,
+    "manifest_path": "H:\\New project\\results\\method_y_revival_v2\\transforms\\manifest.json",
+    "manifest_sha256": "544697dde585d404794fc6cbb923e512b4a7a7c413707aa549989aef30b992b2",
+    "row_count": 1044,
+    "status_counts": {
+      "FAIL": 2,
+      "PASS": 1042
+    },
+    "writer_was_modified": false,
+    "writer_was_stopped": false
+  },
+  "transform_tfinal": {
+    "active_writer": true,
+    "active_writer_processes": [
+      {
+        "CommandLine": "\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -ExecutionPolicy Bypass -File \"H:\\New project\\scripts\\run_method_y_transforms_manual.ps1\"",
+        "CreationDate": "/Date(1784372255153)/",
+        "Name": "powershell.exe",
+        "ParentProcessId": 2976,
+        "ProcessId": 10936
+      },
+      {
+        "CommandLine": "\"H:\\New project\\.venv\\Scripts\\python.exe\" \"H:\\New project\\scripts\\materialize_method_y_transforms_v2.py\" --output-root \"H:\\New project\\results\\method_y_revival_v2\"",
+        "CreationDate": "/Date(1784372256358)/",
+        "Name": "python.exe",
+        "ParentProcessId": 10936,
+        "ProcessId": 23476
+      },
+      {
+        "CommandLine": "\"C:\\Users\\USER\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe\"  \"H:\\New project\\scripts\\materialize_method_y_transforms_v2.py\" --output-root \"H:\\New project\\results\\method_y_revival_v2\"",
+        "CreationDate": "/Date(1784372256409)/",
+        "Name": "python.exe",
+        "ParentProcessId": 23476,
+        "ProcessId": 18228
+      }
+    ],
+    "captured_utc": "2026-07-18T17:39:01+00:00",
+    "manifest_parse_error": null,
+    "manifest_path": "H:\\New project\\results\\method_y_revival_v2\\transforms\\manifest.json",
+    "manifest_sha256": "544697dde585d404794fc6cbb923e512b4a7a7c413707aa549989aef30b992b2",
+    "row_count": 1044,
+    "status_counts": {
+      "FAIL": 2,
+      "PASS": 1042
+    },
+    "writer_was_modified": false,
+    "writer_was_stopped": false
+  }
+}

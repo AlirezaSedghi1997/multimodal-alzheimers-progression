@@ -1,0 +1,23 @@
+{
+  "backbones": [
+    "resnet10",
+    "resnet18",
+    "densenet121",
+    "efficientnet_b0",
+    "mednext_s",
+    "tiny"
+  ],
+  "claim_status": "TECHNICAL_ONLY_UNTIL_WITHIN_COHORT_LABEL_VARIATION",
+  "common": {
+    "augmentation": "locked_common",
+    "folds": 5,
+    "fusion": "locked_common",
+    "loss": "locked_common",
+    "scheduler": "locked_common",
+    "seed": 20260714
+  },
+  "difference_allowed": [
+    "backbone_only"
+  ],
+  "status": "TEMPLATE_ONLY"
+}
