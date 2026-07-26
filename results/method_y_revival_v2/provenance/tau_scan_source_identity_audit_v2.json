@@ -1,7 +1,7 @@
 {
   "a4_linear_suvr_bridge_status_counts": {
-    "EXACT_BID_VISCODE_A4_LINEAR_SUVR_SOURCE": 1279,
-    "NO_A4_LINEAR_SUVR_SOURCE_KEY": 35
+    "NO_A4_LINEAR_SUVR_SOURCE_KEY": 35,
+    "SUBJECT_VISIT_ASSOCIATION_A4_LINEAR_SUVR_SOURCE": 1279
   },
   "a4_linear_suvr_direct_bridge_scan_count": 1279,
   "a4_linear_suvr_no_source_key_scan_count": 35,
@@ -13,11 +13,8 @@
   ],
   "claim_bearing_allowed": false,
   "claim_status": "NO_CLAIM",
-  "exact_dicom_identity_fields": [],
-  "exact_dicom_identity_scan_count": 0,
-  "linkage_path": "results\\method_y_revival_v2\\manifests\\private_ftp_t1_transform_eligible.parquet",
-  "linkage_sha256": "73556b25cbf3c9a50b498f0c166aa8b9b8b6f95164f1571dff6aca52179f2917",
-  "nifti_header_identity_fields": [],
+  "exact_scan_identity_fields": [],
+  "exact_scan_identity_scan_count": 0,
   "nifti_header_identity_scan_count": 0,
   "nifti_header_status_counts": {
     "NO_EXACT_ID_FIELDS": 1314
@@ -29,12 +26,11 @@
     "local_centaur": "voi_CerebGry_tau_2mm",
     "stanford": "bi_Cerebellum.Cortex / gray_matter_cerebellar_cortex"
   },
-  "rows_path": "results\\method_y_revival_v2\\provenance\\tau_scan_source_identity_audit_v2.parquet",
-  "rows_sha256": "46da95727f4b9005fd6ba8fc041e552866ede69be880aa5762dafeee9a9ed576",
   "scan_count": 1314,
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "science_gate_status": "BLOCKED",
-  "scope": "FTP_SIDEcar_AND_SOURCE_TABLE_IDENTITY_AUDIT_NO_TRANSFORM_RERUN",
+  "scope": "FTP_SIDECAR_AND_NIFTI_HEADER_IDENTITY_AUDIT_NO_TRANSFORM_RERUN",
+  "sidecar_identity_scan_count": 0,
   "sidecar_status_counts": {
     "NO_EXACT_ID_FIELDS": 1314
   },
@@ -57,9 +53,10 @@
       "identity_columns": [],
       "identity_columns_present": false,
       "key_count": 1538,
-      "path": "H:\\A4 Learn\\Clinical\\External Data\\imaging_SUVR_tau.csv",
-      "row_count": 295296,
-      "sha256": "bd58d602281d131675aa1ff5d72b898b2db57f16f120a3ced78e68ef77a76513"
+      "row_count": 296679,
+      "sha256": "bd58d602281d131675aa1ff5d72b898b2db57f16f120a3ced78e68ef77a76513",
+      "source_name": "imaging_SUVR_tau.csv",
+      "valid_tracer_row_count": 295296
     },
     "stanford_freesurfer_non_pvc": {
       "columns": [
@@ -342,14 +339,15 @@
       "identity_columns": [],
       "identity_columns_present": false,
       "key_count": 447,
-      "path": "H:\\A4 Learn\\Clinical\\External Data\\imaging_Tau_PET_Stanford.csv",
       "row_count": 447,
-      "sha256": "b5fcaa7c3c681e03e6faf77d7676c1d3b91824ba30ce5d589e80622ff706e72a"
+      "sha256": "b5fcaa7c3c681e03e6faf77d7676c1d3b91824ba30ce5d589e80622ff706e72a",
+      "source_name": "imaging_Tau_PET_Stanford.csv",
+      "valid_tracer_row_count": 447
     }
   },
   "stanford_bridge_status_counts": {
     "NO_STANFORD_SOURCE_KEY": 935,
-    "NUMERICAL_VISIT_BRIDGE_TO_STANFORD_VISCODE_2": 379
+    "NUMERICAL_VISIT_ASSOCIATION_TO_STANFORD_VISCODE_2": 379
   },
   "status": "COMPLETED_WITH_SCIENCE_GATE_BLOCKED"
 }
