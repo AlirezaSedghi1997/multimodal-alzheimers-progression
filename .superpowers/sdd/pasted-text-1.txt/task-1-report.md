@@ -89,3 +89,8 @@ Evidence not found:
   the Stanford numerical bridge in the existing scan-level table.
 - The generated artifacts are intentionally private provenance outputs and
   include hashes/paths needed for reproducibility; no public bundle was changed.
+
+## Commit
+
+- Commit: `fe38f9d` (`Audit tau scan provenance and source bridges`)
+- Final status: `DONE_WITH_CONCERNS`
