@@ -9,6 +9,7 @@ Canonical contract: `docs/METHOD_Y_V2_POSTTRAINING_EXECUTION_CONTRACT.md`
 
 Pretraining twin: `results/method_y_revival_v2/readiness/PRETRAINING_READINESS_V2.json`.
 Remaining-work inventory: `docs/plans/method_y_remaining_work_20260815.md`.
+Session ledger: `docs/plans/agent_session_ledger_20260815.md`.
 
 Do not invent outer C-index, IBS, calibration, or incremental-value numbers here.
 Those artifacts do not exist until Stages A–E run.
@@ -26,11 +27,14 @@ Execute training only after all of these remain true:
 
 - PRETRAINING_READINESS status is `READY_FOR_SOURCE_REGIONAL_TRAINING`
 - `training_allowed=true` and `training_started=false`
-- Task 4 state is `COMMITTED`
+- Task 4 state is proof-bearing `COMMITTED` (schema 2.1 evidence, adversarial quality PASS)
 - source-regional `development_allowed=true`
 - image / outer / claim / external remain false
 - Method X is not using the GPU
-- a later receipt binds `training_control_contract_sha256` from that preflight plus a `training_executor` dict
+- a later receipt binds `training_control_contract_sha256` from that preflight plus a `training_executor` dict with `test_only=true`
+
+As of the 2026-08-15 defect repair, Task 4 is `AWAITING_AGENT_MULTI_PASS_QC` (adversarial quality FAIL), live preflight is `PREFLIGHT_BLOCKED_TASK4_NOT_COMMITTED`, and `training_allowed=false`. Do not start training from this file.
+
 
 ```powershell
 # .\scripts\run_method_y_training_v2.ps1 -ExecuteTraining

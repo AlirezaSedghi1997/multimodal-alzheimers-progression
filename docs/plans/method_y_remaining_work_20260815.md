@@ -1,5 +1,9 @@
 # Method Y remaining work — 2026-08-15 (defect repair)
 
+Session ledger (what the 2026-08-15 agents actually did):
+`docs/plans/agent_session_ledger_20260815.md`.
+Append-only Method Y work log: `docs/plans/method_y_work_log.md`.
+
 Canonical revival programme is v2 source-regional survival on `H:\New project`.
 This file does **not** start Method Y training. Method X currently owns the GPU.
 
