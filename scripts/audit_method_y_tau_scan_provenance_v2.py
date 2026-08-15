@@ -19,6 +19,16 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-root", type=Path, default=ROOT / "results/method_y_revival_v2")
     parser.add_argument("--linkage", type=Path)
+    parser.add_argument(
+        "--quantitative-validation",
+        type=Path,
+        help="Canonical aggregate scan-level Tau quantitative-validation JSON.",
+    )
+    parser.add_argument(
+        "--crosswalk-audit",
+        type=Path,
+        help="Canonical aggregate Tau source-region crosswalk audit JSON.",
+    )
     parser.add_argument("--suvr-source", type=Path, default=Path(r"H:\A4 Learn\Clinical\External Data\imaging_SUVR_tau.csv"))
     parser.add_argument("--stanford-source", type=Path, default=Path(r"H:\A4 Learn\Clinical\External Data\imaging_Tau_PET_Stanford.csv"))
     parser.add_argument(
@@ -32,6 +42,12 @@ def main() -> int:
     linkage = args.linkage or output_root / "manifests/private_ftp_t1_transform_eligible.parquet"
     output_json = output_root / "provenance/tau_scan_source_identity_audit_v2.json"
     output_report = output_root / "reports/TAU_QUANTITATIVE_VALIDATION_V2.md"
+    quantitative_validation = args.quantitative_validation or (
+        output_root / "provenance/scan_level_tau_quantitative_validation.json"
+    )
+    crosswalk_audit = args.crosswalk_audit or (
+        output_root / "provenance/tau_source_region_crosswalk_audit_v2.json"
+    )
     if args.private_rows_output is not None:
         private_root = (args.private_rows_root or args.private_rows_output.parent).resolve()
         if ROOT.resolve() in private_root.parents or private_root == ROOT.resolve():
@@ -46,6 +62,8 @@ def main() -> int:
         output_report=output_report,
         output_rows=args.private_rows_output,
         private_rows_root=private_root,
+        quantitative_validation_path=quantitative_validation,
+        crosswalk_audit_path=crosswalk_audit,
     )
     print(json.dumps(report, indent=2, sort_keys=True))
     return 0

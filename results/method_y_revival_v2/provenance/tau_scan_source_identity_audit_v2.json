@@ -3,8 +3,12 @@
     "NO_A4_LINEAR_SUVR_SOURCE_KEY": 35,
     "SUBJECT_VISIT_ASSOCIATION_A4_LINEAR_SUVR_SOURCE": 1279
   },
-  "a4_linear_suvr_direct_bridge_scan_count": 1279,
   "a4_linear_suvr_no_source_key_scan_count": 35,
+  "a4_linear_suvr_subject_visit_association_scan_count": 1279,
+  "association_semantics": {
+    "a4_linear_suvr": "SUBJECT_VISIT_ASSOCIATION_ONLY_NOT_ACQUISITION_IDENTITY",
+    "stanford": "SUBJECT_VISIT_ASSOCIATION_ONLY_NOT_ACQUISITION_IDENTITY"
+  },
   "blockers": [
     "EXACT_DICOM_SCAN_IDENTITY_UNAVAILABLE",
     "STANFORD_SOURCE_SCAN_LEVEL_BRIDGE_NOT_EXACT_UID_VERIFIED",
@@ -15,10 +19,79 @@
   "claim_status": "NO_CLAIM",
   "exact_scan_identity_fields": [],
   "exact_scan_identity_scan_count": 0,
+  "input_manifest": {
+    "artifact_name": "private_ftp_t1_transform_eligible.parquet",
+    "row_count": 1314,
+    "sha256": "73556b25cbf3c9a50b498f0c166aa8b9b8b6f95164f1571dff6aca52179f2917"
+  },
   "nifti_header_identity_scan_count": 0,
   "nifti_header_status_counts": {
     "NO_EXACT_ID_FIELDS": 1314
   },
+  "quantitative_metric_sources": {
+    "scan_level_tau_quantitative_validation": {
+      "artifact_name": "scan_level_tau_quantitative_validation.json",
+      "sha256": "05c2a4a016393e1079e330044210aad03e48a6be08744b10f6c9e493d3381da1"
+    },
+    "tau_source_region_crosswalk_audit": {
+      "artifact_name": "tau_source_region_crosswalk_audit_v2.json",
+      "sha256": "b5bc619fff4ba82d99cbaf3e279b568a217b335fcb51084d2ebd49b727caa55a"
+    }
+  },
+  "quantitative_metrics": [
+    {
+      "bias_image_minus_source": 0.0023499298075286873,
+      "bland_altman_lower_95": -0.11670741601445787,
+      "bland_altman_mean_bias": 0.0023499298075286873,
+      "bland_altman_sd": 0.06074354378672784,
+      "bland_altman_upper_95": 0.12140727562951524,
+      "mae": 0.0461180047051032,
+      "mask_name": "Mesial_CenTauR",
+      "n_pairs": 379,
+      "pearson_r": 0.929883968174845,
+      "spearman_rho": 0.9029662987724367,
+      "status": "COMPUTED"
+    },
+    {
+      "bias_image_minus_source": 0.02005226175938672,
+      "bland_altman_lower_95": -0.07722708773228427,
+      "bland_altman_mean_bias": 0.02005226175938672,
+      "bland_altman_sd": 0.049632321169219895,
+      "bland_altman_upper_95": 0.11733161125105772,
+      "mae": 0.04125908322641845,
+      "mask_name": "Meta_CenTauR",
+      "n_pairs": 379,
+      "pearson_r": 0.9264068132998987,
+      "spearman_rho": 0.8768797543551049,
+      "status": "COMPUTED"
+    },
+    {
+      "bias_image_minus_source": 0.07568759237201406,
+      "bland_altman_lower_95": -0.045159079530426555,
+      "bland_altman_mean_bias": 0.07568759237201406,
+      "bland_altman_sd": 0.06165646525634725,
+      "bland_altman_upper_95": 0.19653426427445467,
+      "mae": 0.07934844545231517,
+      "mask_name": "TP_CenTauR",
+      "n_pairs": 379,
+      "pearson_r": 0.8556692622797365,
+      "spearman_rho": 0.7791470761336058,
+      "status": "COMPUTED"
+    },
+    {
+      "bias_image_minus_source": 0.1558615960777584,
+      "bland_altman_lower_95": 0.0027199907365478837,
+      "bland_altman_mean_bias": 0.1558615960777584,
+      "bland_altman_sd": 0.0781334721128625,
+      "bland_altman_upper_95": 0.3090032014189689,
+      "mae": 0.15713451017020627,
+      "mask_name": "Frontal_CenTauR",
+      "n_pairs": 379,
+      "pearson_r": 0.7068199693534043,
+      "spearman_rho": 0.6619894062332612,
+      "status": "COMPUTED"
+    }
+  ],
   "reference_contracts": {
     "a4_linear_suvr": "blcere_all / whole_cerebellum",
     "calibration_path_status": "NOT_FOUND",

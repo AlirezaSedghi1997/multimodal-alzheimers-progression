@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import hashlib
+import math
 import os
 import tempfile
 from collections import Counter
+from numbers import Real
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -502,7 +504,7 @@ def write_locked_endpoint(
     source_hashes: dict[str, str],
     endpoint_definition: dict[str, Any],
 ) -> dict[str, Any]:
-    materialized = list(rows)
+    materialized = [dict(row) for row in rows]
     if not materialized:
         raise EndpointBuildError("EMPTY_ENDPOINT")
     offenders = sorted(
@@ -510,16 +512,35 @@ def write_locked_endpoint(
     )
     if offenders:
         raise EndpointBuildError(f"PRIVATE_ENDPOINT_FIELD_FORBIDDEN:{offenders}")
-    patient_hashes = [str(row.get("patient_hash", "")) for row in materialized]
-    if any(not value for value in patient_hashes):
+    patient_hashes = [row.get("patient_hash") for row in materialized]
+    if any(
+        not isinstance(value, str) or not value.strip()
+        for value in patient_hashes
+    ):
         raise EndpointBuildError("PATIENT_HASH_REQUIRED")
-    if len(set(patient_hashes)) != len(patient_hashes):
+    normalized_hashes = [value.strip() for value in patient_hashes]
+    if len(set(normalized_hashes)) != len(normalized_hashes):
         raise EndpointBuildError("DUPLICATE_ENDPOINT_SUBJECT")
-    for row in materialized:
-        if int(row.get("event", -1)) not in {0, 1}:
+    for row, patient_hash in zip(materialized, normalized_hashes, strict=True):
+        event = row.get("event")
+        if (
+            isinstance(event, bool)
+            or not isinstance(event, Real)
+            or not math.isfinite(float(event))
+            or float(event) not in {0.0, 1.0}
+        ):
             raise EndpointBuildError("BINARY_EVENT_REQUIRED")
-        if float(row.get("time_days", 0.0)) <= 0.0:
+        observed_time = row.get("time_days")
+        if (
+            isinstance(observed_time, bool)
+            or not isinstance(observed_time, Real)
+            or not math.isfinite(float(observed_time))
+            or float(observed_time) <= 0.0
+        ):
             raise EndpointBuildError("POSITIVE_OBSERVED_TIME_REQUIRED")
+        row["patient_hash"] = patient_hash
+        row["event"] = int(event)
+        row["time_days"] = float(observed_time)
 
     target = Path(output_path)
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -554,7 +575,7 @@ def write_locked_endpoint(
         "schema_version": "1.0",
         "locked": True,
         "row_count": len(materialized),
-        "event_count": sum(int(row["event"]) for row in materialized),
+        "event_count": sum(row["event"] for row in materialized),
         "endpoint_sha256": endpoint_sha256,
         "endpoint_path": stored_target.name,
         "storage_format": storage_format,

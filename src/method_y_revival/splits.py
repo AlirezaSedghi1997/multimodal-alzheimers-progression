@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import math
 from collections import defaultdict
+from numbers import Real
 from typing import Any, Iterable
 
 import numpy as np
@@ -13,13 +15,24 @@ class SplitContractError(ValueError):
     """Raised when subject-level nested validation cannot be constructed safely."""
 
 
+def _binary_event(value: Any) -> int:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, Real)
+        or not math.isfinite(float(value))
+        or float(value) not in {0.0, 1.0}
+    ):
+        raise SplitContractError("BINARY_EVENT_REQUIRED")
+    return int(value)
+
+
 def _subject_table(rows: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
     values: dict[str, dict[str, set[str]]] = defaultdict(
         lambda: {"event": set(), "treatment_arm": set()}
     )
     for row in rows:
         subject = str(row["subject_key"])
-        values[subject]["event"].add(str(int(row["event"])))
+        values[subject]["event"].add(str(_binary_event(row["event"])))
         values[subject]["treatment_arm"].add(str(row.get("treatment_arm") or "NONE"))
     table: list[dict[str, Any]] = []
     for subject in sorted(values):

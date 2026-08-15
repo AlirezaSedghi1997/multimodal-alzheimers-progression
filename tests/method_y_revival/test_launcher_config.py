@@ -54,8 +54,12 @@ def test_preflight_cli_writes_truthful_pending_and_blocked_artifacts(tmp_path):
     assert exit_code == 0
     report = json.loads((output / "provenance" / "preflight_report.json").read_text(encoding="utf-8"))
     assert report["regional_path_status"] == "READY_FOR_MANIFEST_CONSTRUCTION"
+    assert report["branch_source_readiness"]["regional_sources_ready"] is True
+    assert report["branch_source_readiness"]["external_sources_ready"] is False
     assert report["image_path_status"] == "BLOCKED_REFERENCE_TEMPLATE_NOT_LOCKED"
     assert report["external_validation_status"] == "EXTERNAL_PENDING"
+    assert report["visual_qc_status"] == "AGENT_MULTI_PASS_QC_PENDING"
+    assert "HUMAN" not in json.dumps(report).upper()
     assert report["raw_root_mutated"] is False
 
     second_exit_code = main(

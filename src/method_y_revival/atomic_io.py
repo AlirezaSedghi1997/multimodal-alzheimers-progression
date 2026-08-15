@@ -34,3 +34,23 @@ def atomic_write_json(path: str | Path, payload: Any) -> Path:
 
 def read_json(path: str | Path) -> Any:
     return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def atomic_write_parquet(path: str | Path, frame: Any) -> Path:
+    """Write a pandas-compatible frame without exposing a partial parquet."""
+
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary = tempfile.mkstemp(
+        prefix=f".{target.name}.", suffix=".tmp.parquet", dir=str(target.parent)
+    )
+    os.close(descriptor)
+    try:
+        frame.to_parquet(temporary, index=False)
+        with open(temporary, "r+b") as handle:
+            os.fsync(handle.fileno())
+        os.replace(temporary, target)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
+    return target

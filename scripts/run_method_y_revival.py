@@ -86,19 +86,45 @@ def _source_checks(config: dict[str, Any]) -> dict[str, bool]:
     return checks
 
 
+def _branch_source_readiness(
+    config: dict[str, Any], checks: dict[str, bool]
+) -> dict[str, bool]:
+    """Keep source-regional, image, and external prerequisites independent."""
+
+    regional_keys = ["raw_root", *[f"clinical:{name}" for name in config["clinical_sources"]]]
+    regional_sources_ready = all(checks.get(name, False) for name in regional_keys)
+    return {
+        "regional_sources_ready": regional_sources_ready,
+        "amyloid_image_sources_ready": (
+            regional_sources_ready
+            and checks.get("project:amyloid_input_manifest", False)
+        ),
+        "tau_image_sources_ready": (
+            regional_sources_ready
+            and checks.get("project:tau_image_manifest", False)
+        ),
+        # External access is never inferred from local clinical or image files.
+        "external_sources_ready": False,
+    }
+
+
 def run_preflight(config: dict[str, Any], output_root: Path, *, preflight_only: bool) -> dict[str, Any]:
     repo = repository_snapshot()
     initialized = initialize_run(config=config, output_root=output_root, repo_snapshot=repo)
     checks = _source_checks(config)
-    source_ready = all(checks.values())
+    branch_sources = _branch_source_readiness(config, checks)
+    regional_sources_ready = branch_sources["regional_sources_ready"]
     template_value = config["paths"].get("reference_template")
     template_ready = bool(template_value) and (PROJECT_ROOT / str(template_value)).is_file()
     report = {
-        "status": "PREFLIGHT_DONE" if source_ready else "PREFLIGHT_BLOCKED",
+        "status": "PREFLIGHT_DONE" if regional_sources_ready else "PREFLIGHT_BLOCKED",
         "run_contract_sha256": initialized["run_contract_sha256"],
         "source_checks": checks,
+        "branch_source_readiness": branch_sources,
         "regional_path_status": (
-            "READY_FOR_MANIFEST_CONSTRUCTION" if source_ready else "BLOCKED_MISSING_LOCAL_SOURCE"
+            "READY_FOR_MANIFEST_CONSTRUCTION"
+            if regional_sources_ready
+            else "BLOCKED_MISSING_REGIONAL_SOURCE"
         ),
         "image_path_status": (
             "READY_FOR_AFFINE_PREPROCESSING"
@@ -106,7 +132,7 @@ def run_preflight(config: dict[str, Any], output_root: Path, *, preflight_only: 
             else "BLOCKED_REFERENCE_TEMPLATE_NOT_LOCKED"
         ),
         "external_validation_status": "EXTERNAL_PENDING",
-        "visual_qc_status": "PENDING_HUMAN_REVIEW",
+        "visual_qc_status": "AGENT_MULTI_PASS_QC_PENDING",
         "raw_root_mutated": False,
         "execution_mode": "PREFLIGHT_ONLY" if preflight_only else "GUARDED_AUTO",
         "next_required_stage": "MANIFEST_CONSTRUCTION_AND_LOCK",

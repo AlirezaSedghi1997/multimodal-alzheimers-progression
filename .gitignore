@@ -1,4 +1,4 @@
-﻿.agent/*.lock
+.agent/*.lock
 
 # Raw / protected data
 H:/A4 Learn/
@@ -43,6 +43,12 @@ results/**/subject*
 results/**/per_subject*
 results/**/patient*
 
+# Isolated Codex/Method Y worktrees and scratch (never commit)
+.codex_worktrees/
+.codex_tmp/
+.codex_tmp_tools/
+.codex_review_tmp/
+
 # Local runtime noise
 __pycache__/
 .pytest_cache/
@@ -58,3 +64,5 @@ __pycache__/
 /.agent/
 /data/
 /results/
+/.venvs/
+/vendor/BrainIAC/*.zip

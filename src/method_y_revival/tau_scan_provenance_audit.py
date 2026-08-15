@@ -36,6 +36,7 @@ IDENTITY_TEXT_PATTERNS = {
 SOURCE_IDENTITY_FIELDS = set(IDENTITY_ALIASES)
 PLACEHOLDER_STRINGS = {"", "null", "none", "false", "n/a", "na", "unknown"}
 HEADER_TEXT_FIELDS = ("descrip", "aux_file", "db_name", "intent_name")
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 
 
 def sha256_file(path: Path) -> str:
@@ -44,6 +45,116 @@ def sha256_file(path: Path) -> str:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def _is_within(path: Path, root: Path) -> bool:
+    """Return whether ``path`` is ``root`` or a descendant after resolution."""
+
+    try:
+        path.relative_to(root)
+    except ValueError:
+        return False
+    return True
+
+
+def _has_git_ancestor(path: Path) -> bool:
+    """Return whether ``path`` is inside a Git repository or worktree.
+
+    A worktree can use either a ``.git`` directory or a ``.git`` file that
+    points back to the common Git directory. This check intentionally does not
+    trust caller-supplied roots: private row evidence must never be materialized
+    in any checkout, including a nested or temporary worktree.
+    """
+
+    resolved = path.resolve()
+    for candidate in (resolved, *resolved.parents):
+        git_marker = candidate / ".git"
+        if git_marker.is_dir() or git_marker.is_file():
+            return True
+    return False
+
+
+def _assert_private_rows_outside_repositories(row_path: Path, private_root: Path) -> None:
+    """Fail closed before reading inputs or writing private row evidence."""
+
+    if (
+        _is_within(row_path, REPOSITORY_ROOT)
+        or _is_within(private_root, REPOSITORY_ROOT)
+        or _has_git_ancestor(row_path)
+        or _has_git_ancestor(private_root)
+    ):
+        raise ValueError("PRIVATE_ROWS_OUTPUT_INSIDE_REPOSITORY")
+
+
+def _load_quantitative_metrics(
+    quantitative_validation_path: Path | str,
+    crosswalk_audit_path: Path | str,
+) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]]]:
+    """Load claim-facing metrics only from canonical aggregate artifacts.
+
+    This intentionally projects a small, aggregate-only subset.  In
+    particular, it does not propagate any source paths or row-level keys that
+    may be present in the canonical artifacts.
+    """
+
+    quantitative_file = Path(quantitative_validation_path)
+    crosswalk_file = Path(crosswalk_audit_path)
+    if (
+        quantitative_file.name != "scan_level_tau_quantitative_validation.json"
+        or crosswalk_file.name != "tau_source_region_crosswalk_audit_v2.json"
+    ):
+        raise ValueError("TAU_QUANTITATIVE_ARTIFACT_NAME_INVALID")
+    try:
+        quantitative = json.loads(quantitative_file.read_text(encoding="utf-8-sig"))
+        crosswalk = json.loads(crosswalk_file.read_text(encoding="utf-8-sig"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError("TAU_QUANTITATIVE_ARTIFACT_UNREADABLE") from exc
+    if not isinstance(quantitative, Mapping) or not isinstance(crosswalk, Mapping):
+        raise ValueError("TAU_QUANTITATIVE_ARTIFACT_SCHEMA_INVALID")
+    if (
+        quantitative.get("science_gate_status") != "BLOCKED"
+        or quantitative.get("claim_status") != "NO_CLAIM"
+        or crosswalk.get("science_gate_status") != "BLOCKED"
+        or crosswalk.get("claim_status") != "NO_CLAIM"
+        or crosswalk.get("reference_equivalence_proven") is not False
+    ):
+        raise ValueError("TAU_QUANTITATIVE_ARTIFACT_GATE_NOT_BLOCKED")
+    raw_metrics = quantitative.get("metrics")
+    if not isinstance(raw_metrics, list) or not raw_metrics:
+        raise ValueError("TAU_QUANTITATIVE_ARTIFACT_METRICS_MISSING")
+    metrics: list[dict[str, Any]] = []
+    for item in raw_metrics:
+        if not isinstance(item, Mapping):
+            raise ValueError("TAU_QUANTITATIVE_ARTIFACT_METRIC_SCHEMA_INVALID")
+        required = (
+            "mask_name",
+            "n_pairs",
+            "pearson_r",
+            "spearman_rho",
+            "bias_image_minus_source",
+            "mae",
+            "bland_altman_mean_bias",
+            "bland_altman_sd",
+            "bland_altman_lower_95",
+            "bland_altman_upper_95",
+            "status",
+        )
+        if any(key not in item for key in required):
+            raise ValueError("TAU_QUANTITATIVE_ARTIFACT_METRIC_SCHEMA_INVALID")
+        if item["status"] != "COMPUTED":
+            raise ValueError("TAU_QUANTITATIVE_ARTIFACT_METRIC_NOT_COMPUTED")
+        metrics.append({key: item[key] for key in required})
+    sources = {
+        "scan_level_tau_quantitative_validation": {
+            "artifact_name": quantitative_file.name,
+            "sha256": sha256_file(quantitative_file),
+        },
+        "tau_source_region_crosswalk_audit": {
+            "artifact_name": crosswalk_file.name,
+            "sha256": sha256_file(crosswalk_file),
+        },
+    }
+    return metrics, sources
 
 
 def canonical_visit(value: Any) -> str:
@@ -221,22 +332,43 @@ def _render_report(report: Mapping[str, Any]) -> str:
     header = report["nifti_header_status_counts"]
     stanford = report["stanford_bridge_status_counts"]
     a4 = report["a4_linear_suvr_bridge_status_counts"]
+    metric_lines = [
+        "- Canonical aggregate quantitative metrics (not claim-bearing):"
+    ]
+    for metric in report["quantitative_metrics"]:
+        metric_lines.append(
+            "  - "
+            f"{metric['mask_name']}: pairs `{metric['n_pairs']}`, Pearson `{metric['pearson_r']:.4f}`, "
+            f"Spearman `{metric['spearman_rho']:.4f}`, bias `{metric['bias_image_minus_source']:.5f}`, "
+            f"MAE `{metric['mae']:.4f}`, Bland–Altman mean bias "
+            f"`{metric['bland_altman_mean_bias']:.5f}`, SD `{metric['bland_altman_sd']:.5f}`, "
+            f"95% limits [`{metric['bland_altman_lower_95']:.5f}`, "
+            f"`{metric['bland_altman_upper_95']:.5f}`]."
+        )
+    source_hashes = ", ".join(
+        f"`{item['artifact_name']}` SHA-256 `{item['sha256']}`"
+        for item in report["quantitative_metric_sources"].values()
+    )
     return "\n".join(
         [
             "# Tau quantitative validation v2",
             "",
             "- Official masks: CenTauR Mesial, Meta, TP and Frontal; reference: `voi_CerebGry_tau_2mm`.",
             "- Comparisons computed: Pearson, Spearman, bias, MAE and Bland–Altman limits.",
-            "- Official-source metrics remain on the existing 379-row numerical-visit association and are not claim-bearing: Mesial Pearson `0.9299`, Spearman `0.9030`, bias `0.00235`, MAE `0.0461`; Meta Pearson `0.9264`, Spearman `0.8769`, bias `0.0201`, MAE `0.0413`; TP Pearson `0.8557`, Spearman `0.7791`, bias `0.0757`, MAE `0.0793`; Frontal Pearson `0.7068`, Spearman `0.6620`, bias `0.1559`, MAE `0.1571`.",
+            *metric_lines,
+            f"- Metric sources: {source_hashes}.",
             "- Stanford uses the non-PVC gray-matter cerebellum contract (`bi_Cerebellum.Cortex`), while the official CenTauR mask uses an inferior-cerebellar reference; equivalence is not proven.",
             "<!-- scan-provenance audit: begin -->",
             "## Scan-provenance audit (refresh-generated)",
             "",
             f"- Scan count: `{report['scan_count']}`.",
+            f"- Locked input manifest: `{report['input_manifest']['artifact_name']}`; rows "
+            f"`{report['input_manifest']['row_count']}`; SHA-256 "
+            f"`{report['input_manifest']['sha256']}`.",
             f"- Sidecar identity status counts: `{json.dumps(sidecar, sort_keys=True)}`.",
             f"- NIfTI header/extension identity status counts: `{json.dumps(header, sort_keys=True)}`.",
             f"- Aggregate exact identity scans (sidecar or header): `{report['exact_scan_identity_scan_count']}`; fields: `{', '.join(report['exact_scan_identity_fields']) or 'none'}`.",
-            f"- A4 linear-SUVR BID+VISCODE subject/visit associations: `{report['a4_linear_suvr_direct_bridge_scan_count']}`; statuses: `{json.dumps(a4, sort_keys=True)}`.",
+            f"- A4 linear-SUVR BID+VISCODE subject/visit associations: `{report['a4_linear_suvr_subject_visit_association_scan_count']}`; statuses: `{json.dumps(a4, sort_keys=True)}`.",
             f"- Stanford BID+VISCODE subject/visit associations (including numeric visit convention): `{json.dumps(stanford, sort_keys=True)}`.",
             "- BID+VISCODE associations are not exact acquisition identity; no UID/accession bridge or reference-pipeline equivalence is inferred.",
             f"- Science gate: **{report['science_gate_status']}**; claim status: **{report['claim_status']}**; claim-bearing work remains disallowed.",
@@ -244,7 +376,7 @@ def _render_report(report: Mapping[str, Any]) -> str:
             "",
             "The quantitative science gate remains blocked until exact scan identity, reference-pipeline equivalence, and a prespecified calibration path are proven.",
             "",
-            "Source artifacts: `provenance/scan_level_tau_quantitative_validation.parquet`, `provenance/scan_level_tau_quantitative_validation.json`, `provenance/tau_source_family_registry_v2.json`, `provenance/tau_source_region_crosswalk_audit_v2.json`, `provenance/tau_tracer_consistency_audit_v2.json`, and `provenance/tau_scan_source_identity_audit_v2.json`.",
+            "Canonical aggregate metric artifacts are identified above by fixed name and SHA-256; no row-level artifact path is published.",
             "",
             "Rows without exact source-visit linkage remain exploratory even when image metrics are finite; no transform rerun, training, HPO, outer evaluation, or image-CNN work is authorized by this audit.",
             "",
@@ -261,6 +393,8 @@ def audit_tau_scan_provenance(
     output_report: Path | str | None = None,
     output_rows: Path | str | None = None,
     private_rows_root: Path | str | None = None,
+    quantitative_validation_path: Path | str | None = None,
+    crosswalk_audit_path: Path | str | None = None,
 ) -> dict[str, Any]:
     """Audit linked scans and optionally emit explicitly private row evidence."""
 
@@ -271,6 +405,7 @@ def audit_tau_scan_provenance(
         row_path = Path(output_rows).resolve()
         if private_root not in row_path.parents and row_path != private_root:
             raise ValueError("PRIVATE_ROWS_OUTPUT_OUTSIDE_PRIVATE_ROOT")
+        _assert_private_rows_outside_repositories(row_path, private_root)
     linkage_file = Path(linkage_path)
     suvr_file = Path(source_suvr_path)
     stanford_file = Path(source_stanford_path)
@@ -351,6 +486,11 @@ def audit_tau_scan_provenance(
         "claim_bearing_allowed": False,
         "scope": "FTP_SIDECAR_AND_NIFTI_HEADER_IDENTITY_AUDIT_NO_TRANSFORM_RERUN",
         "scan_count": int(len(frame)),
+        "input_manifest": {
+            "artifact_name": linkage_file.name,
+            "row_count": int(len(frame)),
+            "sha256": sha256_file(linkage_file),
+        },
         "sidecar_status_counts": {str(k): int(v) for k, v in sidecar_counts.items()},
         "sidecar_identity_scan_count": int(sidecar_identity.sum()),
         "nifti_header_status_counts": {str(k): int(v) for k, v in header_counts.items()},
@@ -360,7 +500,13 @@ def audit_tau_scan_provenance(
             {field for fields in frame.loc[exact_identity, "sidecar_identity_fields"] for field in fields}
             | {field for fields in frame.loc[exact_identity, "nifti_header_identity_fields"] for field in fields}
         ),
-        "a4_linear_suvr_direct_bridge_scan_count": int((frame["a4_suvr_source_row_count"] > 0).sum()),
+        "association_semantics": {
+            "a4_linear_suvr": "SUBJECT_VISIT_ASSOCIATION_ONLY_NOT_ACQUISITION_IDENTITY",
+            "stanford": "SUBJECT_VISIT_ASSOCIATION_ONLY_NOT_ACQUISITION_IDENTITY",
+        },
+        "a4_linear_suvr_subject_visit_association_scan_count": int(
+            (frame["a4_suvr_source_row_count"] > 0).sum()
+        ),
         "a4_linear_suvr_no_source_key_scan_count": int((frame["a4_suvr_source_row_count"] == 0).sum()),
         "a4_linear_suvr_bridge_status_counts": {str(k): int(v) for k, v in direct_counts.items()},
         "stanford_bridge_status_counts": {str(k): int(v) for k, v in stanford_counts_summary.items()},
@@ -378,6 +524,13 @@ def audit_tau_scan_provenance(
     # gate last.  Each replacement is atomic, and the gate is the commit point,
     # so it cannot advertise a refresh whose official report was not written.
     if output_report is not None:
+        if quantitative_validation_path is None or crosswalk_audit_path is None:
+            raise ValueError("TAU_QUANTITATIVE_ARTIFACTS_REQUIRED_FOR_REPORT")
+        metrics, metric_sources = _load_quantitative_metrics(
+            quantitative_validation_path, crosswalk_audit_path
+        )
+        report["quantitative_metrics"] = metrics
+        report["quantitative_metric_sources"] = metric_sources
         atomic_write_bytes(Path(output_report), _render_report(report).encode("utf-8"))
     if output_json is not None:
         atomic_write_json(Path(output_json), report)

@@ -83,6 +83,14 @@ validation:
   minimum_total_events: 60
   minimum_events_per_treatment_arm: 20
 
+pretraining_contracts_v2:
+  pacc_legacy_input_contract_sha256: "7b80ad633fb813c4e79365fbed3decf3e17f82d8ffa5e095bb20bdecfd6bbf4b"
+  pacc_exact_date_rule: "MEDIAN_EXACT_QSDTC_DAYS_T0_ACROSS_PACC_COMPONENTS"
+  pacc_component_codes: [DIGIT, FCSRT96, LMIIA, MMSE]
+  pacc_post_pet_baseline_window_days: 183
+  pacc_followup_window_days: 1640
+  pacc_minimum_longitudinal_measurements: 2
+
 hpo:
   cox:
     alpha: [0.001, 0.01, 0.1, 1.0, 10.0]

@@ -1,0 +1,13 @@
+schema_version: "2.0"
+seed: 20260714
+outer_folds: 5
+inner_folds: 3
+budget_per_family: 3
+branches:
+  - amyloid_source_regional
+  - tau_source_regional
+  - paired_source_regional
+selection_metric: mean_inner_integrated_brier_score
+selection_rule: one_standard_error_simplest_candidate
+outer_test_access: forbidden_until_winner_and_checkpoint_lock
+resume_policy: exact_run_contract_only
