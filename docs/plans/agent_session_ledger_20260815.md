@@ -14,7 +14,8 @@ Method X battery resume was **not edited**. Method Y v2 pretraining **code** is 
 
 | Ref | SHA | Meaning |
 |---|---|---|
-| Live HEAD (`method-y-post-revival-sanitized-20260812`) | `b1b99df32f4ab0a2a7cc4d4cc887eb0e6638fcbb` | Method-Y-only defect-repair commit. Branch **name is false**: history still reaches the private parquet blob. |
+| Live HEAD (`method-y-post-revival-sanitized-20260812`) | `f36218d339ef7c743aee0f65c4f8564e142fe207` (docs record; parent `b1b99df` is the repair) | Method-Y-only. Branch **name is false**: history still reaches the private parquet blob. |
+| Defect-repair code | `b1b99df32f4ab0a2a7cc4d4cc887eb0e6638fcbb` | Proof-bearing review evidence; Task 4 not COMMITTED. |
 | Previous live port | `9fcf5c105cede77b61805e5cc1518aa2ff398678` | Codex Method Y contracts copied onto leaky history. Overclaimed P0/P4/P7. |
 | Method X receipt pin | `a0161d69e4a326e0347f5d07320e1986d95a4072` | Do not reset live HEAD back to this. Do not `filter-repo` this checkout. |
 | Publishable Method Y code SOT | `methody/pretraining-sanitized-v2` = `46520bfd058cf3c81f79581e3f242e4d9e496944` | Parquet-free. Contains the same repair as live `b1b99df`. |

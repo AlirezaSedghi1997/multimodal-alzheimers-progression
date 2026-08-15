@@ -26,6 +26,7 @@ session did not start or stop MX-02.
 ### Pass 2 (current)
 
 - Live commit `b1b99df32f4ab0a2a7cc4d4cc887eb0e6638fcbb`.
+- Session docs record `f36218d339ef7c743aee0f65c4f8564e142fe207`.
 - Sanitized twin `46520bfd058cf3c81f79581e3f242e4d9e496944` (parquet-free).
 - Evidence schema 2.1; Task 4 demoted to `AWAITING_AGENT_MULTI_PASS_QC`;
   adversarial quality FAIL; `training_allowed=false`.
