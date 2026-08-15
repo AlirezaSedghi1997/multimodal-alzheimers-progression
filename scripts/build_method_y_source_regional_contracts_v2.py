@@ -109,7 +109,14 @@ def _validated_negative_result(path: Path) -> dict[str, str]:
     if positive_gate:
         raise RuntimeError("PAIRED_V1_ARTIFACT_IS_NOT_NEGATIVE")
     conclusion = "TAU_INCREMENTAL_VALUE_NOT_DEMONSTRATED"
-    return {"artifact_basename": path.name, "sha256": hashlib.sha256(raw).hexdigest(), "input_evidence_sha256": payload["input_evidence_sha256"], "conclusion": conclusion, "conclusion_sha256": hashlib.sha256(conclusion.encode()).hexdigest()}
+    digest = hashlib.sha256(raw).hexdigest()
+    return {
+        "artifact_basename": path.name,
+        "sha256": digest,
+        "input_evidence_sha256": payload["input_evidence_sha256"],
+        "conclusion": conclusion,
+        "conclusion_sha256": hashlib.sha256(f"{conclusion}:{digest}".encode("utf-8")).hexdigest(),
+    }
 
 
 def _blocked(branch: str, *, source_basename: str, source_sha256: str, endpoint_sha256: str, blocker: str) -> dict:

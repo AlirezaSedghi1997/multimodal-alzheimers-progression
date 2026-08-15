@@ -54,6 +54,7 @@ _RUN_CONTRACT_KEYS = {
     "reconstruction_mode",
     "release_eligible",
 }
+EVIDENCE_SCHEMA_VERSION = "2.1"
 _EVIDENCE_COMMON_KEYS = {
     "schema_version",
     "layer_id",
@@ -64,12 +65,28 @@ _EVIDENCE_COMMON_KEYS = {
     "evidence_contract_sha256",
 }
 _EVIDENCE_RESULT_KEYS = {
-    "INVARIANT_TEST_SUITE": {"zero_failures", "test_count"},
-    "DETERMINISTIC_REBUILD": {"changed_count", "artifact_count"},
+    "INVARIANT_TEST_SUITE": {
+        "zero_failures",
+        "test_count",
+        "collected",
+        "failed",
+        "pytest_args",
+        "junit_sha256",
+    },
+    "DETERMINISTIC_REBUILD": {
+        "changed_count",
+        "artifact_count",
+        "hash_compare_only",
+        "before_sha256",
+        "after_sha256",
+    },
     "ADVERSARIAL_AGENT_REVIEW": {
         "spec_verdict",
         "quality_verdict",
         "blocking_findings",
+        "spec_ids_reviewed",
+        "blocking_finding_ids",
+        "quality_rubric_id",
     },
 }
 
@@ -94,26 +111,103 @@ def _is_commit(value: Any) -> bool:
     return True
 
 
-def _validate_layer_result(
-    layer_id: str, payload: Mapping[str, Any], artifact_count: int
-) -> None:
+def synthetic_layer_result(
+    layer_id: str, reviewed_artifact_sha256: Mapping[str, str]
+) -> dict[str, Any]:
+    """Proof-shaped fixture values. Live QC must replace these with real proof."""
+
+    reviewed = {
+        str(name): str(digest).lower()
+        for name, digest in reviewed_artifact_sha256.items()
+    }
     if layer_id == "INVARIANT_TEST_SUITE":
+        collected = 60
+        return {
+            "zero_failures": True,
+            "test_count": collected,
+            "collected": collected,
+            "failed": 0,
+            "pytest_args": ["-q", "tests/method_y_revival"],
+            "junit_sha256": "c" * 64,
+        }
+    if layer_id == "DETERMINISTIC_REBUILD":
+        return {
+            "changed_count": 0,
+            "artifact_count": len(reviewed),
+            "hash_compare_only": True,
+            "before_sha256": dict(sorted(reviewed.items())),
+            "after_sha256": dict(sorted(reviewed.items())),
+        }
+    return {
+        "spec_verdict": "PASS",
+        "quality_verdict": "PASS",
+        "blocking_findings": 0,
+        "spec_ids_reviewed": ["TASK4_ENDPOINT_SPLIT_SCANNER_EXTERNAL"],
+        "blocking_finding_ids": [],
+        "quality_rubric_id": "METHOD_Y_TASK4_SPEC_QUALITY_V1",
+    }
+
+
+def _validate_layer_result(
+    layer_id: str,
+    payload: Mapping[str, Any],
+    reviewed_artifact_sha256: Mapping[str, str],
+) -> None:
+    reviewed = {
+        str(name): str(digest).lower()
+        for name, digest in reviewed_artifact_sha256.items()
+    }
+    artifact_count = len(reviewed)
+    if layer_id == "INVARIANT_TEST_SUITE":
+        args = payload.get("pytest_args")
+        collected = payload.get("collected")
+        failed = payload.get("failed")
         valid = (
             payload.get("zero_failures") is True
             and isinstance(payload.get("test_count"), int)
             and not isinstance(payload.get("test_count"), bool)
             and payload["test_count"] > 0
+            and collected == payload["test_count"]
+            and failed == 0
+            and isinstance(args, list)
+            and bool(args)
+            and all(isinstance(item, str) and item.strip() for item in args)
+            and _is_sha256(payload.get("junit_sha256"))
         )
     elif layer_id == "DETERMINISTIC_REBUILD":
+        before = payload.get("before_sha256")
+        after = payload.get("after_sha256")
         valid = (
-            payload.get("changed_count") == 0
+            payload.get("hash_compare_only") is True
+            and payload.get("changed_count") == 0
             and payload.get("artifact_count") == artifact_count
+            and isinstance(before, Mapping)
+            and isinstance(after, Mapping)
+            and {
+                str(name): str(digest).lower() for name, digest in before.items()
+            }
+            == reviewed
+            and {
+                str(name): str(digest).lower() for name, digest in after.items()
+            }
+            == reviewed
         )
     else:
+        finding_ids = payload.get("blocking_finding_ids")
+        spec_ids = payload.get("spec_ids_reviewed")
+        rubric = payload.get("quality_rubric_id")
         valid = (
             payload.get("spec_verdict") == "PASS"
             and payload.get("quality_verdict") == "PASS"
+            and isinstance(finding_ids, list)
+            and all(isinstance(item, str) and item.strip() for item in finding_ids)
+            and payload.get("blocking_findings") == len(finding_ids)
             and payload.get("blocking_findings") == 0
+            and isinstance(spec_ids, list)
+            and bool(spec_ids)
+            and all(isinstance(item, str) and item.strip() for item in spec_ids)
+            and isinstance(rubric, str)
+            and rubric.strip()
         )
     if not valid:
         raise AgentReviewReceiptError("REVIEW_EVIDENCE_RESULT_INVALID")
@@ -273,7 +367,7 @@ def validate_task4_review_evidence(
         if not (
             set(payload)
             == _EVIDENCE_COMMON_KEYS | _EVIDENCE_RESULT_KEYS[layer_id]
-            and payload.get("schema_version") == "2.0"
+            and payload.get("schema_version") == EVIDENCE_SCHEMA_VERSION
             and payload.get("layer_id") == layer_id
             and payload.get("status") == "PASS"
             and payload.get("implementation_commit") == implementation_commit
@@ -284,7 +378,7 @@ def validate_task4_review_evidence(
             == sha256_mapping(unsigned)
         ):
             raise AgentReviewReceiptError("REVIEW_EVIDENCE_BINDING_INVALID")
-        _validate_layer_result(layer_id, payload, len(reviewed))
+        _validate_layer_result(layer_id, payload, reviewed)
         normalized.append(
             {
                 "layer_id": layer_id,

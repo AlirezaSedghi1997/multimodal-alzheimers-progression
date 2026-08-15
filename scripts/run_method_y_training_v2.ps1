@@ -64,9 +64,17 @@ $Arguments = @(
     "--feature-validation-state", $FeatureValidationStatePath
 )
 if ($ExecuteTraining) {
+    $defaultReadiness = Join-Path $ProjectRoot "results\method_y_revival_v2\readiness\PRETRAINING_READINESS_V2.json"
+    $resolvedReceipt = [System.IO.Path]::GetFullPath($PretrainingReadinessReceipt)
+    $resolvedDefault = [System.IO.Path]::GetFullPath($defaultReadiness)
+    if ($resolvedReceipt -eq $resolvedDefault) {
+        throw "EXECUTE_TRAINING_REQUIRES_TASK6_RECEIPT_NOT_PRETRAINING_READINESS"
+    }
     $Arguments += "--execute-training"
     $Arguments += "--pretraining-readiness-receipt"
     $Arguments += $PretrainingReadinessReceipt
+} else {
+    $Arguments += "--preflight-only"
 }
 
 & $PythonPath @Arguments

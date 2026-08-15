@@ -3,6 +3,7 @@ seed: 20260714
 outer_folds: 5
 inner_folds: 3
 budget_per_family: 3
+execution_mode: synthetic_smoke_only
 branches:
   - amyloid_source_regional
   - tau_source_regional

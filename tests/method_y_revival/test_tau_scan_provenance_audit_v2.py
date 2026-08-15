@@ -400,19 +400,22 @@ def test_publishable_sanitized_ref_has_no_private_tau_or_sdd_report_objects():
         assert path not in history
 
 
-def test_live_head_history_is_not_publishable_while_private_blob_reachable():
-    """The live Method X checkout still reaches the leaked parquet blob.
+def test_index_and_working_tree_track_no_parquet():
+    repository_root = Path(__file__).resolve().parents[2]
+    tracked = _git_text(repository_root, "ls-files", "*.parquet").strip()
+    assert tracked == ""
 
-    Do not rewrite this history in-place. The publishable line is
-    ``methody/pretraining-sanitized-v2``.
-    """
+
+def test_live_head_is_not_the_publishable_ref_when_private_history_is_reachable():
+    """Report leaky HEAD as not publishable. Do not require the leak to remain."""
 
     repository_root = Path(__file__).resolve().parents[2]
     objects = _git_text(repository_root, "rev-list", "HEAD", "--objects")
-    assert (
-        "results/method_y_revival_v2/provenance/tau_scan_source_identity_audit_v2.parquet"
-        in objects
-    )
+    leak_present = any(path in objects for path in _FORBIDDEN_PRIVATE_HISTORY)
+    head_ref = _git_text(repository_root, "rev-parse", "--abbrev-ref", "HEAD").strip()
+    if leak_present:
+        assert head_ref != _PUBLISHABLE_REF
+
 
 
 def test_refreshed_public_audit_is_locked_to_transform_eligible_manifest():

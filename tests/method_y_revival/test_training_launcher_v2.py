@@ -10,6 +10,10 @@ import pytest
 import yaml
 
 from src.method_y_revival.contracts import sha256_mapping
+from src.method_y_revival.review_receipt import (
+    EVIDENCE_SCHEMA_VERSION,
+    synthetic_layer_result,
+)
 
 
 def _sha(path: Path) -> str:
@@ -38,33 +42,23 @@ def _write_locked_inputs(root: Path) -> tuple[Path, Path, Path]:
     layer_specs = {
         "INVARIANT_TEST_SUITE": {
             "relative_path": "review_evidence/invariant_test_suite_v2.json",
-            "result": {"zero_failures": True, "test_count": 100},
         },
         "DETERMINISTIC_REBUILD": {
             "relative_path": "review_evidence/deterministic_rebuild_v2.json",
-            "result": {
-                "changed_count": 0,
-                "artifact_count": len(reviewed_hashes),
-            },
         },
         "ADVERSARIAL_AGENT_REVIEW": {
             "relative_path": "review_evidence/adversarial_agent_review_v2.json",
-            "result": {
-                "spec_verdict": "PASS",
-                "quality_verdict": "PASS",
-                "blocking_findings": 0,
-            },
         },
     }
     for layer_id, spec in layer_specs.items():
         evidence = {
-            "schema_version": "2.0",
+            "schema_version": EVIDENCE_SCHEMA_VERSION,
             "layer_id": layer_id,
             "status": "PASS",
             "implementation_commit": implementation_commit,
             "run_contract_sha256": run_contract_sha256,
             "reviewed_artifact_sha256": reviewed_hashes,
-            **spec["result"],
+            **synthetic_layer_result(layer_id, reviewed_hashes),
         }
         evidence["evidence_contract_sha256"] = sha256_mapping(evidence)
         evidence_path = task4 / spec["relative_path"]
@@ -176,6 +170,7 @@ def _config(path: Path) -> Path:
                 "outer_folds": 5,
                 "inner_folds": 3,
                 "budget_per_family": 3,
+                "execution_mode": "synthetic_smoke_only",
                 "branches": [
                     "amyloid_source_regional",
                     "tau_source_regional",
@@ -209,6 +204,7 @@ def test_training_v2_launcher_defaults_to_preflight_and_creates_no_training_stat
             str(readiness),
             "--feature-validation-state",
             str(feature_state),
+            "--preflight-only",
         ]
     )
 
@@ -590,7 +586,7 @@ def test_powershell_training_v2_launcher_executes_preflight_with_all_temp_on_h(t
         check=False,
         capture_output=True,
         text=True,
-        timeout=300,
+        timeout=90,
     )
 
     assert completed.returncode == 0, completed.stderr

@@ -111,6 +111,80 @@ def test_tau_long_source_requires_exact_prespecified_regions_without_fuzzy_mappi
     assert contract["feature_columns"] == ["Precuneus_R", "Temporal_Mid_L"]
 
 
+def test_tau_long_source_rejects_centaur_region_names():
+    from src.method_y_revival.source_regional_features import (
+        SourceRegionalFeatureError,
+        build_feature_contract,
+    )
+
+    rows = pd.DataFrame(
+        {
+            "subject_key": ["s1", "s1"],
+            "visit_code": [4, 4],
+            "scan_date_days_t0": [1, 1],
+            "scan_analyzed": ["Yes", "Yes"],
+            "scan_number": [1, 1],
+            "brain_region": ["Temporal_Mid_L", "Mesial_CenTauR"],
+            "suvr_persi": [1.1, 1.2],
+        }
+    )
+    with pytest.raises(SourceRegionalFeatureError, match="TAU_CENTAUR_RELABELING_FORBIDDEN"):
+        build_feature_contract(
+            branch="tau_source_regional",
+            rows=rows,
+            source_provenance={
+                **_provenance("tau_long.csv"),
+                "baseline_visit_code": 4,
+                "reference_region": "whole_cerebellum_blcere_all",
+                "quantitative_contract_id": "linear_normalization_whole_cerebellum_v1",
+                "reference_dictionary_basename": "tau_methods.pdf",
+                "reference_dictionary_sha256": "c" * 64,
+                "allowed_region_names": ["Temporal_Mid_L", "Mesial_CenTauR"],
+            },
+            endpoint_contract_sha256="b" * 64,
+        )
+
+
+def test_paired_contract_binds_negative_result_without_exposing_private_membership():
+    from src.method_y_revival.source_regional_features import build_paired_feature_contract
+
+    amyloid = {"feature_digest": "a" * 64, "baseline_row_digest": "b" * 64, "locked": True}
+    tau = {"feature_digest": "c" * 64, "baseline_row_digest": "d" * 64, "locked": True}
+    conclusion = "TAU_INCREMENTAL_VALUE_NOT_DEMONSTRATED"
+    artifact_sha = "f" * 64
+    conclusion_sha = hashlib.sha256(f"{conclusion}:{artifact_sha}".encode("utf-8")).hexdigest()
+    negative = {
+        "artifact_basename": "PAIRED_AT_RESULTS_V1.md",
+        "sha256": artifact_sha,
+        "input_evidence_sha256": "e" * 64,
+        "conclusion": conclusion,
+        "conclusion_sha256": conclusion_sha,
+    }
+    contract = build_paired_feature_contract(
+        amyloid_contract=amyloid,
+        tau_contract=tau,
+        paired_endpoint_contract_sha256="e" * 64,
+        negative_result_reference=negative,
+        paired_subject_count=369,
+        paired_date_window_days=183,
+        paired_membership_digest="0" * 64,
+    )
+    assert contract["status"] == "LOCKED"
+    assert contract["negative_result_preserved"] is True
+    assert "subject_key" not in json.dumps(contract)
+
+    other = build_paired_feature_contract(
+        amyloid_contract=amyloid,
+        tau_contract=tau,
+        paired_endpoint_contract_sha256="e" * 64,
+        negative_result_reference=negative,
+        paired_subject_count=369,
+        paired_date_window_days=183,
+        paired_membership_digest="1" * 64,
+    )
+    assert other["contract_sha256"] != contract["contract_sha256"]
+
+
 def test_baseline_duplicate_tie_fails_closed():
     from src.method_y_revival.source_regional_features import (
         SourceRegionalFeatureError,
@@ -133,32 +207,6 @@ def test_baseline_duplicate_tie_fails_closed():
             source_provenance=_provenance(),
             endpoint_contract_sha256="b" * 64,
         )
-
-
-def test_paired_contract_binds_negative_result_without_exposing_private_membership():
-    from src.method_y_revival.source_regional_features import build_paired_feature_contract
-
-    amyloid = {"feature_digest": "a" * 64, "baseline_row_digest": "b" * 64, "locked": True}
-    tau = {"feature_digest": "c" * 64, "baseline_row_digest": "d" * 64, "locked": True}
-    contract = build_paired_feature_contract(
-        amyloid_contract=amyloid,
-        tau_contract=tau,
-        paired_endpoint_contract_sha256="e" * 64,
-        negative_result_reference={"artifact_basename": "PAIRED_AT_RESULTS_V1.md", "sha256": "f" * 64, "input_evidence_sha256": "e" * 64, "conclusion": "TAU_INCREMENTAL_VALUE_NOT_DEMONSTRATED", "conclusion_sha256": hashlib.sha256(b"TAU_INCREMENTAL_VALUE_NOT_DEMONSTRATED").hexdigest()},
-        paired_subject_count=369,
-        paired_date_window_days=183,
-        paired_membership_digest="0" * 64,
-    )
-    assert contract["status"] == "LOCKED"
-    assert contract["negative_result_preserved"] is True
-    assert "subject_key" not in json.dumps(contract)
-
-    other = build_paired_feature_contract(
-        amyloid_contract=amyloid, tau_contract=tau, paired_endpoint_contract_sha256="e" * 64,
-        negative_result_reference={"artifact_basename": "PAIRED_AT_RESULTS_V1.md", "sha256": "f" * 64, "input_evidence_sha256": "e" * 64, "conclusion": "TAU_INCREMENTAL_VALUE_NOT_DEMONSTRATED", "conclusion_sha256": hashlib.sha256(b"TAU_INCREMENTAL_VALUE_NOT_DEMONSTRATED").hexdigest()},
-        paired_subject_count=369, paired_date_window_days=183, paired_membership_digest="1" * 64,
-    )
-    assert other["contract_sha256"] != contract["contract_sha256"]
 
 
 def test_public_contract_writer_is_atomic_and_rejects_private_payload(tmp_path):

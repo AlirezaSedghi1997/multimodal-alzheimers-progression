@@ -12,7 +12,10 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.method_y_revival.tau_scan_provenance_audit import audit_tau_scan_provenance
+from src.method_y_revival.tau_scan_provenance_audit import (
+    _assert_private_rows_outside_repositories,
+    audit_tau_scan_provenance,
+)
 
 
 def main() -> int:
@@ -50,8 +53,12 @@ def main() -> int:
     )
     if args.private_rows_output is not None:
         private_root = (args.private_rows_root or args.private_rows_output.parent).resolve()
-        if ROOT.resolve() in private_root.parents or private_root == ROOT.resolve():
-            parser.error("--private-rows-root must be outside the repository")
+        try:
+            _assert_private_rows_outside_repositories(
+                args.private_rows_output.resolve(), private_root
+            )
+        except ValueError as exc:
+            parser.error(str(exc))
     else:
         private_root = None
     report = audit_tau_scan_provenance(

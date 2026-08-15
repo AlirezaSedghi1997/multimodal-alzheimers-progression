@@ -123,6 +123,8 @@ def dispatch_training_runtime(
     if executor is None:
         raise TrainingRuntimeControlError("HASH_BOUND_TRAINING_EXECUTOR_REQUIRED")
     actual_executor = executor_contract(executor)
+    if actual_executor["test_only"] is not True:
+        raise TrainingRuntimeControlError("SYNTHETIC_SMOKE_ONLY_EXECUTOR_REQUIRED")
     if dict(receipt_executor_contract) != actual_executor:
         raise TrainingRuntimeControlError("TRAINING_EXECUTOR_CONTRACT_MISMATCH")
 

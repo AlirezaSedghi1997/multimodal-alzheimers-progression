@@ -786,34 +786,25 @@ def _write_synthetic_task4_review_evidence(
     output, *, implementation_commit_override=None
 ):
     from src.method_y_revival.contracts import sha256_mapping
+    from src.method_y_revival.review_receipt import (
+        EVIDENCE_SCHEMA_VERSION,
+        synthetic_layer_result,
+    )
 
     state = json.loads(
         (output / "pretraining_validation_state.json").read_text(encoding="utf-8")
     )
     evidence_root = output / "review_evidence"
     evidence_root.mkdir(exist_ok=True)
-    layer_results = {
-        "INVARIANT_TEST_SUITE": {
-            "zero_failures": True,
-            "test_count": 60,
-        },
-        "DETERMINISTIC_REBUILD": {
-            "changed_count": 0,
-            "artifact_count": len(state["artifact_sha256"]),
-        },
-        "ADVERSARIAL_AGENT_REVIEW": {
-            "spec_verdict": "PASS",
-            "quality_verdict": "PASS",
-            "blocking_findings": 0,
-        },
-    }
     relative_paths = []
-    for layer_id, result in layer_results.items():
-        relative_path = (
-            "review_evidence/" + layer_id.casefold() + "_v2.json"
-        )
+    for layer_id in (
+        "INVARIANT_TEST_SUITE",
+        "DETERMINISTIC_REBUILD",
+        "ADVERSARIAL_AGENT_REVIEW",
+    ):
+        relative_path = "review_evidence/" + layer_id.casefold() + "_v2.json"
         payload = {
-            "schema_version": "2.0",
+            "schema_version": EVIDENCE_SCHEMA_VERSION,
             "layer_id": layer_id,
             "status": "PASS",
             "implementation_commit": (
@@ -821,7 +812,7 @@ def _write_synthetic_task4_review_evidence(
             ),
             "run_contract_sha256": state["run_contract_sha256"],
             "reviewed_artifact_sha256": state["artifact_sha256"],
-            **result,
+            **synthetic_layer_result(layer_id, state["artifact_sha256"]),
         }
         payload["evidence_contract_sha256"] = sha256_mapping(payload)
         (output / relative_path).write_text(
@@ -1057,6 +1048,54 @@ def test_task4_rejects_privacy_fields_in_review_evidence(tmp_path):
     ):
         finalize_task4_agent_review(
             root, project_root=project, evidence_relative_paths=paths
+        )
+
+
+def test_task4_review_rejects_schema_20_pass_stubs_without_proof_fields(tmp_path):
+    from src.method_y_revival.contracts import sha256_mapping
+    from src.method_y_revival.review_receipt import (
+        AgentReviewReceiptError,
+        validate_task4_review_evidence,
+    )
+
+    project = tmp_path / "project"
+    result_root = project / "results" / "method_y_revival_v2"
+    rebuilt = _write_synthetic_task4_source(result_root)
+    root = result_root / "pretraining_contracts"
+    _build_synthetic_task4_contracts(
+        project_root=project,
+        source=result_root,
+        output=root,
+        private=root / "_private",
+        rebuilt=rebuilt,
+        seed=23,
+    )
+    state = json.loads((root / "pretraining_validation_state.json").read_text(encoding="utf-8"))
+    _write_synthetic_task4_review_evidence(root)
+    path = root / "review_evidence" / "invariant_test_suite_v2.json"
+    stub = {
+        "schema_version": "2.0",
+        "layer_id": "INVARIANT_TEST_SUITE",
+        "status": "PASS",
+        "implementation_commit": state["implementation_commit"],
+        "run_contract_sha256": state["run_contract_sha256"],
+        "reviewed_artifact_sha256": state["artifact_sha256"],
+        "zero_failures": True,
+        "test_count": 150,
+    }
+    stub["evidence_contract_sha256"] = sha256_mapping(stub)
+    path.write_text(json.dumps(stub, sort_keys=True), encoding="utf-8")
+    with pytest.raises(AgentReviewReceiptError, match="REVIEW_EVIDENCE_BINDING_INVALID"):
+        validate_task4_review_evidence(
+            root,
+            evidence_relative_paths=[
+                "review_evidence/invariant_test_suite_v2.json",
+                "review_evidence/deterministic_rebuild_v2.json",
+                "review_evidence/adversarial_agent_review_v2.json",
+            ],
+            implementation_commit=state["implementation_commit"],
+            run_contract_sha256=state["run_contract_sha256"],
+            reviewed_artifact_sha256=state["artifact_sha256"],
         )
 
 

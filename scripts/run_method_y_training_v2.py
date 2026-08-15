@@ -214,6 +214,8 @@ def _load_config(path: Path) -> dict[str, Any]:
         raise TrainingLaunchError("TRAINING_CONTROL_CONFIG_SCHEMA_MISMATCH")
     if int(config.get("outer_folds", 0)) != 5 or int(config.get("inner_folds", 0)) != 3:
         raise TrainingLaunchError("FIVE_OUTER_THREE_INNER_REQUIRED")
+    if config.get("execution_mode") != "synthetic_smoke_only":
+        raise TrainingLaunchError("SYNTHETIC_SMOKE_ONLY_REQUIRED")
     if set(config.get("branches", [])) != set(_SOURCE_BRANCHES):
         raise TrainingLaunchError("EXACT_SOURCE_BRANCH_SET_REQUIRED")
     return config
@@ -311,6 +313,21 @@ def _require_task6_receipt(path: Path | None, preflight: dict[str, Any]) -> dict
     executor = receipt.get("training_executor")
     if not isinstance(executor, dict):
         raise TrainingLaunchError("TRAINING_EXECUTOR_RECEIPT_CONTRACT_REQUIRED")
+    required_executor = (
+        "executor_id",
+        "implementation_sha256",
+        "resume_safe",
+        "test_only",
+    )
+    if set(required_executor) - set(executor):
+        raise TrainingLaunchError("TRAINING_EXECUTOR_RECEIPT_CONTRACT_REQUIRED")
+    if (
+        not isinstance(executor.get("executor_id"), str)
+        or not str(executor.get("executor_id")).strip()
+        or executor.get("resume_safe") is not True
+        or executor.get("test_only") is not True
+    ):
+        raise TrainingLaunchError("SYNTHETIC_SMOKE_ONLY_EXECUTOR_REQUIRED")
     return receipt
 
 
@@ -328,7 +345,13 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--branch-readiness")
     parser.add_argument("--feature-validation-state")
     parser.add_argument("--pretraining-readiness-receipt")
-    parser.add_argument("--execute-training", action="store_true")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
+        "--preflight-only",
+        action="store_true",
+        help="Explicit preflight (default). Does not start training.",
+    )
+    mode.add_argument("--execute-training", action="store_true")
     return parser
 
 

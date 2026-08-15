@@ -143,6 +143,11 @@ def _pivot_tau_long_rows(rows: pd.DataFrame, provenance: Mapping[str, Any]) -> t
         raise SourceRegionalFeatureError("TAU_EXACT_ALLOWED_REGION_LIST_REQUIRED")
     if len(set(allowed)) != len(allowed):
         raise SourceRegionalFeatureError("TAU_ALLOWED_REGION_LIST_DUPLICATE")
+    if any("centaur" in str(name).casefold() for name in allowed):
+        raise SourceRegionalFeatureError("TAU_CENTAUR_RELABELING_FORBIDDEN")
+    primary = set(TAU_PERSI_PRIMARY_ALLOWLIST_V1)
+    if not set(allowed).issubset(primary):
+        raise SourceRegionalFeatureError("TAU_ALLOWED_REGION_NOT_IN_PRIMARY_ALLOWLIST")
     observed = set(rows["brain_region"].dropna().astype(str))
     unknown = set(allowed).difference(observed)
     if unknown:
@@ -294,7 +299,8 @@ def build_paired_feature_contract(
     if conclusion != "TAU_INCREMENTAL_VALUE_NOT_DEMONSTRATED":
         raise SourceRegionalFeatureError("NEGATIVE_RESULT_CONCLUSION_REQUIRED")
     conclusion_sha = _require_sha256(negative_result_reference.get("conclusion_sha256"), "NEGATIVE_RESULT_CONCLUSION")
-    if conclusion_sha != hashlib.sha256(str(conclusion).encode("utf-8")).hexdigest():
+    expected_conclusion_sha = hashlib.sha256(f"{conclusion}:{negative_sha}".encode("utf-8")).hexdigest()
+    if conclusion_sha != expected_conclusion_sha:
         raise SourceRegionalFeatureError("NEGATIVE_RESULT_CONCLUSION_DIGEST_MISMATCH")
     input_evidence_sha = _require_sha256(negative_result_reference.get("input_evidence_sha256"), "NEGATIVE_RESULT_INPUT_EVIDENCE")
     if paired_subject_count < 1 or paired_date_window_days < 0:
