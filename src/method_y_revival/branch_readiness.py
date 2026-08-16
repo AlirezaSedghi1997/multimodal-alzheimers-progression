@@ -57,6 +57,38 @@ def _locked_contract(payload: Mapping[str, Any]) -> bool:
     )
 
 
+def valid_amylcent_claim_amendment(payload: Mapping[str, Any]) -> bool:
+    """Accept only an honest A4 SUBJINFO-composite amendment, never CTX proof."""
+
+    interpretation = payload.get("interpretation")
+    if not isinstance(interpretation, Mapping):
+        return False
+    honest = str(interpretation.get("honest_meaning") or "").casefold()
+    return (
+        payload.get("mutation_of_locked_bytes") is False
+        and payload.get("claim_allowed") is False
+        and payload.get("official_centiloid_ctx_equivalence_proven") is False
+        and payload.get("locked_contract") == "amyloid_source_regional_feature_contract.json"
+        and _is_sha256(payload.get("locked_contract_sha256"))
+        and interpretation.get("feature_columns") == ["AMYLCENT"]
+        and "a4" in honest
+        and "subjinfo" in honest
+        and "not official" in honest
+    )
+
+
+def valid_official_centiloid_ctx_equivalence(payload: Mapping[str, Any]) -> bool:
+    """Official CTX proof is a separate artifact. The AMYLCENT amendment cannot supply it."""
+
+    return (
+        payload.get("official_centiloid_ctx_equivalence_proven") is True
+        and payload.get("claim_allowed") is True
+        and payload.get("mutation_of_locked_bytes") is False
+        and payload.get("status") == "PASS"
+        and _is_sha256(payload.get("evidence_sha256"))
+    )
+
+
 def valid_locked_split_contract(payload: Mapping[str, Any]) -> bool:
     """Accept only the prespecified 5x3, subject-grouped, hash-locked split."""
 
@@ -163,6 +195,11 @@ def _source_record(
         names["split"],
         names["temporality"],
     )
+    if branch == "amyloid_source_regional":
+        development_required = (
+            *development_required,
+            "amyloid_source_regional_centiloid_claim_amendment",
+        )
     dev_evidence, blockers = _evidence_for(evidence, development_required)
     development_allowed = not blockers
 
@@ -181,6 +218,13 @@ def _source_record(
     claim_evidence.update(scanner_evidence)
     if scanner_blockers:
         claim_blockers.append(_scanner_claim_blocker(branch))
+    if branch == "amyloid_source_regional":
+        ctx_evidence, ctx_blockers = _evidence_for(
+            evidence, ("amyloid_official_centiloid_ctx_equivalence",)
+        )
+        claim_evidence.update(ctx_evidence)
+        if ctx_blockers:
+            claim_blockers.append("AMYLOID_OFFICIAL_CENTILOID_CTX_EQUIVALENCE_NOT_PROVEN")
     claim_allowed = not claim_blockers
 
     return {
@@ -699,6 +743,21 @@ def collect_project_evidence(project_root: str | Path, *, branches: Iterable[str
             f"{branch}_feature_contract",
             _locked_contract,
         )
+        if branch == "amyloid_source_regional":
+            add(
+                result_root
+                / "feature_contracts"
+                / "amyloid_source_regional_centiloid_claim_amendment_v2.json",
+                "amyloid_source_regional_centiloid_claim_amendment",
+                valid_amylcent_claim_amendment,
+            )
+            add(
+                result_root
+                / "feature_contracts"
+                / "amyloid_official_centiloid_ctx_equivalence_v2.json",
+                "amyloid_official_centiloid_ctx_equivalence",
+                valid_official_centiloid_ctx_equivalence,
+            )
         endpoint_verification = task4_root / "endpoint_verification_v2.json"
         if task4_bundle_is_valid:
             add(
