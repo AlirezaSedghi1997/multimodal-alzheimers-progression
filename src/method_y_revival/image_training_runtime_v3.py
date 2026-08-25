@@ -255,9 +255,20 @@ def _restore_rng(state: dict[str, Any]) -> None:
 
     random.setstate(state["python"])
     np.random.set_state(state["numpy"])
-    torch.set_rng_state(state["torch_cpu"])
+    cpu_state = state["torch_cpu"]
+    if isinstance(cpu_state, torch.Tensor) and cpu_state.device.type != "cpu":
+        cpu_state = cpu_state.cpu()
+    torch.set_rng_state(cpu_state)
     if torch.cuda.is_available() and state.get("torch_cuda"):
-        torch.cuda.set_rng_state_all(state["torch_cuda"])
+        cuda_states = state["torch_cuda"]
+        # Ensure CPU tensors for set_rng_state_all (handles map_location=cuda case)
+        fixed = []
+        for s in cuda_states:
+            if isinstance(s, torch.Tensor) and s.device.type != "cpu":
+                fixed.append(s.cpu())
+            else:
+                fixed.append(s)
+        torch.cuda.set_rng_state_all(fixed)
 
 
 def _forward(model, batch: dict[str, Any], device):
