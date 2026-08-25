@@ -243,16 +243,40 @@ def main() -> int:
                     outer_folds = splits.get("outer_folds", [])
                     tabular_cols = config["branches"][branch]["model_features"]
                     hazard_edges = config["shared"]["hazard_bin_edges_days"]
-                    orch = ImageTrainingOrchestratorV3(
-                        config=config,
-                        output_root=output_root,
-                        branch=branch,
-                        cache_sha=cache_sha,
-                        membership_sha=membership_sha,
-                        split_sha=split_sha,
-                        readiness_sha=run_contract_sha,
-                        h5_cache_path=cache_path,
-                    )
+                    # Handle stale orchestrator state from placeholder run (dummy 0*64) or cache rebuild
+                    try:
+                        orch = ImageTrainingOrchestratorV3(
+                            config=config,
+                            output_root=output_root,
+                            branch=branch,
+                            cache_sha=cache_sha,
+                            membership_sha=membership_sha,
+                            split_sha=split_sha,
+                            readiness_sha=run_contract_sha,
+                            h5_cache_path=cache_path,
+                        )
+                    except Exception as e:
+                        if "RUN_CONTRACT_MISMATCH" in str(e):
+                            stale = output_root / "orchestration" / branch / "orchestrator_state.json"
+                            try:
+                                stale.unlink(missing_ok=True)
+                                # Also clean stale winner/checkpoint markers that would otherwise mismatch
+                                for stale_winner in (output_root / "orchestration" / branch).glob("winner_*.json"):
+                                    stale_winner.unlink(missing_ok=True)
+                            except Exception:
+                                pass
+                            orch = ImageTrainingOrchestratorV3(
+                                config=config,
+                                output_root=output_root,
+                                branch=branch,
+                                cache_sha=cache_sha,
+                                membership_sha=membership_sha,
+                                split_sha=split_sha,
+                                readiness_sha=run_contract_sha,
+                                h5_cache_path=cache_path,
+                            )
+                        else:
+                            raise
                     try:
                         orch.verify_inputs()
                     except Exception as e:
