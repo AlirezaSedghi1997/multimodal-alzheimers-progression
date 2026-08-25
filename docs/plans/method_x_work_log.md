@@ -661,3 +661,35 @@ Commits 2c901f8 / e8de978 / this commit. Evidence file:
   Test evidence: lifecycle 9/9, A6+callable+spm 23/23, transformation 6/6
   (brainiac venv), preprocessing_v2 45, anchor 17. No outer/test-subject I/O;
   PET-free boundary untouched.
+
+## 2026-08-25 (late) - P003 speedup investigation: gated >=2x via deterministic parallelism (commit 239319e)
+
+Constraint honored: no change to scientific chain (N4 full-res -> rigid -> HD-BET
+fast/fold0 -> official 96^3 -> nonzero normalize) and no quality/QC relaxation.
+
+Root cause (hypothesis, empirically gated): the 2026-08-23 sequential-vs-
+orchestrated divergence is consistent with concurrent MULTI-threaded ITK N4/
+registration reductions not being bit-stable across execution legs; tiny FP
+deltas compound into different rigid optima (~1.2 deg). Fix pins ITK to ONE
+thread per sample in BOTH legs (env BRAINIAC_V2_ITK_THREADS default 1), making
+each sample bit-deterministic regardless of scheduling; GPU HD-BET stays
+serialized by _GPU_LOCK. Parallel leg only changes SAMPLE-level scheduling.
+
+Additional zero-science win: registered scratch written as UNCOMPRESSED .nii
+(removes per-sample gzip CPU); brain output remains .nii.gz so HD-BET mask
+naming is unchanged.
+
+New gate: `--mode equivalence` runs both legs on N=12 and compares canonical
+scientific fields (output/transform sha256, determinant/orthogonality/rotation/
+translation, foreground/std). PASS json:
+results/method_x_registry/brainiac_r1/brainiac_preprocessing_v2_equivalence.json
+
+Operator procedure to unlock >=2x:
+1) & .venvs\brainiac\Scripts\python.exe scripts\research\prepare_brainiac_raw_t1_v2.py --mode equivalence --limit 12 --device cuda
+2) If status=PASS: move aggregate/qc_threshold_manifest.json aside (rename .pre_pin)
+   then rerun --mode calibrate --device cuda  (thresholds rebuilt under pinned model)
+3) Flip policy orchestration.sequential_only=false (max_parallel_samples=2 already set)
+   via an explicit operator amendment commit.
+4) Run the unchanged full command; expected wall-clock >=2x on CPU-dominated stages.
+Fail-closed: any FAIL keeps sequential_only=true (slower but correct).
+Tests: tests/test_brainiac_preprocessing_speedup.py 5/5; preprocessing_v2 suite 45/45 green.
