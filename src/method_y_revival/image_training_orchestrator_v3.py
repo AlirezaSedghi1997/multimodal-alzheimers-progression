@@ -58,6 +58,28 @@ def _build_run_contract(
     return sha256_mapping(payload)
 
 
+def load_locked_state_for_eval(locked_path: Path, run_contract_digest: str):
+    """Strictly load a locked checkpoint for evaluation; never fall back silently."""
+    import torch
+
+    if not Path(locked_path).is_file():
+        raise ImageTrainingOrchestratorV3Error(
+            f"INNER_IBS_CHECKPOINT_LOAD_FAILED:missing:{Path(locked_path).name}"
+        )
+    try:
+        ckpt = torch.load(locked_path, map_location="cpu", weights_only=False)
+        state = ckpt["model_state"]
+    except ImageTrainingOrchestratorV3Error:
+        raise
+    except Exception as exc:
+        raise ImageTrainingOrchestratorV3Error(
+            f"INNER_IBS_CHECKPOINT_LOAD_FAILED:{type(exc).__name__}"
+        ) from exc
+    if ckpt.get("run_contract_digest") != run_contract_digest:
+        raise ImageTrainingOrchestratorV3Error("INNER_IBS_CHECKPOINT_LOAD_FAILED:contract")
+    return state
+
+
 class ImageTrainingOrchestratorV3:
     """High-level nested CV orchestrator for image v3.
 
@@ -334,16 +356,13 @@ class ImageTrainingOrchestratorV3:
                 from sksurv.metrics import integrated_brier_score
                 from sksurv.util import Surv
 
-                summary_path = tmp_dir / "training_summary.json"
-                # Load best model weights for evaluation
+                # Load the LOCKED (best) weights; silent fallback to last-epoch
+                # state would evaluate the wrong model and corrupt HPO selection.
                 locked_path = tmp_dir / "locked_checkpoint.pt"
-                if locked_path.is_file():
-                    try:
-                        ckpt = torch.load(locked_path, map_location="cpu", weights_only=False)
-                        model.load_state_dict(ckpt.get("model_state", ckpt), strict=False)
-                    except Exception:
-                        pass
+                best_state = load_locked_state_for_eval(locked_path, run_contract)
+                model.load_state_dict(best_state, strict=True)
                 model.eval()
+                summary_path = tmp_dir / "training_summary.json"
                 # Prepare evaluation grid: common support between train and val, at least 2 points
                 train_times = train_frame["time_days"].to_numpy(dtype=float)
                 val_times = val_frame["time_days"].to_numpy(dtype=float)

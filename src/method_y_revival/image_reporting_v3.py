@@ -162,3 +162,97 @@ def privacy_scan_reports(report_root: Path) -> dict[str, Any]:
             violations.append(f"{path}:read_error:{exc}")
     status = "PASS" if not violations else "FAIL"
     return {"status": status, "violations": violations, "scanned_root": str(report_root)}
+
+
+def build_real_oof_reports(
+    *,
+    output_root: Path,
+    branch: str,
+    variants: dict[str, Any],
+    metadata: pd.DataFrame | None,
+    horizons_days: list[float],
+    bootstrap_iterations: int = 2000,
+    seed: int = 20260714,
+    scanner_sensitivity_passed: bool = False,
+    quantitative_equivalence_proven: bool = False,
+    external_validation_pass: bool = False,
+) -> dict[str, Any]:
+    """Plan 012 executor over REAL locked OOF folds.
+
+    Consumes weight-derived outer predictions (never placeholders), emits
+    public aggregate reports only, and evaluates the incremental claim gate.
+    The paired primary bootstrap is locked at 2000 iterations (Plan 012 STOP
+    condition); absence of subgroup metadata or embeddings is recorded
+    honestly, never PASS.
+    """
+    if int(bootstrap_iterations) != 2000:
+        raise ImageReportingV3Error("BOOTSTRAP_ITERATIONS_MUST_BE_2000")
+    if set(variants.keys()) != {"scalar_tabular", "scalar_tabular_plus_pattern_image"}:
+        raise ImageReportingV3Error("REAL_OOF_VARIANTS_MUST_BE_MATCHED_PAIR")
+    base = variants["scalar_tabular"]
+    aug = variants["scalar_tabular_plus_pattern_image"]
+
+    rep_dir = Path(output_root) / "reports"
+    rep_dir.mkdir(parents=True, exist_ok=True)
+
+    calibration = build_calibration_reports(
+        base_variant=base, augmented_variant=aug, horizons_days=horizons_days
+    )
+    atomic_write_json(rep_dir / f"{branch}_calibration.json", calibration)
+
+    if metadata is not None and len(metadata):
+        subgroups = build_subgroup_reports(
+            base_variant=base, augmented_variant=aug, metadata=metadata,
+            subgroup_columns=["sex_binary", "age_group", "treatment_active", "manufacturer"],
+            minimum_subjects=30, minimum_events=10,
+            iterations=int(bootstrap_iterations), seed=seed,
+        )
+    else:
+        subgroups = {"status": "NOT_AVAILABLE_METADATA"}
+    atomic_write_json(rep_dir / f"{branch}_subgroups.json", subgroups)
+
+    bootstrap = build_paired_bootstrap_report(
+        base_variant=base, augmented_variant=aug,
+        output_path=rep_dir / f"{branch}_paired_bootstrap.json",
+        iterations=int(bootstrap_iterations), seed=seed,
+    )
+    gate = incremental_value_gate(
+        delta_ibs_ci=tuple(bootstrap["delta_ibs_95ci"]),
+        delta_cindex_ci=tuple(bootstrap["delta_cindex_95ci"]),
+        outer_folds_completed=len(base.get("folds", [])),
+        expected_outer_folds=len(base.get("folds", [])),
+        scanner_sensitivity_passed=bool(scanner_sensitivity_passed),
+    )
+    incremental = {
+        "branch": branch,
+        "science_gate": gate,
+        "bootstrap": {
+            "delta_ibs_mean": bootstrap["delta_ibs_mean"],
+            "delta_ibs_95ci": bootstrap["delta_ibs_95ci"],
+            "delta_cindex_mean": bootstrap["delta_cindex_mean"],
+            "delta_cindex_95ci": bootstrap["delta_cindex_95ci"],
+            "iterations": int(bootstrap_iterations),
+        },
+        "oof_source": "LOCKED_CHECKPOINT_WEIGHTS",
+    }
+    atomic_write_json(rep_dir / f"{branch}_image_incremental.json", incremental)
+
+    claim = claim_consistency_state(
+        training_execution_allowed=True,
+        incremental_value_pass=(gate["science_gate_status"] == "PASS"),
+        quantitative_equivalence_proven=bool(quantitative_equivalence_proven),
+        external_validation_pass=bool(external_validation_pass),
+        scanner_robustness_passed=bool(scanner_sensitivity_passed),
+    )
+    atomic_write_json(rep_dir / "IMAGE_CLAIM_POLICY.json", claim)
+
+    scan = privacy_scan_reports(rep_dir)
+    status = "COMPLETED_FROM_REAL_OOF" if gate["science_gate_status"] in {"PASS", "FAIL"} else "PARTIAL"
+    return {
+        "status": status,
+        "branch": branch,
+        "science_gate": gate,
+        "claim": claim,
+        "privacy_scan": scan,
+        "public_reports": sorted(p.name for p in rep_dir.glob("*.json")),
+    }

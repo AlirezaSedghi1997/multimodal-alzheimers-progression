@@ -113,6 +113,15 @@ class MemorySurvivalDataset:
 
 
 class H5PatternSurvivalDataset:
+    """Pattern-cache dataset with an optional lazy RAM volume cache.
+
+    Repeated epochs otherwise re-decompress gzip chunks every __getitem__.
+    The cache stores the raw float16 arrays exactly as read from disk, so
+    values are bit-identical; a byte cap degrades gracefully to disk reads.
+    """
+
+    DEFAULT_RAM_CACHE_MAX_BYTES = 6 * 1024**3
+
     def __init__(
         self,
         *,
@@ -123,6 +132,7 @@ class H5PatternSurvivalDataset:
         time_days: np.ndarray,
         include_image: bool,
         sample_weight: np.ndarray | None = None,
+        ram_cache_max_bytes: int | None = None,
     ) -> None:
         self.cache_path = Path(cache_path)
         self.patient_hashes = tuple(str(value) for value in patient_hashes)
@@ -136,6 +146,13 @@ class H5PatternSurvivalDataset:
             else None
         )
         self._handle: h5py.File | None = None
+        self.ram_cache_max_bytes = (
+            int(ram_cache_max_bytes)
+            if ram_cache_max_bytes is not None
+            else self.DEFAULT_RAM_CACHE_MAX_BYTES
+        )
+        self._ram_cache: dict[str, np.ndarray] = {}
+        self._ram_cache_bytes = 0
         if not (
             len(self.patient_hashes)
             == len(self.tabular)
@@ -154,6 +171,25 @@ class H5PatternSurvivalDataset:
             self._handle = h5py.File(self.cache_path, "r")
         return self._handle
 
+    def _read_image(self, patient: str) -> np.ndarray:
+        cached = self._ram_cache.get(patient)
+        if cached is not None:
+            return cached
+        handle = self._h5()
+        if patient not in handle or "image" not in handle[patient]:
+            raise TrainingRuntimeV3Error(f"PATTERN_CACHE_SUBJECT_MISSING:{patient}")
+        image = np.asarray(handle[patient]["image"], dtype=np.float16)
+        if not np.isfinite(image.astype(np.float32)).all():
+            raise TrainingRuntimeV3Error("PATTERN_CACHE_NONFINITE")
+        nbytes = int(image.nbytes)
+        if (
+            patient not in self._ram_cache
+            and self._ram_cache_bytes + nbytes <= self.ram_cache_max_bytes
+        ):
+            self._ram_cache[patient] = image
+            self._ram_cache_bytes += nbytes
+        return image
+
     def __getitem__(self, index: int) -> dict[str, Any]:
         import torch
 
@@ -165,13 +201,7 @@ class H5PatternSurvivalDataset:
             "patient_hash": patient,
         }
         if self.include_image:
-            handle = self._h5()
-            if patient not in handle or "image" not in handle[patient]:
-                raise TrainingRuntimeV3Error(f"PATTERN_CACHE_SUBJECT_MISSING:{patient}")
-            image = np.asarray(handle[patient]["image"], dtype=np.float32)
-            if not np.isfinite(image).all():
-                raise TrainingRuntimeV3Error("PATTERN_CACHE_NONFINITE")
-            row["image"] = torch.from_numpy(image)
+            row["image"] = torch.from_numpy(self._read_image(patient).astype(np.float32))
         if self.sample_weight is not None:
             row["sample_weight"] = torch.tensor(
                 self.sample_weight[index], dtype=torch.float32
@@ -311,10 +341,12 @@ def _loader(dataset, *, batch_size: int, shuffle: bool, seed: int, pin_memory: b
 
     generator = torch.Generator()
     generator.manual_seed(int(seed))
-    # Performance: use 2 workers when perf flag and H5 dataset (H5 handle reopened per worker via __getstate__)
-    if os.environ.get("IMAGE_V3_PERF", "0") == "1" and num_workers == 0:
-        if type(dataset).__name__ == "H5PatternSurvivalDataset":
-            num_workers = 2
+    # Performance policy: H5 datasets rely on the lazy RAM volume cache, so the
+    # main process serves decoded volumes without worker spawn overhead.
+    # Worker processes would each rebuild their own cache copy (spawn semantics)
+    # and are unnecessary once volumes are memory-resident.
+    if os.environ.get("IMAGE_V3_PERF", "0") == "1":
+        num_workers = 0
     return torch.utils.data.DataLoader(
         dataset,
         batch_size=int(batch_size),

@@ -226,7 +226,7 @@ def main() -> int:
                     ImageTrainingOrchestratorV3,
                     _build_run_contract,
                 )
-                from src.method_y_revival.image_reporting_v3 import privacy_scan_reports
+                from src.method_y_revival.image_reporting_v3 import build_real_oof_reports, privacy_scan_reports
                 import pandas as pd
                 import torch
 
@@ -460,19 +460,59 @@ def main() -> int:
                         print(json.dumps({"branch": branch, "status": "BRANCH_OUTER_CV_COMPLETE"}))
                     except Exception as e:
                         print(json.dumps({"branch": branch, "finalize_failed": str(e)}))
-                # Robustness/reports/privacy: honest gating on real OOF presence
+                # Robustness/reports/privacy: execute Plan 012 analyses over REAL
+                # locked OOF folds. Stage completion requires the executor's own
+                # status; file presence alone is never sufficient (rule 6).
                 oof_present = any(
                     (output_root / "private" / "outer_evaluation" / b / v / f"fold_{k}_private.json").is_file()
                     for b in branches_all for v in ["scalar_tabular", "scalar_tabular_plus_pattern_image"] for k in range(5)
                 )
                 if oof_present:
-                    scan = privacy_scan_reports(output_root / "reports")
-                    state.set_stage("ROBUSTNESS_COMPLETE", status="COMPLETED_FROM_REAL_OOF")
-                    state.set_stage("REPORTS_COMPLETE", status="COMPLETED_FROM_REAL_OOF")
-                    if scan["status"] == "PASS":
-                        state.set_stage("CONSISTENCY_PRIVACY_PASS", privacy_scan="PASS")
+                    exec_statuses = []
+                    privacy_all_pass = True
+                    for b in branches_all:
+                        need = [
+                            output_root / "private" / "outer_evaluation" / b / v / f"fold_{k}_private.json"
+                            for v in ["scalar_tabular", "scalar_tabular_plus_pattern_image"]
+                            for k in range(5)
+                        ]
+                        if not all(x.is_file() for x in need):
+                            continue
+                        variants = {}
+                        for v in ["scalar_tabular", "scalar_tabular_plus_pattern_image"]:
+                            folds = []
+                            for k in range(5):
+                                pf = output_root / "private" / "outer_evaluation" / b / v / f"fold_{k}_private.json"
+                                metrics = read_json(pf)["metrics"]
+                                folds.append({"fold": k, **metrics})
+                            variants[v] = {"folds": folds}
+                        rep_summary = build_real_oof_reports(
+                            output_root=output_root,
+                            branch=b,
+                            variants=variants,
+                            metadata=None,
+                            horizons_days=[float(h) for h in config["shared"]["requested_horizons_days"]],
+                            bootstrap_iterations=int(config["robustness"]["bootstrap_iterations"]),
+                            seed=int(config["seed"]),
+                            scanner_sensitivity_passed=False,
+                            quantitative_equivalence_proven=False,
+                            external_validation_pass=False,
+                        )
+                        exec_statuses.append(rep_summary)
+                        print(json.dumps({"event": "OOF_REPORTS_BUILT", "branch": b, "status": rep_summary["status"], "science_gate": rep_summary["science_gate"]["science_gate_status"]}))
+                        if rep_summary["privacy_scan"]["status"] != "PASS":
+                            privacy_all_pass = False
+                    completed_any = any(r["status"] == "COMPLETED_FROM_REAL_OOF" for r in exec_statuses)
+                    if completed_any:
+                        state.set_stage("ROBUSTNESS_COMPLETE")
+                        state.set_stage("REPORTS_COMPLETE")
+                        if privacy_all_pass:
+                            state.set_stage("CONSISTENCY_PRIVACY_PASS", privacy_scan="PASS")
+                        else:
+                            print(json.dumps({"event": "PRIVACY_SCAN_FAIL"}))
                     else:
-                        print(json.dumps({"event": "PRIVACY_SCAN_FAIL", "violations": scan["violations"][:10]}))
+                        state.set_fact("reports_status", "PARTIAL_REAL_OOF")
+                        print(json.dumps({"event": "REPORTS_PARTIAL"}))
                 else:
                     state.set_fact("robustness_status", "PENDING_REAL_OOF")
                     state.set_fact("reports_status", "PENDING_REAL_OOF")
