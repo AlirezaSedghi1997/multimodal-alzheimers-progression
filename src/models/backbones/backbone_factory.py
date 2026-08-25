@@ -4,7 +4,10 @@ import torch.nn as nn
 
 
 def available_3d_backbones() -> list[str]:
-    return ["tiny", "resnet10_3d", "resnet18_3d", "densenet121_3d", "efficientnet3d_b0", "resnet34_3d", "resnet50_3d", "mednext_3d_s"]
+    return ["tiny", "resnet10_3d", "resnet18_3d", "densenet121_3d", "efficientnet3d_b0", "resnet34_3d", "resnet50_3d", "mednext_3d_s", "amuse_x_hybrid3d"]
+
+
+AVAILABLE_BACKBONES = tuple(available_3d_backbones())
 
 
 def build_3d_backbone(name: str, in_channels: int = 1, out_dim: int = 128, pretrained_path: str | None = None) -> nn.Module:
@@ -14,6 +17,10 @@ def build_3d_backbone(name: str, in_channels: int = 1, out_dim: int = 128, pretr
     if name == "tiny":
         from src.models.backbones.lightweight_3d import Lightweight3DEncoder
         return Lightweight3DEncoder(in_channels=in_channels, base_channels=8, out_dim=out_dim)
+
+    if name == "amuse_x_hybrid3d":
+        from src.models.backbones.amuse_x_hybrid3d import AMUSEXHybrid3DEncoder
+        return AMUSEXHybrid3DEncoder(in_channels=in_channels, out_dim=out_dim)
 
     if name == "resnet10_3d":
         try:

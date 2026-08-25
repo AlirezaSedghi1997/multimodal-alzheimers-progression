@@ -75,13 +75,15 @@
    .\.venv\Scripts\python.exe -c "from scripts.train_3d_mri import method_x_training_source_contract; print(method_x_training_source_contract()[0])"
    ```
 
-   خروجی مورد انتظار (baseline به‌روز 2026-08-25):
+   خروجی مورد انتظار (baseline به‌روز 2026-08-25، پس از audit fail-closed):
 
    ```text
-   8c02bd511e61caefe4b679e404049fcae45bec9dc21d3707d68ba43dd5b3bd21
+   9b0f90a5a14f8764397c6a15ff8016462f0872e2f827b2ec47fe54ab773871b3
    ```
 
-   مقدار تاریخی `b73eef3d67b494986a1e2273a873f5663c874f34588a649bf708a508755a1be9` فقط برای بازبینی Plan 001 معتبر بود.
+   تاریخچه: `b73eef…` (فقط Plan 001) ← `8c02bd51…` (بازیابی importها) ←
+   `9b0f90a5…` (فعال‌سازی مجدد A6 validate_claim/claim_from_three_d_aggregate،
+   fit_source_counts، inspect/ensure_exact_run_contract، amuse_x_hybrid3d backbone).
 
 7. outer loader تا قفل head/calibration در Plan 006 نباید فراخوانی شود.
    هیچ outer artifact موجود بازنویسی یا دوباره ارزیابی نمی‌شود.
@@ -107,7 +109,7 @@
 | 000 | گزارش کار امروز و حقیقت زنده | P0 | S | — | DONE |
 | 001 | بستن B1 و anchor مستقل ضد rollback | P0 | L | 000 | DONE |
 | 002 | ساخت preprocessing واقعی schema v2 | P0 | L | 001 | DONE |
-| 003 | اجرای resumable preprocessing روی 1669 MRI | P0 | XL/runtime | 002 | TODO |
+| 003 | اجرای resumable preprocessing روی 1669 MRI | P0 | XL/runtime | 002 | IN_PROGRESS (preflight PASS؛ gate PASS؛ اجرای full در انتظار پنجرهٔ GPU) |
 | 004 | ساخت embedding/split/ResNet34 feature preparation | P0 | XL | 001, 002 contract | DONE |
 | 005 | اجرای frozen feature preparation | P0 | L/runtime | 003, 004 | TODO |
 | 006 | ساخت trainer واقعی شش-arm CAFT | P0 | XL | 004 schemas | DONE |
@@ -189,7 +191,7 @@ Plan 007 (R3)، acceptance Plan 008 (R4)، تصمیم اپراتور split (R0)�
 | Plan | عنوان | اولویت | اندازه | وابستگی | وضعیت |
 |---:|---|---|---|---|---|
 | 009 | dual-gate ADR و readiness hardening | P0 | M | — | DONE |
-| 010 | cache provenance، terminal resume و cache materialization | P0 | L | 009 | DONE |
+| 010 | cache provenance، terminal resume و cache materialization | P0 | L | 009 | DONE (code + caches hash-verified: amyloid 895/895, tau 306/306) |
 | 011 | nested image trainer، inner IBS و exactly-once outer | P0 | XL | 009, 010 | DONE |
 | 012 | scanner/calibration/subgroup/bootstrap/claim/privacy | P1 | L | 009–011 | DONE |
 | 013 | launcher، GPU smoke، acceptance و production run | P0 | XL | 009–012 | DONE |

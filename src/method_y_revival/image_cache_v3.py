@@ -107,6 +107,7 @@ def build_pattern_cache(
     progress_every: int = 5,
     readiness_run_contract_sha256: str | None = None,
     source_artifact_sha256: str | None = None,
+    expected_tracer: str | None = None,
 ) -> dict[str, Any]:
     missing = sorted(_REQUIRED_COLUMNS.difference(membership.columns))
     if missing:
@@ -186,6 +187,13 @@ def build_pattern_cache(
             )
             for position, row in enumerate(rows, start=1):
                 patient = str(row["patient_hash"])
+                if patient in target and expected_tracer:
+                    recorded_tracer = str(target[patient].attrs.get("tracer", ""))
+                    if recorded_tracer and recorded_tracer.upper() != str(expected_tracer).upper():
+                        raise ImageCacheV3Error(
+                            "CACHE_GROUP_TRACER_MISMATCH:"
+                            f"{patient}:{recorded_tracer}:{expected_tracer}"
+                        )
                 if (
                     patient in target
                     and str(target[patient].attrs.get("status", "")) == "COMPLETE"
@@ -237,6 +245,8 @@ def build_pattern_cache(
                     )
                     group.attrs["status"] = "COMPLETE"
                     group.attrs["image_key"] = str(row["image_key"])
+                    if expected_tracer:
+                        group.attrs["tracer"] = str(expected_tracer).upper()
                     group.attrs["source_image_sha256"] = str(
                         row["source_image_sha256"]
                     )

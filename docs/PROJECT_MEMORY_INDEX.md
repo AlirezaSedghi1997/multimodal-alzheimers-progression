@@ -40,7 +40,7 @@
 ## زنده — ۲۰۲۶-۰۸-۲۵ (BrainIAC-CAFT governance drift fix و باتری ترمینال)
 
 0. باتری پنج‌مدلی اکنون **TERMINAL** (`40a4a009b3a2453fb953e2b2e9b9ec789bdf896741dc2278a898a3b38fdb971d`، 5/5 `COMPLETED`، `.battery.lock` ABSENT) — `src/research/brainiac_battery_terminal.py: verify_battery_terminal` `terminal:true`.
-1. `method_x_training_source_contract()` جدید `8c02bd511e61caefe4b679e404049fcae45bec9dc21d3707d68ba43dd5b3bd21` (پس از سازگار‌سازی `src/evaluation/calibration.py:49`, `cohort_probe.py:128`, `backbone_factory.py:6` و `scripts/train_3d_mri.py:57`).
+1. `method_x_training_source_contract()` جدید `9b0f90a5a14f8764397c6a15ff8016462f0872e2f827b2ec47fe54ab773871b3` (پس از سازگار‌سازی `src/evaluation/calibration.py:49`, `cohort_probe.py:128`, `backbone_factory.py:6` و `scripts/train_3d_mri.py:57`).
 2. Governance fix 4 مرحله‌ای 2026-08-25 (predecessor `e3dd7aaf`/`6b313303`, registry `1c45b3f4`, vendor CRLF→LF `c26b42ba`) — `scripts/research/prepare_brainiac_raw_t1_v2.py --mode preflight` اکنون `PASS` و `PREPARE_RAW_T1 allowed:true`.
 3. دستور واحد P003 (resumable, Brainiac venv): `& 'H:\New project\.venvs\brainiac\Scripts\python.exe' 'H:\New project\scripts\research\prepare_brainiac_raw_t1_v2.py' --mode full --device cuda` — اجرای مجدد همان دستور از last commit ادامه می‌دهد (exit 75).
 4. مستندات به‌روز: `advisor-plans/README.md` و `advisor-plans/000-20260822-work-log-and-live-state.md` Addendum 3، `docs/plans/method_x_project_roadmap.md` و `results/method_x_registry/project_roadmap.json` به TERMINAL.

@@ -287,3 +287,37 @@ def test_float16_roundtrip_error_is_below_locked_tolerance(tmp_path):
     assert max_abs_error <= 0.005
     assert np.isfinite(roundtrip).all()
 
+
+
+def test_cache_group_tracer_mismatch_fails_closed(tmp_path):
+    from src.method_y_revival.image_cache_v3 import ImageCacheV3Error, build_pattern_cache
+    import h5py
+
+    source = _source_cache(tmp_path)
+    membership = _membership(source)
+    reference = _reference(tmp_path)
+    output = tmp_path / "pattern.h5"
+    state = tmp_path / "state.json"
+    first = build_pattern_cache(
+        membership=membership,
+        reference_template=reference,
+        output_cache=output,
+        state_path=state,
+        normalization={"lower_percentile": 1.0, "upper_percentile": 99.0, "output_clip": [-5.0, 5.0]},
+        branch="amyloid",
+        expected_tracer="FBP",
+    )
+    assert first["status"] == "COMPLETED"
+    with h5py.File(output, "r") as handle:
+        assert handle["pt_1"].attrs["tracer"] == "FBP"
+    # Same cache rebuilt under a different tracer must fail closed.
+    with pytest.raises(ImageCacheV3Error, match="CACHE_GROUP_TRACER_MISMATCH"):
+        build_pattern_cache(
+            membership=membership,
+            reference_template=reference,
+            output_cache=output,
+            state_path=state,
+            normalization={"lower_percentile": 1.0, "upper_percentile": 99.0, "output_clip": [-5.0, 5.0]},
+            branch="amyloid",
+            expected_tracer="FTP",
+        )

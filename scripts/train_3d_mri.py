@@ -11,6 +11,7 @@ import shutil
 import sys
 import time
 from pathlib import Path
+from typing import Any
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
@@ -18,6 +19,11 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from scripts.train_baseline import average_precision, brier, roc_auc
 from scripts.train_pet_method_y import resolve_training_device
+from src.training.method_x_resume import (
+    assert_resume_contract,
+    build_run_contract,
+    source_contract_migration_allowed,
+)
 from src.data.volume_augmentation import build_augmentation_policy, maybe_wrap_train_dataset
 from src.evaluation.calibration import (
     apply_temperature_to_logits,
@@ -39,7 +45,13 @@ from src.models.losses.phenotypic_contrastive import phenotypic_contrastive_loss
 from src.models.losses.phase1_losses import SUPPORTED_TASK_LOSSES, compute_phase1_task_loss
 from src.models.losses.synib_synergy_loss import SynIBConfig, synib_multimodal_loss
 from src.models.fusion.registry import available_fusion_modes
-from src.utils.final_claim_policy import claim_from_three_d_aggregate, evaluate_three_d_final_claim, validate_claim
+from src.utils.final_claim_policy import (
+    claim_from_three_d_aggregate,
+    evaluate_three_d_final_claim,
+    spm_progress,
+    validate_claim,
+)
+from src.utils.reproducibility import seed_everything, split_membership_digest
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
 from src.utils.run_manifest import write_run_manifest
 from src.data.combined_mri_cache import (
@@ -207,6 +219,38 @@ def validate_method_x_input_policy(args, cache_path: Path) -> dict[str, object]:
     }
 
 
+def method_x_split_contract_digest(split_dir: Path) -> str:
+    """Hash-bound digest of the locked outer split CSVs (order-stable)."""
+
+    import hashlib
+
+    digest = hashlib.sha256()
+    for path in sorted(Path(split_dir).glob("*.csv")):
+        digest.update(path.name.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+    return digest.hexdigest()
+
+
+def resolve_method_x_training_device(requested: str, *, require_gpu: bool):
+    """Resolve the shared device policy and enforce Method X's final-GPU gate."""
+
+    device = resolve_training_device(requested)
+    if require_gpu and str(getattr(device, "type", "")) != "cuda":
+        raise RuntimeError("METHOD_X_FINAL_TRAINING_REQUIRES_CUDA")
+    return device
+
+
+def migrate_source_only_resume_artifacts(*args, **kwargs):
+    """Delegate to the shared source-only migration authority (monkeypatchable)."""
+
+    from src.training.method_x_resume import (
+        migrate_source_only_resume_artifacts as _impl,
+    )
+
+    return _impl(*args, **kwargs)
+
+
 def cache_index(cache_path: Path) -> dict[str, int]:
     import h5py
 
@@ -219,6 +263,30 @@ def ok_indices(cache_path: Path) -> set[int]:
 
     with h5py.File(cache_path, "r") as h5:
         return {i for i, v in enumerate(h5["status"][:]) if decode(v) == "OK"}
+
+
+def fit_source_counts(cache_path: Path, indices: tuple[int, ...] | list[int]) -> dict[str, int]:
+    """Return source-aware counts for one fold's actual fit indices.
+
+    ``train_n`` alone cannot distinguish real parents from materialized
+    derivatives.  Keeping this decomposition at fold level prevents the
+    aggregate report from labelling all fit exposures as real or augmented.
+    """
+
+    import h5py
+
+    with h5py.File(cache_path, "r") as h5:
+        hashes = [decode(v) for v in h5["sample_hash"][:]]
+        statuses = [decode(v) for v in h5["status"][:]]
+        sources = read_cache_sources(h5)
+    supplementary = set(supplementary_train_indices(hashes, statuses, sources))
+    augmented = sum(1 for index in indices if int(index) in supplementary)
+    real = len(indices) - augmented
+    return {
+        "real_fit_n": int(real),
+        "augmented_fit_n": int(augmented),
+        "fit_exposure_n": int(len(indices)),
+    }
 
 
 class H5MethodXDataset:
@@ -465,6 +533,85 @@ def split_fit_val_indices(
         tuple(int(v) for v in val_idx),
         tuple(int(v) for v in val_y),
     )
+
+
+def inspect_exact_run_contract(
+    out_dir: Path,
+    *,
+    run_contract: dict[str, Any],
+    require_exact_resume_contract: bool,
+) -> dict[str, Any]:
+    """Read-only contract decision used by preflight and the write path.
+
+    Scientific drift raises the original mismatch.  A source-only difference
+    is reported without updating the contract, receipt, state, or checkpoint.
+    """
+
+    run_contract_path = out_dir / "run_contract.json"
+    if not run_contract_path.exists():
+        return {
+            "status": "CREATE_REQUIRED",
+            "run_contract_digest": run_contract["digest"],
+        }
+    if run_contract_path.exists() and require_exact_resume_contract:
+        existing_contract = json.loads(run_contract_path.read_text(encoding="utf-8"))
+        try:
+            assert_resume_contract(existing_contract, run_contract)
+        except RuntimeError:
+            if not source_contract_migration_allowed(existing_contract, run_contract):
+                raise
+            return {
+                "status": "SOURCE_ONLY_MIGRATION_REQUIRED",
+                "previous_digest": existing_contract.get("run_contract_digest"),
+                "new_digest": run_contract["digest"],
+            }
+        return {
+            "status": "EXACT_MATCH",
+            "run_contract_digest": run_contract["digest"],
+        }
+    if run_contract_path.exists():
+        return {"status": "PRESENT_NOT_ENFORCED"}
+
+    raise AssertionError("unreachable run-contract inspection state")
+
+
+def ensure_exact_run_contract(
+    out_dir: Path,
+    *,
+    run_contract: dict[str, Any],
+    require_exact_resume_contract: bool,
+) -> dict[str, Any]:
+    """Persist or migrate the run contract before any training work starts."""
+
+    decision = inspect_exact_run_contract(
+        out_dir,
+        run_contract=run_contract,
+        require_exact_resume_contract=require_exact_resume_contract,
+    )
+    if decision["status"] == "SOURCE_ONLY_MIGRATION_REQUIRED":
+        existing_contract = json.loads(
+            (out_dir / "run_contract.json").read_text(encoding="utf-8")
+        )
+        migrate_source_only_resume_artifacts(
+            out_dir,
+            existing_contract=existing_contract,
+            expected_contract=run_contract,
+        )
+        return {
+            "status": "SOURCE_ONLY_MIGRATED",
+            "previous_digest": decision["previous_digest"],
+            "new_digest": decision["new_digest"],
+        }
+    if decision["status"] == "CREATE_REQUIRED":
+        atomic_write_json(
+            out_dir / "run_contract.json",
+            {"run_contract": run_contract, "run_contract_digest": run_contract["digest"]},
+        )
+        return {
+            "status": "CREATED",
+            "run_contract_digest": run_contract["digest"],
+        }
+    return decision
 
 
 def resolve_train_indices(
@@ -2318,6 +2465,26 @@ def main() -> int:
     ap.add_argument("--hparam_manifest", default="results/final_results/three_d_hparam_search/three_d_hparam_search_summary.json")
     ap.add_argument("--use_hparam_manifest", action="store_true")
     ap.add_argument("--allow_hparam_backbone_override", action="store_true")
+    ap.add_argument(
+        "--cache_sha256",
+        default="",
+        help="Locked SHA-256 of the MRI cache bound into the exact-resume run contract.",
+    )
+    ap.add_argument(
+        "--spm_snapshot_sha256",
+        default="",
+        help="Locked SPM snapshot digest bound into the exact-resume run contract.",
+    )
+    ap.add_argument(
+        "--require_exact_resume_contract",
+        action="store_true",
+        help="Fail closed on any scientific contract drift before training I/O.",
+    )
+    ap.add_argument(
+        "--contract_preflight_only",
+        action="store_true",
+        help="Read-only run-contract decision; never migrates, trains, or writes artifacts.",
+    )
     args = ap.parse_args()
     apply_hparam_manifest(args)
     if not 0.0 <= float(args.ema_decay) < 1.0:
@@ -2373,6 +2540,59 @@ def main() -> int:
         print(json.dumps(report, indent=2))
         return 2
     args._input_policy = validate_method_x_input_policy(args, cache_path)
+
+    # ---- Exact-resume run-contract gate (must precede any training I/O) ----
+    seed_everything(int(args.seed))
+    device_obj = resolve_training_device(str(getattr(args, "device", "auto")))
+    _mode_tuple = resolve_mode(device_obj, args.phase, args.limit, require_gpu=args.require_gpu)
+    sample_to_idx = cache_index(cache_path)
+    ok = ok_indices(cache_path)
+    splits_dir = PROJECT_ROOT / args.splits
+    split_digest = method_x_split_contract_digest(splits_dir)
+    source_digest_value, runtime_versions = method_x_training_source_contract()
+    loader_contract = {
+        "num_workers": int(getattr(args, "num_workers", 0)),
+        "batch_size": int(args.batch_size),
+        "pin_memory": bool(getattr(args, "pin_memory", False)),
+    }
+    parameters_contract = requested_model_signature(args)
+    run_contract = build_run_contract(
+        cache_sha256=str(args.cache_sha256 or ""),
+        split_digest=split_digest,
+        folds=int(args.folds),
+        epochs=int(args.epochs),
+        seed=int(args.seed),
+        parameters=parameters_contract,
+        loader=loader_contract,
+        spm_snapshot_sha256=str(args.spm_snapshot_sha256 or "") or None,
+    )
+    if not run_contract.get("source_digest"):
+        run_contract["source_digest"] = source_digest_value
+    out_dir = PROJECT_ROOT / args.out_dir
+    if bool(args.contract_preflight_only):
+        decision = inspect_exact_run_contract(
+            out_dir,
+            run_contract=run_contract,
+            require_exact_resume_contract=bool(args.require_exact_resume_contract),
+        )
+        print(
+            json.dumps(
+                {
+                    "status": "CONTRACT_PREFLIGHT_PASS",
+                    "decision": decision,
+                    "runtime": runtime_versions,
+                },
+                indent=2,
+            ),
+            flush=True,
+        )
+        return 0
+    ensure_exact_run_contract(
+        out_dir,
+        run_contract=run_contract,
+        require_exact_resume_contract=bool(args.require_exact_resume_contract),
+    )
+    # ---------------- end exact-resume contract gate ----------------
 
     try:
         import torch

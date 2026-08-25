@@ -92,6 +92,7 @@ def run(config_path: Path, branches: tuple[str, ...]) -> dict:
             branch=branch,
             readiness_run_contract_sha256=run_contract_sha,
             source_artifact_sha256=source_sha,
+            expected_tracer=config["branches"][branch].get("tracer"),
         )
         atomic_write_json(cache_root / f"{branch}_pattern_cache_report.json", report)
         reports[branch] = report

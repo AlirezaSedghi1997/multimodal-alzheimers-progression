@@ -38,7 +38,7 @@ Battery is **TERMINAL** (2026-08-25). Manifest SHA `40a4a009b3a2453fb953e2b2e9b9
 - official preflight: `PASS` with manifest SHA `40a4a009b3a...` (terminal) and `verify_battery_terminal` `terminal:true`;
 - battery: `TERMINAL` — `FIVE_CNN_BATTERY_NOT_TERMINAL` no longer sole blocker;
 - BrainIAC `PREPARE_RAW_T1` gate: `allowed:true` (`build_live_readiness` PASS, `prepare_brainiac_raw_t1_v2.py --mode preflight` PASS);
-- source contract: `8c02bd511e61caefe4b679e404049fcae45bec9dc21d3707d68ba43dd5b3bd21` (updated baseline);
+- source contract: `9b0f90a5a14f8764397c6a15ff8016462f0872e2f827b2ec47fe54ab773871b3` (updated baseline);
 - related regression suite: `791 passed` historical; BrainIAC focused `45 passed` (preprocessing v2) + `17 passed` (anchor);
 - exact next action: `BRAINIAC_PREPROCESSING_P003_FULL` (1669 MRI, resumable, 45-75h);
 

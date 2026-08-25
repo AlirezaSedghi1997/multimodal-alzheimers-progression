@@ -25,9 +25,11 @@
   - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival\test_image_cache_v3.py tests\method_y_revival\test_image_cache_launcher_v3.py tests\method_y_revival\test_image_training_runtime_v3.py -q` -> 16 passed
   - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival -q` -> 363 passed (expected, full suite 23 passed for v3 focused)
   - `$env:TMP='H:\New project\tmp'; & '.\.venv\Scripts\python.exe' scripts/build_method_y_image_cache_v3.py --config configs/method_y_image_training_v3.yaml --branch both` -> RUNNING, PATTERN_CACHE_PROGRESS 260/895 amyloid, 0 failures, resume_policy PER_SUBJECT_ATOMIC_GROUP_COMMIT, output H:\New project\caches\method_y\revival_v3_image\amyloid_pattern_128_v1.h5 (455 MB, writer.lock on H)
-- focused test result: 16 passed
-- Method Y test result: 363 passed
-- full suite result: NOT_RUN (cache still building, 45-75h)
+- focused test result: 17 passed (incl. tracer mismatch test added by audit)
+- Method Y test result: 450 passed, 0 failed (live re-run 409s; earlier "363"
+  in this report was a stale citation from the 2026-08-24 log — corrected)
+- full suite result: NOT_RUN (root suite requires MONAI venv for MX tests;
+  Method Y scope fully covered above)
 - artifact paths + SHA-256:
   - src/method_y_revival/image_cache_v3.py: C5CE56368A7AE5723B71982BDF09D66BD52579AA95D09DBBB83BA6FB0A547D51 -> updated (contract provenance)
   - src/method_y_revival/image_training_runtime_v3.py: 42A039329CF3F052CE2B525187DC474C19F601AA7E20654046B9A5BF276B6271 -> updated (finalize fix)
