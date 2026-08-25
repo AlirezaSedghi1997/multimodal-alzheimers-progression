@@ -292,9 +292,17 @@ def _restore_rng(state: dict[str, Any]) -> None:
 
 
 def _forward(model, batch: dict[str, Any], device):
+    import torch
+
     tabular = batch["tabular"].to(device, non_blocking=True)
     if "image" in batch:
-        return model(batch["image"].to(device, non_blocking=True), tabular)
+        img = batch["image"].to(device, non_blocking=True)
+        if os.environ.get("IMAGE_V3_PERF", "0") == "1" and str(device) == "cuda":
+            try:
+                img = img.to(memory_format=torch.channels_last_3d)
+            except Exception:
+                pass
+        return model(img, tabular)
     return model(tabular)
 
 
@@ -354,6 +362,12 @@ def fit_survival_model(
         raise TrainingRuntimeV3Error("TRAINING_EPOCH_OR_ACCUMULATION_INVALID")
     device_object = torch.device(device)
     model = model.to(device_object)
+    # Performance: channels_last_3d for 3D conv on Ampere (no scientific change, same weights)
+    if os.environ.get("IMAGE_V3_PERF", "0") == "1" and device_object.type == "cuda":
+        try:
+            model = model.to(memory_format=torch.channels_last_3d)
+        except Exception:
+            pass
     optimizer = torch.optim.AdamW(
         model.parameters(), lr=float(learning_rate), weight_decay=float(weight_decay)
     )
