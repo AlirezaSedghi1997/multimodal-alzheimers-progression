@@ -1,5 +1,32 @@
 # Agent session ledger — 2026-08-15 (Method Y defect repair)
 
+> **Append 2026-08-25T16:00Z — image v3 full-training enablement + GPU perf + 10× feasibility research.**
+> Covers ONLY work after the 13:30Z hard-audit append below (commits `7c30be5`..`41d1c7f`). Plans 009-013 audit is NOT repeated here.
+>
+> **Commits (all on `method-y-post-revival-sanitized-20260812`, no push, no history rewrite):**
+> - `cd6a65f` feat(method-y): enable full image training — real H5 cache + launcher full nested-CV loop
+>   - `src/method_y_revival/image_training_orchestrator_v3.py`: new `h5_cache_path` param → `H5PatternSurvivalDataset` over real `caches/method_y/revival_v3_image/{amyloid,tau}_pattern_128_v1.h5`; inner-HPO score replaced NLL surrogate with TRUE IBS (`survival_at_times` + `sksurv.metrics.integrated_brier_score` on common-support grid from interior bin edges); config-driven batch/grad_accum/max_epochs/patience/amp when h5 cache present (synthetic path preserved for tests).
+>   - `scripts/run_method_y_image_training_v3.py` run mode: full loop amyloid→tau × {scalar_tabular, scalar_tabular_plus_pattern_image} × outer_0..4; per-unit resume skips: winner JSON with matching master contract → skip HPO; `development/<branch>/<variant>/outer_<k>/final/locked_checkpoint.pt` exists → skip final fit; `OuterFoldController` state OUTER_EVAL_COMMITTED/FINALIZED → skip outer (exactly-once preserved).
+> - `c514df4` fix: smoke resume `TypeError: RNG state must be a torch.ByteTensor`
+>   - `src/method_y_revival/image_training_runtime_v3.py` `_restore_rng`: checkpoint saved with `map_location=cuda` put CPU ByteTensor rng states on cuda:0; now `.cpu()` applied to torch_cpu and every torch_cuda state before `set_rng_state`/`set_rng_state_all`. Verified: second smoke run resumes and passes (`{"smoke":"PASSED","device":"cuda","peak_vram":18384896}` at `results/method_y_revival_v3_image_v1/.smoke_test/locked_checkpoint.pt`).
+> - `97dec14` fix: `RUN_CONTRACT_MISMATCH:orchestrator_master_state` on first real run
+>   - Cause: placeholder-era `orchestration/<branch>/orchestrator_state.json` written with dummy `0*64` digests (commit c514... era) vs real membership/cache/split/readiness digests.
+>   - Fix in `scripts/run_method_y_image_training_v3.py`: on that specific mismatch only, delete stale `orchestrator_state.json` + stale `winner_*.json`, re-instantiate orchestrator with real digests. Genuine config/cache/split drift still fails closed (Plan 009 rule).
+> - `eaf6d57` perf: terminal throttle + GPU utilization
+>   - `image_training_runtime_v3.py` `fit_survival_model`: `EPOCH_COMMITTED` printed only when epoch==first, ==target, early-terminal, or ≥40 s since last print (`last_print` gate) — terminal spam removed; test `test_launcher_emits_epoch_progress_with_eta` still green.
+>   - `seed_everything`: TF32 enabled (`set_float32_matmul_precision("high")`, `allow_tf32=True`) always; under env `IMAGE_V3_PERF=1` → `cudnn.benchmark=True`, `deterministic=False`; without it deterministic/benchmark=False kept for bitwise-resume tests.
+>   - `_loader`: `num_workers=2` auto for `H5PatternSurvivalDataset` when perf flag set (H5 handle reopened per worker via `__getstate__`); `persistent_workers=False`.
+>   - `configs/method_y_image_training_v3_1.yaml` model: `batch_size 2→4`, `gradient_accumulation_steps 4→2` — effective batch stays 8; optimizer-step count unchanged. `scripts/run_method_y_image_training_v3.ps1` sets `IMAGE_V3_PERF='1'`.
+> - `41d1c7f` research+perf: 10× feasibility + channels_last_3d
+>   - hyperresearch full-tier run `research/runs/gpu-3d-cnn-10x-9a1e13/` (query.md, scaffold.md, prompt-decomposition.json, temp/search-plan.md 38 queries, shims rendered). Web search lane blocked (Exa/SemanticScholar 403; Playwright CDN geo-blocked 403) → fallback synthesis from PyTorch docs + local benchmarks: `research/notes/final_report_gpu-3d-cnn-10x-9a1e13.md`. Ship gate intentionally left `blocked(verify)` (length/citation-density below full-tier floor) — recorded as honest partial, NOT presented as shipped full-tier report.
+>   - Conclusion: single-GPU 10× not reachable without breaking locked science; measured combined technical headroom ≈3.8× (TF32 1.3 × batch4×2 1.8 × channels_last 1.2 × workers2 1.2 × cudnn.benchmark 1.15); effective wall-time vs naive-90h ≈9× because early stopping averages ~12 epochs of max 40. REJECTED as science-changing: DDP on one GPU, patch 64³ (breaks 128³ reference contract), pruning/compression (changes locked GROUPNORM_RESIDUAL_TINY_3D capacity), gradient checkpointing (adds compute), torch.compile on Windows (triton unavailable — verified RuntimeError, reverted).
+>   - `image_training_runtime_v3.py`: `model.to(memory_format=torch.channels_last_3d)` and input `.to(memory_format=torch.channels_last_3d)` in `_forward`, both gated on `IMAGE_V3_PERF=1`+cuda; try/except no-op fallback.
+>
+> **Live operational actions this session (no code change):** removed stale `.image_training.writer.lock` after orphaned python runs (pids 16540/21624/18532/2436 — verified dead before unlink, never killed by name alone); deleted placeholder-era `orchestration/*/orchestrator_state.json`; earlier tau cache rebuild under new contract already covered by 13:30Z append.
+>
+> **Measured timings on RTX 4060 Laptop (real 128³ cache, development subjects):** 100 subj bs2/ga4 perf-off = 15.2 s/epoch; 100 subj bs4/ga2 perf-on = 9.0 s/epoch; 560 subj = ~40 s/epoch either way (I/O-bound tail). Estimated full programme ≈20 h wall (amyloid ≈12 h, tau ≈8 h) assuming mean ~12 epochs/run via early stopping; resumable at every epoch/checkpoint/outer commit.
+> **Verification:** `pytest tests\method_y_revival -q` = 435 passed (rerun after each change batch); preflight READY; readiness hashes unchanged (19baa31d..., memberships c02a93.../b511ff..., source artifacts 784fa.../41f59...). No v1/v2/raw mutation; all outputs/temp on H.
+
 > **Append 2026-08-25T13:30Z — Method Y image v3 hard audit (Plans 009-013).** This session is image-v3-only.
 > - Branch `method-y-post-revival-sanitized-20260812` HEAD `5405716` + `4ef3495` → new image v3 commit (42 files, 7062 insertions). No `git reset/clean/checkout --`, no branch switch, no push of leaky refs.
 > - Canonical output `H:/New project/results/method_y_revival_v3_image_v1` READY (19baa31d...), 560/110 + 306/75, cache 895/306 on H, provenance-bound (strict HDF5 source_sha, readiness source_artifact, true IBS via `survival_at_times`).

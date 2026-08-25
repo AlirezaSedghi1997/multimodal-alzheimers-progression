@@ -2,7 +2,17 @@
 
 برای ادامه‌ی کار، **ابتدا دفتر ثبت نشست زنده** را بخوانید، نه snapshot تیرماه synthesis.
 
-## زنده‌ترین — ۲۰۲۶-۰۸-۲۵ (Method Y image v3 — Plans 009-013 + hard audit)
+## زنده‌ترین — ۲۰۲۶-۰۸-۲۵ بعدازظهر (image v3: فعال‌سازی آموزش کامل + بهینه‌سازی GPU + تحقیق 10×)
+
+0. **آموزش کامل فعال شد** (commit `cd6a65f`): `scripts/run_method_y_image_training_v3.py` حالت `run` اکنون حلقه واقعی nested-CV را اجرا می‌کند — amyloid سپس tau × دو variant قفل‌شده × outer_0..4؛ `src/method_y_revival/image_training_orchestrator_v3.py` با پارامتر جدید `h5_cache_path` از `H5PatternSurvivalDataset` روی cache واقعی می‌خواند و امتیاز HPO را با IBS واقعی (`survival_at_times` + `integrated_brier_score`) می‌سنجد نه NLL. رزوم سه‌لایه: winner JSON → `locked_checkpoint.pt` → state کنترلر outer (`OUTER_EVAL_COMMITTED/FINALIZED`).
+1. رفع خطای resume دود (`c514df4`): `_restore_rng` در `src/method_y_revival/image_training_runtime_v3.py` اکنون tensorهای rng را قبل از `set_rng_state` به CPU برمی‌گرداند — خطای «RNG state must be a torch.ByteTensor» هنگام resume با `map_location=cuda` برطرف؛ smoke دوم پاس (`peak 18 MiB` در `results/method_y_revival_v3_image_v1/.smoke_test/`).
+2. رفع `RUN_CONTRACT_MISMATCH` شروع آموزش واقعی (`97dec14`): launcher فقط برای همین خطا، state ناقص placeholder-era را حذف و با digestهای واقعی بازسازی می‌کند؛ mismatch واقعی config/cache/split همچنان fail-closed.
+3. بهینه‌سازی بدون تغییر علمی (`eaf6d57` + `41d1c7f`): چاپ ترمینال فقط هر ۴۰ ثانیه (+اولین/آخرین epoch)؛ TF32/high همیشه، `cudnn.benchmark` فقط با `IMAGE_V3_PERF=1` در `scripts/run_method_y_image_training_v3.ps1`؛ `batch 2→4 / grad_accum 4→2` (effective batch همان ۸) در `configs/method_y_image_training_v3_1.yaml`؛ `num_workers=2` خودکار برای دیتاست HDF5؛ `channels_last_3d` برای مدل و ورودی روی cuda. مدل/loss/split/HPO/exactly-once دست نخورده. `435 passed`.
+4. تحقیق 10×: run کامل hyperresearch در `research/runs/gpu-3d-cnn-10x-9a1e13/` (search-plan با ۳۸ کوئری) و گزارش `research/notes/final_report_gpu-3d-cnn-10x-9a1e13.md`. نتیجه: 10× تک-GPU بدون شکستن منطق علمی ممکن نیست؛ سرعت فنی ترکیبی ≈3.8× و نسبت به سناریوی بدبینانه ۹۰h ≈9× مؤثر (early stopping میانگین ~۱۲ epoch از ۴۰). ردشدگان به‌دلیل تغییر علمی: DDP تک-GPU، patch 64³، pruning/compression، gradient checkpointing، torch.compile روی Windows (triton ناموجود — تأیید آزمایشی).
+5. اندازه‌گیری واقعی: ۵۶۰ سوژه ۱۲۸³ ≈۴۰ ثانیه/epoch (هر دو حالت batch2/ga4 و batch4/ga2) → برآورد کل برنامه ≈۲۰ ساعت wall-time (amyloid ≈۱۲h، tau ≈۸h)؛ هر لحظه قابل قطع و رزومه با همان دستور.
+6. جزئیات کامل و آدرس‌دهی commitها (`cd6a65f`, `c514df4`, `97dec14`, `eaf6d57`, `41d1c7f`): `docs/plans/agent_session_ledger_20260815.md` بخش Append 2026-08-25T16:00Z.
+
+## زنده‌ترین — ۲۰۲۶-۰۸-۲۵ صبح (Method Y image v3 — Plans 009-013 + hard audit)
 
 0. شاخه تصویری Method Y v3 اکنون **READY_FOR_FINAL_INTERNAL_IMAGE_TRAINING** (`results/method_y_revival_v3_image_v1/readiness/FINAL_IMAGE_TRAINING_READINESS.json:6` `19baa31d0acfbb15e8bcc11828bae8bee2b9e0ed3b1beea06f7a1119a74979c5`)؛ `training_execution_allowed true`، `positive_claim_allowed false`، `external_claim_allowed false`.
 1. Cacheهای pattern v3 کامل و provenance-bound روی H: `caches/method_y/revival_v3_image/amyloid_pattern_128_v1.h5` 895 گروه (31981B33...), `tau_pattern_128_v1.h5` 306 گروه (4095FCBC...), هر گروه `COMPLETE` + `finite_fraction 1.0` + `float16` + `source_sha256` hard-checked (`src/method_y_revival/image_cache_v3.py:76` strict).
