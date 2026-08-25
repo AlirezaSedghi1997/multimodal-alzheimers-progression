@@ -95,6 +95,7 @@ class ImageTrainingOrchestratorV3:
         membership_sha: str | None = None,
         split_sha: str | None = None,
         readiness_sha: str | None = None,
+        h5_cache_path: str | Path | None = None,
     ) -> None:
         self.config = config
         self.output_root = Path(output_root)
@@ -115,6 +116,7 @@ class ImageTrainingOrchestratorV3:
         self.membership_sha = membership_sha or "0" * 64
         self.split_sha = split_sha or "0" * 64
         self.readiness_sha = readiness_sha or "0" * 64
+        self.h5_cache_path = Path(h5_cache_path) if h5_cache_path else None
         # output directories
         self.state_root = self.output_root / "orchestration" / self.branch
         self.state_root.mkdir(parents=True, exist_ok=True)
@@ -233,35 +235,53 @@ class ImageTrainingOrchestratorV3:
                 # Transform both
                 train_tab = transformer.transform(train_frame)
                 val_tab = transformer.transform(val_frame)
-                # Build datasets with synthetic images (16³) or real cache
-                # For synthetic integration we use MemorySurvivalDataset with random images if variant has image
+                # Build datasets: use real H5 cache if available, else synthetic 16³
                 include_image = variant == "scalar_tabular_plus_pattern_image"
-                if include_image:
-                    # create dummy 16³ images if not provided
-                    train_images = np.random.randn(len(train_frame), 1, 16, 16, 16).astype(np.float32) if len(train_frame) > 0 else np.empty((0, 1, 16, 16, 16))
-                    val_images = np.random.randn(len(val_frame), 1, 16, 16, 16).astype(np.float32) if len(val_frame) > 0 else np.empty((0, 1, 16, 16, 16))
-                else:
+                from .image_training_runtime_v3 import MemorySurvivalDataset, H5PatternSurvivalDataset
+
+                if include_image and self.h5_cache_path is not None and self.h5_cache_path.is_file():
+                    # Real cache path provided — use H5PatternSurvivalDataset for pattern-normalized images
+                    train_ds = H5PatternSurvivalDataset(
+                        cache_path=self.h5_cache_path,
+                        patient_hashes=train_frame["patient_hash"].astype(str).tolist(),
+                        tabular=train_tab,
+                        event=train_frame["event"].to_numpy(),
+                        time_days=train_frame["time_days"].to_numpy(),
+                        include_image=True,
+                    )
+                    val_ds = H5PatternSurvivalDataset(
+                        cache_path=self.h5_cache_path,
+                        patient_hashes=val_frame["patient_hash"].astype(str).tolist(),
+                        tabular=val_tab,
+                        event=val_frame["event"].to_numpy(),
+                        time_days=val_frame["time_days"].to_numpy(),
+                        include_image=True,
+                    )
                     train_images = None
                     val_images = None
+                else:
+                    if include_image:
+                        train_images = np.random.randn(len(train_frame), 1, 16, 16, 16).astype(np.float32) if len(train_frame) > 0 else np.empty((0, 1, 16, 16, 16))
+                        val_images = np.random.randn(len(val_frame), 1, 16, 16, 16).astype(np.float32) if len(val_frame) > 0 else np.empty((0, 1, 16, 16, 16))
+                    else:
+                        train_images = None
+                        val_images = None
+                    train_ds = MemorySurvivalDataset(
+                        tabular=train_tab,
+                        event=train_frame["event"].to_numpy(),
+                        time_days=train_frame["time_days"].to_numpy(),
+                        images=train_images,
+                        patient_hashes=train_frame["patient_hash"].astype(str).tolist(),
+                    )
+                    val_ds = MemorySurvivalDataset(
+                        tabular=val_tab,
+                        event=val_frame["event"].to_numpy(),
+                        time_days=val_frame["time_days"].to_numpy(),
+                        images=val_images,
+                        patient_hashes=val_frame["patient_hash"].astype(str).tolist(),
+                    )
                 # Create model
                 model = build_model(variant, self.config.get("model", {}), tabular_dim=len(tabular_columns), hazard_bins=len(hazard_bin_edges) - 1)
-                # Use MemorySurvivalDataset for test speed
-                from .image_training_runtime_v3 import MemorySurvivalDataset
-
-                train_ds = MemorySurvivalDataset(
-                    tabular=train_tab,
-                    event=train_frame["event"].to_numpy(),
-                    time_days=train_frame["time_days"].to_numpy(),
-                    images=train_images,
-                    patient_hashes=train_frame["patient_hash"].astype(str).tolist(),
-                )
-                val_ds = MemorySurvivalDataset(
-                    tabular=val_tab,
-                    event=val_frame["event"].to_numpy(),
-                    time_days=val_frame["time_days"].to_numpy(),
-                    images=val_images,
-                    patient_hashes=val_frame["patient_hash"].astype(str).tolist(),
-                )
                 # Train with early stopping on inner validation NLL (not used for winner selection)
                 # But winner selection MUST use mean inner IBS, not validation NLL. So we collect IBS post-hoc.
                 tmp_dir = self.state_root / f"tmp_inner_{variant}_outer_{outer_fold}_{cand_id}_inner_{inner.get('fold', 0)}"
@@ -277,6 +297,19 @@ class ImageTrainingOrchestratorV3:
                     split_sha=self.split_sha,
                     readiness_sha=self.readiness_sha,
                 )
+                # Use real config for production (h5 cache), small synthetic for tests
+                if self.h5_cache_path is not None and self.h5_cache_path.is_file():
+                    real_max_epochs = int(self.config.get("model", {}).get("max_epochs", 40))
+                    real_patience = int(self.config.get("model", {}).get("early_stopping_patience", 8))
+                    real_batch = int(self.config.get("model", {}).get("batch_size", 2))
+                    real_accum = int(self.config.get("model", {}).get("gradient_accumulation_steps", 4))
+                    real_amp = bool(self.config.get("model", {}).get("amp", True) and device.startswith("cuda"))
+                else:
+                    real_max_epochs = 2
+                    real_patience = int(self.config.get("model", {}).get("early_stopping_patience", 2))
+                    real_batch = 2
+                    real_accum = 1
+                    real_amp = False
                 fit_survival_model(
                     model=model,
                     train_dataset=train_ds,
@@ -285,14 +318,14 @@ class ImageTrainingOrchestratorV3:
                     output_dir=tmp_dir,
                     run_contract_digest=run_contract,
                     seed=self.seed + outer_fold * 100 + int(inner.get("fold", 0)),
-                    max_epochs=2,
-                    patience=int(self.config.get("model", {}).get("early_stopping_patience", 2)),
+                    max_epochs=real_max_epochs,
+                    patience=real_patience,
                     learning_rate=lr,
                     weight_decay=wd,
-                    batch_size=2,
-                    gradient_accumulation_steps=1,
+                    batch_size=real_batch,
+                    gradient_accumulation_steps=real_accum,
                     device=device,
-                    amp=False,
+                    amp=real_amp,
                 )
                 # After training, evaluate inner validation IBS using survival_at_times and integrated_brier_score
                 # This ensures winner selection uses true IBS, not validation NLL
@@ -406,19 +439,29 @@ class ImageTrainingOrchestratorV3:
         transformer = FoldTabularTransformer.fit(outer_train_frame, tabular_columns)
         tab = transformer.transform(outer_train_frame)
         include_image = variant == "scalar_tabular_plus_pattern_image"
-        if include_image:
-            images = np.random.randn(len(outer_train_frame), 1, 16, 16, 16).astype(np.float32)
-        else:
-            images = None
-        from .image_training_runtime_v3 import MemorySurvivalDataset
+        from .image_training_runtime_v3 import MemorySurvivalDataset, H5PatternSurvivalDataset
 
-        ds = MemorySurvivalDataset(
-            tabular=tab,
-            event=outer_train_frame["event"].to_numpy(),
-            time_days=outer_train_frame["time_days"].to_numpy(),
-            images=images,
-            patient_hashes=outer_train_frame["patient_hash"].astype(str).tolist(),
-        )
+        if include_image and self.h5_cache_path is not None and self.h5_cache_path.is_file():
+            ds = H5PatternSurvivalDataset(
+                cache_path=self.h5_cache_path,
+                patient_hashes=outer_train_frame["patient_hash"].astype(str).tolist(),
+                tabular=tab,
+                event=outer_train_frame["event"].to_numpy(),
+                time_days=outer_train_frame["time_days"].to_numpy(),
+                include_image=True,
+            )
+        else:
+            if include_image:
+                images = np.random.randn(len(outer_train_frame), 1, 16, 16, 16).astype(np.float32)
+            else:
+                images = None
+            ds = MemorySurvivalDataset(
+                tabular=tab,
+                event=outer_train_frame["event"].to_numpy(),
+                time_days=outer_train_frame["time_days"].to_numpy(),
+                images=images,
+                patient_hashes=outer_train_frame["patient_hash"].astype(str).tolist(),
+            )
         model = build_model(variant, self.config.get("model", {}), tabular_dim=len(tabular_columns), hazard_bins=len(hazard_bin_edges) - 1)
         out_dir = self.output_root / "development" / self.branch / variant / f"outer_{outer_fold}" / "final"
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -433,6 +476,15 @@ class ImageTrainingOrchestratorV3:
             split_sha=self.split_sha,
             readiness_sha=self.readiness_sha,
         )
+        # Use real config for production
+        if self.h5_cache_path is not None and self.h5_cache_path.is_file():
+            real_batch = int(self.config.get("model", {}).get("batch_size", 2))
+            real_accum = int(self.config.get("model", {}).get("gradient_accumulation_steps", 4))
+            real_amp = bool(self.config.get("model", {}).get("amp", True) and device.startswith("cuda"))
+        else:
+            real_batch = 2
+            real_accum = 1
+            real_amp = False
         summary = fit_survival_model(
             model=model,
             train_dataset=ds,
@@ -445,10 +497,10 @@ class ImageTrainingOrchestratorV3:
             patience=100,  # disable early stopping for fixed epochs
             learning_rate=float(winner.get("learning_rate", 0.0001) if "learning_rate" in winner else 0.0001),
             weight_decay=float(winner.get("weight_decay", 0.0001) if "weight_decay" in winner else 0.0001),
-            batch_size=2,
-            gradient_accumulation_steps=1,
+            batch_size=real_batch,
+            gradient_accumulation_steps=real_accum,
             device=device,
-            amp=False,
+            amp=real_amp,
             fixed_epochs=fixed_epochs,
         )
         # lock checkpoint via OuterFoldController
