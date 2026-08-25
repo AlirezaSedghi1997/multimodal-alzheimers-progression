@@ -1,0 +1,141 @@
+{
+  "artifact_type": "BRAINIAC_READINESS_TRANSITION",
+  "event_sha256": "860911fc07eb4f4d3579ecea89050135df116dd0984460cfd52168e7398392da",
+  "previous_event_sha256": "20d8c5be31badd334bde580afdf1bf192fbc889cfdbec7100098d6c232715798",
+  "readiness_payload": {
+    "artifact_type": "BRAINIAC_R1_DERIVED_READINESS",
+    "battery_terminal_report": {
+      "amendment_binding": {
+        "bytes": 809,
+        "path": "H:\\New project\\results\\final_results\\method_x_model_battery_v3_depth_and_diversity_20260729\\amendments\\method_x_battery_v3_five_model_amendment.v1.json",
+        "sha256": "0ee56966a575c7b35741d501ee7b66103ff6eb40f21c84c32f70998fcad0c10e"
+      },
+      "blockers": [],
+      "checkpoint_hashes_recomputed": true,
+      "identity_valid": true,
+      "manifest_binding": {
+        "bytes": 207290,
+        "path": "H:\\New project\\results\\final_results\\method_x_model_battery_v3_depth_and_diversity_20260729\\battery_manifest.json",
+        "sha256": "40a4a009b3a2453fb953e2b2e9b9ec789bdf896741dc2278a898a3b38fdb971d"
+      },
+      "models_count": 5,
+      "models_digest": "b98ca3fedcc8b719568df0eb96e898444a57c8c6983a0d888b45dde01241ae0e",
+      "outer_evaluation_count": 25,
+      "status": "VERIFIED_TERMINAL",
+      "terminal": true
+    },
+    "claim_limits": {
+      "causal_claim_allowed": false,
+      "claim_ceiling": "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE",
+      "confirmatory_pretraining_independence": false,
+      "diagnostic_claim_allowed": false,
+      "external_generalization": false,
+      "novelty_status": "NOVELTY_CANDIDATE"
+    },
+    "derived_evidence": {
+      "brainiac_embeddings_complete": false,
+      "brainiac_extractor_contract_ready": false,
+      "caft_trainer_contract_ready": false,
+      "external_dua": false,
+      "external_exactly_once": false,
+      "external_lineage": false,
+      "external_no_refit": false,
+      "official_forward": true,
+      "official_runtime": true,
+      "outer_head_calibration_locked": false,
+      "preprocessing_v2_complete": false,
+      "pretraining_overlap_status": "UNKNOWN_PRETRAINING_OVERLAP",
+      "promotion_evidence_ready": false,
+      "r0_complete": true,
+      "resnet34_inner_features_complete": false,
+      "resnet34_representation_contract_ready": false,
+      "split_registry_locked": false,
+      "strict_load": true
+    },
+    "human_approval_required": false,
+    "input_bindings": {
+      "battery_manifest": {
+        "bytes": 207290,
+        "path": "H:\\New project\\results\\final_results\\method_x_model_battery_v3_depth_and_diversity_20260729\\battery_manifest.json",
+        "sha256": "40a4a009b3a2453fb953e2b2e9b9ec789bdf896741dc2278a898a3b38fdb971d"
+      },
+      "official_forward": {
+        "bytes": 1440,
+        "path": "H:\\New project\\results\\method_x_registry\\brainiac_r1\\brainiac_official_forward_receipt.json",
+        "sha256": "fb53f11a21ba9e966c04b54ba72a0cb6971669b4418ac8e09f3aef679dd2d928"
+      },
+      "official_runtime": {
+        "bytes": 3615,
+        "path": "H:\\New project\\results\\method_x_registry\\brainiac_r1\\brainiac_official_runtime_lock.json",
+        "sha256": "360d9283acd8cb914eb84b203cc44bb8a93a568187dc9434afdcf4600b0f81a6"
+      },
+      "official_strict_load": {
+        "bytes": 1628,
+        "path": "H:\\New project\\results\\method_x_registry\\brainiac_r1\\brainiac_official_strict_load_receipt.json",
+        "sha256": "bc0b7cb64b91a12298a04ccdc55cb4ca3570741e0dae03f2a2a5526f54e20df0"
+      },
+      "policy": {
+        "bytes": 2806,
+        "path": "H:\\New project\\governance\\brainiac_r1_execution_policy_v1.json",
+        "sha256": "9ef85415fcc1f7608a060ff2c6072841adb8b9e91be97764b70446dc42d46dfc"
+      },
+      "predecessor_scope": {
+        "bytes": 3880,
+        "path": "H:\\New project\\governance\\method_x_current_completion_scope_v1.json",
+        "sha256": "e3dd7aaf551c76c96eb82e9e31f4529e7a051ac39ba1c6b89bd5139048864747"
+      },
+      "r0_registry": {
+        "bytes": 125454,
+        "path": "H:\\New project\\research\\brainiac_caft_20260808\\evidence_registry_v3.json",
+        "sha256": "1c45b3f4a22ff7ba0e2a6139051c31e56365016bfaaeff819d9497a0735dca89"
+      },
+      "schema3_readiness_predecessor": {
+        "bytes": 2945,
+        "path": "H:\\New project\\research\\brainiac_caft_20260808\\r1_readiness_status_20260822.json",
+        "sha256": "09b360b1381c903d38d05af2a6f30859f511d2db2b2af05c1c2928fb01f83f12"
+      },
+      "scope_amendment": {
+        "bytes": 1391,
+        "path": "H:\\New project\\governance\\brainiac_r1_preterminal_preparation_scope_amendment_v1.json",
+        "sha256": "6b313303ff16c16c160838c4022801a5a2fd3de0aed2084ac7289cf8ecfae5fc"
+      },
+      "upstream_manifest": {
+        "bytes": 2187,
+        "path": "H:\\New project\\research\\brainiac_caft_20260808\\upstream_boundary_manifest.json",
+        "sha256": "a15e4e2d9ca068d3c3110fe4cc6cda745b893addd54d8f98f46873abc4a0bbd6"
+      }
+    },
+    "lora_unlocked": false,
+    "manual_override_allowed": false,
+    "outer_test_touched": false,
+    "pretraining_overlap_status": "UNKNOWN_PRETRAINING_OVERLAP",
+    "r0": {
+      "citation_corroboration": "CITATION_CORROBORATION_PARTIAL",
+      "full_text_reviewed": 28,
+      "fully_verified": false,
+      "non_full_text": 1,
+      "novelty_status": "NOVELTY_CANDIDATE",
+      "peer_reviewed": 13,
+      "r0_status": "R0_COMPLETE",
+      "registry_binding": {
+        "bytes": 125454,
+        "path": "H:\\New project\\research\\brainiac_caft_20260808\\evidence_registry_v3.json",
+        "sha256": "1c45b3f4a22ff7ba0e2a6139051c31e56365016bfaaeff819d9497a0735dca89"
+      },
+      "total_in_window": 29
+    },
+    "schema_version": 4,
+    "supersedes": [
+      {
+        "bytes": 2945,
+        "path": "H:\\New project\\research\\brainiac_caft_20260808\\r1_readiness_status_20260822.json",
+        "sha256": "09b360b1381c903d38d05af2a6f30859f511d2db2b2af05c1c2928fb01f83f12",
+        "status": "SUPERSEDED_BY_DERIVED_SCHEMA4"
+      }
+    ],
+    "unknown_is_pass": false
+  },
+  "readiness_payload_sha256": "7a2ced958b47250f53e262fd048db3da83c2d8b30f1b7068168934c9be2d8616",
+  "schema_version": 1,
+  "sequence": 8
+}

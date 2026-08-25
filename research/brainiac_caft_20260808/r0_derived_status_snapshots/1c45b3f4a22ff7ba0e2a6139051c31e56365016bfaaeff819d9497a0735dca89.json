@@ -1,0 +1,28 @@
+{
+  "artifact_type": "BRAINIAC_R0_DERIVED_LOCK",
+  "citation_corroboration": "CITATION_CORROBORATION_PARTIAL",
+  "full_text_reviewed": 28,
+  "fully_verified": false,
+  "integrity_sha256": "98251709f0b44b449ff7bcaf10e956e8d5aeaf7b6cae45d249b916988a4511c5",
+  "non_full_text": 1,
+  "novelty_status": "NOVELTY_CANDIDATE",
+  "outer_test_touched": false,
+  "peer_reviewed": 13,
+  "r0_status": "R0_COMPLETE",
+  "registry_binding": {
+    "bytes": 125454,
+    "path": "H:\\New project\\research\\brainiac_caft_20260808\\evidence_registry_v3.json",
+    "sha256": "1c45b3f4a22ff7ba0e2a6139051c31e56365016bfaaeff819d9497a0735dca89"
+  },
+  "schema_version": 1,
+  "supersedes": [
+    {
+      "bytes": 704,
+      "path": "H:\\New project\\research\\brainiac_caft_20260808\\r0_derived_status_20260822.json",
+      "sha256": "492ae2db81709a644c8cbb71d5664e6a19667600eca92abe506de940c6a52799",
+      "status": "SUPERSEDED_BY_APPEND_ONLY_R0_SNAPSHOT"
+    }
+  ],
+  "total_in_window": 29,
+  "training_started": false
+}
