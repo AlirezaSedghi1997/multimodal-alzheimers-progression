@@ -2,12 +2,36 @@
 
 برای ادامه‌ی کار، **ابتدا دفتر ثبت نشست زنده** را بخوانید، نه snapshot تیرماه synthesis.
 
+## زنده‌ترین — ۲۰۲۶-۰۸-۲۵ (BrainIAC-CAFT governance drift fix و باتری ترمینال)
+
+0. باتری پنج‌مدلی اکنون **TERMINAL** (`40a4a009b3a2453fb953e2b2e9b9ec789bdf896741dc2278a898a3b38fdb971d`، 5/5 `COMPLETED`، `.battery.lock` ABSENT) — `src/research/brainiac_battery_terminal.py: verify_battery_terminal` `terminal:true`.
+1. `method_x_training_source_contract()` جدید `8c02bd511e61caefe4b679e404049fcae45bec9dc21d3707d68ba43dd5b3bd21` (پس از سازگار‌سازی `src/evaluation/calibration.py:49`, `cohort_probe.py:128`, `backbone_factory.py:6` و `scripts/train_3d_mri.py:57`).
+2. Governance fix 4 مرحله‌ای 2026-08-25 (predecessor `e3dd7aaf`/`6b313303`, registry `1c45b3f4`, vendor CRLF→LF `c26b42ba`) — `scripts/research/prepare_brainiac_raw_t1_v2.py --mode preflight` اکنون `PASS` و `PREPARE_RAW_T1 allowed:true`.
+3. دستور واحد P003 (resumable, Brainiac venv): `& 'H:\New project\.venvs\brainiac\Scripts\python.exe' 'H:\New project\scripts\research\prepare_brainiac_raw_t1_v2.py' --mode full --device cuda` — اجرای مجدد همان دستور از last commit ادامه می‌دهد (exit 75).
+4. مستندات به‌روز: `advisor-plans/README.md` و `advisor-plans/000-20260822-work-log-and-live-state.md` Addendum 3، `docs/plans/method_x_project_roadmap.md` و `results/method_x_registry/project_roadmap.json` به TERMINAL.
+
+## زنده‌ترین — ۲۰۲۶-۰۸-۲۴ (Method Y تکمیل داخلی با ادعاهای محدود)
+
+0. رسید نهایی ماشینی: `results/method_y_revival_v2/reports/POSTTRAINING_READINESS_V2.json` — وضعیت `LOCAL_INTERNAL_PIPELINE_COMPLETED_CLAIMS_RESTRICTED`، بازبینی مستقل انسانی لازم نیست.
+1. گزارش نهایی قابل‌خواندن: `docs/METHOD_Y_V2_FINAL_INTERNAL_STATUS_20260824.md`.
+2. قرارداد کامل اجرا و resume: `docs/METHOD_Y_V2_POSTTRAINING_EXECUTION_CONTRACT.md`.
+3. رجیستری artifact: `results/method_y_revival_v2/artifact_registry_v2.json`.
+4. بسته عمومی aggregate: `results/method_y_revival_v2/public_bundle/`؛ privacy status باید `PASS` بماند.
+5. تفسیر: source-regional کامل است؛ image branches اختیاری و مسدود؛ external primary اختیاری و در داده‌های کاملاً باز یافت نشد؛ DLBS فقط replication ثانویه اکتشافی است.
+
+## زنده‌ترین — ۲۰۲۶-۰۸-۲۲ (نشست نظارت ZCode)
+
+0. **حافظه اجرای پس از آموزش (معتبرترین صف POST):** `results/method_x_registry/post_training_execution_memory_20260822.json` (schema v3؛ کارت‌های D02/MX-03/R1a/R1b/R1c/MX-04/MX-05/MX-06/T08/MX-07 + قرارداد watchdog؛ پایش خودکار ۲ساعته فعال)
+1. وضعیت BrainIAC: `results/method_x_registry/BRAINIAC_P08_STATUS_20260822.json` (R0 = COMPLETE با ۲۸/۲۹ مرور فول‌تکست؛ اجرای R1 همچنان HARD_DISABLED با ۶ blocker) و `research/brainiac_caft_20260808/evidence_registry_v3.json`
+2. چک‌لیست جاری: `tasks/method_x_completion_20260821_todo.md` (P08b تکمیل شد؛ D01 زنده؛ D02 در انتظار ترمینال MedNeXt)
+3. دفتر کار Method X (append-only): `docs/plans/method_x_work_log.md` — ورودی کامل ۲۰۲۶-۰۸-۲۲ بعدازظهر در انتها
+
 ## زنده — ۲۰۲۶-۰۸-۱۵
 
 1. دفتر ثبت نشست (Method Y repair + Method X untouched): `docs/plans/agent_session_ledger_20260815.md`
 2. همزاد ماشینی Method Y: `results/method_y_revival_v2/journals/session_ledger_20260815.json`
 3. یادداشت انزوای Method X: `results/method_x_registry/SESSION_NOTE_METHOD_Y_DEFECT_REPAIR_20260815.json`
-4. آمادگی زنده Method Y: `results/method_y_revival_v2/readiness/PRETRAINING_READINESS_V2.json` (`training_allowed=false`؛ Task 4 هنوز `COMMITTED` نیست)
+4. آمادگی زنده Method Y: `results/method_y_revival_v2/readiness/PRETRAINING_READINESS_V2.json` (`training_allowed=false`؛ Task 4 الان `COMMITTED` است ولی این فایل رسید اجرای A4 نیست؛ دود مصنوعی `SYNTHETIC_SMOKE_ONLY` در ۲۰۲۶-۰۸-۱۶)
 5. کار باقی‌مانده Method Y: `docs/plans/method_y_remaining_work_20260815.md`
 6. نقشه زنده Method X: `docs/plans/method_x_project_roadmap.md` و `results/method_x_registry/project_roadmap.json`
 7. کار باقی‌مانده Method X: `docs/plans/method_x_remaining_work_20260815.md`

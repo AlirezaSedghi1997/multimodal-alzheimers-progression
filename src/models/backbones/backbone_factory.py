@@ -3,6 +3,10 @@ from __future__ import annotations
 import torch.nn as nn
 
 
+def available_3d_backbones() -> list[str]:
+    return ["tiny", "resnet10_3d", "resnet18_3d", "densenet121_3d", "efficientnet3d_b0", "resnet34_3d", "resnet50_3d", "mednext_3d_s"]
+
+
 def build_3d_backbone(name: str, in_channels: int = 1, out_dim: int = 128, pretrained_path: str | None = None) -> nn.Module:
     """Build a PET-free 3D MRI encoder for Method X."""
     name = name.lower().strip()

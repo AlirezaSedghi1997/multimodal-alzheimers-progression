@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "status": "CURRENT_LOCKED_COMPLETION_SCOPE",
+  "effective_date": "2026-08-21",
+  "canonical_plan": "tasks/method_x_completion_20260821_plan.md",
+  "canonical_plan_sha256": "f2e7bf193887604528ecdcba99b5e69f6c9c51ea77cbaa52d9e358eca3d709d6",
+  "official_cnn_order": [
+    "resnet10_3d",
+    "resnet18_3d",
+    "resnet34_3d",
+    "densenet121_3d",
+    "mednext_3d_s"
+  ],
+  "protocol_exclusions": [
+    "resnet50_3d",
+    "efficientnet3d_b0"
+  ],
+  "brainiac": {
+    "role": "POST_HOC_SIXTH_MODEL_FAMILY",
+    "official_battery_member": false,
+    "blocks_cnn_battery": false,
+    "execution_before_terminal_cnn_battery": "HARD_DISABLED",
+    "novelty_ceiling": "NOVELTY_CANDIDATE"
+  },
+  "storage": {
+    "project_write_root": "H:\\New project",
+    "repeat_temporary_write_probe": false,
+    "c_checkpoint_staging": {
+      "root": "C:\\Users\\USER\\AppData\\Local\\AMUSE-X\\checkpoint_staging",
+      "purpose": "RUNTIME_RESUME_CHECKPOINTS_ONLY",
+      "allowed_basenames": [
+        "resume_current.pt",
+        "resume_previous.pt",
+        "*.tmp"
+      ]
+    },
+    "h_authoritative_artifacts": [
+      "source_code",
+      "configuration",
+      "scientific_contract",
+      "journal",
+      "mirror_and_mirror_metadata",
+      "best_state_sidecar",
+      "fold_state",
+      "manifest",
+      "receipt",
+      "report",
+      "prediction",
+      "outer_evaluation",
+      "documentation"
+    ]
+  },
+  "external_evaluation": {
+    "required_for_internal_completion": false,
+    "default_status": "EXTERNAL_UNAVAILABLE_NONBLOCKING",
+    "unavailable_evidence_label": "ROBUSTNESS_EVIDENCE_NOT_EXTERNAL_VALIDATION",
+    "allowed_states": [
+      "EXTERNAL_UNAVAILABLE_NONBLOCKING",
+      "EXTERNAL_AVAILABLE_PENDING_ELIGIBILITY",
+      "EXTERNAL_AVAILABLE_INELIGIBLE",
+      "EXTERNAL_ELIGIBLE_LOCKED_NOT_RUN",
+      "EXTERNAL_EVALUATION_COMPLETED",
+      "EXTERNAL_EVALUATION_INVALID"
+    ],
+    "method_x_separate_eligibility_required": true,
+    "method_y_separate_eligibility_required": true,
+    "availability_does_not_imply_eligibility": true,
+    "no_refit_exactly_once_when_eligible": true,
+    "internal_robustness_when_unavailable": [
+      "locked_oof_predictions",
+      "paired_subject_bootstrap",
+      "calibration",
+      "repeated_seed_stability",
+      "negative_controls",
+      "subgroup_cohort_site_audits_where_estimable",
+      "prespecified_domain_shift_stress_tests"
+    ]
+  },
+  "claims": {
+    "internal_technical_evidence_only": true,
+    "external_generalization_without_external_data": false,
+    "diagnostic_claim_allowed": false,
+    "causal_claim_allowed": false,
+    "disease_region_claim_allowed": false
+  },
+  "supervision": {
+    "mode": "AUTONOMOUS_MULTI_LAYER_FAIL_CLOSED",
+    "human_approval_required": false,
+    "manual_override_allowed": false,
+    "unknown_is_pass": false,
+    "required_layer_count": 10
+  },
+  "supersedes": [
+    {
+      "path": "tasks/plan.md",
+      "sha256": "2e8c8d09481d7f5993cce22d242b7a55545e029a65236643e77b1b2ecfb92abe",
+      "status": "SUPERSEDED_BY_20260821_SCOPE"
+    },
+    {
+      "path": "tasks/todo.md",
+      "sha256": "de3c531926e6d1629605717f995d4f117072f7250f29443b6bc0f121512868cf",
+      "status": "SUPERSEDED_BY_20260821_SCOPE"
+    },
+    {
+      "path": "docs/plans/method_x_project_roadmap.md",
+      "sha256": "4685591eb74e5441947e577251ca9b700452b3732f47f9a43e3b7db1f0ebc809",
+      "status": "SUPERSEDED_BY_20260821_SCOPE"
+    },
+    {
+      "path": "docs/plans/method_x_remaining_work_20260815.md",
+      "sha256": "7d202307e94d89d6037784a448ed73ed0d5ca5bbe897c2714bfd947e2d011bea",
+      "status": "SUPERSEDED_BY_20260821_SCOPE"
+    },
+    {
+      "path": "docs/plans/method_x_tasks_4_to_8_completion_matrix.md",
+      "sha256": "4ab588dbad669176cfa3979f8dc79964cfe921e6e8e4b271ce7e94b22f00a00d",
+      "status": "SUPERSEDED_BY_20260821_SCOPE"
+    }
+  ]
+}

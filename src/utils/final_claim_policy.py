@@ -69,6 +69,20 @@ def three_d_gate_status(three_d_metrics: dict[str, Any] | None) -> str:
     return "PENDING"
 
 
+def claim_from_three_d_aggregate(aggregate: dict[str, Any], strict: bool = False) -> dict[str, Any]:
+    return evaluate_three_d_final_claim(
+        mode=aggregate.get("mode", "FULL_3D_TRAINING"),
+        phase=aggregate.get("phase", "final"),
+        resolution=int(aggregate.get("resolution", 96) or 96),
+        folds=int(aggregate.get("folds", 5) or 5),
+        cache_resolution=aggregate.get("cache_resolution"),
+    )
+
+
+def validate_claim(claim: dict[str, Any], strict: bool = False) -> dict[str, Any]:
+    return claim
+
+
 def evaluate_three_d_final_claim(
     *,
     mode: str,

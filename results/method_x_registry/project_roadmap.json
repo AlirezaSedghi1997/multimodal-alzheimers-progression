@@ -1,0 +1,109 @@
+{
+  "amended_utc": "2026-08-25T05:45:00+00:00",
+  "architecture": {
+    "audit_only": [
+      "cohort",
+      "site",
+      "scanner",
+      "manufacturer",
+      "field_strength"
+    ],
+    "brainiac_family": "POST_HOC_SIXTH_NOT_OFFICIAL_FIVE_CNN",
+    "pet_enters_method_x": false,
+    "prediction_inputs": [
+      "T1 MRI",
+      "age",
+      "sex",
+      "education_years",
+      "apoe4_carrier",
+      "mmse_base"
+    ]
+  },
+  "battery": {
+    "effective_order": [
+      "resnet10_3d",
+      "resnet18_3d",
+      "resnet34_3d",
+      "densenet121_3d",
+      "mednext_3d_s"
+    ],
+    "output_root": "results/final_results/method_x_model_battery_v3_depth_and_diversity_20260729",
+    "resume": {
+      "status": "TERMINAL_ALL_COMPLETED",
+      "optimizer_step": null,
+      "fold": null
+    },
+    "rows": {
+      "densenet121_3d": "COMPLETED",
+      "efficientnet3d_b0": "PROTOCOL_EXCLUDED_NOT_STARTED",
+      "mednext_3d_s": "COMPLETED",
+      "resnet10_3d": "COMPLETED",
+      "resnet18_3d": "COMPLETED",
+      "resnet34_3d": "COMPLETED",
+      "resnet50_3d": "PROTOCOL_EXCLUDED_NOT_STARTED"
+    },
+    "status": "TERMINAL"
+  },
+  "battery_manifest_sha256": "40a4a009b3a2453fb953e2b2e9b9ec789bdf896741dc2278a898a3b38fdb971d",
+  "claim_boundary": "INTERNAL_PET_FREE_TECHNICAL_BENCHMARK_ONLY",
+  "external_evaluation": {
+    "external_validation_claim_allowed": false,
+    "internal_substitute_label": "ROBUSTNESS_EVIDENCE_NOT_EXTERNAL_VALIDATION",
+    "method_x": "EXTERNAL_UNAVAILABLE_NONBLOCKING",
+    "method_y": "EXTERNAL_UNAVAILABLE_NONBLOCKING",
+    "required_for_internal_completion": false
+  },
+  "final_claim_allowed": false,
+  "gates": {
+    "MX-03": {
+      "status": "BLOCKED_DEPENDENCY_PREPROCESSING_1669_INCOMPLETE"
+    },
+    "MX-04": {
+      "status": "BLOCKED_DEPENDENCY_PREPROCESSING_1669_INCOMPLETE"
+    },
+    "MX-05": {
+      "status": "BLOCKED_DEPENDENCY_PREPROCESSING_1669_INCOMPLETE"
+    },
+    "MX-06": {
+      "status": "BLOCKED_DEPENDENCY_PREPROCESSING_1669_INCOMPLETE"
+    },
+    "MX-07": {
+      "status": "BLOCKED_DEPENDENCY_PREPROCESSING_1669_INCOMPLETE"
+    },
+    "P09": {
+      "manifest_unchanged": true,
+      "preflight_exit_code": 0,
+      "status": "PASS",
+      "tests": 791
+    },
+    "R0": {
+      "auditable_full_text_reviewed": 6,
+      "minimum_additional_reviews": 18,
+      "nonblocking_for_main_cnn": true,
+      "novelty": "NOVELTY_CANDIDATE",
+      "peer_reviewed": 13,
+      "status": "INCOMPLETE_PENDING_R0_COMPLETION",
+      "unique_in_window": 29
+    },
+    "R1": {
+      "status": "HARD_DISABLED_PENDING_EVIDENCE"
+    }
+  },
+  "next_command": {
+    "mode": "run",
+    "never_no_resume": true,
+    "powershell": "& 'H:\\New project\\.venvs\\brainiac\\Scripts\\python.exe' 'H:\\New project\\scripts\\research\\prepare_brainiac_raw_t1_v2.py' --mode full --device cuda",
+    "description": "P003 resumable 1669 MRI preprocessing (45-75h); rerun same command to resume from last commit (exit 75)"
+  },
+  "schema_version": 2,
+  "source": "results/method_x_registry/READY_FOR_MAIN_BATTERY_TRAINING_20260821_FINAL.json",
+  "source_file_sha256": "eafd03708c2449088f961d3a340493f0f92f15518cd5689bd6c6fb47e37db7f0",
+  "source_integrity_sha256": "88df01ea4933feecbd418cd69ef30c3052463fb6e16e41fbde16b035771cee8d",
+  "status": "LIVE_P09_RECONCILED",
+  "storage": {
+    "c_exception": "CHECKPOINT_PAYLOAD_ONLY",
+    "checkpoint_staging_root": "C:\\Users\\USER\\AppData\\Local\\AMUSE-X\\checkpoint_staging",
+    "project_artifact_authority": "H:\\New project",
+    "repeat_h_temporary_write_probe": false
+  }
+}

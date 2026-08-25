@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "policy_id": "brainiac_r1_execution_policy_v1",
+  "status": "LOCKED_FAIL_CLOSED",
+  "effective_date": "2026-08-22",
+  "method_x_modality": "PET_FREE_MRI_ONLY",
+  "brainiac_role": "POST_HOC_SIXTH_MODEL_FAMILY",
+  "effective_five_model_battery": [
+    "resnet10_3d",
+    "resnet18_3d",
+    "resnet34_3d",
+    "densenet121_3d",
+    "mednext_3d_s"
+  ],
+  "protocol_exclusions": [
+    "resnet50_3d",
+    "efficientnet3d_b0"
+  ],
+  "actions": {
+    "PREPARE_RAW_T1": {
+      "class": "LABEL_FREE_PREPARATION",
+      "five_cnn_terminal_required": false
+    },
+    "EXTRACT_FROZEN_BRAINIAC_EMBEDDINGS": {
+      "class": "LABEL_FREE_PREPARATION",
+      "five_cnn_terminal_required": false
+    },
+    "EXTRACT_RESNET34_INNER_FEATURES": {
+      "class": "OUTER_TRAIN_ONLY_PREPARATION",
+      "five_cnn_terminal_required": false
+    },
+    "CAFT_TRAINING": {
+      "class": "FROZEN_ENCODER_INTERNAL_TRAINING",
+      "five_cnn_terminal_required": true
+    },
+    "OUTER_FEATURE_SNAPSHOT": {
+      "class": "EXACTLY_ONCE_OUTER_EVALUATION",
+      "five_cnn_terminal_required": true
+    },
+    "PROMOTION": {
+      "class": "TECHNICAL_PROMOTION_ONLY",
+      "five_cnn_terminal_required": true
+    },
+    "EXTERNAL_EVALUATION": {
+      "class": "OPTIONAL_NO_REFIT_EXTERNAL_EVALUATION",
+      "five_cnn_terminal_required": true,
+      "additional_requirements": [
+        "DUA",
+        "EXTERNAL_LINEAGE",
+        "NO_REFIT_AUTHORIZATION",
+        "EXACTLY_ONCE_AUTHORIZATION"
+      ]
+    }
+  },
+  "pretraining_overlap": {
+    "unknown_status": "UNKNOWN_PRETRAINING_OVERLAP",
+    "blocks_label_free_preparation": false,
+    "blocks_frozen_internal_r1_training": false,
+    "blocks_lora": true,
+    "blocks_confirmatory_pretraining_independence_claim": true,
+    "blocks_external_generalization_claim": true
+  },
+  "external_evaluation": {
+    "required_for_internal_completion": false,
+    "unavailable_status": "EXTERNAL_UNAVAILABLE_NONBLOCKING",
+    "internal_evidence_label": "ROBUSTNESS_EVIDENCE_NOT_EXTERNAL_VALIDATION",
+    "availability_implies_authorization": false
+  },
+  "claims": {
+    "ceiling": "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE",
+    "novelty_ceiling": "NOVELTY_CANDIDATE",
+    "diagnostic_claim_allowed": false,
+    "causal_claim_allowed": false,
+    "external_generalization_without_eligible_external_data": false
+  },
+  "fail_closed_inputs": [
+    "UNKNOWN",
+    "NOT_MEASURABLE",
+    "UNREADABLE",
+    "MALFORMED",
+    "REPARSE",
+    "HASH_MISMATCH",
+    "MISSING_BINDING",
+    "PROCESS_INSPECTION_FAILURE",
+    "MODEL_IDENTITY_AMBIGUITY",
+    "STATUS_AMBIGUITY"
+  ],
+  "supervision": {
+    "mode": "AUTONOMOUS_MULTI_LAYER_FAIL_CLOSED",
+    "human_approval_required": false,
+    "manual_override_allowed": false,
+    "unknown_is_pass": false
+  },
+  "lora_unlocked": false
+}

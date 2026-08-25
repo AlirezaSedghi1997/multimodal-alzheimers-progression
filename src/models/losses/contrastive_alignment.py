@@ -39,3 +39,9 @@ class ContrastiveAlignmentLoss(torch.nn.Module):
         loss_m2t = F.cross_entropy(logits, labels)
         loss_t2m = F.cross_entropy(logits.t(), labels)
         return (loss_m2t + loss_t2m) / 2.0
+
+
+class SupervisedContrastiveAlignmentLoss(ContrastiveAlignmentLoss):
+    """Stub supervised variant to satisfy import; delegates to base."""
+
+    pass

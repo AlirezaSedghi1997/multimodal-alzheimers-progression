@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "amendment_id": "brainiac_r1_preterminal_preparation_scope_amendment_v1",
+  "status": "APPEND_ONLY_LOCKED_SCOPE_AMENDMENT",
+  "effective_date": "2026-08-22",
+  "predecessor_scope": {
+    "path": "governance/method_x_current_completion_scope_v1.json",
+    "bytes": 3880,
+    "sha256": "e3dd7aaf551c76c96eb82e9e31f4529e7a051ac39ba1c6b89bd5139048864747"
+  },
+  "preserved": {
+    "brainiac_role": "POST_HOC_SIXTH_MODEL_FAMILY",
+    "official_battery_member": false,
+    "blocks_cnn_battery": false,
+    "training_before_terminal_five_cnn_battery": "HARD_DISABLED",
+    "outer_evaluation_before_terminal_five_cnn_battery": "HARD_DISABLED",
+    "promotion_before_terminal_five_cnn_battery": "HARD_DISABLED",
+    "novelty_ceiling": "NOVELTY_CANDIDATE"
+  },
+  "changed_rule_only": {
+    "historical_rule": "ALL_BRAINIAC_EXECUTION_BEFORE_TERMINAL_CNN_BATTERY_HARD_DISABLED",
+    "replacement": "ONLY_INDEPENDENT_PREREQUISITE_READY_PREPARATION_ACTIONS_MAY_RUN_BEFORE_TERMINAL_BATTERY",
+    "preterminal_actions": [
+      "PREPARE_RAW_T1",
+      "EXTRACT_FROZEN_BRAINIAC_EMBEDDINGS",
+      "EXTRACT_RESNET34_INNER_FEATURES"
+    ],
+    "required_writer_state": "DEFINITIVELY_ZERO_LIVE_OR_UNKNOWN_WRITERS"
+  },
+  "supervision": {
+    "human_approval_required": false,
+    "manual_override_allowed": false,
+    "unknown_is_pass": false
+  }
+}

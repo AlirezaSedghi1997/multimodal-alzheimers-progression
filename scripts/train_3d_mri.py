@@ -54,6 +54,80 @@ from src.data.combined_mri_cache import (
     supplementary_train_indices,
     validate_phenotype_feature_names,
 )
+from src.utils.reproducibility import source_tree_digest, runtime_version_contract
+
+
+def method_x_training_source_paths() -> list[Path]:
+    scoped_roots = [
+        PROJECT_ROOT / "scripts/train_3d_mri.py",
+        PROJECT_ROOT / "scripts/train_baseline.py",
+        PROJECT_ROOT / "src/data/combined_mri_cache.py",
+        PROJECT_ROOT / "src/data/volume_augmentation.py",
+        PROJECT_ROOT / "src/evaluation/calibration.py",
+        PROJECT_ROOT / "src/evaluation/cohort_probe.py",
+        PROJECT_ROOT / "src/evaluation/threshold_metrics.py",
+        PROJECT_ROOT / "src/evaluation/tta.py",
+        PROJECT_ROOT / "src/models/__init__.py",
+        PROJECT_ROOT / "src/models/backbones/__init__.py",
+        PROJECT_ROOT / "src/models/backbones/amuse_x_hybrid3d.py",
+        PROJECT_ROOT / "src/models/backbones/attention.py",
+        PROJECT_ROOT / "src/models/backbones/backbone_factory.py",
+        PROJECT_ROOT / "src/models/backbones/deterministic_pool.py",
+        PROJECT_ROOT / "src/models/backbones/lightweight_3d.py",
+        PROJECT_ROOT / "src/models/backbones/modern_3d.py",
+        PROJECT_ROOT / "src/models/backbones/pretrained_loader.py",
+        PROJECT_ROOT / "src/models/causal_intervention_block.py",
+        PROJECT_ROOT / "src/models/fusion/__init__.py",
+        PROJECT_ROOT / "src/models/fusion/amplitude_phase_fusion.py",
+        PROJECT_ROOT / "src/models/fusion/bottleneck_cross_attention.py",
+        PROJECT_ROOT / "src/models/fusion/channel_gate.py",
+        PROJECT_ROOT / "src/models/fusion/conv_feature_fusion.py",
+        PROJECT_ROOT / "src/models/fusion/healnet_fusion.py",
+        PROJECT_ROOT / "src/models/fusion/moe_fusion.py",
+        PROJECT_ROOT / "src/models/fusion/registry.py",
+        PROJECT_ROOT / "src/models/losses/__init__.py",
+        PROJECT_ROOT / "src/models/losses/contrastive_alignment.py",
+        PROJECT_ROOT / "src/models/losses/distillation.py",
+        PROJECT_ROOT / "src/models/losses/evidential.py",
+        PROJECT_ROOT / "src/models/losses/latent_alignment.py",
+        PROJECT_ROOT / "src/models/losses/phase1_losses.py",
+        PROJECT_ROOT / "src/models/losses/phenotypic_contrastive.py",
+        PROJECT_ROOT / "src/models/losses/synib_synergy_loss.py",
+        PROJECT_ROOT / "src/training/__init__.py",
+        PROJECT_ROOT / "src/training/method_x_autosupervisor.py",
+        PROJECT_ROOT / "src/training/method_x_loop_guard.py",
+        PROJECT_ROOT / "src/training/method_x_outer_compatibility.py",
+        PROJECT_ROOT / "src/training/method_x_registry.py",
+        PROJECT_ROOT / "src/training/method_x_registry_lifecycle.py",
+        PROJECT_ROOT / "src/training/method_x_repair_gate.py",
+        PROJECT_ROOT / "src/training/method_x_resume.py",
+        PROJECT_ROOT / "src/training/method_x_source_compatibility.py",
+        PROJECT_ROOT / "src/training/method_x_spm_snapshot.py",
+        PROJECT_ROOT / "src/training/method_x_stage_maps.py",
+        PROJECT_ROOT / "src/training/method_x_stage_registry.py",
+        PROJECT_ROOT / "src/utils/dataloader_config.py",
+        PROJECT_ROOT / "src/utils/final_claim_policy.py",
+        PROJECT_ROOT / "src/utils/io_helpers.py",
+        PROJECT_ROOT / "src/utils/privacy.py",
+        PROJECT_ROOT / "src/utils/reproducibility.py",
+        PROJECT_ROOT / "src/utils/run_manifest.py",
+    ]
+    scoped_files: list[Path] = []
+    for root in scoped_roots:
+        if root.is_file():
+            scoped_files.append(root)
+        elif root.is_dir():
+            scoped_files.extend(sorted(root.rglob("*.py")))
+    scoped_files.extend(sorted((PROJECT_ROOT / "src/training").glob("method_x_*.py")))
+    return sorted({p for p in scoped_files if p.is_file()})
+
+
+def method_x_training_source_contract() -> tuple[str, dict[str, str | None]]:
+    training_sources = method_x_training_source_paths()
+    return (
+        source_tree_digest(training_sources, base=PROJECT_ROOT),
+        runtime_version_contract(),
+    )
 
 
 def read_rows(path: Path) -> list[dict[str, str]]:
@@ -73,7 +147,7 @@ def decode(value: object) -> str:
     return str(value)
 
 
-ALLOWED_METHOD_X_INPUT_MODES: tuple[str, ...] = ("mri_plus_tabular", "mri_only")
+ALLOWED_METHOD_X_INPUT_MODES: tuple[str, ...] = ("mri_plus_tabular", "mri_only", "tabular_only")
 PET_LIKE_TOKENS: tuple[str, ...] = (
     "pet",
     "synthetic_pet",
