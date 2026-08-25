@@ -2,6 +2,14 @@
 
 برای ادامه‌ی کار، **ابتدا دفتر ثبت نشست زنده** را بخوانید، نه snapshot تیرماه synthesis.
 
+## زنده‌ترین — ۲۰۲۶-۰۸-۲۵ شب (حسابرسی دور ۳ پلن‌های 009-012 + شتاب 6.1x)
+
+0. **F-R3-A:** امتیازدهی IBS درونی هنگام خطای load چک‌پوینت، بی‌صدا وزن‌های آخرین epoch را می‌سنجید — اکنون `load_locked_state_for_eval` در `src/method_y_revival/image_training_orchestrator_v3.py` برای missing/corrupt/contract-mismatch با `INNER_IBS_CHECKPOINT_LOAD_FAILED` fail-closed می‌شود.
+1. **F-R3-B:** تحلیل‌های پلن 012 اجراکنندهٔ واقعی نداشتند و launcher فقط با وجود فایل OOF مرحله را COMPLETE می‌کرد — جدید `build_real_oof_reports()` در `image_reporting_v3.py` (calibration/subgroups/paired-bootstrap قفل روی 2000/incremental gate/IMAGE_CLAIM_POLICY + privacy scan) و launcher فقط بر اساس status اجراکننده مرحله می‌دهد، وگرنه `PENDING_REAL_OOF`.
+2. **شتاب 6.1x بدون تغییر علمی:** cache رمِ lazy حجم‌ها در `H5PatternSurvivalDataset` (float16 دست‌نخورده، سقف 6GiB، fallback به دیسک)؛ حذف worker-spawn زیر IMAGE_V3_PERF؛ بنچمارک یکسان ۱۲۰ سوژه×۲epoch: **45.80s → 7.52s**، epoch پایا 26.6→1.9s (~14x)، GPU peak همان 265MB.
+3. **تأیید:** تست‌های جدید RED 5/5→GREEN 5/5 (`test_audit_round3_v3.py`)؛ کل suite **450 passed**؛ smoke PASSED cuda 18MiB؛ preflight READY؛ گیت‌ها true/false/false.
+4. گزارش: `advisor-plans/agent-reports/method-y-image-v3-hard-audit-round3-plans009-012-perf-20260825T160000Z.md`. دستور تولیدی همان PS1 است.
+
 ## زنده‌ترین — ۲۰۲۶-۰۸-۲۵ عصر (حسابرسی دور ۲: دو رفع بحرانی + state machine پلن 013)
 
 0. **دو نقص بحرانی قبل از کامیت شدن نتیجهٔ جعلی رفع شد:** (۱) evaluator های outer در launcher مقدار هاردکد برمی‌گرداندند — جایگزین با ماژول واقعی `src/method_y_revival/image_outer_eval_v3.py` (`evaluate_locked_outer`: load سخت‌گیرانهٔ checkpoint با تطبیق digest، censoring فقط از outer-train، `integrated_brier_score` + `concordance_index_ipcw` از وزن‌های مدل؛ خروجی ثابت غیرممکن). (۲) lr/wd برندهٔ HPO به fit نهایی منتقل نمی‌شد — اکنون در candidate_records هست و `run_final_training` بدون آن‌ها `WINNER_HYPERPARAMS_MISSING` می‌دهد.

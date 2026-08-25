@@ -1,5 +1,13 @@
 # Agent session ledger — 2026-08-15 (Method Y defect repair)
 
+> **Append 2026-08-25T16:30Z — audit round 3 (Plans 009-012) + 6.1x GPU throughput.**
+> Baseline `d680748`. Process guard clean before writes.
+> - **F-R3-A fixed:** inner-HPO IBS silently evaluated LAST-EPOCH weights on locked-load failure; now `load_locked_state_for_eval()` fails closed (`INNER_IBS_CHECKPOINT_LOAD_FAILED`) on missing/corrupt/contract-mismatch.
+> - **F-R3-B fixed:** Plans 012 analyses had no real executor; launcher marked robustness/reports COMPLETE on file presence alone. New `build_real_oof_reports()` consumes matched variant folds from private metrics and emits calibration/subgroups/paired-bootstrap(LOCKED 2000)/incremental-gate/IMAGE_CLAIM_POLICY + privacy scan; launcher stages advance only on executor status, else PENDING_REAL_OOF/PARTIAL_REAL_OOF facts.
+> - **Perf (science-neutral):** lazy RAM volume cache in `H5PatternSurvivalDataset` (float16 passthrough, byte-capped default 6 GiB, graceful disk fallback); worker-spawn path removed under IMAGE_V3_PERF (spawn workers would duplicate caches). Measured identical workload 120 subj x2 epochs pattern-variant: 45.80 s -> 7.52 s total (**6.1x**), steady-state epoch 26.6 s -> 1.9 s (~14x), GPU peak unchanged 265 MB. Same loss/optimizer/splits/seeds/dtype pipeline; per-epoch shuffle seeds intact so resume semantics untouched.
+> - **Verification:** RED 5/5 then GREEN 5/5 new tests (`tests/method_y_revival/test_audit_round3_v3.py`); full suite **450 passed**; smoke PASSED cuda 18 MiB; preflight READY; gates true/false/false.
+> - Report: `advisor-plans/agent-reports/method-y-image-v3-hard-audit-round3-plans009-012-perf-20260825T160000Z.md`.
+
 > **Append 2026-08-25T14:43Z — hard audit round 2: two critical fixes + Plan 013 stage machine.**
 > Scope: only work after the 16:00Z-perf append below. Baseline `41d1c7f`/`d447c1c`.
 > - **F1 CRITICAL fixed:** launcher outer evaluators were hardcoded placeholders (`c_index 0.62/0.61`) that would have committed fabricated results and burned exactly-once access. Replaced with real evaluator module `src/method_y_revival/image_outer_eval_v3.py` (`evaluate_locked_outer`: strict contract-checked checkpoint load, train-only transformer, H5 inference, prespecified grid, administrative censoring, IBS + IPCW Uno C from weights; OOF rows bootstrap-shaped). Anti-placeholder regression test asserts two different locked models give different metrics.
