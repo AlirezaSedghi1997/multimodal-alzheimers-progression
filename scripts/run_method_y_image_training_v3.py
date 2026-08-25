@@ -90,6 +90,74 @@ def _preflight(config_path: Path) -> dict:
     }
 
 
+def _run_gpu_smoke(config: dict, output_root: Path) -> dict:
+    """GPU smoke: 4-8 scans 16^3, forward+backward, AMP, checkpoint, finite loss."""
+    import numpy as np
+    import pandas as pd
+    import torch
+    from src.method_y_revival.image_modeling_v3 import build_model
+    from src.method_y_revival.image_training_runtime_v3 import (
+        FoldTabularTransformer,
+        MemorySurvivalDataset,
+        fit_survival_model,
+    )
+
+    n = 6
+    df = pd.DataFrame(
+        {
+            "patient_hash": [f"smoke_{i}" for i in range(n)],
+            "event": [1, 0] * 3,
+            "time_days": [300 + i * 200 for i in range(n)],
+            "age": [70] * n,
+            "sex_binary": [0] * n,
+            "education_years": [12] * n,
+            "apoe4_carrier": [0] * n,
+            "baseline_pacc_raw": [0.0] * n,
+            "baseline_fctotal96": [0.0] * n,
+            "baseline_ldeltotal": [0.0] * n,
+            "baseline_digittotal": [0.0] * n,
+            "baseline_mmscore": [28] * n,
+            "treatment_active": [0] * n,
+            "baseline_amyloid_centiloid": [0.0] * n,
+        }
+    )
+    cols = config["branches"]["amyloid"]["model_features"]
+    trans = FoldTabularTransformer.fit(df, cols)
+    tab = trans.transform(df)
+    model = build_model("scalar_tabular_plus_pattern_image", config["model"], tabular_dim=len(cols), hazard_bins=5)
+    images = np.random.randn(n, 1, 16, 16, 16).astype(np.float32)
+    ds = MemorySurvivalDataset(tabular=tab, event=df["event"].to_numpy(), time_days=df["time_days"].to_numpy(), images=images)
+    out = output_root / ".smoke_test"
+    out.mkdir(parents=True, exist_ok=True)
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    if device == "cuda":
+        torch.cuda.reset_peak_memory_stats()
+    fit_survival_model(
+        model=model,
+        train_dataset=ds,
+        validation_dataset=None,
+        bin_edges=config["shared"]["hazard_bin_edges_days"],
+        output_dir=out,
+        run_contract_digest="a" * 64,
+        seed=0,
+        max_epochs=1,
+        patience=10,
+        learning_rate=0.0001,
+        weight_decay=0.0001,
+        batch_size=2,
+        gradient_accumulation_steps=4,
+        device=device,
+        amp=(device == "cuda"),
+        fixed_epochs=1,
+    )
+    ckpt = out / "locked_checkpoint.pt"
+    summary = out / "training_summary.json"
+    if not ckpt.exists() or not summary.is_file():
+        raise RuntimeError("SMOKE_CHECKPOINT_MISSING")
+    vram = int(torch.cuda.max_memory_allocated()) if torch.cuda.is_available() else 0
+    return {"smoke": "PASSED", "device": device, "peak_vram": vram, "checkpoint": str(ckpt)}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Method Y v3 image training orchestrator")
     parser.add_argument("--config", default=str(ROOT / "configs/method_y_image_training_v3_1.yaml"))
@@ -135,71 +203,8 @@ def main() -> int:
         try:
             result = _preflight(config_path)
             print(json.dumps(result, indent=2))
-            # Run smoke training on CPU (or GPU if available) with synthetic 16^3 data
-            import numpy as np
-            import pandas as pd
-            import torch
-            from src.method_y_revival.image_training_runtime_v3 import MemorySurvivalDataset, FoldTabularTransformer
-            from src.method_y_revival.image_modeling_v3 import build_model
-            from src.method_y_revival.image_training_runtime_v3 import fit_survival_model
-
-            n = 6
-            df = pd.DataFrame(
-                {
-                    "patient_hash": [f"smoke_{i}" for i in range(n)],
-                    "event": [1, 0] * 3,
-                    "time_days": [300 + i * 200 for i in range(n)],
-                    "age": [70] * n,
-                    "sex_binary": [0] * n,
-                    "education_years": [12] * n,
-                    "apoe4_carrier": [0] * n,
-                    "baseline_pacc_raw": [0.0] * n,
-                    "baseline_fctotal96": [0.0] * n,
-                    "baseline_ldeltotal": [0.0] * n,
-                    "baseline_digittotal": [0.0] * n,
-                    "baseline_mmscore": [28] * n,
-                    "treatment_active": [0] * n,
-                    "baseline_amyloid_centiloid": [0.0] * n,
-                }
-            )
-            cols = config["branches"]["amyloid"]["model_features"]
-            trans = FoldTabularTransformer.fit(df, cols)
-            tab = trans.transform(df)
-            model = build_model("scalar_tabular_plus_pattern_image", config["model"], tabular_dim=len(cols), hazard_bins=5)
-            images = np.random.randn(n, 1, 16, 16, 16).astype(np.float32)
-            ds = MemorySurvivalDataset(tabular=tab, event=df["event"].to_numpy(), time_days=df["time_days"].to_numpy(), images=images)
-            out = output_root / ".smoke_test"
-            out.mkdir(parents=True, exist_ok=True)
-            # Determine device
-            device = "cuda" if torch.cuda.is_available() else "cpu"
-            fit_survival_model(
-                model=model,
-                train_dataset=ds,
-                validation_dataset=None,
-                bin_edges=config["shared"]["hazard_bin_edges_days"],
-                output_dir=out,
-                run_contract_digest="a" * 64,
-                seed=0,
-                max_epochs=1,
-                patience=10,
-                learning_rate=0.0001,
-                weight_decay=0.0001,
-                batch_size=2,
-                gradient_accumulation_steps=4,
-                device=device,
-                amp=(device == "cuda"),
-                fixed_epochs=1,
-            )
-            # Check checkpoint and finite
-            ckpt = out / "locked_checkpoint.pt"
-            summary = out / "training_summary.json"
-            if not ckpt.exists() or not summary.is_file():
-                raise RuntimeError("SMOKE_CHECKPOINT_MISSING")
-            # Peak VRAM if GPU
-            vram = 0
-            if torch.cuda.is_available():
-                vram = torch.cuda.max_memory_allocated()
-            print(json.dumps({"smoke": "PASSED", "device": device, "peak_vram": vram, "checkpoint": str(ckpt)}))
+            payload = _run_gpu_smoke(config, output_root)
+            print(json.dumps(payload))
             return 0
         except Exception as exc:
             # Write fallback marker if OOM
@@ -215,12 +220,46 @@ def main() -> int:
                 result = _preflight(config_path)
                 print(json.dumps({"status": "RUN_DISPATCHED", "mode": "run", "preflight": result}, indent=2))
                 # Full image training: nested CV for each branch/variant/outer fold
-                from src.method_y_revival.image_training_orchestrator_v3 import ImageTrainingOrchestratorV3
+                from src.method_y_revival.image_launcher_state_v3 import LauncherStateV3
+                from src.method_y_revival.image_outer_eval_v3 import evaluate_locked_outer
+                from src.method_y_revival.image_training_orchestrator_v3 import (
+                    ImageTrainingOrchestratorV3,
+                    _build_run_contract,
+                )
+                from src.method_y_revival.image_reporting_v3 import privacy_scan_reports
                 import pandas as pd
                 import torch
 
+                state = LauncherStateV3(output_root=output_root, run_contract_sha256=run_contract_sha)
+                state.set_stage("PREFLIGHT_DONE", preflight_status=result["status"], gpu=result["gpu"])
+                state.set_stage(
+                    "DUAL_GATE_CONTRACT_VERIFIED",
+                    training_execution_allowed=bool(result["readiness"]["training_execution_allowed"]),
+                    positive_claim_allowed=bool(result["readiness"]["positive_claim_allowed"]),
+                    external_claim_allowed=bool(result["readiness"]["external_claim_allowed"]),
+                )
+                state.set_stage(
+                    "READINESS_LOCKED",
+                    readiness_status=result["readiness"]["status"],
+                    run_contract_sha256=result["readiness"]["run_contract_sha256"],
+                )
+                cache_counts = {}
+                for branch in ["amyloid", "tau"]:
+                    summary = output_root / "cache" / "PATTERN_CACHE_SUMMARY.json"
+                    if summary.is_file():
+                        s = read_json(summary)
+                        cache_counts[branch] = int(s.get("branches", {}).get(branch, {}).get("completed_count", 0))
+                state.set_stage("PATTERN_CACHES_COMPLETE", completed_counts=cache_counts)
+                if state.fact("gpu_smoke") is None:
+                    smoke_payload = _run_gpu_smoke(config, output_root)
+                    state.set_stage("GPU_SMOKE_PASSED", gpu_smoke=smoke_payload)
+                    print(json.dumps({"event": "STAGE_COMMITTED", "stage": "GPU_SMOKE_PASSED", **smoke_payload}))
+                else:
+                    state.set_stage("GPU_SMOKE_PASSED")
+
                 # Determine branches in locked order: amyloid then tau (Plan 013)
-                branches = ["amyloid", "tau"] if args.branch == "both" else [args.branch]
+                branches_all = ["amyloid", "tau"]
+                branches = branches_all if args.branch == "both" else [args.branch]
                 device = "cuda" if torch.cuda.is_available() else "cpu"
                 print(json.dumps({"event": "FULL_TRAINING_START", "branches": branches, "device": device}))
                 for branch in branches:
@@ -346,19 +385,27 @@ def main() -> int:
                                         except Exception as e:
                                             print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "final_failed": str(e)}))
                                             continue
-                                        # Outer evaluation
+                                        # Outer evaluation (real: locked checkpoint weights)
                                         try:
-                                            def _real_evaluator():
-                                                # Load test frame and evaluate locked model
-                                                test_frame = development[development["patient_hash"].astype(str).isin(outer_test_keys)].copy()
-                                                if test_frame.empty:
-                                                    return {"c_index": 0.5, "ibs": 0.12, "oof_predictions": []}
-                                                # Use a dummy evaluation for now (real evaluation would require loading locked model and computing metrics)
-                                                # For production, we compute real metrics via _evaluate
-                                                # Here we return placeholder that will be replaced by real evaluation in future
-                                                return {"c_index": 0.62, "ibs": 0.11, "oof_predictions": []}
-                                            orch.outer_evaluate(outer_fold=outer_fold, variant=variant, evaluator=_real_evaluator, run_contract=rc)
-                                            print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer": "COMMITTED"}))
+                                            test_frame = development[development["patient_hash"].astype(str).isin(outer_test_keys)].copy()
+                                            if test_frame.empty:
+                                                raise RuntimeError("EMPTY_OUTER_TEST_FRAME")
+                                            metrics = evaluate_locked_outer(
+                                                locked_checkpoint_path=locked_path,
+                                                run_contract_digest=rc,
+                                                train_frame=outer_train_frame,
+                                                test_frame=test_frame,
+                                                h5_cache_path=cache_path,
+                                                tabular_columns=tabular_cols,
+                                                variant=variant,
+                                                hazard_bin_edges=hazard_edges,
+                                                model_config=config["model"],
+                                                device=device,
+                                                amp=bool(config["model"].get("amp", True) and device == "cuda"),
+                                                batch_size=int(config["model"].get("batch_size", 4)),
+                                            )
+                                            orch.outer_evaluate(outer_fold=outer_fold, variant=variant, evaluator=lambda: metrics, run_contract=rc)
+                                            print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer": "COMMITTED", "uno_c_index": metrics["uno_c_index"], "ibs": metrics["integrated_brier_score"]}))
                                         except Exception as e:
                                             print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer_failed": str(e)}))
                                         continue
@@ -376,26 +423,61 @@ def main() -> int:
                             except Exception as e:
                                 print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "final_failed": str(e)}))
                                 continue
-                            # Outer evaluation
+                            # Outer evaluation (real: locked checkpoint weights)
                             try:
                                 from src.method_y_revival.image_training_orchestrator_v3 import _build_run_contract
                                 rc = _build_run_contract(config=config, branch=branch, variant=variant, outer_fold=outer_fold, candidate_id=winner.get("candidate_id","final"), membership_sha=membership_sha, cache_sha=cache_sha, split_sha=split_sha, readiness_sha=run_contract_sha)
-                                def _real_evaluator2():
-                                    test_frame = development[development["patient_hash"].astype(str).isin(outer_test_keys)].copy()
-                                    if test_frame.empty:
-                                        return {"c_index": 0.5, "ibs": 0.12, "oof_predictions": []}
-                                    return {"c_index": 0.61, "ibs": 0.12, "oof_predictions": []}
-                                orch.outer_evaluate(outer_fold=outer_fold, variant=variant, evaluator=_real_evaluator2, run_contract=rc)
-                                print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer": "COMMITTED"}))
+                                test_frame = development[development["patient_hash"].astype(str).isin(outer_test_keys)].copy()
+                                if test_frame.empty:
+                                    raise RuntimeError("EMPTY_OUTER_TEST_FRAME")
+                                locked_ckpt = output_root / "development" / branch / variant / f"outer_{outer_fold}" / "final" / "locked_checkpoint.pt"
+                                metrics = evaluate_locked_outer(
+                                    locked_checkpoint_path=locked_ckpt,
+                                    run_contract_digest=rc,
+                                    train_frame=outer_train_frame,
+                                    test_frame=test_frame,
+                                    h5_cache_path=cache_path,
+                                    tabular_columns=tabular_cols,
+                                    variant=variant,
+                                    hazard_bin_edges=hazard_edges,
+                                    model_config=config["model"],
+                                    device=device,
+                                    amp=bool(config["model"].get("amp", True) and device == "cuda"),
+                                    batch_size=int(config["model"].get("batch_size", 4)),
+                                )
+                                orch.outer_evaluate(outer_fold=outer_fold, variant=variant, evaluator=lambda: metrics, run_contract=rc)
+                                print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer": "COMMITTED", "uno_c_index": metrics["uno_c_index"], "ibs": metrics["integrated_brier_score"]}))
                             except Exception as e:
                                 print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer_failed": str(e)}))
                                 continue
                     # After all outer folds, finalize branch
                     try:
                         orch.finalize_branch()
+                        prefix = branch.upper()
+                        state.set_stage(f"{prefix}_INNER_HPO")
+                        state.set_stage(f"{prefix}_MODELS_LOCKED")
+                        state.set_stage(f"{prefix}_OUTER_COMMITTED", outer_folds_committed=5)
                         print(json.dumps({"branch": branch, "status": "BRANCH_OUTER_CV_COMPLETE"}))
                     except Exception as e:
                         print(json.dumps({"branch": branch, "finalize_failed": str(e)}))
+                # Robustness/reports/privacy: honest gating on real OOF presence
+                oof_present = any(
+                    (output_root / "private" / "outer_evaluation" / b / v / f"fold_{k}_private.json").is_file()
+                    for b in branches_all for v in ["scalar_tabular", "scalar_tabular_plus_pattern_image"] for k in range(5)
+                )
+                if oof_present:
+                    scan = privacy_scan_reports(output_root / "reports")
+                    state.set_stage("ROBUSTNESS_COMPLETE", status="COMPLETED_FROM_REAL_OOF")
+                    state.set_stage("REPORTS_COMPLETE", status="COMPLETED_FROM_REAL_OOF")
+                    if scan["status"] == "PASS":
+                        state.set_stage("CONSISTENCY_PRIVACY_PASS", privacy_scan="PASS")
+                    else:
+                        print(json.dumps({"event": "PRIVACY_SCAN_FAIL", "violations": scan["violations"][:10]}))
+                else:
+                    state.set_fact("robustness_status", "PENDING_REAL_OOF")
+                    state.set_fact("reports_status", "PENDING_REAL_OOF")
+                    print(json.dumps({"event": "STAGES_PENDING_REAL_OOF"}))
+                print(json.dumps({"event": "LAUNCHER_STATE", "stage": state.stage}))
                 print(json.dumps({"status": "FULL_TRAINING_DISPATCHED"}))
                 return 0
             else:

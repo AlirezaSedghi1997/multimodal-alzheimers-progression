@@ -399,6 +399,8 @@ class ImageTrainingOrchestratorV3:
                     "mean_ibs": mean_ibs,
                     "standard_error": se,
                     "complexity_rank": int(cand["complexity_rank"]),
+                    "learning_rate": lr,
+                    "weight_decay": wd,
                     "inner_fold_ibs": inner_scores,
                     "inner_best_epochs": inner_best_epochs,
                     "status": "COMPLETED",
@@ -477,6 +479,8 @@ class ImageTrainingOrchestratorV3:
             readiness_sha=self.readiness_sha,
         )
         # Use real config for production
+        if "learning_rate" not in winner or "weight_decay" not in winner:
+            raise ImageTrainingOrchestratorV3Error("WINNER_HYPERPARAMS_MISSING")
         if self.h5_cache_path is not None and self.h5_cache_path.is_file():
             real_batch = int(self.config.get("model", {}).get("batch_size", 2))
             real_accum = int(self.config.get("model", {}).get("gradient_accumulation_steps", 4))
@@ -495,8 +499,8 @@ class ImageTrainingOrchestratorV3:
             seed=self.seed + outer_fold * 37,
             max_epochs=fixed_epochs,
             patience=100,  # disable early stopping for fixed epochs
-            learning_rate=float(winner.get("learning_rate", 0.0001) if "learning_rate" in winner else 0.0001),
-            weight_decay=float(winner.get("weight_decay", 0.0001) if "weight_decay" in winner else 0.0001),
+            learning_rate=float(winner["learning_rate"]),
+            weight_decay=float(winner["weight_decay"]),
             batch_size=real_batch,
             gradient_accumulation_steps=real_accum,
             device=device,
