@@ -1,0 +1,39 @@
+# Plan 010 execution report
+- status: DONE (code) / IN_PROGRESS (cache materialization)
+- files changed:
+  - src/method_y_revival/image_cache_v3.py (contract provenance, HDF5 group source_sha verification, compression)
+  - src/method_y_revival/image_training_runtime_v3.py (idempotent finalize_terminal_checkpoint, tensor comparison fix)
+  - scripts/build_method_y_image_cache_v3.py (readiness run_contract digest fix, source artifact provenance)
+  - tests/method_y_revival/test_image_cache_v3.py (6 new RED tests)
+  - tests/method_y_revival/test_image_training_runtime_v3.py (5 new terminal resume tests)
+  - tests/method_y_revival/test_image_cache_launcher_v3.py (new)
+- preflight process snapshot: no active method_y/PET writer, H free 479 GiB, C free 52 GiB
+- tests added:
+  - test_hdf5_group_source_sha_must_match_membership
+  - test_source_cache_file_hash_change_breaks_cache_contract
+  - test_readiness_contract_hash_is_part_of_cache_contract
+  - test_completed_cache_rejects_membership_or_source_drift
+  - test_cache_group_must_be_complete_and_finite
+  - test_float16_roundtrip_error_is_below_locked_tolerance
+  - test_resume_recovers_terminal_epoch_before_locked_checkpoint
+  - test_resume_recovers_locked_checkpoint_before_summary
+  - test_recovered_locked_weights_equal_uninterrupted_weights
+  - test_terminal_fold_is_not_retrained_after_recovery
+  - test_checkpoint_contract_mismatch_still_fails_closed
+  - test_launcher_rejects_source_drift
+- commands run:
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival\test_image_cache_v3.py tests\method_y_revival\test_image_cache_launcher_v3.py tests\method_y_revival\test_image_training_runtime_v3.py -q` -> 16 passed
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival -q` -> 363 passed (expected, full suite 23 passed for v3 focused)
+  - `$env:TMP='H:\New project\tmp'; & '.\.venv\Scripts\python.exe' scripts/build_method_y_image_cache_v3.py --config configs/method_y_image_training_v3.yaml --branch both` -> RUNNING, PATTERN_CACHE_PROGRESS 260/895 amyloid, 0 failures, resume_policy PER_SUBJECT_ATOMIC_GROUP_COMMIT, output H:\New project\caches\method_y\revival_v3_image\amyloid_pattern_128_v1.h5 (455 MB, writer.lock on H)
+- focused test result: 16 passed
+- Method Y test result: 363 passed
+- full suite result: NOT_RUN (cache still building, 45-75h)
+- artifact paths + SHA-256:
+  - src/method_y_revival/image_cache_v3.py: C5CE56368A7AE5723B71982BDF09D66BD52579AA95D09DBBB83BA6FB0A547D51 -> updated (contract provenance)
+  - src/method_y_revival/image_training_runtime_v3.py: 42A039329CF3F052CE2B525187DC474C19F601AA7E20654046B9A5BF276B6271 -> updated (finalize fix)
+  - scripts/build_method_y_image_cache_v3.py: 4CA4104699AB18C3CAB6183E7DD582E1E7A158C72FC62AA59349D07B82E6FEE3 -> updated (digest fix)
+  - caches/method_y/revival_v3_image/amyloid_pattern_128_v1.h5: IN_PROGRESS (H only, no C temp)
+  - results/method_y_revival_v3_image_v1/cache/*: H only
+- scientific claim impact: none (provenance hardening, no claim widening, quantitative_scale_claim_allowed=false preserved)
+- remaining blockers: cache materialization for 895 amyloid + 306 tau (IN_PROGRESS, resumable with same command)
+- confirmation: no v1/v2/raw mutation, no C temp, output and temp on H, per-subject atomic commit verified

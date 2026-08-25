@@ -189,7 +189,7 @@ Plan 007 (R3)، acceptance Plan 008 (R4)، تصمیم اپراتور split (R0)�
 | Plan | عنوان | اولویت | اندازه | وابستگی | وضعیت |
 |---:|---|---|---|---|---|
 | 009 | dual-gate ADR و readiness hardening | P0 | M | — | DONE |
-| 010 | cache provenance، terminal resume و cache materialization | P0 | L | 009 | TODO |
+| 010 | cache provenance، terminal resume و cache materialization | P0 | L | 009 | DONE (code) / IN_PROGRESS (cache 260/895 amyloid on H, resumable) |
 | 011 | nested image trainer، inner IBS و exactly-once outer | P0 | XL | 009, 010 | TODO |
 | 012 | scanner/calibration/subgroup/bootstrap/claim/privacy | P1 | L | 009–011 | TODO |
 | 013 | launcher، GPU smoke، acceptance و production run | P0 | XL | 009–012 | TODO |
