@@ -73,8 +73,11 @@ def run(config_path: Path, branches: tuple[str, ...]) -> dict:
             raise ImageCacheLauncherError(f"{branch.upper()}_PRIVATE_MEMBERSHIP_HASH_MISMATCH")
         membership = pd.read_parquet(membership_path)
         output_cache = _path(config["branches"][branch]["derived_cache"])
-        # Source artifact hash (FBP/FTP HDF5) for provenance
-        source_artifact = _path(config["branches"][branch].get("source_cache", ""))
+        # Source artifact hash for provenance: amyloid uses source_cache file, tau uses transform_manifest
+        if branch == "amyloid":
+            source_artifact = _path(config["branches"][branch].get("source_cache", ""))
+        else:
+            source_artifact = _path(config["branches"][branch].get("transform_manifest", ""))
         source_sha = _sha256(source_artifact) if source_artifact.is_file() else "UNKNOWN_SOURCE"
         # Verify against readiness if available
         expected_source = readiness.get("source_artifact_sha256", {}).get(branch) if isinstance(readiness.get("source_artifact_sha256"), dict) else None

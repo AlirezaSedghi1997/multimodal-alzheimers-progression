@@ -1,0 +1,54 @@
+# Plan 009 execution report
+
+- **status:** DONE
+- **files changed:**
+  - `docs/decisions/ADR-2026-08-24-method-y-image-dual-gate.md` (new)
+  - `docs/PROGRAM_DEFAULT_SOURCE_OF_TRUTH_2026-07-19.md` (append-only addendum)
+  - `docs/decisions/ADR-2026-07-19-default-method-xy-program.md` (superseded in part note)
+  - `src/method_y_revival/image_training_manifest_v3.py` (split invariant hardening)
+  - `scripts/build_method_y_image_training_readiness_v3.py` (scanner support vs proof decoupling)
+  - `tests/method_y_revival/test_image_training_readiness_v3.py` (new tests)
+  - `advisor-plans/README.md` (status update)
+- **preflight process snapshot:**
+  - 0 active conflicting writers for `method_y_revival_v3_image_v1|method_y_image|PET|tau|amyloid`
+- **tests added:**
+  - `test_scanner_support_does_not_equal_scanner_robustness_proof`
+  - `test_amyloid_readiness_keeps_scanner_robustness_limitation_before_analysis`
+  - `test_each_filtered_subject_appears_in_exactly_one_outer_test`
+  - `test_inner_train_and_validation_exactly_partition_filtered_outer_train`
+  - `test_duplicate_outer_test_membership_fails_closed`
+  - `test_missing_inner_member_fails_closed`
+  - `test_superseded_output_root_is_never_selected_from_config`
+- **commands run + exit codes:**
+  - `Get-CimInstance Win32_Process ...` -> exit 0
+  - `Get-FileHash -Algorithm SHA256 ...` -> exit 0
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival\test_image_training_readiness_v3.py -q` (RED) -> exit 1 (3 failed, 4 passed)
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival\test_image_training_readiness_v3.py -q` (GREEN) -> exit 0 (7 passed)
+  - `& '.\.venv\Scripts\python.exe' scripts\build_method_y_image_training_readiness_v3.py --branch both` -> exit 0
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival\test_image_training_policy_v3.py tests\method_y_revival\test_image_training_manifest_v3.py tests\method_y_revival\test_image_training_readiness_v3.py tests\method_y_revival\test_image_survival_v3.py tests\method_y_revival\test_image_cache_v3.py tests\method_y_revival\test_image_training_runtime_v3.py -q` -> exit 0 (30 passed in 8.15s)
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival -q` -> exit 0 (370 passed in 193.15s)
+- **focused test result:**
+  - 30 passed in 8.15s
+- **Method Y test result:**
+  - 370 passed in 193.15s
+- **full suite result or NOT_RUN with reason:**
+  - NOT_RUN for full repository suite (contains Method X SPM long-running pipelines outside Method Y scope); 370 tests in `tests/method_y_revival` passed with 0 failures and 0 warnings.
+- **artifact paths + SHA-256:**
+  - `H:\New project\docs\decisions\ADR-2026-08-24-method-y-image-dual-gate.md`: `185C4EE5C8581DC2E0566BC94A6CE876118FF64BCB92C7EAFF4DDAAC25841924`
+  - `H:\New project\docs\PROGRAM_DEFAULT_SOURCE_OF_TRUTH_2026-07-19.md`: `F2F2BA61EE12543EF2A346C14D40DDBCF8E31007E4C614180A97351C412F5FCF`
+  - `H:\New project\docs\decisions\ADR-2026-07-19-default-method-xy-program.md`: `606F473AA5D40636DA24B8F2CC5F903821143BD15A9E066A87D427ED25847AEF`
+  - `H:\New project\src\method_y_revival\image_training_manifest_v3.py`: `CBA10A8FFD7C34AA4F58CBBD32D94F37CBDF82FA81AA1E9DFED2B3130A29D7BC`
+  - `H:\New project\scripts\build_method_y_image_training_readiness_v3.py`: `3FC9E909540AF933A2542CEFD49D5AFB2C36C792A8EC5D58C0D6E960870844D3`
+  - `H:\New project\tests\method_y_revival\test_image_training_readiness_v3.py`: `D90FB3F8D8DCF1455A85E15AD3BCCF77E845131EB90641D3C5FA7C932098A716`
+  - `H:\New project\results\method_y_revival_v3_image_v1\readiness\FINAL_IMAGE_TRAINING_READINESS.json`: `6B7BCB688CB8C703D2BDFFBCD23CEE73A0ADE32A0DC6AF23A712998D3C173964`
+  - `H:\New project\results\method_y_revival_v3_image_v1\readiness\amyloid_image_readiness.json`: `549F4AAA98D0DE8F69FACC74B90E07A79C5F4976D07C0E854F25A01499515978`
+  - `H:\New project\results\method_y_revival_v3_image_v1\readiness\tau_image_readiness.json`: `1C87E578AB49CD47FE900EB5BC34CF4845314C20374E8AB2530C8AD2EFF03990`
+  - `H:\New project\results\method_y_revival_v3_image_v1\run_contract.json`: `369DE1E554087F0788F39CF623066773B22E71BADF1958EC6EA8B0B4BDE69791`
+- **scientific claim impact:**
+  - Dual-gate formalized: `training_execution_allowed: true` enables exploratory internal image training, while `positive_claim_allowed: false` and `external_claim_allowed: false` strictly block official Centiloid/CenTauR, scanner robustness, diagnostic, causal and external generalization claims until independent post-training gates are satisfied.
+  - Scanner support availability (feasibility) is cleanly decoupled from scanner robustness proof, retaining `SCANNER_ROBUSTNESS_NOT_PROVEN` limitation in both amyloid and tau branches.
+  - Counts confirmed immutable: Amyloid development 560 subjects / 110 events (LEARN 335 / 23); Tau development 306 subjects / 75 events.
+- **remaining blockers:**
+  - None for Plan 009. Ready for Plan 010 (cache provenance + terminal resume + cache materialization).
+- **confirmation:**
+  - Confirmed: no v1/v2/superseded artifact or raw data mutated (`results/method_y_revival_v3_image` unmutated; `H:\A4 Learn` unmutated).

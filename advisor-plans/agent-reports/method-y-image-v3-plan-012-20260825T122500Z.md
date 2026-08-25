@@ -1,0 +1,43 @@
+# Plan 012 execution report
+- status: DONE
+- files changed:
+  - src/method_y_revival/image_robustness_v3.py (new, scanner support vs proof, balanced weights train-only, leave-manufacturer-out eligibility, UNKNOWN filter, OOF probe)
+  - src/method_y_revival/image_reporting_v3.py (new, calibration/subgroup/bootstrap/claim consistency, private vs public rendering, privacy scan)
+  - scripts/build_method_y_image_reports_v3.py (new, glue for robustness reports)
+  - tests/method_y_revival/test_image_robustness_v3.py (new, 8 tests)
+  - tests/method_y_revival/test_image_reporting_v3.py (new, 6 tests)
+  - tests/method_y_revival/test_image_privacy_claim_v3.py (new, 5 tests)
+- preflight process snapshot: no active writer, H free 446 GiB
+- tests added:
+  - test_scanner_support_is_not_robustness_proof
+  - test_scanner_weights_fit_from_outer_train_only
+  - test_scanner_is_never_model_feature
+  - test_scanner_balanced_challenger_reuses_locked_primary_config
+  - test_leave_manufacturer_out_never_pools_ge_and_philips
+  - test_unknown_scanner_remains_unknown
+  - test_scanner_probe_uses_oof_embeddings_only
+  - test_leave_manufacturer_out_eligibility_counts
+  - test_calibration_uses_locked_oof_without_refit
+  - test_subgroup_small_cells_are_not_estimable
+  - test_incremental_gate_stays_exploratory_when_scanner_gate_fails
+  - test_quantitative_and_external_limitations_survive_positive_internal_delta
+  - test_public_report_contains_no_patient_hash_path_embedding_or_prediction
+  - test_paired_bootstrap_requires_2000_iterations
+  - test_public_report_contains_no_patient_hash_path_embedding_or_prediction (privacy)
+  - test_claim_gate_with_quantitative_external_limitations
+  - test_scanner_support_is_not_robustness_proof_in_readiness
+  - test_training_execution_allowed_vs_positive_claim_allowed
+  - test_privacy_scan_fails_on_leak
+- commands run + exit codes:
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival\test_image_robustness_v3.py tests\method_y_revival\test_image_reporting_v3.py tests\method_y_revival\test_image_privacy_claim_v3.py -q` -> 19 passed exit 0
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival -q` -> 435 passed exit 0
+- focused test result: 19 passed
+- Method Y test result: 435 passed
+- full suite result or NOT_RUN with reason: NOT_RUN full repository (Brainiac pipelines, 435 Method Y green)
+- artifact paths + SHA-256:
+  - src/method_y_revival/image_robustness_v3.py: 0CBEFDC77AB82452F4D1E4B858E9A317E311F5D60DC293306C08AA8E6A79BDED
+  - src/method_y_revival/image_reporting_v3.py: A2A7CE1797034A9BCAE0F66ECD40CC08248EDDC6403E477A3778F54B0D91544A
+  - scripts/build_method_y_image_reports_v3.py: (new, minimal glue)
+- scientific claim impact: none (scanner calibration/subgroup/bootstrap are sensitivity analyses, not external validation; claim gate remains EXPLORATORY with SCANNER_ROBUSTNESS_NOT_PROVEN and QUANTITATIVE_EQUIVALENCE_NOT_PROVEN)
+- remaining blockers: none for Plan 012 (reports synthetic-tested, real OOF pending Plan 013 production)
+- confirmation: no v1/v2/raw mutation, no new external data, public reports aggregate-only, private rows not leaked

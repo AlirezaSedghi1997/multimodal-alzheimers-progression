@@ -1,0 +1,41 @@
+# Plan 010 execution report
+- status: DONE
+- files changed:
+  - src/method_y_revival/image_cache_v3.py (contract provenance, HDF5 group source_sha verification)
+  - src/method_y_revival/image_training_runtime_v3.py (idempotent finalize_terminal_checkpoint)
+  - scripts/build_method_y_image_cache_v3.py (readiness run_contract digest, source artifact provenance)
+  - tests/method_y_revival/test_image_cache_v3.py (6 provenance tests)
+  - tests/method_y_revival/test_image_training_runtime_v3.py (5 terminal resume tests)
+  - tests/method_y_revival/test_image_cache_launcher_v3.py (new)
+- preflight process snapshot: no active method_y/PET writer, H free 479 GiB -> 446 GiB free after cache, C free 52 GiB
+- tests added:
+  - test_hdf5_group_source_sha_must_match_membership
+  - test_source_cache_file_hash_change_breaks_cache_contract
+  - test_readiness_contract_hash_is_part_of_cache_contract
+  - test_completed_cache_rejects_membership_or_source_drift
+  - test_cache_group_must_be_complete_and_finite
+  - test_float16_roundtrip_error_is_below_locked_tolerance
+  - test_resume_recovers_terminal_epoch_before_locked_checkpoint
+  - test_resume_recovers_locked_checkpoint_before_summary
+  - test_recovered_locked_weights_equal_uninterrupted_weights
+  - test_terminal_fold_is_not_retrained_after_recovery
+  - test_checkpoint_contract_mismatch_still_fails_closed
+  - test_launcher_rejects_source_drift
+- commands run + exit codes:
+  - `Get-CimInstance Win32_Process | Where-Object { $_.Name -match 'python|powershell' -and $_.CommandLine -match 'method_y|PET|tau|amyloid' }` -> exit 0, no active writer
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival\test_image_cache_v3.py tests\method_y_revival\test_image_cache_launcher_v3.py tests\method_y_revival\test_image_training_runtime_v3.py -q` -> 16 passed, exit 0
+  - `$env:TMP='H:\New project\tmp'; & '.\.venv\Scripts\python.exe' scripts/build_method_y_image_cache_v3.py --config configs/method_y_image_training_v3.yaml --branch amyloid` -> COMPLETED 895/895, exit 0
+  - `$env:TMP='H:\New project\tmp'; & '.\.venv\Scripts\python.exe' scripts/build_method_y_image_cache_v3.py --config configs/method_y_image_training_v3.yaml --branch tau` -> COMPLETED 306/306, exit 0
+  - `$env:TMP='H:\New project\tmp'; & '.\.venv\Scripts\python.exe' scripts/build_method_y_image_cache_v3.py --config configs/method_y_image_training_v3.yaml --branch both` -> COMPLETED both, resumed_existing 895/306, exit 0
+- focused test result: 16 passed
+- Method Y test result: 435 passed (includes new cache tests)
+- full suite result or NOT_RUN with reason: NOT_RUN full repository (contains Brainiac SPM pipelines, 435 Method Y passed, 2 warnings)
+- artifact paths + SHA-256:
+  - caches/method_y/revival_v3_image/amyloid_pattern_128_v1.h5: 242816346BFA6FCF60F1874C85DB1181DDA70A17B954EA91B6C0FE089BBF522F (895 groups, float16 gzip, finite 1.0)
+  - caches/method_y/revival_v3_image/tau_pattern_128_v1.h5: E56C5B367538BE46294CDC37798A84C41C04224AF53F2271BD0723395FECDC28 (306 groups)
+  - results/method_y_revival_v3_image_v1/cache/amyloid_pattern_cache_state.json: run_contract a5cbd10b088e9825656828c61ab4d475686058030e054dbf740de141a1980504
+  - results/method_y_revival_v3_image_v1/cache/PATTERN_CACHE_SUMMARY.json: COMPLETED both branches
+  - src/method_y_revival/image_cache_v3.py: 3150693C155261C039CAB0F3BBFB74D9D48F0867B4468F464645475462543301 -> 4AF0AB... (updated provenance, now stable)
+- scientific claim impact: none (provenance hardening, quantitative_scale_claim_allowed=false preserved)
+- remaining blockers: none for Plan 010
+- confirmation: no v1/v2/raw mutation, no C temp, output and temp on H, per-subject atomic commit verified, superseded root untouched

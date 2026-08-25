@@ -1,0 +1,48 @@
+# Plan 011 execution report
+- status: DONE
+- files changed:
+  - src/method_y_revival/image_modeling_v3.py (new, LOCKED_VARIANTS, build_model, survival_at_times piecewise constant, build_run_contract)
+  - src/method_y_revival/image_training_orchestrator_v3.py (new, state machine INIT->BRANCH_OUTER_CV_COMPLETE, inner HPO winner via mean IBS 1SE+complexity_rank, FoldTabularTransformer train-only, exactly-once outer via OuterFoldController)
+  - scripts/run_method_y_image_training_v3.py (new, modes preflight/smoke/run/status/verify, WriterLock, --resume default, no --no-resume)
+  - configs/method_y_image_training_v3_1.yaml (new, adds complexity_rank 0/1/2 to hpo_candidates, output_root still v1)
+  - tests/method_y_revival/test_image_modeling_v3.py (new, 8 tests)
+  - tests/method_y_revival/test_image_training_orchestrator_v3.py (new, 10 tests)
+  - tests/method_y_revival/test_image_outer_exactly_once_v3.py (new, 1 synthetic full pipeline integration)
+- preflight process snapshot: no active writer, H free 446 GiB, GPU RTX 4060 8188 MiB
+- tests added:
+  - test_survival_at_times_boundary_equality
+  - test_survival_at_times_monotonicity_and_range
+  - test_survival_at_times_zero_one_hazard_stability
+  - test_survival_at_times_grid_outside_locked_support_rejected
+  - test_survival_at_times_same_fold_grid_for_matched_variants
+  - test_build_model_variants
+  - test_build_model_unknown_variant_fails
+  - test_matched_variants_have_identical_features_budget_splits_and_hpo_grid
+  - test_outer_dataset_factory_is_not_called_during_inner_hpo
+  - test_winner_uses_mean_inner_ibs_not_validation_nll_or_outer_metric
+  - test_one_se_tie_break_uses_locked_complexity_rank
+  - test_tabular_transformer_fits_only_inner_or_outer_train
+  - test_outer_checkpoint_is_locked_before_test_dataset_creation
+  - test_committed_outer_result_resume_does_not_construct_test_dataset
+  - test_interrupt_after_outer_result_commit_recovers_without_second_access
+  - test_incomplete_outer_cv_cannot_be_reported_complete
+  - test_run_contract_change_fails_closed
+  - test_private_oof_rows_are_not_written_to_public_reports
+  - test_synthetic_full_pipeline_interruption_and_exactly_once
+- commands run + exit codes:
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival\test_image_modeling_v3.py -q` -> 8 passed exit 0
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival\test_image_training_orchestrator_v3.py -q` -> 10 passed exit 0
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival\test_image_outer_exactly_once_v3.py -q` -> 1 passed exit 0
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival\test_image_modeling_v3.py tests\method_y_revival\test_image_training_orchestrator_v3.py tests\method_y_revival\test_image_outer_exactly_once_v3.py -q` -> 19 passed exit 0
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival -q` -> 435 passed exit 0
+- focused test result: 19 passed (011 triple)
+- Method Y test result: 435 passed
+- full suite result or NOT_RUN with reason: NOT_RUN full repository (Brainiac long pipelines, 435 Method Y green)
+- artifact paths + SHA-256:
+  - src/method_y_revival/image_modeling_v3.py: 4AF0AB1591F56A06DAE1F5BC9ACD6C90B7A2A81DC29BDBB49CBFF4D6E0E5ECF8
+  - src/method_y_revival/image_training_orchestrator_v3.py: BD15FB98730925D493703C6677AAAFFD54B14F91DDBD69F4AD13F6A2F7925063
+  - scripts/run_method_y_image_training_v3.py: 727823C3769DE800DD83412D7F5C53C2C7EEADB42E43C9FE9D16BE3254603356
+  - configs/method_y_image_training_v3_1.yaml: C277E0BCB9043C3FF559EE9CCF21633FA0700588ACE801132294F31A3088B519
+- scientific claim impact: none (high-level trainer is exploratory secondary analysis, no positive claim, image pattern-normalized not quantitative, no external claim)
+- remaining blockers: none for Plan 011 (trainer synthetic-tested, production not yet executed per scope)
+- confirmation: no v1/v2/raw mutation, no production outer-test on real data, output_root H, per-fold atomic checkpoints verified

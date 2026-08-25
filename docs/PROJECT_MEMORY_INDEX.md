@@ -2,7 +2,16 @@
 
 برای ادامه‌ی کار، **ابتدا دفتر ثبت نشست زنده** را بخوانید، نه snapshot تیرماه synthesis.
 
-## زنده‌ترین — ۲۰۲۶-۰۸-۲۵ (BrainIAC-CAFT governance drift fix و باتری ترمینال)
+## زنده‌ترین — ۲۰۲۶-۰۸-۲۵ (Method Y image v3 — Plans 009-013 + hard audit)
+
+0. شاخه تصویری Method Y v3 اکنون **READY_FOR_FINAL_INTERNAL_IMAGE_TRAINING** (`results/method_y_revival_v3_image_v1/readiness/FINAL_IMAGE_TRAINING_READINESS.json:6` `19baa31d0acfbb15e8bcc11828bae8bee2b9e0ed3b1beea06f7a1119a74979c5`)؛ `training_execution_allowed true`، `positive_claim_allowed false`، `external_claim_allowed false`.
+1. Cacheهای pattern v3 کامل و provenance-bound روی H: `caches/method_y/revival_v3_image/amyloid_pattern_128_v1.h5` 895 گروه (31981B33...), `tau_pattern_128_v1.h5` 306 گروه (4095FCBC...), هر گروه `COMPLETE` + `finite_fraction 1.0` + `float16` + `source_sha256` hard-checked (`src/method_y_revival/image_cache_v3.py:76` strict).
+2. Trainer تو در تو: `src/method_y_revival/image_modeling_v3.py:24` `survival_at_times` و `src/method_y_revival/image_training_orchestrator_v3.py:12` با انتخاب winner فقط `mean_inner_IBS` + 1-SE + `complexity_rank`، outer exactly-once via `OuterFoldController:48`.
+3. Robustness/reporting: `src/method_y_revival/image_robustness_v3.py:12` و `image_reporting_v3.py:12` — scanner support ≠ robustness proof، balanced weights از train-only، leave-manufacturer-out بدون pooling، privacy scan PASS.
+4. Launcher واحد: `scripts/run_method_y_image_training_v3.ps1:1` و `scripts/run_method_y_image_training_v3.py:118` با preflight/smoke/run، `WriterLock`, H-only temp, GPU smoke PASSED (cuda 26 MiB), `435 passed` در `tests/method_y_revival`.
+5. Hard audit 2026-08-25T13:30Z: `advisor-plans/agent-reports/method-y-image-v3-hard-audit-20260825T133000Z.md` — سه رفع (strict HDF5 provenance, source_artifact binding, true IBS, smoke)؛ همه تست‌ها سبز.
+
+## زنده — ۲۰۲۶-۰۸-۲۵ (BrainIAC-CAFT governance drift fix و باتری ترمینال)
 
 0. باتری پنج‌مدلی اکنون **TERMINAL** (`40a4a009b3a2453fb953e2b2e9b9ec789bdf896741dc2278a898a3b38fdb971d`، 5/5 `COMPLETED`، `.battery.lock` ABSENT) — `src/research/brainiac_battery_terminal.py: verify_battery_terminal` `terminal:true`.
 1. `method_x_training_source_contract()` جدید `8c02bd511e61caefe4b679e404049fcae45bec9dc21d3707d68ba43dd5b3bd21` (پس از سازگار‌سازی `src/evaluation/calibration.py:49`, `cohort_probe.py:128`, `backbone_factory.py:6` و `scripts/train_3d_mri.py:57`).

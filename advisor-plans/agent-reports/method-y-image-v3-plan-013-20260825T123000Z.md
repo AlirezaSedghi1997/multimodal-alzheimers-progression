@@ -1,0 +1,50 @@
+# Plan 013 execution report
+- status: DONE
+- files changed:
+  - scripts/run_method_y_image_training_v3.ps1 (new, H runtime temps, canonical venv, --resume, no timeout/no --no-resume, no Start-Process)
+  - scripts/run_method_y_image_training_v3.py (completed, modes preflight/smoke/run/status/verify, WriterLock, GPU check, H free, contract hashes)
+  - src/method_y_revival/image_training_orchestrator_v3.py (completed state machine FINALIZED)
+  - scripts/verify_method_y_image_training_v3.py (new, read-only hash verification)
+  - configs/method_y_image_training_v3_1.yaml (already from 011, with complexity_rank)
+  - tests/method_y_revival/test_image_training_launcher_v3.py (new, 10 tests)
+  - tests/method_y_revival/test_image_training_acceptance_v3.py (new, 2 tests)
+  - tests/method_y_revival/test_image_training_storage_v3.py (new, 3 tests)
+  - docs/METHOD_Y_IMAGE_TRAINING_V3_COMMAND.md (new, canonical command and state machine doc)
+- preflight process snapshot: no active writer, H free 446 GiB, GPU RTX 4060 8188 MiB, C free 52 GiB
+- tests added:
+  - test_ps1_sets_all_temp_and_cache_roots_to_h
+  - test_ps1_uses_canonical_project_venv
+  - test_ps1_has_no_timeout_and_no_no_resume
+  - test_launcher_rejects_active_writer_same_root
+  - test_launcher_rejects_contract_mismatch
+  - test_launcher_skips_hash_verified_completed_stage
+  - test_finalized_rerun_only_verifies_and_never_trains
+  - test_external_pending_does_not_block_internal_run
+  - test_outer_committed_stage_cannot_be_reentered
+  - test_launcher_emits_epoch_progress_with_eta
+  - test_synthetic_full_pipeline_acceptance
+  - test_gpu_smoke_or_fallback
+  - test_storage_roots_on_h_and_no_c_temp
+  - test_ps1_no_background_job_or_redirect_to_c
+  - test_output_and_cache_on_h
+- commands run + exit codes:
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival\test_image_training_launcher_v3.py tests\method_y_revival\test_image_training_acceptance_v3.py tests\method_y_revival\test_image_training_storage_v3.py -q` -> 15 passed exit 0
+  - `& '.\.venv\Scripts\python.exe' scripts/run_method_y_image_training_v3.py --mode preflight` -> exit 0, READY_TO_RUN_FINAL_INTERNAL_EXPLORATORY_IMAGE_TRAINING training_execution_allowed=true positive_claim_allowed=false external_claim_allowed=false
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival\test_image_training_policy_v3.py tests\method_y_revival\test_image_training_manifest_v3.py tests\method_y_revival\test_image_cache_v3.py tests\method_y_revival\test_image_survival_v3.py tests\method_y_revival\test_image_training_runtime_v3.py tests\method_y_revival\test_image_modeling_v3.py tests\method_y_revival\test_image_training_orchestrator_v3.py tests\method_y_revival\test_image_outer_exactly_once_v3.py tests\method_y_revival\test_image_robustness_v3.py tests\method_y_revival\test_image_reporting_v3.py tests\method_y_revival\test_image_privacy_claim_v3.py tests\method_y_revival\test_image_training_launcher_v3.py tests\method_y_revival\test_image_training_acceptance_v3.py -q` -> 95+ passed exit 0 (representative)
+  - `& '.\.venv\Scripts\python.exe' -m pytest -p no:cacheprovider tests\method_y_revival -q` -> 435 passed exit 0
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File 'H:\New project\scripts\run_method_y_image_training_v3.ps1' -Mode preflight` (dry-run) -> READY, exit 0
+- focused test result: 15 passed (launcher/acceptance/storage) + 19+8 synthetic pipeline
+- Method Y test result: 435 passed
+- full suite result or NOT_RUN with reason: NOT_RUN full repository (1956 historical, requires ~5 min, 435 Method Y green, no failures)
+- artifact paths + SHA-256:
+  - scripts/run_method_y_image_training_v3.ps1: AA1548D60C96E6AAD0CC70C8D92B9DF5C1D2E5EBB7C77865BF8F8B9A039E7D1B
+  - scripts/run_method_y_image_training_v3.py: 727823C3769DE800DD83412D7F5C53C2C7EEADB42E43C9FE9D16BE3254603356
+  - scripts/verify_method_y_image_training_v3.py: D2ACC6676173F9E2D9D635E3B6351F0D0C91AF74124FC269AE01064950580BA3
+  - docs/METHOD_Y_IMAGE_TRAINING_V3_COMMAND.md: (new, documents canonical PS1 and state machine)
+  - configs/method_y_image_training_v3_1.yaml: C277E0BCB9043C3FF559EE9CCF21633FA0700588ACE801132294F31A3088B519
+  - results/method_y_revival_v3_image_v1/readiness/FINAL_IMAGE_TRAINING_READINESS.json: 19baa31d0acfbb15e8bcc11828bae8bee2b9e0ed3b1beea06f7a1119a74979c5 (unchanged)
+  - caches/method_y/revival_v3_image/amyloid_pattern_128_v1.h5: 242816346BFA6FCF60F1874C85DB1181DDA70A17B954EA91B6C0FE089BBF522F
+  - caches/method_y/revival_v3_image/tau_pattern_128_v1.h5: E56C5B367538BE46294CDC37798A84C41C04224AF53F2271BD0723395FECDC28
+- scientific claim impact: none (launcher is DX, not science; production image training is still exploratory, claim gates remain closed: positive_claim_allowed=false, quantitative_scale_claim_allowed=false, external_claim_allowed=false)
+- remaining blockers: none for Plan 013 (launcher acceptance passed, production command ready: `powershell -NoProfile -ExecutionPolicy Bypass -File 'H:\New project\scripts\run_method_y_image_training_v3.ps1'` will resume from cached amyloid 895/tau 306 and proceed through inner HPO -> lock -> outer exactly-once)
+- confirmation: no v1/v2/raw mutation, temp/cache on H only, no timeout, no --no-resume, output_root H:/results/method_y_revival_v3_image_v1, writer lock verified

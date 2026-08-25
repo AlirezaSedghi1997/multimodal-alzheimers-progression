@@ -24,6 +24,7 @@ def _source_cache(tmp_path):
             "image", data=np.arange(512, dtype=np.float32).reshape(1, 8, 8, 8)
         )
         group.attrs["status"] = "COMPLETE"
+        group.attrs["source_sha256"] = "a" * 64
     return path
 
 

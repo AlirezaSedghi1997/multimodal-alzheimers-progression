@@ -69,13 +69,12 @@ def _load_source(
         group_name = str(row["h5_group"])
         if group_name not in handle or "image" not in handle[group_name]:
             raise ImageCacheV3Error("SOURCE_HDF5_GROUP_MISSING")
-        # Plan 010 provenance: verify group attr source_sha256 matches membership
+        # Plan 010 provenance: verify group attr source_sha256 matches membership (strict)
         expected_source_sha = str(row.get("source_image_sha256", ""))
         if len(expected_source_sha) == 64:
             actual_group_sha = str(handle[group_name].attrs.get("source_sha256", ""))
-            if actual_group_sha and actual_group_sha != expected_source_sha:
+            if actual_group_sha != expected_source_sha:
                 raise ImageCacheV3Error("HDF5_GROUP_SOURCE_SHA_MISMATCH")
-            # If group has no attr, fall back to file-level check; do not auto-repair
         value = np.asarray(handle[group_name]["image"], dtype=np.float32)
         if value.ndim != 4 or value.shape[0] != 1:
             raise ImageCacheV3Error("SOURCE_HDF5_IMAGE_SHAPE_INVALID")
