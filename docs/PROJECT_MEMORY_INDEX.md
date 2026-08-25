@@ -2,6 +2,14 @@
 
 برای ادامه‌ی کار، **ابتدا دفتر ثبت نشست زنده** را بخوانید، نه snapshot تیرماه synthesis.
 
+## زنده‌ترین — ۲۰۲۶-۰۸-۲۵ عصر (حسابرسی دور ۲: دو رفع بحرانی + state machine پلن 013)
+
+0. **دو نقص بحرانی قبل از کامیت شدن نتیجهٔ جعلی رفع شد:** (۱) evaluator های outer در launcher مقدار هاردکد برمی‌گرداندند — جایگزین با ماژول واقعی `src/method_y_revival/image_outer_eval_v3.py` (`evaluate_locked_outer`: load سخت‌گیرانهٔ checkpoint با تطبیق digest، censoring فقط از outer-train، `integrated_brier_score` + `concordance_index_ipcw` از وزن‌های مدل؛ خروجی ثابت غیرممکن). (۲) lr/wd برندهٔ HPO به fit نهایی منتقل نمی‌شد — اکنون در candidate_records هست و `run_final_training` بدون آن‌ها `WINNER_HYPERPARAMS_MISSING` می‌دهد.
+1. **state machine پلن 013 ساخته شد:** `src/method_y_revival/image_launcher_state_v3.py` — ۱۶ مرحله self-hashed و contract-bound؛ launcher مراحل PREFLIGHT..GPU_SMOKE_PASSED را با facts جلو می‌برد، per-branch stageها را روی تکمیل کامیت می‌کند و ROBUSTNESS/REPORTS فقط با OOF واقعی PASS می‌شوند وگرنه `PENDING_REAL_OOF`.
+2. **نتایج دورهٔ کد معیوب حذف شد (به دست کاربر):** `orchestration/{amyloid,tau}/**` و `.smoke_test/**` زیر root اصلی؛ lock یتیم بعد از تأیید مرگ pid حذف شد. هیچ outer_result جعلی قبلاً کامیت نشده بود.
+3. **تأیید:** تست‌های جدید RED(۱۰ fail)→GREEN(۱۰ pass)؛ کل `tests/method_y_revival` **445 passed**؛ smoke PASSED cuda 26MiB؛ preflight READY؛ اجرای زندهٔ محدود خطوط STAGE_COMMITTED را چاپ کرد و وارد HPO amyloid شد.
+4. گزارش کامل: `advisor-plans/agent-reports/method-y-image-v3-hard-audit-round2-20260825T144330Z.md`. دستور تولیدی همان است: `powershell -NoProfile -ExecutionPolicy Bypass -File 'H:\New project\scripts\run_method_y_image_training_v3.ps1'`
+
 ## زنده‌ترین — ۲۰۲۶-۰۸-۲۵ بعدازظهر (image v3: فعال‌سازی آموزش کامل + بهینه‌سازی GPU + تحقیق 10×)
 
 0. **آموزش کامل فعال شد** (commit `cd6a65f`): `scripts/run_method_y_image_training_v3.py` حالت `run` اکنون حلقه واقعی nested-CV را اجرا می‌کند — amyloid سپس tau × دو variant قفل‌شده × outer_0..4؛ `src/method_y_revival/image_training_orchestrator_v3.py` با پارامتر جدید `h5_cache_path` از `H5PatternSurvivalDataset` روی cache واقعی می‌خواند و امتیاز HPO را با IBS واقعی (`survival_at_times` + `integrated_brier_score`) می‌سنجد نه NLL. رزوم سه‌لایه: winner JSON → `locked_checkpoint.pt` → state کنترلر outer (`OUTER_EVAL_COMMITTED/FINALIZED`).

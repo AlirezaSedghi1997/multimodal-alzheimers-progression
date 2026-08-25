@@ -1,5 +1,14 @@
 # Agent session ledger — 2026-08-15 (Method Y defect repair)
 
+> **Append 2026-08-25T14:43Z — hard audit round 2: two critical fixes + Plan 013 stage machine.**
+> Scope: only work after the 16:00Z-perf append below. Baseline `41d1c7f`/`d447c1c`.
+> - **F1 CRITICAL fixed:** launcher outer evaluators were hardcoded placeholders (`c_index 0.62/0.61`) that would have committed fabricated results and burned exactly-once access. Replaced with real evaluator module `src/method_y_revival/image_outer_eval_v3.py` (`evaluate_locked_outer`: strict contract-checked checkpoint load, train-only transformer, H5 inference, prespecified grid, administrative censoring, IBS + IPCW Uno C from weights; OOF rows bootstrap-shaped). Anti-placeholder regression test asserts two different locked models give different metrics.
+> - **F2 HIGH fixed:** winner `learning_rate`/`weight_decay` now carried in candidate records and consumed by `run_final_training` (raises `WINNER_HYPERPARAMS_MISSING` if absent) — final fit previously always used lr=1e-4/wd=1e-4 regardless of HPO outcome.
+> - **F3 MEDIUM fixed:** Plan 013 16-stage machine materialized in `src/method_y_revival/image_launcher_state_v3.py` (self-hashed, contract-bound, order-enforced, FINALIZED gated). Launcher advances PREFLIGHT_DONE..GPU_SMOKE_PASSED with facts, commits per-branch stages on completion, and sets ROBUSTNESS/REPORTS/PRIVACY only from real OOF presence else records `PENDING_REAL_OOF` honestly.
+> - **Wrong-era artifacts deleted (user-directed):** `orchestration/{amyloid,tau}/**` and `.smoke_test/**` under canonical root; stale writer lock removed after verifying pid dead. No fabricated outer result had been committed at detection time (verified).
+> - **Verification:** RED 10 failed then GREEN 10 passed; full `tests/method_y_revival` 445 passed; smoke PASSED cuda 26 MiB; preflight READY; bounded live run printed STAGE_COMMITTED/GPU_SMOKE_PASSED and entered amyloid inner HPO (scalar_tabular epochs ~0.35 s).
+> - Report: `advisor-plans/agent-reports/method-y-image-v3-hard-audit-round2-20260825T144330Z.md`. Claim gates unchanged and closed.
+
 > **Append 2026-08-25T16:00Z — image v3 full-training enablement + GPU perf + 10× feasibility research.**
 > Covers ONLY work after the 13:30Z hard-audit append below (commits `7c30be5`..`41d1c7f`). Plans 009-013 audit is NOT repeated here.
 >
