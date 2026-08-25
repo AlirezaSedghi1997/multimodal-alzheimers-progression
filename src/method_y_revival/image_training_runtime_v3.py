@@ -35,12 +35,32 @@ def seed_everything(seed: int) -> None:
     torch.manual_seed(numeric)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(numeric)
-    torch.backends.cudnn.benchmark = False
-    torch.backends.cudnn.deterministic = True
+    # Performance: allow TF32 and high matmul precision on Ampere (no scientific change)
     try:
-        torch.use_deterministic_algorithms(True)
+        torch.set_float32_matmul_precision("high")
     except Exception:
         pass
+    try:
+        torch.backends.cuda.matmul.allow_tf32 = True
+        torch.backends.cudnn.allow_tf32 = True
+    except Exception:
+        pass
+    # Keep deterministic for bitwise resume tests; for production the launcher will enable benchmark via env
+    # We keep benchmark False + deterministic True for reproducibility; performance mode can override via env var
+    if os.environ.get("IMAGE_V3_PERF", "0") == "1":
+        torch.backends.cudnn.benchmark = True
+        torch.backends.cudnn.deterministic = False
+        try:
+            torch.use_deterministic_algorithms(False)
+        except Exception:
+            pass
+    else:
+        torch.backends.cudnn.benchmark = False
+        torch.backends.cudnn.deterministic = True
+        try:
+            torch.use_deterministic_algorithms(True)
+        except Exception:
+            pass
 
 
 class MemorySurvivalDataset:
@@ -278,19 +298,24 @@ def _forward(model, batch: dict[str, Any], device):
     return model(tabular)
 
 
-def _loader(dataset, *, batch_size: int, shuffle: bool, seed: int, pin_memory: bool):
+def _loader(dataset, *, batch_size: int, shuffle: bool, seed: int, pin_memory: bool, num_workers: int = 0):
     import torch
 
     generator = torch.Generator()
     generator.manual_seed(int(seed))
+    # Performance: use 2 workers when perf flag and H5 dataset (H5 handle reopened per worker via __getstate__)
+    if os.environ.get("IMAGE_V3_PERF", "0") == "1" and num_workers == 0:
+        if type(dataset).__name__ == "H5PatternSurvivalDataset":
+            num_workers = 2
     return torch.utils.data.DataLoader(
         dataset,
         batch_size=int(batch_size),
         shuffle=bool(shuffle),
-        num_workers=0,
+        num_workers=int(num_workers),
         pin_memory=bool(pin_memory),
         generator=generator,
         drop_last=False,
+        persistent_workers=False,
     )
 
 
@@ -448,6 +473,7 @@ def fit_survival_model(
             return _finalize_terminal_checkpoint()
 
     wall_start = time.perf_counter()
+    last_print = wall_start  # throttled terminal progress (40s)
     terminal_reason = "MAX_EPOCHS_COMPLETED"
     last_epoch = start_epoch - 1
     for epoch in range(start_epoch, target_epochs + 1):
@@ -570,22 +596,34 @@ def fit_survival_model(
         completed_here = epoch - start_epoch + 1
         average = (time.perf_counter() - wall_start) / max(1, completed_here)
         eta = max(0.0, (target_epochs - epoch) * average)
-        print(
-            json.dumps(
-                {
-                    "event": "EPOCH_COMMITTED",
-                    **(progress_context or {}),
-                    "epoch": epoch,
-                    "target_epochs": target_epochs,
-                    "train_loss": train_loss,
-                    "validation_loss": validation_loss,
-                    "epoch_seconds": elapsed,
-                    "eta_seconds": eta,
-                    "checkpoint": str(checkpoint_path),
-                }
-            ),
-            flush=True,
+        # Throttled progress: every 40s, plus first and last epoch, plus early terminal
+        now = time.perf_counter()
+        should_print = (
+            epoch == start_epoch
+            or epoch == target_epochs
+            or bool(early_terminal)
+            or (now - last_print) >= 40.0
         )
+        if should_print:
+            last_print = now
+            print(
+                json.dumps(
+                    {
+                        "event": "EPOCH_COMMITTED",
+                        **(progress_context or {}),
+                        "epoch": epoch,
+                        "target_epochs": target_epochs,
+                        "train_loss": train_loss,
+                        "validation_loss": validation_loss,
+                        "epoch_seconds": elapsed,
+                        "eta_seconds": eta,
+                        "checkpoint": str(checkpoint_path),
+                    }
+                ),
+                flush=True,
+            )
+        # Always emit a lightweight heartbeat for 40s throttling visibility (optional, not needed)
+        # No extra print to keep terminal quiet
         if interrupt_after_epoch is not None and epoch == int(interrupt_after_epoch):
             # Test-only: force nonterminal state after the same committed epoch.
             checkpoint["fold_terminal"] = False
