@@ -108,12 +108,12 @@
 |---:|---|---|---|---|---|
 | 000 | گزارش کار امروز و حقیقت زنده | P0 | S | — | DONE |
 | 001 | بستن B1 و anchor مستقل ضد rollback | P0 | L | 000 | DONE |
-| 002 | ساخت preprocessing واقعی schema v2 | P0 | L | 001 | DONE |
-| 003 | اجرای resumable preprocessing روی 1669 MRI | P0 | XL/runtime | 002 | IN_PROGRESS (preflight PASS؛ gate PASS؛ اجرای full در انتظار پنجرهٔ GPU) |
+| 002 | ساخت preprocessing واقعی schema v2 | P0 | L | 001 | BLOCKED_REPAIR_REQUIRED |
+| 003 | اجرای resumable preprocessing روی 1669 MRI | P0 | XL/runtime | 002 | NOT_STARTED_PRIMARY_0_OF_1669 |
 | 004 | ساخت embedding/split/ResNet34 feature preparation | P0 | XL | 001, 002 contract | DONE |
-| 005 | اجرای frozen feature preparation | P0 | L/runtime | 003, 004 | TODO |
-| 006 | ساخت trainer واقعی شش-arm CAFT | P0 | XL | 004 schemas | DONE |
-| 007 | ساخت orchestrator، exact-resume و autosupervision | P0 | XL | 002, 004, 006 | TODO |
+| 005 | اجرای frozen feature preparation | P0 | L/runtime | 003, 004 | NOT_EXECUTED |
+| 006 | ساخت trainer واقعی شش-arm CAFT | P0 | XL | 004 schemas | NOT_EXECUTED_CODE_ONLY_UNACCEPTED_SCAFFOLD |
+| 007 | ساخت orchestrator، exact-resume و autosupervision | P0 | XL | 002, 004, 006 | NOT_EXECUTED |
 | 008 | acceptance، traceability و readiness نهایی | P0 | L | 003, 005, 006, 007 | TODO |
 
 مقادیر وضعیت مجاز: `TODO`, `IN_PROGRESS`, `DONE`, `BLOCKED: <reason>`,

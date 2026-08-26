@@ -1,0 +1,51 @@
+# BrainIAC raw-T1 preprocessing, schema v2 (Plan 002 / B2)
+# Policy authority: governance/brainiac_preprocessing_r1_primary_v2_policy.json
+# This file holds layout/runtime knobs only; every scientific threshold lives
+# in the policy JSON and is hash-bound into each receipt.
+
+schema_version: 2
+roots:
+  primary: data/derived/method_x_brainiac/r1_primary_v2
+  smoke: data/derived/method_x_brainiac/r1_primary_v2_smoke
+  raw_read_only: "H:\\A4 Learn"
+  locked_cache: data/cached/t1_volume_cache_128.h5
+  master_catalog: data/processed/master_catalog.csv
+
+modes:
+  preflight: read_only_no_sample_output_write
+  smoke:
+    limit: 12
+    equivalence: sequential_vs_orchestrated
+  run:
+    membership_rows: 1669
+    requires_calibration_threshold_manifest: true
+  status: read_only
+
+membership:
+  fields: [sample_hash, t1_file_hash]
+  expected_real_rows: 1669
+
+calibration:
+  sample_count: 32
+  selection: lowest_sha256_of_sample_hash
+  threshold_rule: median_pm_6_mad
+  mad_zero_fallback: fixed_contract_bounds
+
+sensitivity:
+  sample_count: 64
+  direct_route_role: sensitivity_only
+
+orchestration:
+  cpu_workers_max: 2
+  gpu_workers_max: 1
+  equivalence_required: true
+
+signal:
+  clean_stop_exit_code: 75
+  safe_boundary: after_current_sample_commit
+
+device:
+  default: cuda
+  fallback: cpu
+
+claim_ceiling: POST_HOC_INTERNAL_TECHNICAL_EVIDENCE

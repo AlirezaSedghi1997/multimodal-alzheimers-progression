@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "artifact": "BRAINIAC_PREPROCESSING_PRE_REPAIR_FREEZE_20260826",
+  "created_at_utc": "2026-08-26T07:45:19Z",
+  "git_head": "f3fb3ab6b16a89caa3cde651cde1718bebadcc23",
+  "branch": "method-y-post-revival-sanitized-20260812",
+  "method_x_source_digest": "9b0f90a5a14f8764397c6a15ff8016462f0872e2f827b2ec47fe54ab773871b3",
+  "battery_manifest_sha256": {
+    "sha256": "40a4a009b3a2453fb953e2b2e9b9ec789bdf896741dc2278a898a3b38fdb971d",
+    "bytes": 207290
+  },
+  "policy_preprocessing_v2": {
+    "sha256": "140acc4f1aa0a1ad5c7328d9f265491a93cf7cb603e1a405401d8822bf59ba6f",
+    "bytes": 4882
+  },
+  "config_yaml": {
+    "sha256": "7c29441590a095638241c1fdda04ec7a1d952b57ed1fc6938c377e392b0e821e",
+    "bytes": 1339
+  },
+  "runner_script": {
+    "sha256": "b03970e93ecd1d2f7f72b1b99217d92d65bd83268b56b1add5a2995ee5d4bd70",
+    "bytes": 48051
+  },
+  "v2_module": {
+    "sha256": "8cb577edcd16dc5e35a10ea6da77e206b8425d0af973ee6c306c93a610009645",
+    "bytes": 30547
+  },
+  "v2_schema_module": {
+    "sha256": "e0210192d8f9c91b2b484c31264ba360d02a4a3508f462f1dde32c21432c7e09",
+    "bytes": 12787
+  },
+  "calibration_receipts_n": 2,
+  "calibration_policy_binding_sample": [
+    {
+      "sample_hash_prefix": "s_1b478f31",
+      "policy_sha256_prefix": "f5c69a8474ec"
+    },
+    {
+      "sample_hash_prefix": "s_1f853889",
+      "policy_sha256_prefix": "f5c69a8474ec"
+    }
+  ],
+  "calibration_dead_locks": [
+    {
+      "path_suffix": "journals\\s_29b3d69aed3d9105\\.sample.lock",
+      "pid": 19216,
+      "live": false,
+      "action": "MOVE_WITH_PARENT_AFTER_DEAD_PROOF"
+    },
+    {
+      "path_suffix": "(superseded)/equivalence_partial_20260825/eq_sequential/journals/s_00401f36c19ef228/.sample.lock",
+      "pid": 1360,
+      "live": false,
+      "action": "MOVED_WITH_PARENT_AFTER_DEAD_PROOF"
+    }
+  ],
+  "primary_receipts_n": 0,
+  "equivalence_artifact": {
+    "exists": false
+  },
+  "superseded_moves_planned": [
+    {
+      "from": "data/derived/method_x_brainiac/r1_primary_v2_calibration",
+      "to": "data/derived/method_x_brainiac/superseded/calibration_pre_pin_policy_f5c69a",
+      "reason": "POLICY_GENERATION_MISMATCH_F5C69A_VS_140ACC + DEAD_PID_LOCKS"
+    },
+    {
+      "from": "data/derived/method_x_brainiac/r1_primary_v2_smoke/eq_sequential",
+      "to": "data/derived/method_x_brainiac/superseded/equivalence_partial_20260825/eq_sequential",
+      "reason": "EQUIVALENCE_INCOMPLETE_ABORTED_RUN"
+    },
+    {
+      "from": "data/derived/method_x_brainiac/r1_primary_v2_smoke/eq_parallel",
+      "to": "data/derived/method_x_brainiac/superseded/equivalence_partial_20260825/eq_parallel",
+      "reason": "EQUIVALENCE_INCOMPLETE_ABORTED_RUN"
+    },
+    {
+      "from": "results/method_x_registry/brainiac_r1/brainiac_preprocessing_v2_equivalence.json",
+      "to": "data/derived/method_x_brainiac/superseded/equivalence_partial_20260825/",
+      "reason": "SUPERSEDED_BY_GATE_V2"
+    }
+  ],
+  "dead_pids_to_prove": [
+    19216,
+    1360
+  ],
+  "shared_guard": {
+    "exists": false
+  },
+  "dead_pids_proven_at_utc": "2026-08-26T07:53:35Z"
+}
