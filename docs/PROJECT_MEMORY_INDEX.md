@@ -1,5 +1,17 @@
 # نمایه‌ی حافظه‌ی پروژه
 
+> **SUPERSESSION 2026-08-26 — v1 تصویری Method Y باطل شد.**
+> همهٔ ادعاهای قبلیِ «true IBS»، «privacy PASS» و «DONE» برای
+> `results/method_y_revival_v3_image_v1` **نادرست/ابطال‌شده** است. سند رسمی:
+> `results/method_y_revival_v3_image_v1/provenance/INVALIDATION_20260826.json`
+> (mirror: `governance/method_y_revival_v3_image_v1_invalidation_20260826.json`)
+> با دلایل INNER_SELECTION_METRIC_FELL_BACK_TO_NLL / SOFTWARE_CONTRACT_NOT_BOUND /
+> OUTER_EXACTLY_ONCE_WRAPPING_VIOLATION / PUBLIC_ROW_LEVEL_OUTCOME_LEAK.
+> ریشهٔ فعال اکنون `results/method_y_revival_v3_image_v2` با
+> `configs/method_y_image_training_v3_2.yaml` (deterministic CUDA) است؛
+> run_contract جدید `7fa02033...`. fold_0 amyloid/scalar_tabular یک exposure
+> تاریخی ثبت شده و از هر aggregation آینده خارج است. نتایج همچنان exploratory.
+
 برای ادامه‌ی کار، **ابتدا دفتر ثبت نشست زنده** را بخوانید، نه snapshot تیرماه synthesis.
 
 ## زنده‌ترین — ۲۰۲۶-۰۸-۲۵ شب ۲ (رفع crash در resume اجرای تولیدی)

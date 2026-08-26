@@ -190,11 +190,11 @@ Plan 007 (R3)، acceptance Plan 008 (R4)، تصمیم اپراتور split (R0)�
 
 | Plan | عنوان | اولویت | اندازه | وابستگی | وضعیت |
 |---:|---|---|---|---|---|
-| 009 | dual-gate ADR و readiness hardening | P0 | M | — | DONE |
-| 010 | cache provenance، terminal resume و cache materialization | P0 | L | 009 | DONE (code + caches hash-verified: amyloid 895/895, tau 306/306) |
-| 011 | nested image trainer، inner IBS و exactly-once outer | P0 | XL | 009, 010 | DONE |
-| 012 | scanner/calibration/subgroup/bootstrap/claim/privacy | P1 | L | 009–011 | DONE |
-| 013 | launcher، GPU smoke، acceptance و production run | P0 | XL | 009–012 | DONE |
+| 009 | dual-gate ADR + readiness hardening | P0 | M | - | VERIFIED_DONE |
+| 010 | cache provenance + terminal resume + cache materialization | P0 | L | 009 | VERIFIED_DONE |
+| 011 | nested image trainer + inner IBS + exactly-once outer | P0 | XL | 009, 010 | REVISE_REQUIRED (v1 INVALIDATED; repairs committed, v2 pending run) |
+| 012 | scanner/calibration/subgroup/bootstrap/claim/privacy | P1 | L | 009-011 | REVISE_REQUIRED (executor wired; real-OOF pass awaits v2) |
+| 013 | launcher + GPU smoke + acceptance + production run | P0 | XL | 009-012 | IN_PROGRESS_INVALIDATED_V1 (launcher v3_2/v2 READY; smoke PASSED) |
 
 ## وابستگی‌های Method Y
 

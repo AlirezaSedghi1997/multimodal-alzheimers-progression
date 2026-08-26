@@ -1,5 +1,34 @@
 # Agent session ledger — 2026-08-15 (Method Y defect repair)
 
+> **Append 2026-08-26 — supervisor-plan execution: v1 INVALIDATED, v2 root staged.**
+> Independent supervisor audit found 7 critical gaps; repairs (mostly present as
+> uncommitted working-tree edits) verified, completed, tested and committed.
+> - v1 `results/method_y_revival_v3_image_v1` INVALIDATED (4 reason codes incl.
+>   NLL-fallback HPO scoring, missing software contract, outer wrapping violation,
+>   public censoring_reference leak). fold_0 exposure recorded; aggregation banned.
+> - Active root: `results/method_y_revival_v3_image_v2` + config
+>   `method_y_image_training_v3_2.yaml`; run_contract `7fa02033...`;
+>   deterministic CUDA (CUBLAS=:4096:8, benchmark=false, tf32=false).
+> - New/verified: strict IPCW-IBS inner selection (fail-closed), evaluator inside
+>   exactly-once closure, all-20-cells completion guards, software source+runtime
+>   contract binding, recursive privacy scanner (row-level leak blocked),
+>   per-branch + aggregate IMAGE_CLAIM_POLICY, real metadata join for
+>   scanner/LMO/subgroup executor, two-level verifier (--level readiness|final;
+>   v1 final = INVALIDATED).
+> - Verification: tests/method_y_revival **467 passed / 1 skipped**; focused v3
+>   green incl. CUDA no-fallback + GPU bitwise interrupt/resume; preflight(v2)
+>   READY true/false/false; smoke(v2) PASSED cuda 76 MB; full-repo suite
+>   1946 passed / 120 failed (pre-existing out-of-scope MX/redesign failures,
+>   untouched) + 3 MX collection errors (dirty train_3d_mri, out of scope).
+> - Commits: fix commit (supervisor repairs + aggregate/env additions + tests +
+>   invalidation mirror) and docs commit (this ledger, memory supersession,
+>   README status rows, handover report).
+> - Handover report: `advisor-plans/agent-reports/method-y-image-v3-supervisor-plan-handover-20260826.md`.
+> - Dual-gate note (repo-side record): dual gate permits internal exploratory
+>   image training; quantitative/scanner/external gates still cap all claims.
+>     The global Codex memory store is outside this repository; agents must rely
+>     on this ledger + PROJECT_MEMORY_INDEX supersession block.
+
 > **Append 2026-08-25T17:30Z — resume STAGE_ORDER crash fix.**
 > User-reported: `BLOCKED STAGE_ORDER:cannot_move_backwards:GPU_SMOKE_PASSED->PREFLIGHT_DONE` on second launcher run.
 > - Cause: preflight gates (INIT..GPU_SMOKE_PASSED) are re-verified every launch, but the monotonic machine rejected re-setting them once pointer was past.
