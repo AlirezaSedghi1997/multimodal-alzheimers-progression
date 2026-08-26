@@ -38,9 +38,12 @@ def _apply_deterministic_env(config: dict[str, Any]) -> None:
 
 
 def _preflight(config_path: Path) -> dict:
-    config = bind_software_runtime_contract(
-        yaml.safe_load(config_path.read_text(encoding="utf-8")), ROOT
-    )
+    raw_config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    # CUBLAS_WORKSPACE_CONFIG must be set before the first torch import.  The
+    # software binder records CUDA by importing torch, so ordering is part of
+    # the deterministic execution contract.
+    _apply_deterministic_env(raw_config)
+    config = bind_software_runtime_contract(raw_config, ROOT)
     output_root = Path(config["project_root"]) / config["output_root"] if not Path(config["output_root"]).is_absolute() else Path(config["output_root"])
     # Normalize to H:/...
     if not config["output_root"].startswith("results/method_y_revival_v3_image"):
@@ -100,9 +103,6 @@ def _preflight(config_path: Path) -> dict:
             gpu_info["vram"] = torch.cuda.get_device_properties(0).total_memory
     except Exception:
         pass
-    # Deterministic runtime env (also for direct .py runs)
-    _apply_deterministic_env(config)
-
     # H free
     import shutil
 
@@ -256,6 +256,9 @@ def _run_gpu_smoke(config: dict, output_root: Path) -> dict:
         gradient_accumulation_steps=4,
         device=device,
         amp=(device == "cuda"),
+        amp_dtype=str(config["model"].get("amp_dtype", "bfloat16")),
+        amp_initial_scale=float(config["model"].get("amp_initial_scale", 256.0)),
+        amp_growth_interval=int(config["model"].get("amp_growth_interval", 2000)),
         fixed_epochs=1,
     )
     ckpt = out / "locked_checkpoint.pt"
@@ -275,9 +278,9 @@ def main() -> int:
     # Intentionally no flag to disable resume
     args = parser.parse_args()
     config_path = Path(args.config)
-    config = bind_software_runtime_contract(
-        yaml.safe_load(config_path.read_text(encoding="utf-8")), ROOT
-    )
+    raw_config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    _apply_deterministic_env(raw_config)
+    config = bind_software_runtime_contract(raw_config, ROOT)
     output_root = ROOT / config["output_root"] if not Path(config["output_root"]).is_absolute() else Path(config["output_root"])
     # preflight checks before acquiring lock
     # storage locality
@@ -335,6 +338,8 @@ def main() -> int:
                 from src.method_y_revival.image_training_orchestrator_v3 import (
                     ImageTrainingOrchestratorV3,
                     _build_run_contract,
+                    read_verified_private_outer_record,
+                    read_verified_winner_record,
                 )
                 from src.method_y_revival.image_reporting_v3 import (
                             build_aggregate_claim_policy,
@@ -377,6 +382,7 @@ def main() -> int:
                 device = "cuda" if torch.cuda.is_available() else "cpu"
                 fatal_failures: list[str] = []
                 branch_memberships: dict[str, pd.DataFrame] = {}
+                branch_orchestrators: dict[str, ImageTrainingOrchestratorV3] = {}
                 print(json.dumps({"event": "FULL_TRAINING_START", "branches": branches, "device": device}))
                 for branch in branches:
                     # Load private membership and splits for real training
@@ -416,6 +422,7 @@ def main() -> int:
                         readiness_sha=run_contract_sha,
                         h5_cache_path=cache_path,
                     )
+                    branch_orchestrators[branch] = orch
                     try:
                         orch.verify_inputs()
                     except Exception as e:
@@ -438,105 +445,65 @@ def main() -> int:
                             set(outer_train_frame["patient_hash"].astype(str)),
                         )
                         for variant in ["scalar_tabular", "scalar_tabular_plus_pattern_image"]:
-                            # Check if this outer fold/variant already completed (outer_evaluation committed)
-                            # Use controller to check
-                            from src.method_y_revival.outer_evaluation_control import OuterFoldController
-                            # Run contract for this outer fold/variant
-                            # We need to check if outer evaluation already finalized
-                            # The orchestrator's run_inner_hpo will be skipped if winner file exists with matching contract
                             winner_path = orch.state_root / f"winner_{variant}_outer_{outer_fold}.json"
                             if winner_path.is_file():
+                                # A corrupt or contract-incompatible winner is terminal.  It must
+                                # never be silently converted into a fresh HPO run in the same root.
+                                winner_record = read_verified_winner_record(
+                                    winner_path,
+                                    expected_branch=branch,
+                                    expected_variant=variant,
+                                    expected_outer_fold=outer_fold,
+                                    expected_master_contract_sha256=orch._master_contract_digest(),
+                                )
+                                winner = winner_record["winner"]
+                                print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "inner_hpo": "RESUMED_VERIFIED_WINNER"}))
+                            else:
                                 try:
-                                    w = read_json(winner_path)
-                                    # If winner exists and contract matches, skip inner HPO
-                                    if w.get("run_contract_sha256") == orch._master_contract_digest():
-                                        print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "inner_hpo": "SKIPPED_ALREADY_COMPLETED"}))
-                                        winner = w.get("winner")
-                                    else:
-                                        raise ValueError("contract mismatch")
-                                except Exception:
-                                    # Re-run inner HPO
-                                    winner = None
-                                    pass
-                                else:
-                                    # Already have winner, try to run final training if not yet locked
-                                    # Check if locked checkpoint exists
-                                    out_dir = output_root / "development" / branch / variant / f"outer_{outer_fold}" / "final"
-                                    locked_path = out_dir / "locked_checkpoint.pt"
-                                    if locked_path.is_file():
-                                        print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "final": "SKIPPED_ALREADY_LOCKED"}))
-                                        # Check outer evaluation
-                                        # If outer evaluation already committed, skip
-                                        from pathlib import Path as _P
-                                        # Use orchestrator's outer_evaluate check via controller state
-                                        # If outer evaluation committed, skip
-                                        run_contract = w.get("run_contract_sha256")  # not accurate, but use orch's contract
-                                        # Actually compute run contract for final
-                                        from src.method_y_revival.image_training_orchestrator_v3 import _build_run_contract
-                                        rc = _build_run_contract(config=config, branch=branch, variant=variant, outer_fold=outer_fold, candidate_id=winner.get("candidate_id","final"), membership_sha=membership_sha, cache_sha=cache_sha, split_sha=split_sha, readiness_sha=run_contract_sha)
-                                        ctrl = OuterFoldController(output_root / "private" / "outer_evaluation" / branch / variant, fold=outer_fold, run_contract_sha256=rc)
-                                        try:
-                                            state = ctrl._load_state()
-                                            if state.get("state") in {"OUTER_EVAL_COMMITTED", "FINALIZED"}:
-                                                print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer": "SKIPPED_ALREADY_COMMITTED"}))
-                                                continue
-                                        except Exception:
-                                            pass
-                                        # Otherwise need to run outer evaluation
-                                        # Fall through to outer evaluation
-                                        try:
-                                            final_info = orch.run_final_training(outer_fold=outer_fold, variant=variant, outer_train_frame=outer_train_frame, tabular_columns=tabular_cols, hazard_bin_edges=hazard_edges, winner=winner, device=device)
-                                            print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "final": "RESUMED_LOCKED"}))
-                                        except Exception as e:
-                                            print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "final_failed": str(e)}))
-                                            fatal_failures.append(f"{branch}:{variant}:fold_{outer_fold}:FINAL:{e}")
-                                            continue
-                                        # Outer evaluation (real: locked checkpoint weights)
-                                        try:
-                                            metrics = _evaluate_outer_cell_exactly_once(
-                                                orchestrator=orch,
-                                                outer_fold=outer_fold,
-                                                variant=variant,
-                                                run_contract=rc,
-                                                locked_checkpoint_path=locked_path,
-                                                outer_train_frame=outer_train_frame,
-                                                test_frame_factory=lambda keys=frozenset(outer_test_keys): development[
-                                                    development["patient_hash"].astype(str).isin(keys)
-                                                ].copy(),
-                                                cache_path=cache_path,
-                                                tabular_columns=tabular_cols,
-                                                hazard_edges=hazard_edges,
-                                                model_config=config["model"],
-                                                requested_horizons_days=[float(value) for value in config["shared"]["requested_horizons_days"]],
-                                                device=device,
-                                                amp=bool(config["model"].get("amp", True) and device == "cuda"),
-                                                batch_size=int(config["model"].get("batch_size", 4)),
-                                            )
-                                            print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer": "COMMITTED", "uno_c_index": metrics["uno_c_index"], "ibs": metrics["integrated_brier_score"]}))
-                                        except Exception as e:
-                                            print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer_failed": str(e)}))
-                                            fatal_failures.append(f"{branch}:{variant}:fold_{outer_fold}:OUTER:{e}")
-                                        continue
-                            # If not already completed, run full inner HPO + final + outer
+                                    hpo_result = orch.run_inner_hpo(
+                                        outer_fold=outer_fold,
+                                        variant=variant,
+                                        outer_train_frame=outer_train_frame,
+                                        inner_splits=inner_splits,
+                                        tabular_columns=tabular_cols,
+                                        hazard_bin_edges=hazard_edges,
+                                        device=device,
+                                    )
+                                    winner = hpo_result["winner"]
+                                    print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "winner": winner.get("candidate_id"), "mean_ibs": winner.get("mean_ibs")}))
+                                except Exception as e:
+                                    print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "hpo_failed": str(e)}))
+                                    fatal_failures.append(f"{branch}:{variant}:fold_{outer_fold}:HPO:{e}")
+                                    continue
+
                             try:
-                                hpo_result = orch.run_inner_hpo(outer_fold=outer_fold, variant=variant, outer_train_frame=outer_train_frame, inner_splits=inner_splits, tabular_columns=tabular_cols, hazard_bin_edges=hazard_edges, device=device)
-                                winner = hpo_result["winner"]
-                                print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "winner": winner.get("candidate_id"), "mean_ibs": winner.get("mean_ibs")}))
-                            except Exception as e:
-                                print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "hpo_failed": str(e)}))
-                                fatal_failures.append(f"{branch}:{variant}:fold_{outer_fold}:HPO:{e}")
-                                continue
-                            try:
-                                final_info = orch.run_final_training(outer_fold=outer_fold, variant=variant, outer_train_frame=outer_train_frame, tabular_columns=tabular_cols, hazard_bin_edges=hazard_edges, winner=winner, device=device)
-                                print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "final": "LOCKED", "ckpt": final_info.get("locked_checkpoint_sha")[:16]}))
+                                final_info = orch.run_final_training(
+                                    outer_fold=outer_fold,
+                                    variant=variant,
+                                    outer_train_frame=outer_train_frame,
+                                    tabular_columns=tabular_cols,
+                                    hazard_bin_edges=hazard_edges,
+                                    winner=winner,
+                                    device=device,
+                                )
+                                print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "final": "LOCKED_OR_RESUMED", "ckpt": final_info.get("locked_checkpoint_sha")[:16]}))
                             except Exception as e:
                                 print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "final_failed": str(e)}))
                                 fatal_failures.append(f"{branch}:{variant}:fold_{outer_fold}:FINAL:{e}")
                                 continue
-                            # Outer evaluation (real: locked checkpoint weights)
+
                             try:
-                                from src.method_y_revival.image_training_orchestrator_v3 import _build_run_contract
-                                rc = _build_run_contract(config=config, branch=branch, variant=variant, outer_fold=outer_fold, candidate_id=winner.get("candidate_id","final"), membership_sha=membership_sha, cache_sha=cache_sha, split_sha=split_sha, readiness_sha=run_contract_sha)
+                                rc = _build_run_contract(
+                                    config=config,
+                                    branch=branch,
+                                    variant=variant,
+                                    outer_fold=outer_fold,
+                                    candidate_id=winner.get("candidate_id", "final"),
+                                    membership_sha=membership_sha,
+                                    cache_sha=cache_sha,
+                                    split_sha=split_sha,
+                                    readiness_sha=run_contract_sha,
+                                )
                                 locked_ckpt = output_root / "development" / branch / variant / f"outer_{outer_fold}" / "final" / "locked_checkpoint.pt"
                                 metrics = _evaluate_outer_cell_exactly_once(
                                     orchestrator=orch,
@@ -557,7 +524,10 @@ def main() -> int:
                                     amp=bool(config["model"].get("amp", True) and device == "cuda"),
                                     batch_size=int(config["model"].get("batch_size", 4)),
                                 )
-                                print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer": "COMMITTED", "uno_c_index": metrics["uno_c_index"], "ibs": metrics["integrated_brier_score"]}))
+                                # Calling the controller even after FINALIZED is intentional:
+                                # it recovers missing mirrors from the committed result without
+                                # materializing the outer test a second time.
+                                print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer": "COMMITTED_OR_RECOVERED", "uno_c_index": metrics["uno_c_index"], "ibs": metrics["integrated_brier_score"]}))
                             except Exception as e:
                                 print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer_failed": str(e)}))
                                 fatal_failures.append(f"{branch}:{variant}:fold_{outer_fold}:OUTER:{e}")
@@ -602,7 +572,32 @@ def main() -> int:
                             folds = []
                             for k in range(5):
                                 pf = output_root / "private" / "outer_evaluation" / b / v / f"fold_{k}_private.json"
-                                metrics = read_json(pf)["metrics"]
+                                report_orchestrator = branch_orchestrators[b]
+                                winner_record = read_verified_winner_record(
+                                    report_orchestrator.state_root / f"winner_{v}_outer_{k}.json",
+                                    expected_branch=b,
+                                    expected_variant=v,
+                                    expected_outer_fold=k,
+                                    expected_master_contract_sha256=report_orchestrator._master_contract_digest(),
+                                )
+                                expected_cell_contract = _build_run_contract(
+                                    config=config,
+                                    branch=b,
+                                    variant=v,
+                                    outer_fold=k,
+                                    candidate_id=winner_record["winner"]["candidate_id"],
+                                    membership_sha=report_orchestrator.membership_sha,
+                                    cache_sha=report_orchestrator.cache_sha,
+                                    split_sha=report_orchestrator.split_sha,
+                                    readiness_sha=report_orchestrator.readiness_sha,
+                                )
+                                metrics = read_verified_private_outer_record(
+                                    pf,
+                                    expected_branch=b,
+                                    expected_variant=v,
+                                    expected_outer_fold=k,
+                                    expected_run_contract_sha256=expected_cell_contract,
+                                )["metrics"]
                                 folds.append({"fold": k, **metrics})
                             variants[v] = {"folds": folds}
                         metadata = branch_memberships[b].loc[

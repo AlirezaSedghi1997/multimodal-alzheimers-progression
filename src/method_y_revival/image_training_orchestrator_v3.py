@@ -45,6 +45,120 @@ def _sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def write_winner_record(
+    path: str | Path,
+    *,
+    branch: str,
+    variant: str,
+    outer_fold: int,
+    master_contract_sha256: str,
+    winner: dict[str, Any],
+    candidates: list[dict[str, Any]],
+) -> Path:
+    """Persist the inner-only selection as a self-hashed immutable record."""
+
+    body = {
+        "schema_version": "3.2",
+        "branch": str(branch),
+        "variant": str(variant),
+        "outer_fold": int(outer_fold),
+        "run_contract_sha256": str(master_contract_sha256),
+        "winner": winner,
+        "candidates": candidates,
+    }
+    return atomic_write_json(
+        path,
+        {**body, "winner_record_sha256": sha256_mapping(body)},
+    )
+
+
+def read_verified_winner_record(
+    path: str | Path,
+    *,
+    expected_branch: str,
+    expected_variant: str,
+    expected_outer_fold: int,
+    expected_master_contract_sha256: str,
+) -> dict[str, Any]:
+    payload = read_json(path)
+    claimed = payload.get("winner_record_sha256")
+    body = {key: value for key, value in payload.items() if key != "winner_record_sha256"}
+    if claimed != sha256_mapping(body):
+        raise ImageTrainingOrchestratorV3Error("WINNER_RECORD_HASH_MISMATCH")
+    if body.get("run_contract_sha256") != expected_master_contract_sha256:
+        raise ImageTrainingOrchestratorV3Error("RUN_CONTRACT_MISMATCH:winner")
+    if (
+        body.get("branch") != expected_branch
+        or body.get("variant") != expected_variant
+        or body.get("outer_fold") != int(expected_outer_fold)
+    ):
+        raise ImageTrainingOrchestratorV3Error("WINNER_RECORD_IDENTITY_MISMATCH")
+    candidates = body.get("candidates")
+    winner = body.get("winner")
+    if not isinstance(candidates, list) or not isinstance(winner, dict):
+        raise ImageTrainingOrchestratorV3Error("WINNER_RECORD_CONTENT_INVALID")
+    completed = [row for row in candidates if row.get("status") == "COMPLETED"]
+    try:
+        expected = select_inner_winner(completed)
+    except Exception as exc:
+        raise ImageTrainingOrchestratorV3Error("WINNER_SELECTION_EVIDENCE_INVALID") from exc
+    if sha256_mapping(winner) != sha256_mapping(expected):
+        raise ImageTrainingOrchestratorV3Error("WINNER_NOT_REPRODUCIBLE_FROM_INNER_ONLY")
+    return body
+
+
+def write_private_outer_record(
+    path: str | Path,
+    *,
+    branch: str,
+    variant: str,
+    outer_fold: int,
+    run_contract_sha256: str,
+    metrics: dict[str, Any],
+) -> Path:
+    body = {
+        "schema_version": "3.2",
+        "branch": str(branch),
+        "variant": str(variant),
+        "outer_fold": int(outer_fold),
+        "run_contract_sha256": str(run_contract_sha256),
+        "metrics": metrics,
+        "metrics_sha256": sha256_mapping(metrics),
+    }
+    return atomic_write_json(
+        path,
+        {**body, "private_record_sha256": sha256_mapping(body)},
+    )
+
+
+def read_verified_private_outer_record(
+    path: str | Path,
+    *,
+    expected_branch: str,
+    expected_variant: str,
+    expected_outer_fold: int,
+    expected_run_contract_sha256: str,
+) -> dict[str, Any]:
+    payload = read_json(path)
+    claimed = payload.get("private_record_sha256")
+    body = {key: value for key, value in payload.items() if key != "private_record_sha256"}
+    if claimed != sha256_mapping(body):
+        raise ImageTrainingOrchestratorV3Error("PRIVATE_OUTER_RECORD_HASH_MISMATCH")
+    if body.get("metrics_sha256") != sha256_mapping(body.get("metrics", {})):
+        raise ImageTrainingOrchestratorV3Error("PRIVATE_OUTER_METRICS_HASH_MISMATCH")
+    if body.get("run_contract_sha256") != expected_run_contract_sha256:
+        raise ImageTrainingOrchestratorV3Error("RUN_CONTRACT_MISMATCH:private_outer")
+    if (
+        body.get("branch") != expected_branch
+        or body.get("variant") != expected_variant
+        or body.get("outer_fold") != int(expected_outer_fold)
+    ):
+        raise ImageTrainingOrchestratorV3Error("PRIVATE_OUTER_IDENTITY_MISMATCH")
+    if not isinstance(body.get("metrics"), dict):
+        raise ImageTrainingOrchestratorV3Error("PRIVATE_OUTER_METRICS_MAPPING_REQUIRED")
+    return body
+
+
 def _build_run_contract(
     *,
     config: dict[str, Any],
@@ -178,11 +292,18 @@ class ImageTrainingOrchestratorV3:
                 existing = read_json(self.master_state_path)
             except Exception as exc:
                 raise ImageTrainingOrchestratorV3Error(f"MASTER_STATE_CORRUPT:{exc}")
+            claimed = existing.get("state_sha256")
+            body = {key: value for key, value in existing.items() if key != "state_sha256"}
+            if claimed != sha256_mapping(body):
+                raise ImageTrainingOrchestratorV3Error("MASTER_STATE_HASH_MISMATCH")
             # verify run contract still matches (any mismatch fails closed)
             expected = self._master_contract_digest()
-            if existing.get("run_contract_sha256") != expected:
+            if body.get("run_contract_sha256") != expected:
                 raise ImageTrainingOrchestratorV3Error("RUN_CONTRACT_MISMATCH:orchestrator_master_state")
-            self.master_state = existing
+            # Keep the mutable in-memory body free of the prior self-hash.  If
+            # the old digest were included in the next digest, every resumed
+            # state transition would create an unverifiable record.
+            self.master_state = body
         else:
             self.master_state = {
                 "schema_version": "3.0",
@@ -384,6 +505,15 @@ class ImageTrainingOrchestratorV3:
                     gradient_accumulation_steps=real_accum,
                     device=device,
                     amp=real_amp,
+                    amp_dtype=str(
+                        self.config.get("model", {}).get("amp_dtype", "bfloat16")
+                    ),
+                    amp_initial_scale=float(
+                        self.config.get("model", {}).get("amp_initial_scale", 256.0)
+                    ),
+                    amp_growth_interval=int(
+                        self.config.get("model", {}).get("amp_growth_interval", 2000)
+                    ),
                 )
                 # After training, evaluate inner validation IBS using survival_at_times and integrated_brier_score
                 # This ensures winner selection uses true IBS, not validation NLL
@@ -481,15 +611,14 @@ class ImageTrainingOrchestratorV3:
         winner = select_inner_winner([r for r in candidate_records if r["status"] == "COMPLETED"])
         # persist winner
         winner_path = self.state_root / f"winner_{variant}_outer_{outer_fold}.json"
-        atomic_write_json(
+        write_winner_record(
             winner_path,
-            {
-                "winner": winner,
-                "candidates": candidate_records,
-                "outer_fold": outer_fold,
-                "variant": variant,
-                "run_contract_sha256": self._master_contract_digest(),
-            },
+            branch=self.branch,
+            variant=variant,
+            outer_fold=outer_fold,
+            master_contract_sha256=self._master_contract_digest(),
+            winner=winner,
+            candidates=candidate_records,
         )
         self._set_state("INNER_SELECTION_DONE")
         return {"winner": winner, "candidates": candidate_records}
@@ -588,6 +717,15 @@ class ImageTrainingOrchestratorV3:
             gradient_accumulation_steps=real_accum,
             device=device,
             amp=real_amp,
+            amp_dtype=str(
+                self.config.get("model", {}).get("amp_dtype", "bfloat16")
+            ),
+            amp_initial_scale=float(
+                self.config.get("model", {}).get("amp_initial_scale", 256.0)
+            ),
+            amp_growth_interval=int(
+                self.config.get("model", {}).get("amp_growth_interval", 2000)
+            ),
             fixed_epochs=fixed_epochs,
         )
         # lock checkpoint via OuterFoldController
@@ -625,7 +763,14 @@ class ImageTrainingOrchestratorV3:
         private_path = self.private_root / variant / f"fold_{outer_fold}_private.json"
         private_path.parent.mkdir(parents=True, exist_ok=True)
         # evaluator metrics already contain oof_predictions privately? We store private copy
-        atomic_write_json(private_path, {"metrics": metrics, "run_contract": run_contract})
+        write_private_outer_record(
+            private_path,
+            branch=self.branch,
+            variant=variant,
+            outer_fold=outer_fold,
+            run_contract_sha256=run_contract,
+            metrics=metrics,
+        )
         public_path = self.public_root / f"{self.branch}_{variant}_fold_{outer_fold}_public.json"
         # public should NOT contain patient_hash etc. So we filter
         public_metrics = {

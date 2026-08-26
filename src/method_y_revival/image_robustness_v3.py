@@ -134,7 +134,8 @@ def oof_scanner_probe(
             aucs.append(float(auc))
         except Exception:
             aucs.append(float("nan"))
-    macro_auc = float(np.nanmean(aucs)) if aucs else float("nan")
+    finite_aucs = [float(value) for value in aucs if np.isfinite(value)]
+    macro_auc = float(np.mean(finite_aucs)) if finite_aucs else float("nan")
     # permutation null check: shuffle labels
     rng = np.random.default_rng(0)
     y_perm = rng.permutation(y_enc)
@@ -148,7 +149,10 @@ def oof_scanner_probe(
             perm_aucs.append(float(auc))
         except Exception:
             perm_aucs.append(float("nan"))
-    perm_auc = float(np.nanmean(perm_aucs)) if perm_aucs else float("nan")
+    finite_perm_aucs = [float(value) for value in perm_aucs if np.isfinite(value)]
+    perm_auc = (
+        float(np.mean(finite_perm_aucs)) if finite_perm_aucs else float("nan")
+    )
     return {
         "status": "COMPLETED",
         "macro_auc": macro_auc,

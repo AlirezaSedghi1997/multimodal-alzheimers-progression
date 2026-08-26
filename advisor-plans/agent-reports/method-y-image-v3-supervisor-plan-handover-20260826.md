@@ -1,5 +1,11 @@
 # Method Y Image v3 — Supervisor-Plan Execution & Handover Report
 
+> **SUPERSEDED FOR LAUNCH READINESS.** This handover remains historical
+> evidence, but its `7fa02033...` bootstrap contract and completeness judgment
+> are superseded by
+> `method-y-image-v3-final-supervisor-audit-20260826.md`. Do not launch from the
+> old digest.
+
 - date UTC: 2026-08-26
 - branch: `method-y-post-revival-sanitized-20260812`
 - base at session start: `762543d` (after supervisor's uncommitted repairs discovered in working tree)

@@ -1,5 +1,19 @@
 # نمایه‌ی حافظه‌ی پروژه
 
+> **SUPERSESSION 2026-08-26 — ممیزی ناظر نهایی Image v3.2.**
+> گزارش `c42ef08/483aa81` بخش عمده‌ی تعمیرات را درست ثبت کرده بود، اما برای
+> شروع امن آموزش کافی نبود. ممیزی نهایی این شکاف‌ها را نیز بست: closure کامل
+> source/runtime contract، self-hash صحیح master state پس از resume، winner
+> self-hashed و بازتولیدپذیر از inner-only evidence، بازیابی mirror پس از outer
+> commit بدون دسترسی دوباره به test، تطبیق hash رکورد خصوصی/چک‌پوینت در verifier،
+> و جلوگیری از جلو رفتن scheduler در AMP بدون optimizer-step. AMP تولیدی روی
+> `bfloat16` با likelihood محاسبه‌شده در float32 قفل شده است. باتری زنده:
+> `475 passed`، بدون failure و warning. digest قدیمی `7fa02033...` منسوخ است؛
+> digest معتبر را همیشه از
+> `results/method_y_revival_v3_image_v2/run_contract.json` بخوانید. آموزش تولیدی
+> هنوز آغاز نشده و `final` تا تکمیل ۲۰/۲۰ سلول باید FAIL بماند. گزارش:
+> `advisor-plans/agent-reports/method-y-image-v3-final-supervisor-audit-20260826.md`.
+
 > **SUPERSESSION 2026-08-26 — v1 تصویری Method Y باطل شد.**
 > همهٔ ادعاهای قبلیِ «true IBS»، «privacy PASS» و «DONE» برای
 > `results/method_y_revival_v3_image_v1` **نادرست/ابطال‌شده** است. سند رسمی:

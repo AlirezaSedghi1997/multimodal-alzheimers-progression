@@ -11,8 +11,6 @@ import pandas as pd
 import pytest
 import yaml
 
-pytestmark = pytest.mark.order(-2)
-
 ROOT = Path(__file__).resolve().parents[2]
 CONFIG_V3_2 = ROOT / "configs" / "method_y_image_training_v3_2.yaml"
 
@@ -228,6 +226,9 @@ def test_cuda_inner_ibs_computes_real_metric_without_fallback(tmp_path):
 
 
 @CUDA
+@pytest.mark.filterwarnings(
+    r"error:Detected call of `lr_scheduler.step\(\)` before `optimizer.step\(\)`"
+)
 def test_cuda_interrupt_resume_bitwise_identical(tmp_path):
     """GPU interruption after epoch 1 must resume to weights+history identical
     to an uninterrupted GPU run."""

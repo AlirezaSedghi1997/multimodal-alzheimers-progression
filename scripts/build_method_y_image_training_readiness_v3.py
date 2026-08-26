@@ -36,6 +36,9 @@ from src.method_y_revival.image_training_policy import (  # noqa: E402
     assess_image_training_policy,
 )
 from src.method_y_revival.process_guard import WriterLock  # noqa: E402
+from src.method_y_revival.software_contract_v3 import (  # noqa: E402
+    bind_software_runtime_contract,
+)
 
 
 class ImageReadinessBuildError(RuntimeError):
@@ -325,8 +328,10 @@ def _write_or_match_contract(path: Path, contract: RunContract) -> None:
 
 def build(config_path: Path, *, branches: tuple[str, ...]) -> dict[str, Any]:
     config_path = _require_file(config_path, "IMAGE_TRAINING_CONFIG")
-    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-    if config.get("schema_version") != "3.0":
+    config = bind_software_runtime_contract(
+        yaml.safe_load(config_path.read_text(encoding="utf-8")), ROOT
+    )
+    if config.get("schema_version") not in {"3.0", "3.2"}:
         raise ImageReadinessBuildError("IMAGE_TRAINING_CONFIG_SCHEMA_MISMATCH")
     if _path(config["project_root"]).resolve() != ROOT.resolve() or ROOT.drive.upper() != "H:":
         raise ImageReadinessBuildError("PROJECT_ROOT_MUST_BE_CANONICAL_H_CHECKOUT")
@@ -373,6 +378,9 @@ def build(config_path: Path, *, branches: tuple[str, ...]) -> dict[str, Any]:
                 branch: list(_model_columns(config["branches"][branch]))
                 for branch in branches
             },
+            "model_config": config.get("model", {}),
+            "runtime_policy": config.get("runtime", {}),
+            "software_runtime_contract": config.get("software_runtime_contract", {}),
         }
     )
 
@@ -518,4 +526,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

@@ -19,7 +19,11 @@ if str(ROOT) not in sys.path:
 from src.method_y_revival.atomic_io import read_json  # noqa: E402
 from src.method_y_revival.contracts import sha256_mapping  # noqa: E402
 from src.method_y_revival.image_reporting_v3 import privacy_scan_reports  # noqa: E402
-from src.method_y_revival.image_training_orchestrator_v3 import _build_run_contract  # noqa: E402
+from src.method_y_revival.image_training_orchestrator_v3 import (  # noqa: E402
+    _build_run_contract,
+    read_verified_private_outer_record,
+    read_verified_winner_record,
+)
 from src.method_y_revival.outer_evaluation_control import OuterFoldController  # noqa: E402
 from src.method_y_revival.software_contract_v3 import bind_software_runtime_contract  # noqa: E402
 
@@ -43,6 +47,27 @@ def _sha256_file(path: Path) -> str:
 def _resolve(value: str | Path) -> Path:
     path = Path(value)
     return path if path.is_absolute() else ROOT / path
+
+
+def _verify_locked_checkpoint(
+    path: Path,
+    *,
+    expected_file_sha256: str,
+    expected_run_contract_sha256: str,
+) -> None:
+    if not path.is_file() or _sha256_file(path) != expected_file_sha256:
+        raise FinalVerificationV3Error("LOCKED_CHECKPOINT_FILE_HASH_MISMATCH")
+    try:
+        import torch
+
+        payload = torch.load(path, map_location="cpu", weights_only=False)
+    except Exception as exc:
+        raise FinalVerificationV3Error("LOCKED_CHECKPOINT_UNREADABLE") from exc
+    if payload.get("run_contract_digest") != expected_run_contract_sha256:
+        raise FinalVerificationV3Error("CHECKPOINT_INTERNAL_CONTRACT_MISMATCH")
+    state = payload.get("model_state")
+    if not isinstance(state, dict) or not state:
+        raise FinalVerificationV3Error("CHECKPOINT_MODEL_STATE_MISSING")
 
 
 def _load_context(config_path: Path, output_override: Path | None = None):
@@ -113,9 +138,16 @@ def _verify_inner_scores(root: Path, branch: str, master_digest: str) -> int:
             path = state_root / f"winner_{variant}_outer_{fold}.json"
             if not path.is_file():
                 raise FinalVerificationV3Error(f"WINNER_MISSING:{branch}:{variant}:{fold}")
-            payload = read_json(path)
-            if payload.get("run_contract_sha256") != master_digest:
-                raise FinalVerificationV3Error("WINNER_MASTER_CONTRACT_MISMATCH")
+            try:
+                payload = read_verified_winner_record(
+                    path,
+                    expected_branch=branch,
+                    expected_variant=variant,
+                    expected_outer_fold=fold,
+                    expected_master_contract_sha256=master_digest,
+                )
+            except Exception as exc:
+                raise FinalVerificationV3Error(f"WINNER_RECORD_INVALID:{exc}") from exc
             candidates = payload.get("candidates", [])
             if not candidates:
                 raise FinalVerificationV3Error("HPO_CANDIDATES_MISSING")
@@ -124,16 +156,31 @@ def _verify_inner_scores(root: Path, branch: str, master_digest: str) -> int:
                 if candidate.get("status") != "COMPLETED" or len(records) != 3:
                     raise FinalVerificationV3Error("INNER_HPO_INCOMPLETE")
                 values = []
+                observed_inner_folds: set[int] = set()
                 for record in records:
                     value = float(record.get("metric_value", float("nan")))
+                    inner_fold = int(record.get("inner_fold", -1))
+                    checkpoint_path = (
+                        state_root
+                        / f"tmp_inner_{variant}_outer_{fold}_{candidate.get('candidate_id')}_inner_{inner_fold}"
+                        / "locked_checkpoint.pt"
+                    )
                     if (
                         record.get("metric_name") != "IPCW_INTEGRATED_BRIER_SCORE"
                         or not math.isfinite(value)
                         or not 0.0 <= value <= 1.0
-                        or len(str(record.get("locked_checkpoint_sha256", ""))) != 64
+                        or inner_fold not in {0, 1, 2}
+                        or int(record.get("inner_train_count", 0)) <= 0
+                        or int(record.get("inner_validation_count", 0)) <= 0
+                        or not checkpoint_path.is_file()
+                        or _sha256_file(checkpoint_path)
+                        != str(record.get("locked_checkpoint_sha256", ""))
                     ):
                         raise FinalVerificationV3Error("INNER_IBS_INVALID_OR_FALLBACK")
+                    observed_inner_folds.add(inner_fold)
                     values.append(value)
+                if observed_inner_folds != {0, 1, 2}:
+                    raise FinalVerificationV3Error("INNER_FOLD_SET_INVALID")
                 if abs(float(candidate.get("mean_ibs")) - sum(values) / len(values)) > 1e-12:
                     raise FinalVerificationV3Error("INNER_IBS_MEAN_MISMATCH")
             completed += 1
@@ -194,7 +241,50 @@ def verify_final(config_path: Path, output_root: Path | None = None) -> dict[str
                 journal = controller._load_access_journal()
                 if result is None or journal is None or journal.get("access_count") != 1:
                     raise FinalVerificationV3Error("OUTER_RESULT_OR_ACCESS_JOURNAL_INVALID")
+                locked_checkpoint = (
+                    root
+                    / "development"
+                    / branch
+                    / variant
+                    / f"outer_{fold}"
+                    / "final"
+                    / "locked_checkpoint.pt"
+                )
+                try:
+                    _verify_locked_checkpoint(
+                        locked_checkpoint,
+                        expected_file_sha256=str(state.get("checkpoint_sha256")),
+                        expected_run_contract_sha256=expected_contract,
+                    )
+                except FinalVerificationV3Error as exc:
+                    raise FinalVerificationV3Error(
+                        f"LOCKED_CHECKPOINT_INVALID:{branch}:{variant}:{fold}:{exc}"
+                    ) from exc
                 metrics = result["metrics"]
+                private_path = (
+                    root
+                    / "private"
+                    / "outer_evaluation"
+                    / branch
+                    / variant
+                    / f"fold_{fold}_private.json"
+                )
+                try:
+                    private_record = read_verified_private_outer_record(
+                        private_path,
+                        expected_branch=branch,
+                        expected_variant=variant,
+                        expected_outer_fold=fold,
+                        expected_run_contract_sha256=expected_contract,
+                    )
+                except Exception as exc:
+                    raise FinalVerificationV3Error(
+                        f"PRIVATE_OUTER_RECORD_INVALID:{branch}:{variant}:{fold}:{exc}"
+                    ) from exc
+                if sha256_mapping(private_record["metrics"]) != sha256_mapping(metrics):
+                    raise FinalVerificationV3Error(
+                        f"PRIVATE_CONTROLLER_METRICS_MISMATCH:{branch}:{variant}:{fold}"
+                    )
                 ibs = float(metrics.get("integrated_brier_score", float("nan")))
                 uno = float(metrics.get("uno_c_index", float("nan")))
                 if not math.isfinite(ibs) or not 0.0 <= ibs <= 1.0 or not math.isfinite(uno):

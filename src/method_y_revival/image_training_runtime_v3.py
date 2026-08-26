@@ -362,6 +362,9 @@ def fit_survival_model(
     gradient_accumulation_steps: int,
     device: str,
     amp: bool,
+    amp_dtype: str = "bfloat16",
+    amp_initial_scale: float = 256.0,
+    amp_growth_interval: int = 2000,
     fixed_epochs: int | None = None,
     interrupt_after_epoch: int | None = None,
     progress_context: dict[str, Any] | None = None,
@@ -394,10 +397,32 @@ def fit_survival_model(
         optimizer, T_max=max(1, target_epochs)
     )
     amp_enabled = bool(amp and device_object.type == "cuda")
+    requested_amp_dtype = str(amp_dtype).lower()
+    if requested_amp_dtype not in {"bfloat16", "float16"}:
+        raise TrainingRuntimeV3Error(f"UNSUPPORTED_AMP_DTYPE:{amp_dtype}")
+    if amp_enabled and requested_amp_dtype == "bfloat16":
+        if not torch.cuda.is_bf16_supported():
+            raise TrainingRuntimeV3Error("BFLOAT16_NOT_SUPPORTED_BY_DEVICE")
+        autocast_dtype = torch.bfloat16
+    else:
+        autocast_dtype = torch.float16
+    # Gradient scaling is required for float16, but not bfloat16 (which has
+    # float32-like exponent range).  Keeping it disabled for bfloat16 avoids
+    # false overflow skips while retaining half-sized activations.
+    scaler_enabled = bool(amp_enabled and autocast_dtype == torch.float16)
     try:
-        scaler = torch.amp.GradScaler("cuda", enabled=amp_enabled)
+        scaler = torch.amp.GradScaler(
+            "cuda",
+            enabled=scaler_enabled,
+            init_scale=float(amp_initial_scale),
+            growth_interval=int(amp_growth_interval),
+        )
     except (AttributeError, TypeError):  # pragma: no cover - older pinned torch
-        scaler = torch.cuda.amp.GradScaler(enabled=amp_enabled)
+        scaler = torch.cuda.amp.GradScaler(
+            enabled=scaler_enabled,
+            init_scale=float(amp_initial_scale),
+            growth_interval=int(amp_growth_interval),
+        )
     edges = torch.as_tensor(list(bin_edges), dtype=torch.float32, device=device_object)
     history: list[dict[str, float | int]] = []
     best_validation = float("inf")
@@ -522,27 +547,39 @@ def fit_survival_model(
         )
         train_sum = 0.0
         train_rows = 0
+        optimizer_steps = 0
         for step, batch in enumerate(train_loader, start=1):
             with torch.autocast(
                 device_type=device_object.type,
-                dtype=torch.float16,
+                dtype=autocast_dtype,
                 enabled=amp_enabled,
             ):
                 logits = _forward(model, batch, device_object)
-                loss = discrete_time_survival_nll(
-                    logits,
-                    batch["event"].to(device_object),
-                    batch["time_days"].to(device_object),
-                    edges,
-                    batch.get("sample_weight", None).to(device_object)
-                    if batch.get("sample_weight", None) is not None
-                    else None,
-                )
-                scaled_loss = loss / int(gradient_accumulation_steps)
+            # Keep convolutional forward in AMP, but evaluate the survival
+            # likelihood in float32.  Half-precision logsigmoid gradients can
+            # overflow even when the scalar loss is finite, causing every
+            # optimizer step in an epoch to be silently skipped.
+            loss = discrete_time_survival_nll(
+                logits.float(),
+                batch["event"].to(device_object),
+                batch["time_days"].to(device_object),
+                edges.float(),
+                batch.get("sample_weight", None).to(device_object)
+                if batch.get("sample_weight", None) is not None
+                else None,
+            )
+            scaled_loss = loss / int(gradient_accumulation_steps)
             scaler.scale(scaled_loss).backward()
             if step % int(gradient_accumulation_steps) == 0 or step == len(train_loader):
+                scale_before = float(scaler.get_scale())
                 scaler.step(optimizer)
                 scaler.update()
+                # GradScaler skips optimizer.step when gradients overflow.  A
+                # skipped step must not advance the LR scheduler as if model
+                # weights had changed.
+                scale_after = float(scaler.get_scale())
+                if not scaler_enabled or scale_after >= scale_before:
+                    optimizer_steps += 1
                 optimizer.zero_grad(set_to_none=True)
             rows = int(batch["event"].numel())
             train_sum += float(loss.detach().cpu()) * rows
@@ -566,20 +603,24 @@ def fit_survival_model(
                 for batch in validation_loader:
                     with torch.autocast(
                         device_type=device_object.type,
-                        dtype=torch.float16,
+                        dtype=autocast_dtype,
                         enabled=amp_enabled,
                     ):
                         logits = _forward(model, batch, device_object)
-                        loss = discrete_time_survival_nll(
-                            logits,
-                            batch["event"].to(device_object),
-                            batch["time_days"].to(device_object),
-                            edges,
-                        )
+                    loss = discrete_time_survival_nll(
+                        logits.float(),
+                        batch["event"].to(device_object),
+                        batch["time_days"].to(device_object),
+                        edges.float(),
+                    )
                     rows = int(batch["event"].numel())
                     validation_sum += float(loss.detach().cpu()) * rows
                     validation_rows += rows
             validation_loss = validation_sum / max(1, validation_rows)
+        if optimizer_steps <= 0:
+            raise TrainingRuntimeV3Error(
+                f"NO_FINITE_OPTIMIZER_STEP_IN_EPOCH:{epoch}"
+            )
         scheduler.step()
         if fixed_epochs is None and validation_loss < best_validation - 1e-8:
             best_validation = validation_loss
@@ -599,6 +640,7 @@ def fit_survival_model(
                 "train_loss": float(train_loss),
                 "validation_loss": float(validation_loss),
                 "learning_rate": float(optimizer.param_groups[0]["lr"]),
+                "optimizer_steps": int(optimizer_steps),
             }
         )
         last_epoch = epoch

@@ -16,9 +16,16 @@ class SoftwareContractV3Error(RuntimeError):
 
 
 SOURCE_PATHS = (
+    "scripts/build_method_y_image_training_readiness_v3.py",
+    "scripts/build_method_y_tau_progression.py",
     "scripts/run_method_y_image_training_v3.py",
     "scripts/verify_method_y_image_training_v3.py",
+    "src/method_y_revival/atomic_io.py",
+    "src/method_y_revival/contracts.py",
+    "src/method_y_revival/image_launcher_state_v3.py",
     "src/method_y_revival/image_modeling_v3.py",
+    "src/method_y_revival/image_training_manifest_v3.py",
+    "src/method_y_revival/image_training_policy.py",
     "src/method_y_revival/image_survival_v3.py",
     "src/method_y_revival/image_training_runtime_v3.py",
     "src/method_y_revival/image_training_orchestrator_v3.py",
@@ -26,6 +33,11 @@ SOURCE_PATHS = (
     "src/method_y_revival/outer_evaluation_control.py",
     "src/method_y_revival/image_reporting_v3.py",
     "src/method_y_revival/image_robustness_v3.py",
+    "src/method_y_revival/oof_reporting.py",
+    "src/method_y_revival/process_guard.py",
+    "src/method_y_revival/science_gates.py",
+    "src/method_y_revival/software_contract_v3.py",
+    "src/method_y_revival/survival_models.py",
 )
 
 
@@ -89,6 +101,9 @@ def build_software_runtime_contract(
             "num_workers",
             "pin_memory",
             "amp",
+            "amp_dtype",
+            "amp_initial_scale",
+            "amp_growth_interval",
             "checkpoint_every_epochs",
         )
     }
