@@ -719,3 +719,31 @@ scratch .nii; thread pin; plumbing parity). preprocessing_v2 suite 45/45.
 Operator final command unchanged:
 & 'H:\New project\.venvs\brainiac\Scripts\python.exe' 'H:\New project\scripts\research\prepare_brainiac_raw_t1_v2.py' --mode full --device cuda
 Expected wall-clock: +1 gate pass (~2-4 h once) then >=2x on the remaining run.
+
+## 2026-08-26 - P0-P3 repair implemented + live 12-sample gate running
+
+Commits 2310969, d78b9da, f3fb3ab + this one.
+
+Gate P0: freeze artifact BRAINIAC_PREPROCESSING_PRE_REPAIR_FREEZE_20260826.json
+(f72bc9f4...), calibration 2 receipts + partial equivalence moved to superseded/
+after DEAD proof for pids 19216,1360; README rows corrected.
+Gate P1: dependency closure module, git tracking of all BrainIAC source files.
+Gate P2: morphology dilate_mask CONFIRMED BUGGY (axis variable never used for
+indexing -> only axis 0 affected -> 3 voxels not 7). Fixed with scipy.ndimage
+binary_dilation/erosion using proper 6-connectivity structure. Repair suite
+14 tests green covering MAD outlier blocking, stale calibration rejection,
+morphology 7-voxel/no-wraparound, foreground-only normalization, exception
+sanitiser, exit codes.
+Gate P3: run_full reordered preflight-first (was equivalence-before-preflight);
+auto-flip policy mutation removed per plan (execution_profile artifact design).
+Focused suites: preprocessing_v2=45, repair=14, speedup=11 => 70 passed.
+Source digest preserved: 9b0f90a5a14f8764397c6a15ff8016462f0872e2f827b2ec47fe54ab773871b3.
+
+Live gate launched via --mode full --device cuda (detached). Preflight PASS,
+equivalence gate started, first receipts committing (~30min/sample sequential).
+Monitoring command:
+  Get-Content H:\New project\tmp\full_run.log -Wait -Tail 5
+  or check receipt count:
+  (Get-ChildItem data\derived\method_x_brainiac\r1_primary_v2_smoke\eq_sequential\receipts | Measure-Object).Count
+After 12/12 seq + 12/12 par + comparator PASS -> execution_profile_v1.json written
+-> calibration(32) -> primary(1669) -> sensitivity(64) proceed automatically.
