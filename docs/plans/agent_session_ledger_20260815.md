@@ -1,5 +1,11 @@
 # Agent session ledger — 2026-08-15 (Method Y defect repair)
 
+> **Append 2026-08-25T17:30Z — resume STAGE_ORDER crash fix.**
+> User-reported: `BLOCKED STAGE_ORDER:cannot_move_backwards:GPU_SMOKE_PASSED->PREFLIGHT_DONE` on second launcher run.
+> - Cause: preflight gates (INIT..GPU_SMOKE_PASSED) are re-verified every launch, but the monotonic machine rejected re-setting them once pointer was past.
+> - Fix (`7a50e84`): `_REVERIFIABLE` set in `image_launcher_state_v3.py` — these gates refresh facts on re-set without regressing the progress pointer; training/report/finalized stages remain strictly backwards-fail-closed. Launcher also skips per-branch stage commits already present in facts.completed (--branch both after amyloid done).
+> - Tests: +2 RED-first (`test_preflight_stages_are_reverifiable_on_resume`, `test_progress_stages_cannot_move_backwards`); 7/7 state-machine green; bounded live run resumed mid-HPO, selected winner lr3e4_wd1e4 (mean_ibs 0.689), entered outer_0 final fit; orphan cleaned.
+
 > **Append 2026-08-25T16:30Z — audit round 3 (Plans 009-012) + 6.1x GPU throughput.**
 > Baseline `d680748`. Process guard clean before writes.
 > - **F-R3-A fixed:** inner-HPO IBS silently evaluated LAST-EPOCH weights on locked-load failure; now `load_locked_state_for_eval()` fails closed (`INNER_IBS_CHECKPOINT_LOAD_FAILED`) on missing/corrupt/contract-mismatch.

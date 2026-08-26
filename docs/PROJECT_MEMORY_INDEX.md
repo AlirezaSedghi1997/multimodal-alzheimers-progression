@@ -2,6 +2,12 @@
 
 برای ادامه‌ی کار، **ابتدا دفتر ثبت نشست زنده** را بخوانید، نه snapshot تیرماه synthesis.
 
+## زنده‌ترین — ۲۰۲۶-۰۸-۲۵ شب ۲ (رفع crash در resume اجرای تولیدی)
+
+0. خطا کاربر: `STAGE_ORDER:cannot_move_backwards:GPU_SMOKE_PASSED->PREFLIGHT_DONE` در اجرای دوم launcher — گیت‌های preflight هر بار re-verify می‌شوند ولی ماشین مونوتیک رد می‌کرد.
+1. رفع (`7a50e84`): `_REVERIFIABLE` در `image_launcher_state_v3.py` — این گیت‌ها در resume فقط facts را refresh می‌کنند و pointer عقب نمی‌رود؛ مراحل آموزشی/گزارشی همچنان backwards=fail-closed. پرش مجدد به stageهای branch تکمیل‌شده هم guard شد.
+2. تأیید: +۲ تست RED-first؛ ۷/۷ state machine؛ اجرای زندهٔ محدود از وسط HPO amyloid رزومه شد، برندهٔ `lr3e4_wd1e4` (mean_ibs 0.689) انتخاب و fit نهایی outer_0 آغاز شد.
+
 ## زنده‌ترین — ۲۰۲۶-۰۸-۲۵ شب (حسابرسی دور ۳ پلن‌های 009-012 + شتاب 6.1x)
 
 0. **F-R3-A:** امتیازدهی IBS درونی هنگام خطای load چک‌پوینت، بی‌صدا وزن‌های آخرین epoch را می‌سنجید — اکنون `load_locked_state_for_eval` در `src/method_y_revival/image_training_orchestrator_v3.py` برای missing/corrupt/contract-mismatch با `INNER_IBS_CHECKPOINT_LOAD_FAILED` fail-closed می‌شود.
