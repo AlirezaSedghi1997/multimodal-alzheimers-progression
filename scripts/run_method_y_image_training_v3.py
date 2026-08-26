@@ -2,18 +2,21 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import os
 import json
 from pathlib import Path
 import sys
+from typing import Any, Callable
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 import yaml
-from src.method_y_revival.atomic_io import read_json
+from src.method_y_revival.atomic_io import atomic_write_json, read_json
 from src.method_y_revival.process_guard import WriterLock, ActiveWriterError
 from src.method_y_revival.contracts import sha256_mapping
+from src.method_y_revival.software_contract_v3 import bind_software_runtime_contract
 
 
 def _sha256_file(p: Path) -> str:
@@ -24,8 +27,20 @@ def _sha256_file(p: Path) -> str:
     return h.hexdigest()
 
 
+def _apply_deterministic_env(config: dict[str, Any]) -> None:
+    """Deterministic runtime contract must hold for direct .py runs too,
+    not only through the PS1 wrapper."""
+    runtime_cfg = config.get("runtime", {})
+    if runtime_cfg.get("deterministic_cuda"):
+        os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
+        os.environ["IMAGE_V3_PERF"] = "0"
+
+
+
 def _preflight(config_path: Path) -> dict:
-    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    config = bind_software_runtime_contract(
+        yaml.safe_load(config_path.read_text(encoding="utf-8")), ROOT
+    )
     output_root = Path(config["project_root"]) / config["output_root"] if not Path(config["output_root"]).is_absolute() else Path(config["output_root"])
     # Normalize to H:/...
     if not config["output_root"].startswith("results/method_y_revival_v3_image"):
@@ -41,6 +56,17 @@ def _preflight(config_path: Path) -> dict:
     readiness_json = read_json(readiness)
     if readiness_json.get("training_execution_allowed") is not True:
         raise RuntimeError("TRAINING_NOT_ALLOWED_BY_READINESS")
+    run_contract_path = output_root / "run_contract.json"
+    if not run_contract_path.is_file():
+        raise RuntimeError("RUN_CONTRACT_MISSING")
+    run_contract = read_json(run_contract_path)
+    payload = run_contract.get("payload")
+    if not isinstance(payload, dict) or run_contract.get("digest") != sha256_mapping(payload):
+        raise RuntimeError("RUN_CONTRACT_SELF_HASH_MISMATCH")
+    if readiness_json.get("run_contract_sha256") != run_contract.get("digest"):
+        raise RuntimeError("READINESS_RUN_CONTRACT_MISMATCH")
+    if payload.get("software_runtime_contract") != config.get("software_runtime_contract"):
+        raise RuntimeError("SOFTWARE_RUNTIME_CONTRACT_MISMATCH")
     # Check caches complete
     for branch in ["amyloid", "tau"]:
         derived = ROOT / config["branches"][branch]["derived_cache"]
@@ -74,6 +100,9 @@ def _preflight(config_path: Path) -> dict:
             gpu_info["vram"] = torch.cuda.get_device_properties(0).total_memory
     except Exception:
         pass
+    # Deterministic runtime env (also for direct .py runs)
+    _apply_deterministic_env(config)
+
     # H free
     import shutil
 
@@ -88,6 +117,85 @@ def _preflight(config_path: Path) -> dict:
         "gpu": gpu_info,
         "readiness": readiness_json,
     }
+
+
+def _evaluate_outer_cell_exactly_once(
+    *,
+    orchestrator: Any,
+    outer_fold: int,
+    variant: str,
+    run_contract: str,
+    locked_checkpoint_path: Path,
+    outer_train_frame: Any,
+    test_frame_factory: Callable[[], Any],
+    cache_path: Path,
+    tabular_columns: list[str],
+    hazard_edges: list[float],
+    model_config: dict[str, Any],
+    requested_horizons_days: list[float],
+    device: str,
+    amp: bool,
+    batch_size: int,
+) -> dict[str, Any]:
+    """Keep test-frame materialization inside the exactly-once controller."""
+    from src.method_y_revival.image_outer_eval_v3 import evaluate_locked_outer
+
+    def evaluator() -> dict[str, Any]:
+        test_frame = test_frame_factory()
+        if test_frame.empty:
+            raise RuntimeError("EMPTY_OUTER_TEST_FRAME")
+        return evaluate_locked_outer(
+            locked_checkpoint_path=locked_checkpoint_path,
+            run_contract_digest=run_contract,
+            train_frame=outer_train_frame,
+            test_frame=test_frame,
+            h5_cache_path=cache_path,
+            tabular_columns=tabular_columns,
+            variant=variant,
+            hazard_bin_edges=hazard_edges,
+            model_config=model_config,
+            requested_horizons_days=requested_horizons_days,
+            device=device,
+            amp=amp,
+            batch_size=batch_size,
+        )
+
+    return orchestrator.outer_evaluate(
+        outer_fold=outer_fold,
+        variant=variant,
+        evaluator=evaluator,
+        run_contract=run_contract,
+    )
+
+
+def _restrict_inner_splits_to_eligible_outer_train(
+    inner_splits: list[dict[str, Any]], eligible_keys: set[str]
+) -> list[dict[str, Any]]:
+    restricted: list[dict[str, Any]] = []
+    for row in inner_splits:
+        train = set(row.get("train_subjects") or row.get("train_subject_keys") or [])
+        validation = set(
+            row.get("validation_subjects")
+            or row.get("validation_subject_keys")
+            or row.get("val_subjects")
+            or []
+        )
+        if train & validation:
+            raise RuntimeError("INNER_PARTITION_LEAKAGE")
+        train &= eligible_keys
+        validation &= eligible_keys
+        if not train or not validation or train | validation != eligible_keys:
+            raise RuntimeError("INNER_PARTITION_INCOMPLETE_AFTER_ELIGIBILITY_FILTER")
+        restricted.append(
+            {
+                "fold": int(row.get("fold", len(restricted))),
+                "train_subjects": sorted(train),
+                "validation_subjects": sorted(validation),
+            }
+        )
+    if len(restricted) != 3:
+        raise RuntimeError("EXPECTED_THREE_INNER_FOLDS")
+    return restricted
 
 
 def _run_gpu_smoke(config: dict, output_root: Path) -> dict:
@@ -160,14 +268,16 @@ def _run_gpu_smoke(config: dict, output_root: Path) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Method Y v3 image training orchestrator")
-    parser.add_argument("--config", default=str(ROOT / "configs/method_y_image_training_v3_1.yaml"))
+    parser.add_argument("--config", default=str(ROOT / "configs/method_y_image_training_v3_2.yaml"))
     parser.add_argument("--mode", choices=["preflight", "smoke", "run", "status", "verify"], default="run")
     parser.add_argument("--resume", action="store_true", default=True)
     parser.add_argument("--branch", choices=["amyloid", "tau", "both"], default="both")
     # Intentionally no flag to disable resume
     args = parser.parse_args()
     config_path = Path(args.config)
-    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    config = bind_software_runtime_contract(
+        yaml.safe_load(config_path.read_text(encoding="utf-8")), ROOT
+    )
     output_root = ROOT / config["output_root"] if not Path(config["output_root"]).is_absolute() else Path(config["output_root"])
     # preflight checks before acquiring lock
     # storage locality
@@ -226,7 +336,11 @@ def main() -> int:
                     ImageTrainingOrchestratorV3,
                     _build_run_contract,
                 )
-                from src.method_y_revival.image_reporting_v3 import build_real_oof_reports, privacy_scan_reports
+                from src.method_y_revival.image_reporting_v3 import (
+                            build_aggregate_claim_policy,
+                            build_real_oof_reports,
+                            privacy_scan_reports,
+                        )
                 import pandas as pd
                 import torch
 
@@ -261,6 +375,8 @@ def main() -> int:
                 branches_all = ["amyloid", "tau"]
                 branches = branches_all if args.branch == "both" else [args.branch]
                 device = "cuda" if torch.cuda.is_available() else "cpu"
+                fatal_failures: list[str] = []
+                branch_memberships: dict[str, pd.DataFrame] = {}
                 print(json.dumps({"event": "FULL_TRAINING_START", "branches": branches, "device": device}))
                 for branch in branches:
                     # Load private membership and splits for real training
@@ -269,10 +385,12 @@ def main() -> int:
                     cache_path = ROOT / config["branches"][branch]["derived_cache"]
                     if not membership_path.is_file() or not splits_path.is_file() or not cache_path.is_file():
                         print(json.dumps({"branch": branch, "status": "SKIPPED_MISSING_INPUTS"}))
+                        fatal_failures.append(f"{branch}:MISSING_INPUTS")
                         continue
                     membership = pd.read_parquet(membership_path)
                     # Filter to development only for training (LEARN is internal transport, not for HPO)
                     development = membership[membership["role"] == "development"].copy()
+                    branch_memberships[branch] = development.copy()
                     splits = read_json(splits_path)
                     # Compute real digests for contract
                     membership_sha = _sha256_file(membership_path)
@@ -280,46 +398,29 @@ def main() -> int:
                     cache_sha = _sha256_file(cache_path)
                     # Outer folds from splits
                     outer_folds = splits.get("outer_folds", [])
+                    observed_outer_folds = {int(row.get("fold", -1)) for row in outer_folds}
+                    if observed_outer_folds != set(range(5)):
+                        raise RuntimeError(
+                            f"EXPECTED_FIVE_OUTER_FOLDS:{sorted(observed_outer_folds)}"
+                        )
                     tabular_cols = config["branches"][branch]["model_features"]
                     hazard_edges = config["shared"]["hazard_bin_edges_days"]
-                    # Handle stale orchestrator state from placeholder run (dummy 0*64) or cache rebuild
-                    try:
-                        orch = ImageTrainingOrchestratorV3(
-                            config=config,
-                            output_root=output_root,
-                            branch=branch,
-                            cache_sha=cache_sha,
-                            membership_sha=membership_sha,
-                            split_sha=split_sha,
-                            readiness_sha=run_contract_sha,
-                            h5_cache_path=cache_path,
-                        )
-                    except Exception as e:
-                        if "RUN_CONTRACT_MISMATCH" in str(e):
-                            stale = output_root / "orchestration" / branch / "orchestrator_state.json"
-                            try:
-                                stale.unlink(missing_ok=True)
-                                # Also clean stale winner/checkpoint markers that would otherwise mismatch
-                                for stale_winner in (output_root / "orchestration" / branch).glob("winner_*.json"):
-                                    stale_winner.unlink(missing_ok=True)
-                            except Exception:
-                                pass
-                            orch = ImageTrainingOrchestratorV3(
-                                config=config,
-                                output_root=output_root,
-                                branch=branch,
-                                cache_sha=cache_sha,
-                                membership_sha=membership_sha,
-                                split_sha=split_sha,
-                                readiness_sha=run_contract_sha,
-                                h5_cache_path=cache_path,
-                            )
-                        else:
-                            raise
+                    # Contract mismatch is terminal for this versioned root; no evidence is deleted.
+                    orch = ImageTrainingOrchestratorV3(
+                        config=config,
+                        output_root=output_root,
+                        branch=branch,
+                        cache_sha=cache_sha,
+                        membership_sha=membership_sha,
+                        split_sha=split_sha,
+                        readiness_sha=run_contract_sha,
+                        h5_cache_path=cache_path,
+                    )
                     try:
                         orch.verify_inputs()
                     except Exception as e:
                         print(json.dumps({"branch": branch, "verify_failed": str(e)}))
+                        fatal_failures.append(f"{branch}:INPUT_VERIFY:{e}")
                         continue
                     print(json.dumps({"branch": branch, "orchestrator": "INPUTS_VERIFIED", "outer_folds": len(outer_folds)}))
                     for outer in outer_folds:
@@ -330,8 +431,12 @@ def main() -> int:
                         outer_train_frame = development[development["patient_hash"].astype(str).isin(outer_train_keys)].copy()
                         if outer_train_frame.empty:
                             print(json.dumps({"branch": branch, "outer_fold": outer_fold, "status": "SKIPPED_EMPTY_TRAIN"}))
+                            fatal_failures.append(f"{branch}:fold_{outer_fold}:EMPTY_TRAIN")
                             continue
-                        inner_splits = outer.get("inner_folds", [])
+                        inner_splits = _restrict_inner_splits_to_eligible_outer_train(
+                            outer.get("inner_folds", []),
+                            set(outer_train_frame["patient_hash"].astype(str)),
+                        )
                         for variant in ["scalar_tabular", "scalar_tabular_plus_pattern_image"]:
                             # Check if this outer fold/variant already completed (outer_evaluation committed)
                             # Use controller to check
@@ -384,30 +489,33 @@ def main() -> int:
                                             print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "final": "RESUMED_LOCKED"}))
                                         except Exception as e:
                                             print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "final_failed": str(e)}))
+                                            fatal_failures.append(f"{branch}:{variant}:fold_{outer_fold}:FINAL:{e}")
                                             continue
                                         # Outer evaluation (real: locked checkpoint weights)
                                         try:
-                                            test_frame = development[development["patient_hash"].astype(str).isin(outer_test_keys)].copy()
-                                            if test_frame.empty:
-                                                raise RuntimeError("EMPTY_OUTER_TEST_FRAME")
-                                            metrics = evaluate_locked_outer(
-                                                locked_checkpoint_path=locked_path,
-                                                run_contract_digest=rc,
-                                                train_frame=outer_train_frame,
-                                                test_frame=test_frame,
-                                                h5_cache_path=cache_path,
-                                                tabular_columns=tabular_cols,
+                                            metrics = _evaluate_outer_cell_exactly_once(
+                                                orchestrator=orch,
+                                                outer_fold=outer_fold,
                                                 variant=variant,
-                                                hazard_bin_edges=hazard_edges,
+                                                run_contract=rc,
+                                                locked_checkpoint_path=locked_path,
+                                                outer_train_frame=outer_train_frame,
+                                                test_frame_factory=lambda keys=frozenset(outer_test_keys): development[
+                                                    development["patient_hash"].astype(str).isin(keys)
+                                                ].copy(),
+                                                cache_path=cache_path,
+                                                tabular_columns=tabular_cols,
+                                                hazard_edges=hazard_edges,
                                                 model_config=config["model"],
+                                                requested_horizons_days=[float(value) for value in config["shared"]["requested_horizons_days"]],
                                                 device=device,
                                                 amp=bool(config["model"].get("amp", True) and device == "cuda"),
                                                 batch_size=int(config["model"].get("batch_size", 4)),
                                             )
-                                            orch.outer_evaluate(outer_fold=outer_fold, variant=variant, evaluator=lambda: metrics, run_contract=rc)
                                             print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer": "COMMITTED", "uno_c_index": metrics["uno_c_index"], "ibs": metrics["integrated_brier_score"]}))
                                         except Exception as e:
                                             print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer_failed": str(e)}))
+                                            fatal_failures.append(f"{branch}:{variant}:fold_{outer_fold}:OUTER:{e}")
                                         continue
                             # If not already completed, run full inner HPO + final + outer
                             try:
@@ -416,39 +524,43 @@ def main() -> int:
                                 print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "winner": winner.get("candidate_id"), "mean_ibs": winner.get("mean_ibs")}))
                             except Exception as e:
                                 print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "hpo_failed": str(e)}))
+                                fatal_failures.append(f"{branch}:{variant}:fold_{outer_fold}:HPO:{e}")
                                 continue
                             try:
                                 final_info = orch.run_final_training(outer_fold=outer_fold, variant=variant, outer_train_frame=outer_train_frame, tabular_columns=tabular_cols, hazard_bin_edges=hazard_edges, winner=winner, device=device)
                                 print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "final": "LOCKED", "ckpt": final_info.get("locked_checkpoint_sha")[:16]}))
                             except Exception as e:
                                 print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "final_failed": str(e)}))
+                                fatal_failures.append(f"{branch}:{variant}:fold_{outer_fold}:FINAL:{e}")
                                 continue
                             # Outer evaluation (real: locked checkpoint weights)
                             try:
                                 from src.method_y_revival.image_training_orchestrator_v3 import _build_run_contract
                                 rc = _build_run_contract(config=config, branch=branch, variant=variant, outer_fold=outer_fold, candidate_id=winner.get("candidate_id","final"), membership_sha=membership_sha, cache_sha=cache_sha, split_sha=split_sha, readiness_sha=run_contract_sha)
-                                test_frame = development[development["patient_hash"].astype(str).isin(outer_test_keys)].copy()
-                                if test_frame.empty:
-                                    raise RuntimeError("EMPTY_OUTER_TEST_FRAME")
                                 locked_ckpt = output_root / "development" / branch / variant / f"outer_{outer_fold}" / "final" / "locked_checkpoint.pt"
-                                metrics = evaluate_locked_outer(
-                                    locked_checkpoint_path=locked_ckpt,
-                                    run_contract_digest=rc,
-                                    train_frame=outer_train_frame,
-                                    test_frame=test_frame,
-                                    h5_cache_path=cache_path,
-                                    tabular_columns=tabular_cols,
+                                metrics = _evaluate_outer_cell_exactly_once(
+                                    orchestrator=orch,
+                                    outer_fold=outer_fold,
                                     variant=variant,
-                                    hazard_bin_edges=hazard_edges,
+                                    run_contract=rc,
+                                    locked_checkpoint_path=locked_ckpt,
+                                    outer_train_frame=outer_train_frame,
+                                    test_frame_factory=lambda keys=frozenset(outer_test_keys): development[
+                                        development["patient_hash"].astype(str).isin(keys)
+                                    ].copy(),
+                                    cache_path=cache_path,
+                                    tabular_columns=tabular_cols,
+                                    hazard_edges=hazard_edges,
                                     model_config=config["model"],
+                                    requested_horizons_days=[float(value) for value in config["shared"]["requested_horizons_days"]],
                                     device=device,
                                     amp=bool(config["model"].get("amp", True) and device == "cuda"),
                                     batch_size=int(config["model"].get("batch_size", 4)),
                                 )
-                                orch.outer_evaluate(outer_fold=outer_fold, variant=variant, evaluator=lambda: metrics, run_contract=rc)
                                 print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer": "COMMITTED", "uno_c_index": metrics["uno_c_index"], "ibs": metrics["integrated_brier_score"]}))
                             except Exception as e:
                                 print(json.dumps({"branch": branch, "variant": variant, "outer_fold": outer_fold, "outer_failed": str(e)}))
+                                fatal_failures.append(f"{branch}:{variant}:fold_{outer_fold}:OUTER:{e}")
                                 continue
                     # After all outer folds, finalize branch
                     try:
@@ -462,10 +574,15 @@ def main() -> int:
                         print(json.dumps({"branch": branch, "status": "BRANCH_OUTER_CV_COMPLETE"}))
                     except Exception as e:
                         print(json.dumps({"branch": branch, "finalize_failed": str(e)}))
+                        fatal_failures.append(f"{branch}:FINALIZE:{e}")
+                if fatal_failures:
+                    raise RuntimeError(
+                        "FAILED_INCOMPLETE_OUTER_CV:" + "|".join(fatal_failures)
+                    )
                 # Robustness/reports/privacy: execute Plan 012 analyses over REAL
                 # locked OOF folds. Stage completion requires the executor's own
                 # status; file presence alone is never sufficient (rule 6).
-                oof_present = any(
+                oof_present = all(
                     (output_root / "private" / "outer_evaluation" / b / v / f"fold_{k}_private.json").is_file()
                     for b in branches_all for v in ["scalar_tabular", "scalar_tabular_plus_pattern_image"] for k in range(5)
                 )
@@ -488,30 +605,59 @@ def main() -> int:
                                 metrics = read_json(pf)["metrics"]
                                 folds.append({"fold": k, **metrics})
                             variants[v] = {"folds": folds}
+                        metadata = branch_memberships[b].loc[
+                            :,
+                            [
+                                "patient_hash",
+                                "manufacturer",
+                                "sex_binary",
+                                "age",
+                                "treatment_active",
+                            ],
+                        ].copy()
+                        metadata["age_group"] = pd.cut(
+                            metadata["age"],
+                            bins=[-float("inf"), 69.999, 74.999, float("inf")],
+                            labels=["LT70", "70_TO_74", "GE75"],
+                        ).astype(str)
                         rep_summary = build_real_oof_reports(
                             output_root=output_root,
                             branch=b,
                             variants=variants,
-                            metadata=None,
+                            metadata=metadata,
                             horizons_days=[float(h) for h in config["shared"]["requested_horizons_days"]],
                             bootstrap_iterations=int(config["robustness"]["bootstrap_iterations"]),
                             seed=int(config["seed"]),
                             scanner_sensitivity_passed=False,
                             quantitative_equivalence_proven=False,
                             external_validation_pass=False,
+                            expected_outer_folds=5,
                         )
                         exec_statuses.append(rep_summary)
                         print(json.dumps({"event": "OOF_REPORTS_BUILT", "branch": b, "status": rep_summary["status"], "science_gate": rep_summary["science_gate"]["science_gate_status"]}))
                         if rep_summary["privacy_scan"]["status"] != "PASS":
                             privacy_all_pass = False
-                    completed_any = any(r["status"] == "COMPLETED_FROM_REAL_OOF" for r in exec_statuses)
-                    if completed_any:
+                    completed_all = len(exec_statuses) == 2 and all(
+                        r["status"] == "COMPLETED_FROM_REAL_OOF" for r in exec_statuses
+                    )
+                    if completed_all:
+                        claims = {row["branch"]: row["claim"] for row in exec_statuses}
+                        aggregate = build_aggregate_claim_policy(
+                            output_root=output_root,
+                            branch_policies=claims,
+                        )
+                        aggregate["external_status"] = "EXTERNAL_PENDING"
+                        atomic_write_json(
+                            output_root / "reports" / "IMAGE_CLAIM_POLICY.json",
+                            aggregate,
+                        )
                         state.set_stage("ROBUSTNESS_COMPLETE")
                         state.set_stage("REPORTS_COMPLETE")
                         if privacy_all_pass:
                             state.set_stage("CONSISTENCY_PRIVACY_PASS", privacy_scan="PASS")
+                            state.set_stage("FINALIZED", final_cell_count=20)
                         else:
-                            print(json.dumps({"event": "PRIVACY_SCAN_FAIL"}))
+                            raise RuntimeError("PUBLIC_PRIVACY_SCAN_FAILED")
                     else:
                         state.set_fact("reports_status", "PARTIAL_REAL_OOF")
                         print(json.dumps({"event": "REPORTS_PARTIAL"}))

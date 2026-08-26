@@ -57,6 +57,7 @@ def test_synthetic_full_pipeline_acceptance(tmp_path):
         membership_sha="b" * 64,
         split_sha="c" * 64,
         readiness_sha="d" * 64,
+        allow_synthetic_fixture=True,
     )
     orch.verify_inputs()
     # Build synthetic splits 5x3
@@ -128,6 +129,7 @@ def test_synthetic_full_pipeline_acceptance(tmp_path):
         membership_sha="b" * 64,
         split_sha="c" * 64,
         readiness_sha="d" * 64,
+        allow_synthetic_fixture=True,
     )
     assert orch2.master_state["state"] in {"BRANCH_OUTER_CV_COMPLETE", "OUTER_EVAL_COMMITTED", "CHECKPOINT_LOCKED"}
 

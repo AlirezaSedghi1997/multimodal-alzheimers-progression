@@ -20,6 +20,12 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _pin_canonical_project_root(monkeypatch, tmp_path: Path) -> None:
+    import scripts.run_method_y_training_v2 as launcher
+
+    monkeypatch.setattr(launcher, "SCRIPT_PROJECT_ROOT", tmp_path.resolve())
+
+
 def _write_locked_inputs(root: Path) -> tuple[Path, Path, Path]:
     task4 = root / "pretraining_contracts"
     task4.mkdir(parents=True)
@@ -184,8 +190,10 @@ def _config(path: Path) -> Path:
     return path
 
 
-def test_training_v2_launcher_defaults_to_preflight_and_creates_no_training_state(tmp_path):
+def test_training_v2_launcher_defaults_to_preflight_and_creates_no_training_state(tmp_path, monkeypatch):
     from scripts.run_method_y_training_v2 import main
+
+    _pin_canonical_project_root(monkeypatch, tmp_path)
 
     inputs = tmp_path / "inputs"
     task4, readiness, feature_state = _write_locked_inputs(inputs)
@@ -220,8 +228,10 @@ def test_training_v2_launcher_defaults_to_preflight_and_creates_no_training_stat
     assert not list(output.rglob("outer_result.json"))
 
 
-def test_explicit_training_flag_still_requires_task6_readiness_receipt(tmp_path):
+def test_explicit_training_flag_still_requires_task6_readiness_receipt(tmp_path, monkeypatch):
     from scripts.run_method_y_training_v2 import TrainingLaunchError, main
+
+    _pin_canonical_project_root(monkeypatch, tmp_path)
 
     inputs = tmp_path / "inputs"
     task4, readiness, feature_state = _write_locked_inputs(inputs)
@@ -247,10 +257,12 @@ def test_explicit_training_flag_still_requires_task6_readiness_receipt(tmp_path)
     assert not list(output.rglob("inner_hpo_state.json"))
 
 
-def test_valid_task6_receipt_dispatches_hash_bound_resumable_executor_once(tmp_path):
+def test_valid_task6_receipt_dispatches_hash_bound_resumable_executor_once(tmp_path, monkeypatch):
     """Regression: ExecuteTraining must reach a guarded runtime, not a dead end."""
 
     from scripts.run_method_y_training_v2 import main
+
+    _pin_canonical_project_root(monkeypatch, tmp_path)
 
     inputs = tmp_path / "inputs"
     task4, readiness, feature_state = _write_locked_inputs(inputs)
@@ -333,10 +345,12 @@ def test_valid_task6_receipt_dispatches_hash_bound_resumable_executor_once(tmp_p
     assert orchestration["training_started"] is True
 
 
-def test_task4_review_receipt_self_hash_and_layers_are_verified(tmp_path):
+def test_task4_review_receipt_self_hash_and_layers_are_verified(tmp_path, monkeypatch):
     """Regression: a seventh file name is insufficient without receipt semantics."""
 
     from scripts.run_method_y_training_v2 import TrainingLaunchError, main
+
+    _pin_canonical_project_root(monkeypatch, tmp_path)
 
     inputs = tmp_path / "inputs"
     task4, readiness, feature_state = _write_locked_inputs(inputs)
@@ -372,8 +386,10 @@ def test_task4_review_receipt_self_hash_and_layers_are_verified(tmp_path):
         )
 
 
-def test_task4_review_evidence_is_rehashed_and_semantically_revalidated(tmp_path):
+def test_task4_review_evidence_is_rehashed_and_semantically_revalidated(tmp_path, monkeypatch):
     from scripts.run_method_y_training_v2 import TrainingLaunchError, main
+
+    _pin_canonical_project_root(monkeypatch, tmp_path)
 
     inputs = tmp_path / "inputs"
     task4, readiness, feature_state = _write_locked_inputs(inputs)
@@ -470,8 +486,10 @@ def test_guarded_runtime_rejects_private_or_uncontracted_executor_result_fields(
     assert not (tmp_path / "training_runtime_result.json").exists()
 
 
-def test_launcher_rejects_task4_artifact_hash_tampering(tmp_path):
+def test_launcher_rejects_task4_artifact_hash_tampering(tmp_path, monkeypatch):
     from scripts.run_method_y_training_v2 import TrainingLaunchError, main
+
+    _pin_canonical_project_root(monkeypatch, tmp_path)
 
     inputs = tmp_path / "inputs"
     task4, readiness, feature_state = _write_locked_inputs(inputs)
@@ -497,8 +515,10 @@ def test_launcher_rejects_task4_artifact_hash_tampering(tmp_path):
         )
 
 
-def test_launcher_rejects_an_incomplete_task4_artifact_set(tmp_path):
+def test_launcher_rejects_an_incomplete_task4_artifact_set(tmp_path, monkeypatch):
     from scripts.run_method_y_training_v2 import TrainingLaunchError, main
+
+    _pin_canonical_project_root(monkeypatch, tmp_path)
 
     inputs = tmp_path / "inputs"
     task4, readiness, feature_state = _write_locked_inputs(inputs)
@@ -526,8 +546,10 @@ def test_launcher_rejects_an_incomplete_task4_artifact_set(tmp_path):
         )
 
 
-def test_launcher_rejects_an_incomplete_feature_artifact_set(tmp_path):
+def test_launcher_rejects_an_incomplete_feature_artifact_set(tmp_path, monkeypatch):
     from scripts.run_method_y_training_v2 import TrainingLaunchError, main
+
+    _pin_canonical_project_root(monkeypatch, tmp_path)
 
     inputs = tmp_path / "inputs"
     task4, readiness, feature_state = _write_locked_inputs(inputs)
@@ -554,7 +576,21 @@ def test_launcher_rejects_an_incomplete_feature_artifact_set(tmp_path):
         )
 
 
-def test_powershell_training_v2_launcher_executes_preflight_with_all_temp_on_h(tmp_path):
+def test_noncanonical_h_project_root_is_rejected():
+    from scripts.run_method_y_training_v2 import (
+        SCRIPT_PROJECT_ROOT,
+        TrainingLaunchError,
+        main,
+    )
+
+    other = (SCRIPT_PROJECT_ROOT / "results").resolve()
+    assert other.drive.upper() == "H:"
+    assert other != SCRIPT_PROJECT_ROOT.resolve()
+    with pytest.raises(TrainingLaunchError, match="PROJECT_ROOT_MUST_BE_THIS_CHECKOUT"):
+        main(["--project-root", str(other), "--preflight-only"])
+
+
+def test_powershell_training_v2_launcher_rejects_a_different_h_project_root(tmp_path):
     inputs = tmp_path / "inputs"
     task4, readiness, feature_state = _write_locked_inputs(inputs)
     output = tmp_path / "training-control"
@@ -589,11 +625,8 @@ def test_powershell_training_v2_launcher_executes_preflight_with_all_temp_on_h(t
         timeout=90,
     )
 
-    assert completed.returncode == 0, completed.stderr
-    report = json.loads(completed.stdout.strip().splitlines()[-1])
-    assert report["status"] == "PREFLIGHT_ONLY_TRAINING_NOT_STARTED"
-    assert report["training_started"] is False
-    runtime_temp = output / "_runtime_temp"
-    assert runtime_temp.is_dir()
-    assert runtime_temp.drive.upper() == "H:"
+    assert completed.returncode != 0
+    assert "PROJECT_ROOT_MUST_BE_THIS_CHECKOUT" in (completed.stderr or "") + (
+        completed.stdout or ""
+    )
     assert not list(output.rglob("inner_hpo_state.json"))

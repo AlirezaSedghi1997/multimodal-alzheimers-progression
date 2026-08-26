@@ -10,6 +10,10 @@ import pandas as pd
 from .atomic_io import atomic_write_json, read_json
 from .oof_reporting import horizon_calibration_from_oof, subgroup_incremental_report, build_subgroup_metadata
 from .science_gates import paired_oof_bootstrap, incremental_value_gate
+from .image_robustness_v3 import (
+    leave_manufacturer_out_eligibility,
+    oof_scanner_probe,
+)
 
 
 class ImageReportingV3Error(ValueError):
@@ -134,10 +138,32 @@ def render_private_and_public(
 
 
 def privacy_scan_reports(report_root: Path) -> dict[str, Any]:
-    """Fail if any public report contains forbidden tokens in values."""
+    """Recursively reject identifiers and row-level outcomes in public JSON."""
     forbidden_tokens = ["patient_hash", "image_path_private", "H:\\", "A4 Learn", "individual_prediction", "embedding vector", ".pt", ".ckpt", "private parquet"]
-    # Also check for embedding vectors: look for large numeric arrays in public reports
-    violations = []
+    forbidden_keys = {
+        "patient_hash", "source_subject_id", "raw_path", "image_path_private",
+        "oof_predictions", "censoring_reference", "event", "time_days",
+        "original_event", "original_time_days", "risk_score",
+        "survival_probabilities", "embedding", "embeddings", "oof_embeddings",
+    }
+    row_level_keys = {
+        "censoring_reference", "event", "time_days", "original_event",
+        "original_time_days", "risk_score", "survival_probabilities",
+    }
+    violations: list[str] = []
+
+    def inspect(value: Any, *, path: Path, location: str = "$") -> None:
+        if isinstance(value, dict):
+            for key, child in value.items():
+                normalized = str(key).lower()
+                if normalized in forbidden_keys:
+                    kind = "row_level" if normalized in row_level_keys else "forbidden_key"
+                    violations.append(f"{path}:{kind}:{location}.{key}")
+                inspect(child, path=path, location=f"{location}.{key}")
+        elif isinstance(value, list):
+            for index, child in enumerate(value):
+                inspect(child, path=path, location=f"{location}[{index}]")
+
     for path in report_root.rglob("*.json"):
         # Only scan public reports (under reports), not private
         if "private" in str(path).lower():
@@ -145,23 +171,97 @@ def privacy_scan_reports(report_root: Path) -> dict[str, Any]:
         try:
             text = path.read_text(encoding="utf-8")
             data = json.loads(text)
-            # check values not keys? But scanner must be context-aware: allow key patient_hash in schema doc but not value
-            # We check raw text for forbidden tokens in values: if "patient_hash" appears as value pattern with actual hash-like string, fail
+            inspect(data, path=path)
             lowered = text.lower()
             for token in forbidden_tokens:
                 if token.lower() in lowered:
-                    # special case: allow key name in schema doc if no actual hash value leaked
-                    # We check if token appears with an actual hash (hex-like) nearby
-                    if token == "patient_hash" and "\"patient_hash\":" in text:
-                        # if there's a patient_hash key with a value that looks like a hash, it's violation
-                        # Our public reports should not contain that key at all
-                        violations.append(f"{path}:contains:{token}")
-                    elif token != "patient_hash":
-                        violations.append(f"{path}:contains:{token}")
+                    violations.append(f"{path}:contains:{token}")
         except Exception as exc:
             violations.append(f"{path}:read_error:{exc}")
     status = "PASS" if not violations else "FAIL"
     return {"status": status, "violations": violations, "scanned_root": str(report_root)}
+
+
+def build_scanner_robustness_report(
+    *, augmented_variant: dict[str, Any], metadata: pd.DataFrame | None
+) -> dict[str, Any]:
+    """Run OOF-only scanner diagnostics without upgrading feasibility to proof."""
+    if metadata is None or metadata.empty:
+        return {
+            "status": "NOT_ESTIMABLE",
+            "reason": "SCANNER_METADATA_UNAVAILABLE",
+            "scanner_robustness_passed": False,
+        }
+    required = {"patient_hash", "manufacturer"}
+    if not required.issubset(metadata.columns):
+        raise ImageReportingV3Error("SCANNER_METADATA_COLUMNS_MISSING")
+    if metadata["patient_hash"].astype(str).duplicated().any():
+        raise ImageReportingV3Error("SCANNER_METADATA_PATIENT_DUPLICATE")
+
+    prediction_rows = [
+        row
+        for fold in augmented_variant.get("folds", [])
+        for row in fold.get("oof_predictions", [])
+    ]
+    embedding_rows = [
+        row
+        for fold in augmented_variant.get("folds", [])
+        for row in fold.get("oof_embeddings", [])
+    ]
+    prediction_by_patient = {str(row.get("patient_hash")): row for row in prediction_rows}
+    embedding_by_patient = {str(row.get("patient_hash")): row for row in embedding_rows}
+    if len(prediction_by_patient) != len(prediction_rows):
+        raise ImageReportingV3Error("OOF_PREDICTION_PATIENT_DUPLICATE")
+    if len(embedding_by_patient) != len(embedding_rows):
+        raise ImageReportingV3Error("OOF_EMBEDDING_PATIENT_DUPLICATE")
+
+    metadata_index = metadata.copy()
+    metadata_index["patient_hash"] = metadata_index["patient_hash"].astype(str)
+    metadata_index["manufacturer"] = (
+        metadata_index["manufacturer"].fillna("UNKNOWN").astype(str).str.upper()
+    )
+    metadata_index = metadata_index.set_index("patient_hash")
+    common = sorted(set(prediction_by_patient).intersection(metadata_index.index))
+    support: dict[str, dict[str, int]] = {}
+    for patient in common:
+        manufacturer = str(metadata_index.loc[patient, "manufacturer"])
+        cell = support.setdefault(manufacturer, {"subjects": 0, "events": 0})
+        cell["subjects"] += 1
+        cell["events"] += int(prediction_by_patient[patient].get("event", 0))
+    leave_out = leave_manufacturer_out_eligibility(support)
+
+    embedding_common = sorted(set(embedding_by_patient).intersection(metadata_index.index))
+    if embedding_common:
+        embeddings = np.asarray(
+            [embedding_by_patient[patient].get("embedding", []) for patient in embedding_common],
+            dtype=float,
+        )
+        manufacturers = [
+            str(metadata_index.loc[patient, "manufacturer"])
+            for patient in embedding_common
+        ]
+        probe = oof_scanner_probe(embeddings, manufacturers)
+    else:
+        probe = {"status": "NOT_ESTIMABLE", "reason": "OOF_EMBEDDINGS_UNAVAILABLE"}
+
+    unknown_count = sum(
+        int(values.get("subjects", 0))
+        for manufacturer, values in support.items()
+        if manufacturer == "UNKNOWN"
+    )
+    return {
+        "status": "COMPLETED_WITH_CLAIM_GATE_UNRESOLVED",
+        "manufacturer_support": support,
+        "leave_manufacturer_out_eligibility": leave_out,
+        "oof_scanner_probe": probe,
+        "unknown_scanner_excluded_sensitivity": {
+            "status": "ELIGIBILITY_COUNTED",
+            "unknown_excluded_count": int(unknown_count),
+            "remaining_count": int(len(common) - unknown_count),
+        },
+        "scanner_robustness_passed": False,
+        "terminal_reason": "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED",
+    }
 
 
 def build_real_oof_reports(
@@ -176,6 +276,7 @@ def build_real_oof_reports(
     scanner_sensitivity_passed: bool = False,
     quantitative_equivalence_proven: bool = False,
     external_validation_pass: bool = False,
+    expected_outer_folds: int = 5,
 ) -> dict[str, Any]:
     """Plan 012 executor over REAL locked OOF folds.
 
@@ -191,6 +292,25 @@ def build_real_oof_reports(
         raise ImageReportingV3Error("REAL_OOF_VARIANTS_MUST_BE_MATCHED_PAIR")
     base = variants["scalar_tabular"]
     aug = variants["scalar_tabular_plus_pattern_image"]
+    expected = set(range(int(expected_outer_folds)))
+    for name, payload in (("base", base), ("augmented", aug)):
+        observed = {int(row.get("fold", -1)) for row in payload.get("folds", [])}
+        if observed != expected:
+            raise ImageReportingV3Error(
+                f"FAILED_INCOMPLETE_OUTER_CV:{name}:expected={sorted(expected)}:observed={sorted(observed)}"
+            )
+    for base_fold, aug_fold in zip(
+        sorted(base["folds"], key=lambda row: int(row["fold"])),
+        sorted(aug["folds"], key=lambda row: int(row["fold"])),
+    ):
+        base_members = {
+            str(row.get("patient_hash")) for row in base_fold.get("oof_predictions", [])
+        }
+        aug_members = {
+            str(row.get("patient_hash")) for row in aug_fold.get("oof_predictions", [])
+        }
+        if base_members != aug_members:
+            raise ImageReportingV3Error("MATCHED_VARIANT_MEMBERSHIP_MISMATCH")
 
     rep_dir = Path(output_root) / "reports"
     rep_dir.mkdir(parents=True, exist_ok=True)
@@ -211,6 +331,15 @@ def build_real_oof_reports(
         subgroups = {"status": "NOT_AVAILABLE_METADATA"}
     atomic_write_json(rep_dir / f"{branch}_subgroups.json", subgroups)
 
+    scanner_audit = build_scanner_robustness_report(
+        augmented_variant=aug, metadata=metadata
+    )
+    atomic_write_json(rep_dir / f"{branch}_scanner_robustness.json", scanner_audit)
+    scanner_pass = bool(
+        scanner_sensitivity_passed
+        and scanner_audit.get("scanner_robustness_passed") is True
+    )
+
     bootstrap = build_paired_bootstrap_report(
         base_variant=base, augmented_variant=aug,
         output_path=rep_dir / f"{branch}_paired_bootstrap.json",
@@ -220,8 +349,8 @@ def build_real_oof_reports(
         delta_ibs_ci=tuple(bootstrap["delta_ibs_95ci"]),
         delta_cindex_ci=tuple(bootstrap["delta_cindex_95ci"]),
         outer_folds_completed=len(base.get("folds", [])),
-        expected_outer_folds=len(base.get("folds", [])),
-        scanner_sensitivity_passed=bool(scanner_sensitivity_passed),
+        expected_outer_folds=int(expected_outer_folds),
+        scanner_sensitivity_passed=scanner_pass,
     )
     incremental = {
         "branch": branch,
@@ -242,9 +371,9 @@ def build_real_oof_reports(
         incremental_value_pass=(gate["science_gate_status"] == "PASS"),
         quantitative_equivalence_proven=bool(quantitative_equivalence_proven),
         external_validation_pass=bool(external_validation_pass),
-        scanner_robustness_passed=bool(scanner_sensitivity_passed),
+        scanner_robustness_passed=scanner_pass,
     )
-    atomic_write_json(rep_dir / "IMAGE_CLAIM_POLICY.json", claim)
+    atomic_write_json(rep_dir / f"{branch}_IMAGE_CLAIM_POLICY.json", claim)
 
     scan = privacy_scan_reports(rep_dir)
     status = "COMPLETED_FROM_REAL_OOF" if gate["science_gate_status"] in {"PASS", "FAIL"} else "PARTIAL"
@@ -256,3 +385,43 @@ def build_real_oof_reports(
         "privacy_scan": scan,
         "public_reports": sorted(p.name for p in rep_dir.glob("*.json")),
     }
+
+
+def build_aggregate_claim_policy(
+    *,
+    output_root: Path,
+    branch_policies: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    """Aggregate per-branch claim policies into the single public policy file.
+
+    A permission is granted only when EVERY branch grants it (AND semantics).
+    Blockers are indexed so no branch-specific caveat is lost.
+    """
+    if not branch_policies:
+        raise ImageReportingV3Error("AGGREGATE_REQUIRES_AT_LEAST_ONE_BRANCH")
+    rep_dir = Path(output_root) / "reports"
+    rep_dir.mkdir(parents=True, exist_ok=True)
+
+    def _and(field: str) -> bool:
+        return all(bool(policy.get(field)) for policy in branch_policies.values())
+
+    limitations: dict[str, list[str]] = {}
+    for branch, policy in sorted(branch_policies.items()):
+        for blocker in policy.get("hard_blockers", []) or []:
+            limitations.setdefault(blocker, []).append(branch)
+    aggregate = {
+        "schema_version": "3.0",
+        "scope": "AGGREGATE_OVER_BRANCHES",
+        "branches": sorted(branch_policies.keys()),
+        "training_execution_allowed": _and("training_execution_allowed"),
+        "internal_incremental_pass": _and("internal_incremental_pass"),
+        "positive_claim_allowed": _and("positive_claim_allowed"),
+        "quantitative_standard_claim_allowed": _and(
+            "quantitative_standard_claim_allowed"
+        ),
+        "external_claim_allowed": _and("external_claim_allowed"),
+        "per_branch": branch_policies,
+        "blocker_index": {k: sorted(set(v)) for k, v in sorted(limitations.items())},
+    }
+    atomic_write_json(rep_dir / "IMAGE_CLAIM_POLICY.json", aggregate)
+    return aggregate

@@ -35,32 +35,19 @@ def seed_everything(seed: int) -> None:
     torch.manual_seed(numeric)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(numeric)
-    # Performance: allow TF32 and high matmul precision on Ampere (no scientific change)
+    os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
     try:
-        torch.set_float32_matmul_precision("high")
+        torch.set_float32_matmul_precision("highest")
     except Exception:
         pass
     try:
-        torch.backends.cuda.matmul.allow_tf32 = True
-        torch.backends.cudnn.allow_tf32 = True
+        torch.backends.cuda.matmul.allow_tf32 = False
+        torch.backends.cudnn.allow_tf32 = False
     except Exception:
         pass
-    # Keep deterministic for bitwise resume tests; for production the launcher will enable benchmark via env
-    # We keep benchmark False + deterministic True for reproducibility; performance mode can override via env var
-    if os.environ.get("IMAGE_V3_PERF", "0") == "1":
-        torch.backends.cudnn.benchmark = True
-        torch.backends.cudnn.deterministic = False
-        try:
-            torch.use_deterministic_algorithms(False)
-        except Exception:
-            pass
-    else:
-        torch.backends.cudnn.benchmark = False
-        torch.backends.cudnn.deterministic = True
-        try:
-            torch.use_deterministic_algorithms(True)
-        except Exception:
-            pass
+    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.deterministic = True
+    torch.use_deterministic_algorithms(True)
 
 
 class MemorySurvivalDataset:
@@ -327,7 +314,7 @@ def _forward(model, batch: dict[str, Any], device):
     tabular = batch["tabular"].to(device, non_blocking=True)
     if "image" in batch:
         img = batch["image"].to(device, non_blocking=True)
-        if os.environ.get("IMAGE_V3_PERF", "0") == "1" and str(device) == "cuda":
+        if os.environ.get("IMAGE_V3_CHANNELS_LAST", "0") == "1" and str(device) == "cuda":
             try:
                 img = img.to(memory_format=torch.channels_last_3d)
             except Exception:
@@ -345,8 +332,7 @@ def _loader(dataset, *, batch_size: int, shuffle: bool, seed: int, pin_memory: b
     # main process serves decoded volumes without worker spawn overhead.
     # Worker processes would each rebuild their own cache copy (spawn semantics)
     # and are unnecessary once volumes are memory-resident.
-    if os.environ.get("IMAGE_V3_PERF", "0") == "1":
-        num_workers = 0
+    num_workers = int(num_workers)
     return torch.utils.data.DataLoader(
         dataset,
         batch_size=int(batch_size),
@@ -393,9 +379,10 @@ def fit_survival_model(
     if target_epochs <= 0 or int(gradient_accumulation_steps) <= 0:
         raise TrainingRuntimeV3Error("TRAINING_EPOCH_OR_ACCUMULATION_INVALID")
     device_object = torch.device(device)
+    seed_everything(seed)
     model = model.to(device_object)
     # Performance: channels_last_3d for 3D conv on Ampere (no scientific change, same weights)
-    if os.environ.get("IMAGE_V3_PERF", "0") == "1" and device_object.type == "cuda":
+    if os.environ.get("IMAGE_V3_CHANNELS_LAST", "0") == "1" and device_object.type == "cuda":
         try:
             model = model.to(memory_format=torch.channels_last_3d)
         except Exception:

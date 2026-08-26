@@ -1,0 +1,31 @@
+{
+  "schema_version": "3.2",
+  "artifact_id": "method_y_image_v3_v1_invalidated_20260826",
+  "artifact_status": "INVALIDATED",
+  "science_gate_status": "FAIL",
+  "claim_status": "NO_CLAIM",
+  "source_root": "results/method_y_revival_v3_image_v1",
+  "reuse_allowed": false,
+  "reasons": [
+    "INNER_SELECTION_METRIC_FELL_BACK_TO_NLL",
+    "SOFTWARE_CONTRACT_NOT_BOUND",
+    "OUTER_EXACTLY_ONCE_WRAPPING_VIOLATION",
+    "PUBLIC_ROW_LEVEL_OUTCOME_LEAK"
+  ],
+  "historical_outer_test_exposure": {
+    "branch": "amyloid",
+    "variant": "scalar_tabular",
+    "fold": 0,
+    "exposure_count_known_minimum": 1,
+    "future_aggregation_allowed": false
+  },
+  "orphan_lock_snapshot": {
+    "pid": 17820,
+    "process_present_at_invalidation": false,
+    "command_line": "H:\\New project\\scripts\\run_method_y_image_training_v3.py --config H:\\New project\\configs\\method_y_image_training_v3_1.yaml --resume",
+    "lock_sha256": "474228097b6656f44216ac400266375fe2f9f0d9d2c37531703656d4c8c76095",
+    "disposition": "SNAPSHOTTED_THEN_REMOVED_AS_ORPHAN"
+  },
+  "corrected_output_root": "results/method_y_revival_v3_image_v2",
+  "corrected_config": "configs/method_y_image_training_v3_2.yaml"
+}

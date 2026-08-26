@@ -73,8 +73,14 @@ def select_visual_qc(
         len(materialized),
         min(int(maximum), max(int(minimum), int(math.ceil(fraction * len(materialized))))),
     )
+    # Failures and robust outliers are mandatory review cases.  The requested
+    # maximum constrains only the stratified random sample; it must never cause
+    # a scientifically important failure/outlier to be silently omitted.
     selected = {
-        str(row["scan_key"]) for row in materialized if str(row.get("qc_status")) == "FAIL"
+        str(row["scan_key"])
+        for row in materialized
+        if str(row.get("qc_status")) == "FAIL"
+        or str(row.get("outlier_status")) == "OUTLIER"
     }
     groups: dict[tuple[str, str, str], list[dict[str, Any]]] = defaultdict(list)
     for row in materialized:

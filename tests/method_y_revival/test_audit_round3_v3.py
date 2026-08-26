@@ -153,8 +153,8 @@ def test_real_oof_report_executor_writes_public_reports_and_gate(tmp_path):
     assert "amyloid_image_incremental.json" in names
     assert "amyloid_calibration.json" in names
     assert "amyloid_subgroups.json" in names
-    assert "IMAGE_CLAIM_POLICY.json" in names
-    policy = json.loads((rep_dir / "IMAGE_CLAIM_POLICY.json").read_text(encoding="utf-8"))
+    assert "amyloid_IMAGE_CLAIM_POLICY.json" in names
+    policy = json.loads((rep_dir / "amyloid_IMAGE_CLAIM_POLICY.json").read_text(encoding="utf-8"))
     assert policy["positive_claim_allowed"] is False
     incremental = json.loads((rep_dir / "amyloid_image_incremental.json").read_text(encoding="utf-8"))
     assert incremental["science_gate"]["claim_status"] in {"EXPLORATORY", "INTERNAL_ONLY"}

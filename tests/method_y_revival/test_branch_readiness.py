@@ -27,12 +27,15 @@ def _passed(*names: str) -> dict[str, dict[str, str]]:
 
 
 def _source_ready_evidence(branch: str) -> dict[str, dict[str, str]]:
-    return _passed(
+    names = [
         f"{branch}_feature_contract",
         f"{branch}_endpoint_contract",
         f"{branch}_split_contract",
         "method_y_predictor_temporality_contract",
-    )
+    ]
+    if branch == "amyloid_source_regional":
+        names.append("amyloid_source_regional_centiloid_claim_amendment")
+    return _passed(*names)
 
 
 def test_readiness_has_exact_branch_set_and_is_fail_closed_by_default():
@@ -48,6 +51,32 @@ def test_readiness_has_exact_branch_set_and_is_fail_closed_by_default():
         assert record["external_claim_allowed"] is False
         assert record["blockers"]
         assert record["evidence"] == []
+
+
+def test_amyloid_source_regional_development_requires_honest_amylcent_amendment():
+    from src.method_y_revival.branch_readiness import build_branch_readiness
+
+    without_amendment = _passed(
+        "amyloid_source_regional_feature_contract",
+        "amyloid_source_regional_endpoint_contract",
+        "amyloid_source_regional_split_contract",
+        "method_y_predictor_temporality_contract",
+    )
+    blocked = build_branch_readiness(without_amendment)["branches"]["amyloid_source_regional"]
+    assert blocked["development_allowed"] is False
+    assert (
+        "MISSING_EVIDENCE:amyloid_source_regional_centiloid_claim_amendment"
+        in blocked["blockers"]
+    )
+
+    ready = build_branch_readiness(_source_ready_evidence("amyloid_source_regional"))
+    source = ready["branches"]["amyloid_source_regional"]
+    assert source["development_allowed"] is True
+    assert source["claim_allowed"] is False
+    assert (
+        "AMYLOID_OFFICIAL_CENTILOID_CTX_EQUIVALENCE_NOT_PROVEN"
+        in source["claim_blockers"]
+    )
 
 
 def test_image_blockers_do_not_leak_into_amyloid_source_regional_development():
@@ -114,6 +143,7 @@ def test_outer_and_claim_permissions_obey_implication_invariants():
         "amyloid_source_regional_outer_evaluation",
         "amyloid_source_regional_science_gate",
         "amyloid_source_regional_scanner_generalization",
+        "amyloid_official_centiloid_ctx_equivalence",
     )
     report = build_branch_readiness(evidence)
     record = report["branches"]["amyloid_source_regional"]
@@ -137,7 +167,50 @@ def test_amyloid_internal_claim_needs_branch_scanner_sensitivity_evidence():
     assert "AMYLOID_SCANNER_SENSITIVITY_NOT_PASSED" in blocked["claim_blockers"]
 
     evidence.update(_passed("amyloid_source_regional_scanner_generalization"))
+    still_blocked = build_branch_readiness(evidence)["branches"]["amyloid_source_regional"]
+    assert still_blocked["claim_allowed"] is False
+    assert (
+        "AMYLOID_OFFICIAL_CENTILOID_CTX_EQUIVALENCE_NOT_PROVEN"
+        in still_blocked["claim_blockers"]
+    )
+
+    evidence.update(_passed("amyloid_official_centiloid_ctx_equivalence"))
     assert build_branch_readiness(evidence)["branches"]["amyloid_source_regional"]["claim_allowed"] is True
+
+
+def test_collector_accepts_honest_amylcent_amendment_and_rejects_ctx_forgery(tmp_path):
+    from src.method_y_revival.branch_readiness import collect_project_evidence
+
+    contracts = tmp_path / "results" / "method_y_revival_v2" / "feature_contracts"
+    contracts.mkdir(parents=True)
+    amendment = {
+        "schema_version": "2.0",
+        "locked_contract": "amyloid_source_regional_feature_contract.json",
+        "locked_contract_sha256": "d" * 64,
+        "mutation_of_locked_bytes": False,
+        "claim_allowed": False,
+        "official_centiloid_ctx_equivalence_proven": False,
+        "interpretation": {
+            "feature_columns": ["AMYLCENT"],
+            "honest_meaning": "Documented A4 SUBJINFO AMYLCENT composite. Not official CTX.",
+        },
+    }
+    (contracts / "amyloid_source_regional_centiloid_claim_amendment_v2.json").write_text(
+        __import__("json").dumps(amendment), encoding="utf-8"
+    )
+    evidence = collect_project_evidence(tmp_path, branches=("amyloid_source_regional",))
+    assert "amyloid_source_regional_centiloid_claim_amendment" in evidence
+    assert "amyloid_official_centiloid_ctx_equivalence" not in evidence
+
+    forged = dict(amendment)
+    forged["official_centiloid_ctx_equivalence_proven"] = True
+    forged["claim_allowed"] = True
+    (contracts / "amyloid_source_regional_centiloid_claim_amendment_v2.json").write_text(
+        __import__("json").dumps(forged), encoding="utf-8"
+    )
+    rejected = collect_project_evidence(tmp_path, branches=("amyloid_source_regional",))
+    assert "amyloid_source_regional_centiloid_claim_amendment" not in rejected
+    assert "amyloid_official_centiloid_ctx_equivalence" not in rejected
 
 
 def test_source_regional_collector_never_reads_image_or_external_sentinels(tmp_path, monkeypatch):
@@ -415,3 +488,13 @@ def test_shared_pytest_bootstrap_imports_worktree_method_y_modules():
     root = Path(__file__).resolve().parents[2]
     assert Path(readiness.__file__).resolve().is_relative_to(root)
     assert Path(tau_audit.__file__).resolve().is_relative_to(root)
+
+
+def test_branch_readiness_builder_rejects_noncanonical_project_root():
+    from scripts.build_method_y_branch_readiness_v2 import PROJECT_ROOT, main
+
+    other = (PROJECT_ROOT / "results").resolve()
+    assert other.drive.upper() == "H:"
+    assert other != PROJECT_ROOT.resolve()
+    with pytest.raises(SystemExit, match="PROJECT_ROOT_MUST_BE_THIS_CHECKOUT"):
+        main(["--project-root", str(other)])

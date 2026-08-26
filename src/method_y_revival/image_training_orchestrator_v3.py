@@ -20,6 +20,23 @@ class ImageTrainingOrchestratorV3Error(RuntimeError):
     pass
 
 
+PUBLIC_OUTER_METRIC_KEYS = frozenset(
+    {
+        "uno_c_index",
+        "integrated_brier_score",
+        "evaluation_grid_days",
+        "administrative_censoring_cutoff_days",
+        "n_train",
+        "n_test",
+        "train_events",
+        "test_events",
+        "test_rows_administratively_censored",
+        "horizon_metrics",
+        "evaluation_source",
+    }
+)
+
+
 def _sha256_file(path: Path) -> str:
     h = hashlib.sha256()
     with path.open("rb") as fh:
@@ -54,6 +71,9 @@ def _build_run_contract(
         "readiness_sha256": readiness_sha,
         "seed": int(config.get("seed", 0)),
         "inner_hpo_grid": config.get("model", {}).get("hpo_candidates", []),
+        "runtime_policy": config.get("runtime", {}),
+        "software_runtime_contract": config.get("software_runtime_contract", {}),
+        "training_source_sha256": config.get("training_source_sha256"),
     }
     return sha256_mapping(payload)
 
@@ -118,6 +138,7 @@ class ImageTrainingOrchestratorV3:
         split_sha: str | None = None,
         readiness_sha: str | None = None,
         h5_cache_path: str | Path | None = None,
+        allow_synthetic_fixture: bool = False,
     ) -> None:
         self.config = config
         self.output_root = Path(output_root)
@@ -139,6 +160,7 @@ class ImageTrainingOrchestratorV3:
         self.split_sha = split_sha or "0" * 64
         self.readiness_sha = readiness_sha or "0" * 64
         self.h5_cache_path = Path(h5_cache_path) if h5_cache_path else None
+        self.allow_synthetic_fixture = bool(allow_synthetic_fixture)
         # output directories
         self.state_root = self.output_root / "orchestration" / self.branch
         self.state_root.mkdir(parents=True, exist_ok=True)
@@ -181,6 +203,12 @@ class ImageTrainingOrchestratorV3:
             "cache_sha": self.cache_sha,
             "split_sha": self.split_sha,
             "readiness_sha": self.readiness_sha,
+            "model_config": self.config.get("model", {}),
+            "runtime_policy": self.config.get("runtime", {}),
+            "software_runtime_contract": self.config.get("software_runtime_contract", {}),
+            "training_source_sha256": self.config.get("training_source_sha256"),
+            "hazard_bin_edges": self.config.get("shared", {}).get("hazard_bin_edges_days", []),
+            "feature_columns": self.config.get("branches", {}).get(self.branch, {}).get("model_features", []),
         }
         return sha256_mapping(payload)
 
@@ -232,26 +260,23 @@ class ImageTrainingOrchestratorV3:
             lr = float(cand["learning_rate"])
             wd = float(cand["weight_decay"])
             inner_scores: list[float] = []
+            inner_metric_records: list[dict[str, Any]] = []
             inner_best_epochs: list[int] = []
             for inner in inner_splits:
                 train_keys = set(inner.get("train_subjects") or inner.get("train_subject_keys") or [])
                 val_keys = set(inner.get("validation_subjects") or inner.get("validation_subject_keys") or inner.get("val_subjects") or [])
-                # ensure partition completeness: inner_train ∪ validation == outer_train
                 outer_train_keys = set(outer_train_frame["patient_hash"].astype(str))
-                # For synthetic tests, keys may be simplified; just check disjoint and within outer
                 if train_keys & val_keys:
                     raise ImageTrainingOrchestratorV3Error("INNER_PARTITION_LEAKAGE")
+                if not train_keys or not val_keys:
+                    raise ImageTrainingOrchestratorV3Error("INNER_PARTITION_EMPTY")
+                if not train_keys.issubset(outer_train_keys) or not val_keys.issubset(outer_train_keys):
+                    raise ImageTrainingOrchestratorV3Error("INNER_PARTITION_OUTSIDE_OUTER_TRAIN")
+                if train_keys | val_keys != outer_train_keys:
+                    raise ImageTrainingOrchestratorV3Error("INNER_PARTITION_INCOMPLETE")
                 # Fit transformer ONLY on inner train
-                train_frame = outer_train_frame.loc[outer_train_frame["patient_hash"].astype(str).isin(train_keys)].copy() if train_keys else outer_train_frame.copy()
-                val_frame = outer_train_frame.loc[outer_train_frame["patient_hash"].astype(str).isin(val_keys)].copy() if val_keys else pd.DataFrame()
-                if train_frame.empty or val_frame.empty:
-                    # For synthetic where splits use indices not hashes, fallback to proportional split
-                    # Already handled elsewhere, but ensure we still fit correctly
-                    n = len(outer_train_frame)
-                    # fallback: take first 2/3 as train, rest val if no keys
-                    if train_frame.empty and val_frame.empty:
-                        train_frame = outer_train_frame.iloc[: 2 * n // 3]
-                        val_frame = outer_train_frame.iloc[2 * n // 3 :]
+                train_frame = outer_train_frame.loc[outer_train_frame["patient_hash"].astype(str).isin(train_keys)].copy()
+                val_frame = outer_train_frame.loc[outer_train_frame["patient_hash"].astype(str).isin(val_keys)].copy()
                 transformer = FoldTabularTransformer.fit(train_frame, tabular_columns)
                 # Verify transformer not fitted on validation (by ensuring transform would still work on val but not leaked)
                 # Transform both
@@ -260,6 +285,11 @@ class ImageTrainingOrchestratorV3:
                 # Build datasets: use real H5 cache if available, else synthetic 16³
                 include_image = variant == "scalar_tabular_plus_pattern_image"
                 from .image_training_runtime_v3 import MemorySurvivalDataset, H5PatternSurvivalDataset
+
+                if include_image and not (
+                    self.h5_cache_path is not None and self.h5_cache_path.is_file()
+                ) and not self.allow_synthetic_fixture:
+                    raise ImageTrainingOrchestratorV3Error("PATTERN_CACHE_REQUIRED")
 
                 if include_image and self.h5_cache_path is not None and self.h5_cache_path.is_file():
                     # Real cache path provided — use H5PatternSurvivalDataset for pattern-normalized images
@@ -283,8 +313,11 @@ class ImageTrainingOrchestratorV3:
                     val_images = None
                 else:
                     if include_image:
-                        train_images = np.random.randn(len(train_frame), 1, 16, 16, 16).astype(np.float32) if len(train_frame) > 0 else np.empty((0, 1, 16, 16, 16))
-                        val_images = np.random.randn(len(val_frame), 1, 16, 16, 16).astype(np.float32) if len(val_frame) > 0 else np.empty((0, 1, 16, 16, 16))
+                        fixture_rng = np.random.default_rng(
+                            self.seed + outer_fold * 100 + int(inner.get("fold", 0))
+                        )
+                        train_images = fixture_rng.standard_normal((len(train_frame), 1, 16, 16, 16), dtype=np.float32)
+                        val_images = fixture_rng.standard_normal((len(val_frame), 1, 16, 16, 16), dtype=np.float32)
                     else:
                         train_images = None
                         val_images = None
@@ -303,6 +336,9 @@ class ImageTrainingOrchestratorV3:
                         patient_hashes=val_frame["patient_hash"].astype(str).tolist(),
                     )
                 # Create model
+                from .image_training_runtime_v3 import seed_everything
+
+                seed_everything(self.seed + outer_fold * 100 + int(inner.get("fold", 0)))
                 model = build_model(variant, self.config.get("model", {}), tabular_dim=len(tabular_columns), hazard_bins=len(hazard_bin_edges) - 1)
                 # Train with early stopping on inner validation NLL (not used for winner selection)
                 # But winner selection MUST use mean inner IBS, not validation NLL. So we collect IBS post-hoc.
@@ -351,10 +387,11 @@ class ImageTrainingOrchestratorV3:
                 )
                 # After training, evaluate inner validation IBS using survival_at_times and integrated_brier_score
                 # This ensures winner selection uses true IBS, not validation NLL
-                import json
                 import torch
                 from sksurv.metrics import integrated_brier_score
                 from sksurv.util import Surv
+                from .image_outer_eval_v3 import _administratively_censor, _evaluation_grid
+                from .image_training_runtime_v3 import _forward
 
                 # Load the LOCKED (best) weights; silent fallback to last-epoch
                 # state would evaluate the wrong model and corrupt HPO selection.
@@ -363,52 +400,67 @@ class ImageTrainingOrchestratorV3:
                 model.load_state_dict(best_state, strict=True)
                 model.eval()
                 summary_path = tmp_dir / "training_summary.json"
-                # Prepare evaluation grid: common support between train and val, at least 2 points
                 train_times = train_frame["time_days"].to_numpy(dtype=float)
                 val_times = val_frame["time_days"].to_numpy(dtype=float)
-                # Use hazard_bin_edges interior points that lie within common support
                 try:
-                    common_low = max(float(train_times.min()), float(val_times.min()))
-                    common_high = min(float(train_times.max()), float(val_times.max()))
-                    raw_grid = np.asarray(hazard_bin_edges[1:-1], dtype=float)  # interior bin edges
-                    grid_mask = (raw_grid > common_low + 1e-6) & (raw_grid < common_high - 1e-6)
-                    grid = raw_grid[grid_mask]
-                    if grid.size < 2:
-                        # fallback to linspace within common support
-                        eps = max((common_high - common_low) * 1e-6, 1e-6)
-                        grid = np.linspace(common_low + eps, common_high - eps, num=5)
-                    # Collect survival probabilities for val set
+                    cutoff = min(float(train_times.max()), float(val_times.max()))
+                    cutoff -= max(abs(cutoff) * 1e-9, 1e-9)
+                    eval_train = _administratively_censor(train_frame, cutoff)
+                    eval_val = _administratively_censor(val_frame, cutoff)
+                    grid = _evaluation_grid(
+                        eval_train["time_days"].to_numpy(dtype=float),
+                        eval_val["time_days"].to_numpy(dtype=float),
+                        hazard_bin_edges,
+                    )
                     val_loader = torch.utils.data.DataLoader(val_ds, batch_size=4, shuffle=False)
                     val_logits_list = []
+                    device_object = torch.device(device)
                     with torch.no_grad():
                         for batch in val_loader:
-                            tabular = batch["tabular"]
-                            if "image" in batch:
-                                logits = model(batch["image"], tabular)
-                            else:
-                                logits = model(tabular)
+                            logits = _forward(model, batch, device_object)
                             val_logits_list.append(logits.detach().cpu())
                     val_logits = torch.cat(val_logits_list, dim=0) if val_logits_list else torch.empty((0, len(hazard_bin_edges) - 1))
-                    # Compute survival at grid times
                     surv = survival_at_times(val_logits, hazard_bin_edges, grid.tolist())
                     surv_np = surv.detach().numpy()
-                    # Build Surv arrays
-                    y_train = Surv.from_arrays(event=train_frame["event"].astype(bool).to_numpy(), time=train_times)
-                    y_test = Surv.from_arrays(event=val_frame["event"].astype(bool).to_numpy(), time=val_times)
+                    if not np.isfinite(surv_np).all():
+                        raise ValueError("NONFINITE_SURVIVAL_PROBABILITY")
+                    if np.any(surv_np < 0.0) or np.any(surv_np > 1.0):
+                        raise ValueError("SURVIVAL_PROBABILITY_OUT_OF_RANGE")
+                    if surv_np.shape[1] > 1 and np.any(np.diff(surv_np, axis=1) > 1e-7):
+                        raise ValueError("SURVIVAL_PROBABILITY_NOT_MONOTONIC")
+                    y_train = Surv.from_arrays(
+                        event=eval_train["event"].astype(bool).to_numpy(),
+                        time=eval_train["time_days"].astype(float).to_numpy(),
+                    )
+                    y_test = Surv.from_arrays(
+                        event=eval_val["event"].astype(bool).to_numpy(),
+                        time=eval_val["time_days"].astype(float).to_numpy(),
+                    )
                     ibs = float(integrated_brier_score(y_train, y_test, surv_np, grid))
+                    if not np.isfinite(ibs) or not 0.0 <= ibs <= 1.0:
+                        raise ValueError(f"IBS_OUT_OF_RANGE:{ibs}")
                 except Exception as exc:
-                    # Fallback to validation loss if IBS computation fails (e.g., insufficient support)
-                    if summary_path.exists():
-                        summ = json.loads(summary_path.read_text(encoding="utf-8"))
-                        ibs = float(summ.get("best_validation", 1.0))
-                    else:
-                        ibs = 1.0
+                    raise ImageTrainingOrchestratorV3Error(
+                        f"INNER_IBS_NOT_ESTIMABLE:{type(exc).__name__}:{exc}"
+                    ) from exc
                 if summary_path.exists():
                     summ = json.loads(summary_path.read_text(encoding="utf-8"))
                     inner_best_epochs.append(int(summ.get("best_epoch", 1)))
                 else:
                     inner_best_epochs.append(1)
                 inner_scores.append(float(ibs))
+                inner_metric_records.append(
+                    {
+                        "inner_fold": int(inner.get("fold", 0)),
+                        "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+                        "metric_value": float(ibs),
+                        "evaluation_grid_days": [float(value) for value in grid],
+                        "administrative_censoring_cutoff_days": float(cutoff),
+                        "inner_train_count": int(len(train_frame)),
+                        "inner_validation_count": int(len(val_frame)),
+                        "locked_checkpoint_sha256": _sha256_file(locked_path),
+                    }
+                )
             # compute mean and SE for candidate
             mean_ibs = float(np.mean(inner_scores)) if inner_scores else float("inf")
             se = float(np.std(inner_scores, ddof=1) / (len(inner_scores) ** 0.5)) if len(inner_scores) > 1 else 0.0
@@ -421,6 +473,7 @@ class ImageTrainingOrchestratorV3:
                     "learning_rate": lr,
                     "weight_decay": wd,
                     "inner_fold_ibs": inner_scores,
+                    "inner_fold_metric_records": inner_metric_records,
                     "inner_best_epochs": inner_best_epochs,
                     "status": "COMPLETED",
                 }
@@ -462,6 +515,11 @@ class ImageTrainingOrchestratorV3:
         include_image = variant == "scalar_tabular_plus_pattern_image"
         from .image_training_runtime_v3 import MemorySurvivalDataset, H5PatternSurvivalDataset
 
+        if include_image and not (
+            self.h5_cache_path is not None and self.h5_cache_path.is_file()
+        ) and not self.allow_synthetic_fixture:
+            raise ImageTrainingOrchestratorV3Error("PATTERN_CACHE_REQUIRED")
+
         if include_image and self.h5_cache_path is not None and self.h5_cache_path.is_file():
             ds = H5PatternSurvivalDataset(
                 cache_path=self.h5_cache_path,
@@ -473,7 +531,10 @@ class ImageTrainingOrchestratorV3:
             )
         else:
             if include_image:
-                images = np.random.randn(len(outer_train_frame), 1, 16, 16, 16).astype(np.float32)
+                fixture_rng = np.random.default_rng(self.seed + outer_fold * 1000)
+                images = fixture_rng.standard_normal(
+                    (len(outer_train_frame), 1, 16, 16, 16), dtype=np.float32
+                )
             else:
                 images = None
             ds = MemorySurvivalDataset(
@@ -483,6 +544,9 @@ class ImageTrainingOrchestratorV3:
                 images=images,
                 patient_hashes=outer_train_frame["patient_hash"].astype(str).tolist(),
             )
+        from .image_training_runtime_v3 import seed_everything
+
+        seed_everything(self.seed + outer_fold * 1000)
         model = build_model(variant, self.config.get("model", {}), tabular_dim=len(tabular_columns), hazard_bins=len(hazard_bin_edges) - 1)
         out_dir = self.output_root / "development" / self.branch / variant / f"outer_{outer_fold}" / "final"
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -564,8 +628,11 @@ class ImageTrainingOrchestratorV3:
         atomic_write_json(private_path, {"metrics": metrics, "run_contract": run_contract})
         public_path = self.public_root / f"{self.branch}_{variant}_fold_{outer_fold}_public.json"
         # public should NOT contain patient_hash etc. So we filter
-        public_metrics = {k: v for k, v in metrics.items() if k not in {"oof_predictions", "patient_hash", "image_path_private", "embedding"}}
-        # also ensure no embedding vector leaked
+        public_metrics = {
+            key: value
+            for key, value in metrics.items()
+            if key in PUBLIC_OUTER_METRIC_KEYS
+        }
         atomic_write_json(public_path, {"aggregate": public_metrics, "run_contract": run_contract})
         self._set_state("OUTER_EVAL_COMMITTED")
         return metrics
@@ -587,4 +654,32 @@ class ImageTrainingOrchestratorV3:
         return {"status": "COMPLETED"}
 
     def finalize_branch(self) -> None:
+        incomplete = self.check_incomplete_outer_cv(expected_folds=5)
+        if incomplete.get("status") != "COMPLETED":
+            raise ImageTrainingOrchestratorV3Error(
+                f"FAILED_INCOMPLETE_OUTER_CV:{incomplete}"
+            )
+        for variant in self.variants:
+            root = self.output_root / "private" / "outer_evaluation" / self.branch / variant
+            for fold in range(5):
+                raw_state = read_json(root / f"fold_{fold}" / "state.json")
+                run_contract = raw_state.get("run_contract_sha256")
+                if not isinstance(run_contract, str):
+                    raise ImageTrainingOrchestratorV3Error(
+                        "FAILED_INCOMPLETE_OUTER_CV:CONTRACT_MISSING"
+                    )
+                controller = OuterFoldController(
+                    root, fold=fold, run_contract_sha256=run_contract
+                )
+                state = controller._load_state()
+                checkpoint = state.get("checkpoint_sha256")
+                result = (
+                    controller._load_result(checkpoint)
+                    if isinstance(checkpoint, str)
+                    else None
+                )
+                if state.get("state") != "FINALIZED" or result is None:
+                    raise ImageTrainingOrchestratorV3Error(
+                        f"FAILED_INCOMPLETE_OUTER_CV:{variant}:fold_{fold}"
+                    )
         self._set_state("BRANCH_OUTER_CV_COMPLETE")

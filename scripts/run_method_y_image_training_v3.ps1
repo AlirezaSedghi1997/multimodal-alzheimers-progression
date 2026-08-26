@@ -11,8 +11,10 @@ $env:HF_HOME = Join-Path $RuntimeRoot 'huggingface'
 $env:MPLCONFIGDIR = Join-Path $RuntimeRoot 'matplotlib'
 $env:XDG_CACHE_HOME = Join-Path $RuntimeRoot 'xdg'
 $env:PIP_CACHE_DIR = 'H:\New project\.pip_cache'
-$env:IMAGE_V3_PERF = '1'
+$env:IMAGE_V3_PERF = '0'
+$env:IMAGE_V3_CHANNELS_LAST = '0'
+$env:CUBLAS_WORKSPACE_CONFIG = ':4096:8'
 
 Set-Location -LiteralPath $ProjectRoot
-& 'H:\New project\.venv\Scripts\python.exe' 'H:\New project\scripts\run_method_y_image_training_v3.py' --config 'H:\New project\configs\method_y_image_training_v3_1.yaml' --resume
+& 'H:\New project\.venv\Scripts\python.exe' 'H:\New project\scripts\run_method_y_image_training_v3.py' --config 'H:\New project\configs\method_y_image_training_v3_2.yaml' --resume
 exit $LASTEXITCODE

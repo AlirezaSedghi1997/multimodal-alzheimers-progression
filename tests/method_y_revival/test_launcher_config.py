@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
 import yaml
 
 
@@ -20,21 +21,38 @@ def test_revival_config_separates_tracers_targets_and_claims():
     assert config["scanner_sensitivity"]["minimum_events_per_manufacturer"] == 10
 
 
-def test_powershell_launcher_is_resumable_and_has_no_runtime_limit():
+def test_powershell_launcher_is_preflight_only_and_has_no_runtime_limit():
     text = Path("scripts/run_method_y_revival.ps1").read_text(encoding="utf-8")
 
     assert "run_method_y_revival.py" in text
-    assert "--build-tau-endpoint" in text
-    assert "--train-tau-regional" in text
-    assert "--build-amyloid-endpoint" in text
-    assert "--train-amyloid-regional" in text
-    assert "--build-scanner-audit" in text
-    assert "--run-scanner-sensitivity" in text
-    assert "--build-paired-at-endpoint" in text
-    assert "--train-paired-at-regional" in text
+    assert "--preflight-only" in text
+    assert "--train-tau-regional" not in text
+    assert "--train-amyloid-regional" not in text
+    assert "--train-paired-at-regional" not in text
+    assert "--build-tau-endpoint" not in text
+    assert "--build-amyloid-endpoint" not in text
+    assert "--build-paired-at-endpoint" not in text
+    assert "--build-scanner-audit" not in text
+    assert "--run-scanner-sensitivity" not in text
     assert "max_runtime" not in text.casefold()
     assert "no_resume" not in text.casefold()
     assert "--output-root" not in text or "method_y_revival_v1" in text
+
+
+def test_legacy_train_flags_fail_closed_without_v2_task4_committed(tmp_path):
+    from scripts.run_method_y_revival import main
+
+    with pytest.raises(SystemExit, match="LEGACY_V1_TRAIN_REQUIRES_V2_TASK4_COMMITTED"):
+        main(
+            [
+                "--config",
+                "configs/method_y_revival_v1.yaml",
+                "--output-root",
+                str(tmp_path / "method_y_revival_v1"),
+                "--train-amyloid-regional",
+            ]
+        )
+    assert not (tmp_path / "method_y_revival_v1" / "provenance" / "preflight_report.json").exists()
 
 
 def test_preflight_cli_writes_truthful_pending_and_blocked_artifacts(tmp_path):

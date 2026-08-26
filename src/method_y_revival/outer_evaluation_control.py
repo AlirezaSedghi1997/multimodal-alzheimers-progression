@@ -59,6 +59,7 @@ class OuterFoldController:
         self.fold_dir = Path(root) / f"fold_{self.fold}"
         self.state_path = self.fold_dir / "state.json"
         self.result_path = self.fold_dir / "outer_result.json"
+        self.access_journal_path = self.fold_dir / "outer_access_journal.json"
         if self.state_path.exists():
             self._load_state()
 
@@ -79,6 +80,33 @@ class OuterFoldController:
             **fields,
         }
         atomic_write_json(self.state_path, _self_hashed(payload, "state_sha256"))
+
+    def _load_access_journal(self) -> dict[str, Any] | None:
+        if not self.access_journal_path.exists():
+            return None
+        payload = _read_self_hashed(self.access_journal_path, "journal_sha256")
+        if payload.get("run_contract_sha256") != self.run_contract_sha256:
+            raise RunContractMismatch("RUN_CONTRACT_MISMATCH:outer_access_journal")
+        if payload.get("fold") != self.fold or payload.get("access_count") != 1:
+            raise OuterEvaluationControlError("OUTER_ACCESS_JOURNAL_INVALID")
+        return payload
+
+    def _commit_first_access_authorization(self, checkpoint_sha256: str) -> None:
+        if self._load_access_journal() is not None:
+            raise OuterEvaluationControlError(
+                "AMBIGUOUS_OUTER_ACCESS_WITHOUT_COMMITTED_RESULT"
+            )
+        payload = {
+            "schema_version": "3.2",
+            "fold": self.fold,
+            "run_contract_sha256": self.run_contract_sha256,
+            "checkpoint_sha256": checkpoint_sha256,
+            "access_count": 1,
+            "authorization": "TEST_MATERIALIZATION_AUTHORIZED_ONCE",
+        }
+        atomic_write_json(
+            self.access_journal_path, _self_hashed(payload, "journal_sha256")
+        )
 
     def lock_checkpoint(self, checkpoint_sha256: str) -> None:
         checkpoint = _require_sha(checkpoint_sha256, "checkpoint")
@@ -141,6 +169,15 @@ class OuterFoldController:
             return committed["metrics"]
         if state.get("state") == "FAILED":
             raise OuterEvaluationControlError("FAILED_OUTER_FOLD_IS_TERMINAL")
+        if state.get("state") == "CHECKPOINT_LOCKED" and self._load_access_journal() is not None:
+            self._commit_state(
+                "FAILED",
+                checkpoint_sha256=checkpoint,
+                terminal_reason="AMBIGUOUS_OUTER_ACCESS_WITHOUT_COMMITTED_RESULT",
+            )
+            raise OuterEvaluationControlError(
+                "AMBIGUOUS_OUTER_ACCESS_WITHOUT_COMMITTED_RESULT"
+            )
         if state.get("state") == "OUTER_EVAL_IN_PROGRESS":
             self._commit_state(
                 "FAILED",
@@ -152,6 +189,7 @@ class OuterFoldController:
             )
         if state.get("state") != "CHECKPOINT_LOCKED":
             raise OuterEvaluationControlError("INVALID_OUTER_EVALUATION_STATE")
+        self._commit_first_access_authorization(checkpoint)
         self._commit_state("OUTER_EVAL_IN_PROGRESS", checkpoint_sha256=checkpoint)
         try:
             metrics = evaluator()

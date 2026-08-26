@@ -1,0 +1,155 @@
+schema_version: "3.2"
+status: CORRECTED_INTERNAL_IMAGE_TRAINING_WITH_CLAIM_LIMITATIONS
+
+project_root: "H:/New project"
+output_root: "results/method_y_revival_v3_image_v2"
+seed: 20260714
+
+claim_policy:
+  training_execution_requires_quantitative_equivalence: false
+  training_execution_requires_external_validation: false
+  training_execution_requires_scanner_claim_gate: false
+  positive_claim_requires_quantitative_equivalence: true
+  positive_claim_requires_scanner_robustness: true
+  external_claim_requires_locked_external_validation: true
+  allowed_training_role: FINAL_INTERNAL_EXPLORATORY_IMAGE_MODEL
+  forbidden_claims:
+    - ALZHEIMER_DISEASE_DIAGNOSIS
+    - CAUSAL_LOCALIZATION
+    - OFFICIAL_CENTILOID_EQUIVALENCE
+    - OFFICIAL_CENTAUR_EQUIVALENCE
+    - EXTERNAL_GENERALIZATION_WITHOUT_LOCKED_EXTERNAL_EVALUATION
+
+shared:
+  source_v2_root: "results/method_y_revival_v2"
+  invalidated_image_v1_root: "results/method_y_revival_v3_image_v1"
+  reference_template: "data/templates/method_y_mni152nlin2009casym_v1/reference_128_1p5mm.nii.gz"
+  reference_template_lock: "data/templates/method_y_mni152nlin2009casym_v1/reference_128_1p5mm.lock.json"
+  scanner_linkage: "results/method_y_revival_v2/qc/scanner_linkage_private.csv"
+  target_shape: [128, 128, 128]
+  expected_outer_folds: 5
+  expected_inner_folds: 3
+  minimum_outer_test_events: 10
+  minimum_inner_validation_events: 10
+  requested_horizons_days: [547.875, 1095.75, 1640.0]
+  hazard_bin_edges_days: [0.0, 365.0, 730.0, 1095.0, 1460.0, 1640.0]
+  pattern_normalization:
+    method: ROBUST_WITHIN_BRAIN_MEDIAN_IQR
+    lower_percentile: 1.0
+    upper_percentile: 99.0
+    output_clip: [-5.0, 5.0]
+    quantitative_scale_claim_allowed: false
+
+branches:
+  amyloid:
+    enabled: true
+    tracer: FBP
+    development_cohort: A4
+    internal_transport_cohort: LEARN
+    endpoint: "results/method_y_revival_v2/endpoints/amyloid_progression_endpoint.parquet"
+    endpoint_contract: "results/method_y_revival_v2/endpoints/amyloid_endpoint_contract.json"
+    splits: "results/method_y_revival_v2/splits/amyloid_nested_splits.json"
+    source_cache: "caches/method_y/revival_image_affine_v2/fbp_128_1p5mm_v2.h5"
+    derived_cache: "caches/method_y/revival_v3_image/amyloid_pattern_128_v1.h5"
+    source_cache_manifest: "results/method_y_revival_v1/completion_v1/image_branch/fbp_preprocessing_manifest.json"
+    private_sample_mapping: "data/preprocessed_pet/_private/manifests/fbp_private_manifest.csv"
+    quantitative_validation: "results/method_y_revival_v2/provenance/scan_level_amyloid_image_regional_validation.json"
+    model_features:
+      - age
+      - sex_binary
+      - education_years
+      - apoe4_carrier
+      - baseline_pacc_raw
+      - baseline_fctotal96
+      - baseline_ldeltotal
+      - baseline_digittotal
+      - baseline_mmscore
+      - treatment_active
+      - baseline_amyloid_centiloid
+
+  tau:
+    enabled: true
+    tracer: FTP
+    development_cohort: A4
+    endpoint: "results/method_y_revival_v2/endpoints/tau_progression_endpoint.parquet"
+    endpoint_contract: "results/method_y_revival_v2/endpoints/tau_endpoint_contract.json"
+    splits: "results/method_y_revival_v2/splits/tau_nested_splits.json"
+    legacy_source_config: "configs/method_y_tau_progression_v1.yaml"
+    transform_eligible_manifest: "results/method_y_revival_v2/manifests/private_ftp_t1_transform_eligible.parquet"
+    transform_manifest: "results/method_y_revival_v2/transforms/manifest.json"
+    transform_root: "results/method_y_revival_v2/transforms"
+    tracer_consistency: "results/method_y_revival_v2/provenance/tau_tracer_consistency_scan_level.parquet"
+    quantitative_validation: "results/method_y_revival_v2/provenance/scan_level_tau_quantitative_validation.json"
+    derived_cache: "caches/method_y/revival_v3_image/tau_pattern_128_v1.h5"
+    model_features:
+      - age
+      - sex_binary
+      - education_years
+      - apoe4_carrier
+      - baseline_pacc_raw
+      - baseline_fctotal96
+      - baseline_ldeltotal
+      - baseline_digittotal
+      - baseline_mmscore
+      - treatment_active
+      - baseline_amyloid_centiloid
+      - global_tau_persi_mean
+
+model:
+  family: DISCRETE_TIME_3D_SURVIVAL
+  backbone: GROUPNORM_RESIDUAL_TINY_3D
+  in_channels: 1
+  base_channels: 8
+  embedding_dim: 64
+  tabular_hidden_dim: 32
+  dropout: 0.25
+  batch_size: 4
+  gradient_accumulation_steps: 2
+  num_workers: 0
+  pin_memory: true
+  persistent_workers: false
+  prefetch_factor: null
+  memory_format: contiguous
+  amp: true
+  max_epochs: 40
+  early_stopping_patience: 8
+  checkpoint_every_epochs: 1
+  hpo_candidates:
+    - candidate_id: lr1e4_wd1e3
+      learning_rate: 0.0001
+      weight_decay: 0.001
+      complexity_rank: 0
+    - candidate_id: lr1e4_wd1e4
+      learning_rate: 0.0001
+      weight_decay: 0.0001
+      complexity_rank: 1
+    - candidate_id: lr3e4_wd1e4
+      learning_rate: 0.0003
+      weight_decay: 0.0001
+      complexity_rank: 2
+  selection_metric: IPCW_INTEGRATED_BRIER_SCORE
+  selection_rule: one_standard_error_then_simplest
+
+robustness:
+  scanner_is_never_a_primary_predictor: true
+  scanner_balanced_loss_challenger: true
+  leave_manufacturer_out_sensitivity: true
+  unknown_scanner_sensitivity: true
+  oof_scanner_probe: true
+  bootstrap_iterations: 2000
+  subgroup_minimum_subjects: 30
+  subgroup_minimum_events: 10
+
+runtime:
+  resume: true
+  no_internal_timeout: true
+  outer_test_exactly_once: true
+  checkpoint_atomic_after_every_epoch: true
+  output_and_temp_must_be_on_h: true
+  deterministic_cuda: true
+  deterministic_algorithms: true
+  cudnn_benchmark: false
+  cudnn_deterministic: true
+  allow_tf32: false
+  cublas_workspace_config: ":4096:8"
+  synthetic_image_fallback_allowed: false

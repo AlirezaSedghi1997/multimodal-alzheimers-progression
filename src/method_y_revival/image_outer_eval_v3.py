@@ -53,6 +53,9 @@ def evaluate_locked_outer(
     device: str = "cpu",
     amp: bool = False,
     batch_size: int = 4,
+    allow_synthetic_fixture: bool = False,
+    requested_horizons_days: list[float] | None = None,
+    minimum_at_risk: int = 20,
 ) -> dict[str, Any]:
     """Censoring-aware evaluation of a LOCKED checkpoint on the outer test set.
 
@@ -61,7 +64,11 @@ def evaluate_locked_outer(
     Output shape matches science_gates.paired_oof_bootstrap fold expectations.
     """
     import torch
-    from sksurv.metrics import concordance_index_ipcw, integrated_brier_score
+    from sksurv.metrics import (
+        concordance_index_ipcw,
+        cumulative_dynamic_auc,
+        integrated_brier_score,
+    )
     from sksurv.util import Surv
 
     from .image_training_runtime_v3 import (
@@ -90,6 +97,8 @@ def evaluate_locked_outer(
 
     include_image = variant == "scalar_tabular_plus_pattern_image"
     use_h5 = include_image and h5_cache_path is not None and Path(h5_cache_path).is_file()
+    if include_image and not use_h5 and not allow_synthetic_fixture:
+        raise ImageOuterEvalV3Error("PATTERN_CACHE_REQUIRED")
     if use_h5:
         ds = H5PatternSurvivalDataset(
             cache_path=h5_cache_path,
@@ -100,8 +109,7 @@ def evaluate_locked_outer(
             include_image=True,
         )
     elif include_image:
-        # Pattern variant without a real cache: deterministic zero-volume input
-        # keeps shapes valid; metrics still derive strictly from checkpoint weights.
+        # Pattern variant synthetic input is permitted only for an explicit test fixture.
         zeros = np.zeros((len(test_frame), 1, 16, 16, 16), dtype=np.float32)
         ds = MemorySurvivalDataset(
             tabular=tab_test,
@@ -132,14 +140,22 @@ def evaluate_locked_outer(
 
     loader = torch.utils.data.DataLoader(ds, batch_size=int(batch_size), shuffle=False, num_workers=0)
     logits_rows: list[torch.Tensor] = []
+    embedding_rows: list[torch.Tensor] = []
     with torch.no_grad():
         for batch in loader:
             with torch.autocast(device_type=device_object.type, dtype=torch.float16, enabled=bool(amp and device_object.type == "cuda")):
-                logits = _forward(model, batch, device_object)
+                tabular = batch["tabular"].to(device_object, non_blocking=True)
+                if "image" in batch:
+                    image = batch["image"].to(device_object, non_blocking=True)
+                    logits, embedding = model(image, tabular, return_embedding=True)
+                else:
+                    logits, embedding = model(tabular, return_embedding=True)
             logits_rows.append(logits.detach().float().cpu())
+            embedding_rows.append(embedding.detach().float().cpu())
     if not logits_rows:
         raise ImageOuterEvalV3Error("NO_LOGITS_FROM_LOCKED_MODEL")
     logits = torch.cat(logits_rows, dim=0)
+    embeddings = torch.cat(embedding_rows, dim=0).numpy()
 
     grid = _evaluation_grid(
         train_frame["time_days"].to_numpy(dtype=float),
@@ -161,6 +177,49 @@ def evaluate_locked_outer(
 
     ibs = float(integrated_brier_score(y_train, y_test, surv, grid))
     uno = float(concordance_index_ipcw(y_train, y_test, risk, tau=float(grid[-1]))[0])
+    if not np.isfinite(ibs) or not 0.0 <= ibs <= 1.0:
+        raise ImageOuterEvalV3Error(f"OUTER_IBS_NOT_ESTIMABLE:{ibs}")
+    if not np.isfinite(uno):
+        raise ImageOuterEvalV3Error("OUTER_UNO_C_INDEX_NOT_ESTIMABLE")
+
+    horizon_metrics: dict[str, dict[str, Any]] = {}
+    support_lower = max(
+        float(eval_train["time_days"].min()), float(eval_test["time_days"].min())
+    )
+    support_upper = min(
+        float(eval_train["time_days"].max()), float(eval_test["time_days"].max())
+    )
+    for requested in requested_horizons_days or []:
+        horizon = float(requested)
+        at_risk = int(np.sum(eval_test["time_days"].to_numpy(dtype=float) >= horizon))
+        if not support_lower < horizon < support_upper or at_risk < int(minimum_at_risk):
+            horizon_metrics[str(horizon)] = {
+                "status": "NOT_ESTIMABLE",
+                "at_risk": at_risk,
+                "reason": "OUTSIDE_COMMON_SUPPORT_OR_INSUFFICIENT_AT_RISK",
+            }
+            continue
+        try:
+            horizon_survival = survival_at_times(
+                logits, hazard_bin_edges, [horizon]
+            ).numpy()[:, 0]
+            auc_values, _ = cumulative_dynamic_auc(
+                y_train, y_test, 1.0 - horizon_survival, np.asarray([horizon])
+            )
+            auc = float(np.asarray(auc_values).reshape(-1)[0])
+            if not np.isfinite(auc):
+                raise ValueError("NONFINITE_DYNAMIC_AUC")
+            horizon_metrics[str(horizon)] = {
+                "status": "ESTIMABLE",
+                "dynamic_auc": auc,
+                "at_risk": at_risk,
+            }
+        except Exception as exc:
+            horizon_metrics[str(horizon)] = {
+                "status": "NOT_ESTIMABLE",
+                "at_risk": at_risk,
+                "reason": f"DYNAMIC_AUC_ERROR:{type(exc).__name__}",
+            }
 
     hashes = test_frame["patient_hash"].astype(str).tolist()
     oof = [
@@ -179,6 +238,10 @@ def evaluate_locked_outer(
         {"event": int(r.event), "time_days": float(r.time_days)}
         for r in eval_train[["event", "time_days"]].itertuples(index=False)
     ]
+    oof_embeddings = [
+        {"patient_hash": hashes[i], "embedding": [float(v) for v in embeddings[i]]}
+        for i in range(len(hashes))
+    ]
 
     return {
         "uno_c_index": uno,
@@ -190,7 +253,9 @@ def evaluate_locked_outer(
         "train_events": int(train_frame["event"].sum()),
         "test_events": int(test_frame["event"].sum()),
         "test_rows_administratively_censored": int(np.sum(test_frame["time_days"].astype(float).to_numpy() >= cutoff)),
+        "horizon_metrics": horizon_metrics,
         "oof_predictions": oof,
+        "oof_embeddings": oof_embeddings,
         "censoring_reference": censoring_reference,
         "evaluation_source": "LOCKED_CHECKPOINT_WEIGHTS",
     }

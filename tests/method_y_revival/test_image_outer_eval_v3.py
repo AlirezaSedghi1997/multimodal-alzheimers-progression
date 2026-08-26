@@ -69,7 +69,7 @@ def test_real_outer_evaluator_metrics_depend_on_weights_not_constant(tmp_path):
         run_contract_digest="b" * 64, train_frame=train_df, test_frame=test_df,
         h5_cache_path=None, tabular_columns=COLS,
         variant="scalar_tabular_plus_pattern_image", hazard_bin_edges=EDGES,
-        device="cpu", amp=False,
+        device="cpu", amp=False, allow_synthetic_fixture=True,
     )
     m_a = evaluate_locked_outer(locked_checkpoint_path=ck_a, **kw)
     m_b = evaluate_locked_outer(locked_checkpoint_path=ck_b, **kw)

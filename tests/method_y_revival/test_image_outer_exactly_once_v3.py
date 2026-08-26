@@ -105,6 +105,7 @@ def test_synthetic_full_pipeline_interruption_and_exactly_once(tmp_path):
         membership_sha="b" * 64,
         split_sha="c" * 64,
         readiness_sha="d" * 64,
+        allow_synthetic_fixture=True,
     )
     orch.verify_inputs()
     outer_fold = 0
