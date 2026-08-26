@@ -308,37 +308,50 @@ def build_threshold_manifest(
 # ---------------------------------------------------------------------------
 
 
+_SIX_CONNECTIVITY = None
+
+
+def _get_6_connectivity():
+    global _SIX_CONNECTIVITY
+    if _SIX_CONNECTIVITY is None:
+        import numpy as np
+        s = np.zeros((3, 3, 3), dtype=bool)
+        s[1, 1, 1] = True
+        s[0, 1, 1] = True
+        s[2, 1, 1] = True
+        s[1, 0, 1] = True
+        s[1, 2, 1] = True
+        s[1, 1, 0] = True
+        s[1, 1, 2] = True
+        _SIX_CONNECTIVITY = s
+    return _SIX_CONNECTIVITY
+
+
 def dilate_mask(mask: Any, *, iterations: int = 1) -> Any:
     """Binary 6-neighbour dilation; outside the volume is background (no wrap)."""
 
     import numpy as np
+    from scipy.ndimage import binary_dilation
 
-    current = np.asarray(mask, dtype=bool)
-    for _ in range(int(iterations)):
-        grown = current.copy()
-        for axis in range(3):
-            grown[1:, ...] |= current[:-1, ...]
-            grown[:-1, ...] |= current[1:, ...]
-        current = grown
-    return current
+    return binary_dilation(
+        np.asarray(mask, dtype=bool),
+        structure=_get_6_connectivity(),
+        iterations=int(iterations),
+    )
 
 
 def erode_mask(mask: Any, *, iterations: int = 1) -> Any:
     """Binary erosion; outside counts as foreground so tissue at the face survives."""
 
     import numpy as np
+    from scipy.ndimage import binary_erosion
 
-    current = np.asarray(mask, dtype=bool)
-    for _ in range(int(iterations)):
-        shrunk = current.copy()
-        for axis in range(3):
-            lower = np.ones_like(current)
-            upper = np.ones_like(current)
-            lower[1:, ...] = current[:-1, ...]
-            upper[:-1, ...] = current[1:, ...]
-            shrunk &= lower & upper
-        current = shrunk
-    return current
+    return binary_erosion(
+        np.asarray(mask, dtype=bool),
+        structure=_get_6_connectivity(),
+        iterations=int(iterations),
+        border_value=1,
+    )
 
 
 def content_digest(path: Path) -> str:

@@ -996,21 +996,8 @@ def run_full(*, device: str) -> int:
 
     stop = _StopFlag()
     _install_signal_handlers(stop)
-    locked, passed = _parallel_unlock_state()
-    if locked and not passed:
-        print(json.dumps({"phase": "equivalence_gate",
-                          "detail": "running 12-sample deterministic gate before full run"}),
-              flush=True)
-        gate = run_equivalence(limit=12, device=device)
-        if gate.get("status") != "PASS":
-            _print_flush(json.dumps({"phase": "equivalence_gate",
-                                     "status": "FAIL",
-                                     "mismatch_count": gate.get("mismatch_count")}))
-            return 3
-        flip = _atomic_flip_sequential_only(False)
-        moved = _archive_pre_pin_artifacts()
-        _print_flush(json.dumps({"phase": "equivalence_gate", "status": "PASS",
-                                 "unlocked": flip, "archived": moved}))
+
+    # P3 fix: preflight MUST run first — no gate, no policy mutation before it.
     pre = preflight()
     if pre["status"] != "PASS" or not pre.get("free_disk_ok", False):
         _print_flush(
@@ -1025,6 +1012,23 @@ def run_full(*, device: str) -> int:
         json.dumps({"phase": "preflight", "status": "PASS",
                     "free_disk_gb": pre["free_disk_gb"]})
     )
+
+    # P1+P3: equivalence gate runs AFTER preflight, writes execution profile
+    # (not policy mutation).
+    locked, passed = _parallel_unlock_state()
+    if locked and not passed:
+        print(json.dumps({"phase": "equivalence_gate",
+                          "detail": "running 12-sample deterministic gate"}),
+              flush=True)
+        gate = run_equivalence(limit=12, device=device)
+        if gate.get("status") != "PASS":
+            _print_flush(json.dumps({"phase": "equivalence_gate",
+                                     "status": "FAIL",
+                                     "mismatch_count": gate.get("mismatch_count")}))
+            return 3
+        moved = _archive_pre_pin_artifacts()
+        _print_flush(json.dumps({"phase": "equivalence_gate", "status": "PASS",
+                                 "archived": moved}))
 
     calibration = _calibrate_if_needed(device=device)
     _print_flush(

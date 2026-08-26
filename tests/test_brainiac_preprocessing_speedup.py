@@ -159,11 +159,12 @@ def test_run_full_gate_fail_closed(monkeypatch):
     import scripts.research.prepare_brainiac_raw_t1_v2 as prep
 
     def forbidden(*_a, **_k):  # must never be reached on FAIL
-        raise AssertionError("preflight reached despite gate FAIL")
+        raise AssertionError("calibration reached despite gate FAIL")
 
+    monkeypatch.setattr(prep, "preflight", lambda: {"status": "PASS", "free_disk_gb": 400.0, "free_disk_ok": True})
     monkeypatch.setattr(prep, "_parallel_unlock_state", lambda: (True, False))
     monkeypatch.setattr(prep, "run_equivalence", lambda *, limit, device: {"status": "FAIL", "mismatch_count": 3})
-    monkeypatch.setattr(prep, "preflight", forbidden)
+    monkeypatch.setattr(prep, "_calibrate_if_needed", forbidden)
     rc = prep.run_full(device="cuda")
     assert rc == 3
 
@@ -172,19 +173,15 @@ def test_run_full_pass_gate_unlocks_and_completes(monkeypatch):
     import scripts.research.prepare_brainiac_raw_t1_v2 as prep
 
     observed: dict[str, object] = {}
+    monkeypatch.setattr(prep, "preflight", lambda: {"status": "PASS", "free_disk_gb": 400.0, "free_disk_ok": True})
     monkeypatch.setattr(prep, "_parallel_unlock_state", lambda: (True, False))
     monkeypatch.setattr(
         prep, "run_equivalence",
         lambda *, limit, device: (observed.__setitem__("limit", limit), {"status": "PASS"})[1],
     )
     monkeypatch.setattr(
-        prep, "_atomic_flip_sequential_only",
-        lambda v: observed.__setitem__("flipped", v) or {"sequential_only": v},
-    )
-    monkeypatch.setattr(
         prep, "_archive_pre_pin_artifacts", lambda: observed.__setitem__("archived", True) or {}
     )
-    monkeypatch.setattr(prep, "preflight", lambda: {"status": "PASS", "free_disk_gb": 400.0, "free_disk_ok": True})
     monkeypatch.setattr(prep, "_calibrate_if_needed", lambda *, device: {"status": "PASS"})
     monkeypatch.setattr(prep, "run_primary", lambda *, device, stop=None: {
         "status": "COMPLETED", "valid_committed_n": 1669})
@@ -193,7 +190,7 @@ def test_run_full_pass_gate_unlocks_and_completes(monkeypatch):
         "status": "COMPLETED", "valid_committed_n": 1669,
         "aggregate_integrity_sha256": "a" * 64})
     rc = prep.run_full(device="cuda")
-    assert rc == 0 and observed["limit"] == 12 and observed["flipped"] is False
+    assert rc == 0 and observed["limit"] == 12
 
 
 def test_run_full_skips_gate_when_already_unlocked(monkeypatch):
