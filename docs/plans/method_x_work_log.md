@@ -693,3 +693,29 @@ Operator procedure to unlock >=2x:
 4) Run the unchanged full command; expected wall-clock >=2x on CPU-dominated stages.
 Fail-closed: any FAIL keeps sequential_only=true (slower but correct).
 Tests: tests/test_brainiac_preprocessing_speedup.py 5/5; preprocessing_v2 suite 45/45 green.
+
+## 2026-08-25 (night) - P003 auto-gate: one-command flow finalized (commits 884197a, 239319e)
+
+Live gate exercise on --limit 2 ran ~14 CPU-min into the sequential leg,
+surfacing and fixing a real factory bug (`pipeline_factory=make(root)` ->
+`lambda: make(root)`); aborted by operator before completion, stale sample-lock
++ shared guard reconciled with DEAD-PID proof. Completion of the 12-sample gate
+is therefore deferred to the operator's first real run — the runner now does it
+AUTOMATICALLY inside `--mode full`:
+
+1. locked && no PASS artifact -> run 12-sample deterministic equivalence gate;
+   FAIL => exit 3 (fail-closed), sequential stays locked.
+2. PASS -> policy atomically flipped to `sequential_only=false`
+   (AUTO_EQUIVALENCE_PASS, samples recorded) AND pre-pin threshold manifest +
+   calibration root archived (*.pre_pin_<ts>) so QC thresholds rebuild under
+   the pinned single-thread model — never mixed-model.
+3. Then preflight -> calibrate(32) -> run(1669, 2 parallel sample-workers)
+   -> sensitivity(64) -> aggregate revalidation, all resumable via the same
+   command (exit 75 safe-stop).
+
+Tests: tests/test_brainiac_preprocessing_speedup.py 11/11 (unlock requires
+PASS record; fail-closed; unlock+complete; already-unlocked skip; comparator;
+scratch .nii; thread pin; plumbing parity). preprocessing_v2 suite 45/45.
+Operator final command unchanged:
+& 'H:\New project\.venvs\brainiac\Scripts\python.exe' 'H:\New project\scripts\research\prepare_brainiac_raw_t1_v2.py' --mode full --device cuda
+Expected wall-clock: +1 gate pass (~2-4 h once) then >=2x on the remaining run.
