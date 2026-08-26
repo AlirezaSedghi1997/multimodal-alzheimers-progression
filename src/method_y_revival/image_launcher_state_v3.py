@@ -30,6 +30,18 @@ STAGES = (
     "FINALIZED",
 )
 
+# Gates that are re-verified on every launch (preflight-style). They may be
+# re-set on a resumed run to refresh their facts; this never regresses the
+# highest-progress pointer. Training/report/finalized stages stay monotonic.
+_REVERIFIABLE = frozenset({
+    "INIT",
+    "PREFLIGHT_DONE",
+    "DUAL_GATE_CONTRACT_VERIFIED",
+    "READINESS_LOCKED",
+    "PATTERN_CACHES_COMPLETE",
+    "GPU_SMOKE_PASSED",
+})
+
 
 class LauncherStateV3:
     """Self-hashed, contract-bound stage machine for the unified launcher."""
@@ -76,6 +88,14 @@ class LauncherStateV3:
             if missing:
                 raise LauncherStateV3Error(f"FINALIZE_BLOCKED:{','.join(missing)}")
         elif target < current:
+            if stage in _REVERIFIABLE:
+                # Re-verification on resume: refresh facts only; the progress
+                # pointer stays at its highest committed stage.
+                merged = dict(self.payload.get("facts", {}))
+                merged.update(facts)
+                self.payload["facts"] = merged
+                self._commit()
+                return
             raise LauncherStateV3Error(f"STAGE_ORDER:cannot_move_backwards:{self.stage}->{stage}")
         if target > current + 1 and stage != "INIT":
             raise LauncherStateV3Error(f"STAGE_ORDER:skipped:{self.stage}->{stage}")

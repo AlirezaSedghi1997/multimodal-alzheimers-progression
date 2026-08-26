@@ -63,3 +63,39 @@ def test_finalized_requires_all_previous_stages(tmp_path):
         st.set_stage("FINALIZED")
     st.set_stage("CONSISTENCY_PRIVACY_PASS")
     st.set_stage("FINALIZED")
+
+
+PREFLIGHT_CHAIN = ["INIT", "PREFLIGHT_DONE", "DUAL_GATE_CONTRACT_VERIFIED", "READINESS_LOCKED", "PATTERN_CACHES_COMPLETE", "GPU_SMOKE_PASSED"]
+
+
+def test_preflight_stages_are_reverifiable_on_resume(tmp_path):
+    """Re-running preflight gates on a resumed launcher must refresh facts,
+    never regress the progress pointer, and never raise STAGE_ORDER."""
+    from src.method_y_revival.image_launcher_state_v3 import LauncherStateV3
+
+    st = _state(tmp_path)
+    for s in PREFLIGHT_CHAIN:
+        st.set_stage(s)
+    st.set_stage("AMYLOID_INNER_HPO")
+    st.set_stage("AMYLOID_MODELS_LOCKED")
+    # Resume: re-verify all preflight gates (facts refreshed).
+    st.set_stage("PREFLIGHT_DONE", preflight_status="READY")
+    st.set_stage("DUAL_GATE_CONTRACT_VERIFIED")
+    st.set_stage("READINESS_LOCKED")
+    st.set_stage("PATTERN_CACHES_COMPLETE", completed_counts={"amyloid": 895})
+    st.set_stage("GPU_SMOKE_PASSED")
+    assert st.stage == "AMYLOID_MODELS_LOCKED"  # pointer not regressed
+    assert st.fact("preflight_status") == "READY"
+    assert st.fact("completed_counts") == {"amyloid": 895}
+
+
+def test_progress_stages_cannot_move_backwards(tmp_path):
+    from src.method_y_revival.image_launcher_state_v3 import LauncherStateV3
+
+    st = _state(tmp_path)
+    for s in PREFLIGHT_CHAIN:
+        st.set_stage(s)
+    st.set_stage("AMYLOID_INNER_HPO")
+    st.set_stage("AMYLOID_MODELS_LOCKED")
+    with pytest.raises(Exception, match="STAGE_ORDER"):
+        st.set_stage("AMYLOID_INNER_HPO")

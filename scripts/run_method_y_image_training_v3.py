@@ -454,9 +454,11 @@ def main() -> int:
                     try:
                         orch.finalize_branch()
                         prefix = branch.upper()
-                        state.set_stage(f"{prefix}_INNER_HPO")
-                        state.set_stage(f"{prefix}_MODELS_LOCKED")
-                        state.set_stage(f"{prefix}_OUTER_COMMITTED", outer_folds_committed=5)
+                        already_done = f"{prefix}_OUTER_COMMITTED" in (state.fact("completed") or [])
+                        if not already_done:
+                            state.set_stage(f"{prefix}_INNER_HPO")
+                            state.set_stage(f"{prefix}_MODELS_LOCKED")
+                            state.set_stage(f"{prefix}_OUTER_COMMITTED", outer_folds_committed=5)
                         print(json.dumps({"branch": branch, "status": "BRANCH_OUTER_CV_COMPLETE"}))
                     except Exception as e:
                         print(json.dumps({"branch": branch, "finalize_failed": str(e)}))
