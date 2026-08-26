@@ -885,7 +885,7 @@ def run_equivalence(*, limit: int, device: str, workers: int = 2) -> dict[str, A
         limit=len(items),
         root=seq_root,
         device=device,
-        pipeline_factory=make(seq_root),
+        pipeline_factory=lambda: make(seq_root),
         bindings=bindings,
         membership=items,
     )
@@ -928,11 +928,89 @@ def run_equivalence(*, limit: int, device: str, workers: int = 2) -> dict[str, A
     return body
 
 
+def _policy_path() -> Path:
+    return Path(v2.POLICY_PATH)
+
+
+def _atomic_flip_sequential_only(new_value: bool) -> dict[str, Any]:
+    """Operator-authorized machine flip, allowed ONLY right after an
+    equivalence PASS artifact is recorded (Plan-002 revision amendment)."""
+
+    path = _policy_path()
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    orch = payload.get("orchestration", {})
+    record = REGISTRY_ROOT / "brainiac_preprocessing_v2_equivalence.json"
+    recorded = json.loads(record.read_text(encoding="utf-8")) if record.is_file() else {}
+    if recorded.get("status") != "PASS" or int(recorded.get("samples", 0)) < 2:
+        raise RuntimeError("BRAINIAC_V2_UNLOCK_REQUIRES_EQUIVALENCE_PASS")
+    orch["sequential_only"] = bool(new_value)
+    orch["unlocked_at_utc"] = _utc_now()
+    orch["unlocked_by"] = "AUTO_EQUIVALENCE_PASS"
+    orch["unlocked_samples"] = int(recorded.get("samples", 0))
+    payload["orchestration"] = orch
+    tmp = path.with_name(path.name + f".{os.getpid()}.tmp")
+    tmp.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    os.replace(tmp, path)
+    return {"sequential_only": bool(new_value),
+            "unlocked_samples": int(recorded.get("samples", 0))}
+
+
+def _archive_pre_pin_artifacts() -> dict[str, str]:
+    """Move pre-pin threshold manifest and calibration root aside so the
+    pinned-deterministic model rebuilds them cleanly (no mixed-model QC)."""
+
+    moved: dict[str, str] = {}
+    stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    if THRESHOLD_MANIFEST_PATH.is_file():
+        target = THRESHOLD_MANIFEST_PATH.with_name(
+            THRESHOLD_MANIFEST_PATH.name + f".pre_pin_{stamp}"
+        )
+        THRESHOLD_MANIFEST_PATH.replace(target)
+        moved["threshold_manifest"] = target.name
+    if CALIBRATION_ROOT.is_dir():
+        target = CALIBRATION_ROOT.with_name(CALIBRATION_ROOT.name + f".pre_pin_{stamp}")
+        CALIBRATION_ROOT.replace(target)
+        moved["calibration_root"] = target.name
+    return moved
+
+
+def _parallel_unlock_state() -> tuple[bool, bool]:
+    """Return (sequential_only, equivalence_pass_recorded)."""
+
+    policy = json.loads(_policy_path().read_text(encoding="utf-8"))
+    locked = bool(policy.get("orchestration", {}).get("sequential_only", True))
+    record = REGISTRY_ROOT / "brainiac_preprocessing_v2_equivalence.json"
+    passed = False
+    if record.is_file():
+        try:
+            passed = (
+                json.loads(record.read_text(encoding="utf-8")).get("status") == "PASS"
+            )
+        except (OSError, json.JSONDecodeError):
+            passed = False
+    return locked, passed
+
+
 def run_full(*, device: str) -> int:
     """The single operator command for Plan 003 (idempotent at every phase)."""
 
     stop = _StopFlag()
     _install_signal_handlers(stop)
+    locked, passed = _parallel_unlock_state()
+    if locked and not passed:
+        print(json.dumps({"phase": "equivalence_gate",
+                          "detail": "running 12-sample deterministic gate before full run"}),
+              flush=True)
+        gate = run_equivalence(limit=12, device=device)
+        if gate.get("status") != "PASS":
+            _print_flush(json.dumps({"phase": "equivalence_gate",
+                                     "status": "FAIL",
+                                     "mismatch_count": gate.get("mismatch_count")}))
+            return 3
+        flip = _atomic_flip_sequential_only(False)
+        moved = _archive_pre_pin_artifacts()
+        _print_flush(json.dumps({"phase": "equivalence_gate", "status": "PASS",
+                                 "unlocked": flip, "archived": moved}))
     pre = preflight()
     if pre["status"] != "PASS" or not pre.get("free_disk_ok", False):
         _print_flush(

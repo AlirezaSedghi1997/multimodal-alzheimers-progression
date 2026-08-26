@@ -88,3 +88,129 @@ def test_policy_keeps_sequential_only_until_equivalence_pass():
     assert orch["sequential_only"] is True
     assert orch["parallel_activation"].startswith("REQUIRES_12_SAMPLE_EQUIVALENCE_PASS")
     assert int(orch.get("itk_threads_default", 0)) == 1
+
+
+def _write_pass_record(registry_root, samples=2):
+    import json
+    from pathlib import Path
+
+    registry_root = Path(registry_root)
+    registry_root.mkdir(parents=True, exist_ok=True)
+    body = {"status": "PASS", "samples": samples}
+    body["integrity_sha256"] = "z" * 64
+    (registry_root / "brainiac_preprocessing_v2_equivalence.json").write_text(
+        json.dumps(body), encoding="utf-8"
+    )
+
+
+def test_unlock_requires_equivalence_pass(tmp_path, monkeypatch):
+    import scripts.research.prepare_brainiac_raw_t1_v2 as prep
+
+    policy = tmp_path / "policy.json"
+    policy.write_text(json.dumps({"orchestration": {"sequential_only": True}}), encoding="utf-8")
+    monkeypatch.setattr(prep, "_policy_path", lambda: policy)
+    monkeypatch.setattr(prep, "REGISTRY_ROOT", tmp_path)
+
+    with pytest.raises(RuntimeError, match="BRAINIAC_V2_UNLOCK_REQUIRES_EQUIVALENCE_PASS"):
+        prep._atomic_flip_sequential_only(False)
+
+    _write_pass_record(tmp_path, samples=12)
+    out = prep._atomic_flip_sequential_only(False)
+    assert out["sequential_only"] is False and out["unlocked_samples"] == 12
+    flipped = json.loads(policy.read_text(encoding="utf-8"))
+    assert flipped["orchestration"]["sequential_only"] is False
+    assert flipped["orchestration"]["unlocked_by"] == "AUTO_EQUIVALENCE_PASS"
+
+
+def test_parallel_unlock_state_reads_policy_and_record(tmp_path, monkeypatch):
+    import scripts.research.prepare_brainiac_raw_t1_v2 as prep
+
+    policy = tmp_path / "policy.json"
+    policy.write_text(json.dumps({"orchestration": {"sequential_only": True}}), encoding="utf-8")
+    monkeypatch.setattr(prep, "_policy_path", lambda: policy)
+    monkeypatch.setattr(prep, "REGISTRY_ROOT", tmp_path)
+    locked, passed = prep._parallel_unlock_state()
+    assert locked is True and passed is False
+    _write_pass_record(tmp_path, samples=12)
+    locked, passed = prep._parallel_unlock_state()
+    assert locked is True and passed is True
+
+
+def test_archive_moves_manifest_and_calibration_root(tmp_path, monkeypatch):
+    import scripts.research.prepare_brainiac_raw_t1_v2 as prep
+
+    manifest_dir = tmp_path / "aggregate"
+    manifest_dir.mkdir()
+    manifest = manifest_dir / "qc_threshold_manifest.json"
+    manifest.write_text("{}", encoding="utf-8")
+    calib = tmp_path / "calibration"
+    calib.mkdir()
+
+    monkeypatch.setattr(prep, "THRESHOLD_MANIFEST_PATH", manifest)
+    monkeypatch.setattr(prep, "CALIBRATION_ROOT", calib)
+    moved = prep._archive_pre_pin_artifacts()
+    assert set(moved) == {"threshold_manifest", "calibration_root"}
+    assert not manifest.exists() and not calib.exists()
+    assert list(manifest_dir.glob("qc_threshold_manifest.json.pre_pin_*"))
+    assert list(tmp_path.glob("calibration.pre_pin_*"))
+
+
+def test_run_full_gate_fail_closed(monkeypatch):
+    import scripts.research.prepare_brainiac_raw_t1_v2 as prep
+
+    def forbidden(*_a, **_k):  # must never be reached on FAIL
+        raise AssertionError("preflight reached despite gate FAIL")
+
+    monkeypatch.setattr(prep, "_parallel_unlock_state", lambda: (True, False))
+    monkeypatch.setattr(prep, "run_equivalence", lambda *, limit, device: {"status": "FAIL", "mismatch_count": 3})
+    monkeypatch.setattr(prep, "preflight", forbidden)
+    rc = prep.run_full(device="cuda")
+    assert rc == 3
+
+
+def test_run_full_pass_gate_unlocks_and_completes(monkeypatch):
+    import scripts.research.prepare_brainiac_raw_t1_v2 as prep
+
+    observed: dict[str, object] = {}
+    monkeypatch.setattr(prep, "_parallel_unlock_state", lambda: (True, False))
+    monkeypatch.setattr(
+        prep, "run_equivalence",
+        lambda *, limit, device: (observed.__setitem__("limit", limit), {"status": "PASS"})[1],
+    )
+    monkeypatch.setattr(
+        prep, "_atomic_flip_sequential_only",
+        lambda v: observed.__setitem__("flipped", v) or {"sequential_only": v},
+    )
+    monkeypatch.setattr(
+        prep, "_archive_pre_pin_artifacts", lambda: observed.__setitem__("archived", True) or {}
+    )
+    monkeypatch.setattr(prep, "preflight", lambda: {"status": "PASS", "free_disk_gb": 400.0, "free_disk_ok": True})
+    monkeypatch.setattr(prep, "_calibrate_if_needed", lambda *, device: {"status": "PASS"})
+    monkeypatch.setattr(prep, "run_primary", lambda *, device, stop=None: {
+        "status": "COMPLETED", "valid_committed_n": 1669})
+    monkeypatch.setattr(prep, "run_sensitivity", lambda *, device: {"status": "PASS"})
+    monkeypatch.setattr(prep, "_streaming_validate_primary", lambda: {
+        "status": "COMPLETED", "valid_committed_n": 1669,
+        "aggregate_integrity_sha256": "a" * 64})
+    rc = prep.run_full(device="cuda")
+    assert rc == 0 and observed["limit"] == 12 and observed["flipped"] is False
+
+
+def test_run_full_skips_gate_when_already_unlocked(monkeypatch):
+    import scripts.research.prepare_brainiac_raw_t1_v2 as prep
+
+    monkeypatch.setattr(prep, "_parallel_unlock_state", lambda: (False, True))
+
+    def forbidden(**_k):
+        raise AssertionError("gate ran although already unlocked")
+
+    monkeypatch.setattr(prep, "run_equivalence", forbidden)
+    monkeypatch.setattr(prep, "preflight", lambda: {"status": "PASS", "free_disk_gb": 400.0, "free_disk_ok": True})
+    monkeypatch.setattr(prep, "_calibrate_if_needed", lambda *, device: {"status": "ALREADY_COMPLETED"})
+    monkeypatch.setattr(prep, "run_primary", lambda *, device, stop=None: {
+        "status": "COMPLETED", "valid_committed_n": 1669})
+    monkeypatch.setattr(prep, "run_sensitivity", lambda *, device: {"status": "PASS"})
+    monkeypatch.setattr(prep, "_streaming_validate_primary", lambda: {
+        "status": "COMPLETED", "valid_committed_n": 1669,
+        "aggregate_integrity_sha256": "b" * 64})
+    assert prep.run_full(device="cuda") == 0
