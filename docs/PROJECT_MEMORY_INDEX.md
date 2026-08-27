@@ -1,6 +1,16 @@
 # نمایه‌ی حافظه‌ی پروژه
 
 > **SUPERSESSION 2026-08-26 — ممیزی ناظر نهایی Image v3.2.**
+
+## Live 2026-08-26 - P0-P3 repair gate 7/12
+
+Gate 12-sample equivalence running: 7/12 sequential receipts (PID 13276, wall ~5h, CPU ~5400s)
+P0 freeze f72bc9f4 + superseded moves after DEAD proof 19216/1360
+P1 dependency closure + limited commit
+P2 morphology 3->7 fixed with scipy.ndimage, 14 repair tests green
+P3 run_full reordered preflight-first, auto-flip removed
+Digest 9b0f90a5... and battery 40a4a009... preserved
+
 > گزارش `c42ef08/483aa81` بخش عمده‌ی تعمیرات را درست ثبت کرده بود، اما برای
 > شروع امن آموزش کافی نبود. ممیزی نهایی این شکاف‌ها را نیز بست: closure کامل
 > source/runtime contract، self-hash صحیح master state پس از resume، winner
