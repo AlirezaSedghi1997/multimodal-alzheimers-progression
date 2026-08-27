@@ -73,9 +73,18 @@ def test_pinned_git_environment_reports_saved_commit_without_touching_worktree(
         saved_commit=saved_commit,
         runtime_root=repo / ".runtime" / "contract_pin",
     )
+    # A terminal interruption leaves the reusable Git snapshot on disk.  The
+    # next invocation must validate and reuse it instead of treating it as a
+    # contract mismatch or trying to rebuild it.
+    prepared_after_interruption = prepare_pinned_git_environment(
+        project_root=repo,
+        saved_commit=saved_commit,
+        runtime_root=repo / ".runtime" / "contract_pin",
+    )
     env = os.environ.copy()
     env.update(prepared["environment"])
 
+    assert prepared_after_interruption == prepared
     assert _git(repo, "rev-parse", "HEAD", env=env) == saved_commit
     assert _git(repo, "status", "--porcelain=v1", "--", "bound.py", env=env) == ""
     assert bound.read_text(encoding="utf-8") == "VALUE = 1\n"
