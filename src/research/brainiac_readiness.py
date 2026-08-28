@@ -768,6 +768,35 @@ def _default_gpu_process_provider() -> list[dict[str, Any]]:
     return rows
 
 
+def _current_process_family_ids() -> set[int]:
+    """Return this interpreter and its live launcher ancestry.
+
+    On Windows a virtual-environment ``python.exe`` can launch the base
+    interpreter as a child while retaining the same command line.  Treating
+    that launcher as a foreign writer makes every real preflight block itself.
+    Only the actual live ancestor chain is exempted; siblings and unrelated
+    Python processes remain writers.
+    """
+
+    current = int(os.getpid())
+    family = {current}
+    try:
+        parent = int(os.getppid())
+        if parent > 0:
+            family.add(parent)
+    except (AttributeError, OSError, TypeError, ValueError):
+        pass
+    try:
+        import psutil
+
+        family.update(int(process.pid) for process in psutil.Process(current).parents())
+    except Exception:
+        # The standard-library direct parent remains a narrow, useful fallback
+        # when the isolated BrainIAC environment does not contain psutil.
+        return family
+    return family
+
+
 def _known_nonwriter_host_gpu_client(
     process: Mapping[str, Any], gpu_row: Mapping[str, Any]
 ) -> bool:
@@ -867,12 +896,13 @@ def inspect_writer_state(
             "recorded_owners": [],
         }
 
+    self_process_ids = _current_process_family_ids()
     active: list[dict[str, Any]] = []
     for process in processes.values():
         lowered = process["command_line"].casefold()
         executable = process["name"].casefold()
         if (
-            process["pid"] != os.getpid()
+            process["pid"] not in self_process_ids
             and executable.startswith("python")
             and _command_is_project_writer(lowered)
         ):
@@ -888,7 +918,7 @@ def inspect_writer_state(
     ambient_gpu_processes: list[dict[str, Any]] = []
     for gpu_row in gpu_rows:
         pid = int(gpu_row["pid"])
-        if pid == os.getpid():
+        if pid in self_process_ids:
             continue
         process = processes.get(pid)
         if process is None:

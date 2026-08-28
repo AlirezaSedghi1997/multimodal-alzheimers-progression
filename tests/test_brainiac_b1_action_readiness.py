@@ -287,6 +287,42 @@ def test_action_guard_rechecks_gpu_processes_after_atomic_acquire(
     assert not (tmp_path / guard.SHARED_GUARD_NAME).exists()
 
 
+def test_writer_scan_ignores_only_current_venv_launcher_ancestry(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The venv launcher is self; a sibling Python writer remains blocking."""
+
+    import os
+
+    from src.research import brainiac_readiness as readiness
+
+    launcher_pid = 71001
+    sibling_pid = 71002
+    monkeypatch.setattr(
+        readiness,
+        "_current_process_family_ids",
+        lambda: {os.getpid(), launcher_pid},
+    )
+    rows = [
+        {
+            "ProcessId": launcher_pid,
+            "Name": "python.exe",
+            "CommandLine": "python.exe prepare_brainiac_raw_t1_v2.py --mode preflight",
+            "CreationDate": "launcher",
+        },
+        {
+            "ProcessId": sibling_pid,
+            "Name": "python.exe",
+            "CommandLine": "python.exe prepare_brainiac_raw_t1_v2.py --mode run",
+            "CreationDate": "sibling",
+        },
+    ]
+    report = readiness.inspect_writer_state(
+        _battery(terminal=True), process_provider=lambda: rows, gpu_provider=lambda: []
+    )
+    assert [row["pid"] for row in report["active_writers"]] == [sibling_pid]
+
+
 def test_live_r0_is_complete_but_citation_corroboration_is_partial() -> None:
     from src.research.brainiac_readiness import audit_r0_registry
 
