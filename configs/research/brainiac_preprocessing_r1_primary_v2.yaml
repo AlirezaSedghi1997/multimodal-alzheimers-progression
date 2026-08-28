@@ -13,9 +13,10 @@ roots:
 
 modes:
   preflight: read_only_no_sample_output_write
+  acceptance: all_real_gates_then_stop_before_primary
   smoke:
     limit: 12
-    equivalence: sequential_vs_orchestrated
+    equivalence: 12_LABEL_BLIND_ONE_SEQUENTIAL_TWO_INDEPENDENT_PARALLEL
   run:
     membership_rows: 1669
     requires_calibration_threshold_manifest: true
@@ -39,6 +40,10 @@ orchestration:
   cpu_workers_max: 2
   gpu_workers_max: 1
   equivalence_required: true
+  equivalence_design: 12_LABEL_BLIND_ONE_SEQUENTIAL_TWO_INDEPENDENT_PARALLEL
+  parallel_repeat_count: 2
+  parallel_minimum_speedup_fraction: 0.15
+  execution_profile_authority: HASH_LOCKED_LIVE_BYTE_VERIFIED
 
 signal:
   clean_stop_exit_code: 75
@@ -46,6 +51,7 @@ signal:
 
 device:
   default: cuda
-  fallback: cpu
+  fallback: none
+  cpu_role: test_fixtures_only_not_production
 
 claim_ceiling: POST_HOC_INTERNAL_TECHNICAL_EVIDENCE

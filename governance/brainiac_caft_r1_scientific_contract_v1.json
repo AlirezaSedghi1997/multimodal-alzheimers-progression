@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "artifact": "BRAINIAC_CAFT_R1_SCIENTIFIC_CONTRACT_V1",
+  "created_at_utc": "2026-08-23T17:30:00+00:00",
+  "claim_ceiling": "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE",
+  "encoders": {
+    "brainiac_global": "frozen_768d",
+    "resnet34_local": "locked_128d_fold_specific",
+    "lora_unlocked": false,
+    "encoder_parameters_in_optimizer": false
+  },
+  "six_arms_preregistered": [
+    {"id": 1, "arm": "locked ResNet34 reference", "training_family": "immutable/no optimizer"},
+    {"id": 2, "arm": "BrainIAC MRI-only L2", "training_family": "LogisticRegression L2"},
+    {"id": 3, "arm": "BrainIAC + five allowed features L2", "training_family": "LogisticRegression L2"},
+    {"id": 4, "arm": "neural naive concatenation", "training_family": "neural equal-budget"},
+    {"id": 5, "arm": "ungated bounded residual ablation", "training_family": "neural equal-budget"},
+    {"id": 6, "arm": "BrainIAC-CAFT gated residual", "training_family": "neural equal-budget"}
+  ],
+  "fixed_hyperparameters": {
+    "local_embedding_dim_exact": 128,
+    "global_embedding_dim": 768,
+    "tabular_features_canonical": ["age", "sex", "education_years", "apoe4_carrier", "mmse_base"],
+    "projection_dim": 128,
+    "tabular_projection_dim": 32,
+    "dropout": 0.2,
+    "gate_bias": -4.0,
+    "residual_bound": 2.0,
+    "correction_regularization": 0.01,
+    "logistic_C_grid": [0.01, 0.1, 1, 10],
+    "neural_optimizer": "AdamW",
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "batch": 64,
+    "max_epochs": 100,
+    "warmup_epochs": 5,
+    "scheduler": "cosine",
+    "patience": 10,
+    "seeds": [13, 29, 47],
+    "class_weight_source_role": "head_fit",
+    "early_stop_order": ["max_validation_roc_auc", "min_brier", "min_ece", "earliest_epoch"]
+  },
+  "role_isolation": {
+    "typed_views_only": true,
+    "public_all_data_api": false,
+    "caller_role_strings": false,
+    "C_selection_role": "model_selection",
+    "tabular_fit_role": "head_fit",
+    "temperature_role": "probability_calibration",
+    "conformal_role": "conformal_calibration",
+    "refit_after_calibration_metrics": false,
+    "outer_available_before_authorization": false
+  },
+  "equal_budget": {
+    "applies_to": "neural_arms_only",
+    "locked_and_logistic_forced_optimizer_steps": false,
+    "per_seed_artifacts": true
+  },
+  "calibration": {
+    "alpha": 0.1,
+    "mondrian_min_per_class": 30,
+    "class_lt_30": {"method": "split_conformal_marginal", "mondrian_status": "NOT_MEASURABLE"},
+    "evidence_label": "EMPIRICAL_POST_HOC_CALIBRATION",
+    "finite_sample_guarantee_claimed": false
+  },
+  "outer_exactly_once": {
+    "state_machine": ["HEAD_LOCKED", "CALIBRATION_LOCKED", "OUTER_AUTHORIZED", "OUTER_SNAPSHOT_PREPARED", "OUTER_PREDICTIONS_COMMITTED", "FOLD_FINALIZED"],
+    "loader_calls_before_authorization": 0,
+    "single_private_snapshot_per_fold": true,
+    "all_arms_predict_from_same_snapshot": true,
+    "crash_reuses_snapshot_never_reloads": true,
+    "prediction_artifact_append_only": true
+  },
+  "evaluation": {
+    "metrics": ["ROC-AUC", "PR-AUC", "Brier", "ECE", "sensitivity/specificity@validation-locked-threshold", "risk-coverage", "abstention", "CKA", "residual-predictive-value"],
+    "paired_subject_bootstrap_iterations_min": 5000,
+    "confound_permutations_min": 1000,
+    "confound_decodability": "max(AUC, 1-AUC)",
+    "negative_controls": ["shuffled labels", "shuffled BrainIAC embeddings", "random-noise embedding"]
+  },
+  "promotion": {
+    "delta_auc_min": 0.02,
+    "paired_bootstrap_lower_ci_positive": true,
+    "delta_brier_max": 0.01,
+    "delta_ece_max": 0.02,
+    "sanity_must_pass": true,
+    "confound_must_not_worsen": true,
+    "unknown_or_not_measurable_blocks": true,
+    "decision": "TECHNICAL_PROMOTION_ONLY",
+    "lora_unlocked": false
+  },
+  "external_evaluation": {
+    "status": "EXTERNAL_UNAVAILABLE_NONBLOCKING",
+    "evidence_label": "ROBUSTNESS_EVIDENCE_NOT_EXTERNAL_VALIDATION",
+    "internal_holdout_renaming_forbidden": true
+  },
+  "real_training_boundary": {
+    "this_card_builds_library_and_tests_only": true,
+    "real_fit_requires": ["Plan 005 artifacts", "five-CNN battery terminal", "Plan 007 orchestrator"],
+    "simulated_legacy_entrypoint": "PERMANENTLY_BLOCKED"
+  }
+}

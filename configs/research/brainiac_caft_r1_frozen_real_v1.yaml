@@ -1,0 +1,68 @@
+# BrainIAC-CAFT R1 frozen-real training library (Plan 006 / B4)
+# Scientific authority: governance/brainiac_caft_r1_scientific_contract_v1.json
+
+schema_version: 1
+arms:
+  - {id: 1, name: locked_resnet34_reference, family: immutable}
+  - {id: 2, name: brainiac_mri_only_l2, family: logistic}
+  - {id: 3, name: brainiac_plus_five_features_l2, family: logistic}
+  - {id: 4, name: neural_naive_concatenation, family: neural_equal_budget}
+  - {id: 5, name: ungated_bounded_residual_ablation, family: neural_equal_budget}
+  - {id: 6, name: brainiac_caft_gated_residual, family: neural_equal_budget}
+
+model:
+  local_embedding_dim: 128   # exact; 512 structurally invalid
+  global_embedding_dim: 768
+  projection_dim: 128
+  tabular_projection_dim: 32
+  tabular_features: 5
+  dropout: 0.2
+  gate_bias_init: -4.0
+  residual_bound: 2.0
+  correction_l2_weight: 0.01
+
+training:
+  logistic_c_grid: [0.01, 0.1, 1, 10]
+  c_selection_role: model_selection
+  class_weight_role: head_fit
+  neural_optimizer: AdamW
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  batch_size: 64
+  max_epochs: 100
+  warmup_epochs: 5
+  scheduler: cosine
+  patience: 10
+  seeds: [13, 29, 47]
+  early_stop_order: [max_roc_auc, min_brier, min_ece, earliest_epoch]
+
+calibration:
+  temperature_role: probability_calibration
+  conformal_role: conformal_calibration
+  alpha: 0.10
+  mondrian_min_per_class: 30
+  mondrian_fallback: marginal_with_NOT_MEASURABLE
+  evidence_label: EMPIRICAL_POST_HOC_CALIBRATION
+
+outer:
+  states: [HEAD_LOCKED, CALIBRATION_LOCKED, OUTER_AUTHORIZED, OUTER_SNAPSHOT_PREPARED, OUTER_PREDICTIONS_COMMITTED, FOLD_FINALIZED]
+  loader_calls_before_authorization: 0
+  snapshot_per_fold_exactly_once: true
+  crash_reuses_snapshot: true
+
+promotion:
+  delta_auc_min: 0.02
+  bootstrap_lower_ci_positive: true
+  delta_brier_max: 0.01
+  delta_ece_max: 0.02
+  sanity_required: true
+  confound_must_not_worsen: true
+  unknown_or_not_measurable_blocks: true
+  decision_label: TECHNICAL_PROMOTION_ONLY
+  lora_unlocked: false
+
+external:
+  status: EXTERNAL_UNAVAILABLE_NONBLOCKING
+  evidence_label: ROBUSTNESS_EVIDENCE_NOT_EXTERNAL_VALIDATION
+
+claim_ceiling: POST_HOC_INTERNAL_TECHNICAL_EVIDENCE

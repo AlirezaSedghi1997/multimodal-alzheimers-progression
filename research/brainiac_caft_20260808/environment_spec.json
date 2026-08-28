@@ -1,0 +1,40 @@
+{
+  "battery_venv_note": "einops was installed into the battery .venv only because MONAI 1.5.2 ViT import required it for the CPU vendor-equivalent load. Isolated BrainIAC packages remain uninstalled.",
+  "created": true,
+  "creation_gate": "PRE_TRAINING_ISOLATED_VENV_CREATED_DEPENDENCIES_NOT_INSTALLED",
+  "declared_dependencies": [
+    "torch",
+    "monai",
+    "numpy",
+    "scipy",
+    "scikit-learn",
+    "nibabel"
+  ],
+  "install_deferred_until": "R1a_AFTER_FIVE_EFFECTIVE_MODELS_TERMINAL",
+  "isolation_reason": "BrainIAC dependencies must not perturb the environment that produced the locked v3 battery results.",
+  "pinned_versions": {
+    "declared_in_vendor_requirements": [
+      "pytorch-lightning==2.3.3",
+      "monai==1.3.2",
+      "nibabel==5.2.1",
+      "scikit-image==0.21.0",
+      "scikit-learn==1.2.2",
+      "scipy==1.10.1",
+      "seaborn==0.12.2",
+      "numpy==1.23.5",
+      "autograd==1.7.0",
+      "matplotlib==3.7.1",
+      "SimpleITK==2.4.0",
+      "tqdm",
+      "pydicom",
+      "wandb",
+      "lifelines",
+      "opencv-python",
+      "einops"
+    ],
+    "install_status": "VENV_CREATED_DEPENDENCIES_NOT_INSTALLED"
+  },
+  "python": "3.11",
+  "schema_version": 1,
+  "target_path": "H:/New project/.venvs/brainiac"
+}

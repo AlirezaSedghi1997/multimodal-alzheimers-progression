@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping
 
+from src.research import brainiac_readiness as _readiness
 from src.research.brainiac_readiness import (
     DEFAULT_BATTERY_MANIFEST,
     PROJECT_ROOT,
@@ -43,6 +44,18 @@ class BrainIACActionLease:
 _ACTIVE_LEASE: contextvars.ContextVar[BrainIACActionLease | None] = (
     contextvars.ContextVar("brainiac_active_action_lease", default=None)
 )
+
+
+def _default_process_provider() -> list[dict[str, Any]]:
+    """Local indirection keeps writer inspection testable and fail-closed."""
+
+    return _readiness._default_process_provider()
+
+
+def _default_gpu_process_provider() -> list[dict[str, Any]]:
+    """Dynamic indirection preserves both production inspection and test injection."""
+
+    return _readiness._default_gpu_process_provider()
 
 
 def _regular_nonreparse(path: Path) -> bool:
@@ -155,6 +168,10 @@ def inspect_action_exclusion(
 ) -> dict[str, Any]:
     """Read-only writer/lock inspection. Definitively stale battery lock is retained."""
 
+    if process_provider is None:
+        process_provider = _default_process_provider
+    if gpu_provider is None:
+        gpu_provider = _default_gpu_process_provider
     manifest_binding = bind_file(DEFAULT_BATTERY_MANIFEST, project_root=PROJECT_ROOT)
     battery, _ = _load_json_strict(Path(manifest_binding["path"]))
     writer_state = inspect_writer_state(
@@ -236,7 +253,11 @@ def acquire_action_guard(action: str) -> BrainIACActionLease:
             raise RuntimeError("BRAINIAC_ACTION_GUARD_OWNERSHIP_LOST")
         manifest_binding = bind_file(DEFAULT_BATTERY_MANIFEST, project_root=PROJECT_ROOT)
         battery, _ = _load_json_strict(Path(manifest_binding["path"]))
-        writer_state = inspect_writer_state(battery)
+        writer_state = inspect_writer_state(
+            battery,
+            process_provider=_default_process_provider,
+            gpu_provider=_default_gpu_process_provider,
+        )
         blockers = _writer_blockers(writer_state)
         battery_lock = _recorded_lock_status(
             BATTERY_ROOT / BATTERY_LOCK_NAME, role="battery_lock"

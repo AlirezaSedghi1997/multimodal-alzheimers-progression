@@ -38,6 +38,12 @@ RECEIPT_REQUIRED_FIELDS: tuple[str, ...] = (
     "transform_sha256",
     "transform_size",
     "policy_sha256",
+    "config_sha256",
+    "pipeline_contract_sha256",
+    "dependency_closure_sha256",
+    "membership_sha256",
+    "cache_sha256",
+    "catalog_sha256",
     "runtime_lock_sha256",
     "vendor_commit",
     "vendor_tree_sha256",
@@ -47,6 +53,13 @@ RECEIPT_REQUIRED_FIELDS: tuple[str, ...] = (
     "official_transform_source_sha256",
     "affine_before",
     "affine_after",
+    "spacing_before",
+    "spacing_after",
+    "origin_before",
+    "origin_after",
+    "direction_before",
+    "direction_after",
+    "com_coordinate_frame",
     "rigid_determinant",
     "orthogonality_error",
     "rotation_deg",
@@ -65,7 +78,6 @@ RECEIPT_REQUIRED_FIELDS: tuple[str, ...] = (
     "raw_identifier_persisted",
     "raw_path_persisted",
     "direct_128_to_96_used",
-    "created_at_utc",
 )
 
 AUDIT_FALSE_FIELDS: tuple[str, ...] = (
@@ -192,6 +204,12 @@ def seal_receipt(body: Mapping[str, Any]) -> dict[str, Any]:
         "output_sha256",
         "transform_sha256",
         "policy_sha256",
+        "config_sha256",
+        "pipeline_contract_sha256",
+        "dependency_closure_sha256",
+        "membership_sha256",
+        "cache_sha256",
+        "catalog_sha256",
         "runtime_lock_sha256",
         "hd_bet_weight_sha256",
         "template_sha256",
@@ -212,8 +230,36 @@ def seal_receipt(body: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _check_qc(receipt: Mapping[str, Any]) -> None:
+    import numpy as np
+
     if receipt["finite"] is not True:
         raise RuntimeError("BRAINIAC_PREPROCESSING_QC_NONFINITE")
+    if receipt.get("com_coordinate_frame") != "TEMPLATE_PHYSICAL_MM_RELATIVE":
+        raise RuntimeError("BRAINIAC_PREPROCESSING_COM_FRAME_INVALID")
+    for role in ("before", "after"):
+        try:
+            affine = np.asarray(receipt[f"affine_{role}"], dtype=np.float64).reshape(4, 4)
+            spacing = np.asarray(receipt[f"spacing_{role}"], dtype=np.float64).reshape(3)
+            origin = np.asarray(receipt[f"origin_{role}"], dtype=np.float64).reshape(3)
+            direction = np.asarray(receipt[f"direction_{role}"], dtype=np.float64).reshape(3, 3)
+        except (KeyError, TypeError, ValueError) as exc:
+            raise RuntimeError("BRAINIAC_PREPROCESSING_GEOMETRY_SHAPE_INVALID") from exc
+        if (
+            not np.isfinite(affine).all()
+            or not np.isfinite(spacing).all()
+            or not np.isfinite(origin).all()
+            or not np.isfinite(direction).all()
+            or np.any(spacing <= 0)
+            or abs(float(np.linalg.det(affine[:3, :3]))) <= 1e-12
+        ):
+            raise RuntimeError("BRAINIAC_PREPROCESSING_GEOMETRY_INVALID")
+    for field in ("center_of_mass_before", "center_of_mass_after"):
+        try:
+            values = np.asarray(receipt[field], dtype=np.float64).reshape(3)
+        except (KeyError, TypeError, ValueError) as exc:
+            raise RuntimeError("BRAINIAC_PREPROCESSING_COM_INVALID") from exc
+        if not np.isfinite(values).all():
+            raise RuntimeError("BRAINIAC_PREPROCESSING_COM_INVALID")
     for field in ("rigid_determinant", "foreground_fraction", "normalized_nonzero_std"):
         low, high = FIXED_QC_LIMITS[field]
         value = float(receipt[field])
@@ -255,7 +301,12 @@ def verify_receipt_artifacts(receipt: Mapping[str, Any], *, artifact_root: Path)
             )
 
 
-def validate_receipt(receipt: Mapping[str, Any], *, artifact_root: Path) -> dict[str, Any]:
+def validate_receipt(
+    receipt: Mapping[str, Any],
+    *,
+    artifact_root: Path,
+    expected_bindings: Mapping[str, str] | None = None,
+) -> dict[str, Any]:
     if not isinstance(receipt, Mapping):
         raise RuntimeError("BRAINIAC_PREPROCESSING_RECEIPT_INVALID")
     assert_privacy(receipt)
@@ -267,6 +318,11 @@ def validate_receipt(receipt: Mapping[str, Any], *, artifact_root: Path) -> dict
     if receipt.get("schema_version") != RECEIPT_SCHEMA_VERSION:
         raise RuntimeError("BRAINIAC_PREPROCESSING_SCHEMA_V1_FORBIDDEN_IN_V2")
     seal_receipt(dict(receipt))
+    for field, expected_value in sorted((expected_bindings or {}).items()):
+        if str(receipt.get(field) or "").casefold() != str(expected_value).casefold():
+            raise RuntimeError(
+                f"BRAINIAC_PREPROCESSING_EXPECTED_BINDING_MISMATCH:{field}"
+            )
     verify_receipt_artifacts(receipt, artifact_root=artifact_root)
     return dict(receipt)
 
@@ -286,15 +342,22 @@ def quarantine_decision(
     worsening means the metric value INCREASES.
     """
 
-    shift = math.dist(tuple(map(float, com_after)), tuple(map(float, com_before)))
+    before_norm = math.dist((0.0, 0.0, 0.0), tuple(map(float, com_before)))
+    after_norm = math.dist((0.0, 0.0, 0.0), tuple(map(float, com_after)))
     return (
         "QUARANTINE_BOTH_WORSENED"
-        if shift > 0 and similarity_after > similarity_before
+        if after_norm > before_norm + 1e-6 and similarity_after > similarity_before
         else "OK"
     )
 
 
-def validate_threshold_manifest(manifest: Mapping[str, Any]) -> dict[str, Any]:
+def validate_threshold_manifest(
+    manifest: Mapping[str, Any],
+    *,
+    expected_sample_hashes: Sequence[str] | None = None,
+    expected_receipt_integrity_sha256s: Mapping[str, str] | None = None,
+    expected_contract_bindings: Mapping[str, str] | None = None,
+) -> dict[str, Any]:
     if not isinstance(manifest, Mapping):
         raise RuntimeError("BRAINIAC_PREPROCESSING_THRESHOLD_MANIFEST_INVALID")
     if (
@@ -313,11 +376,39 @@ def validate_threshold_manifest(manifest: Mapping[str, Any]) -> dict[str, Any]:
             or float(row["low"]) > float(row["high"])
         ):
             raise RuntimeError(f"BRAINIAC_PREPROCESSING_THRESHOLD_MANIFEST_INVALID:{metric}")
+    sample_hashes = manifest.get("sample_hashes")
+    receipt_hashes = manifest.get("receipt_integrity_sha256s")
+    contract_bindings = manifest.get("contract_bindings")
+    if (
+        not isinstance(sample_hashes, list)
+        or len(sample_hashes) != int(manifest.get("sample_count", -1))
+        or len(sample_hashes) != len(set(map(str, sample_hashes)))
+        or not isinstance(receipt_hashes, Mapping)
+        or set(map(str, sample_hashes)) != set(map(str, receipt_hashes))
+        or not isinstance(contract_bindings, Mapping)
+        or manifest.get("pipeline_contract_sha256")
+        != canonical_sha(dict(sorted(contract_bindings.items())))
+        or any(not _is_hex64(value) for value in receipt_hashes.values())
+        or any(not _is_hex64(value) for value in contract_bindings.values())
+    ):
+        raise RuntimeError("BRAINIAC_PREPROCESSING_THRESHOLD_MANIFEST_BINDING_INVALID")
     expected = canonical_sha(
         {key: value for key, value in manifest.items() if key != "integrity_sha256"}
     )
     if manifest.get("integrity_sha256") != expected:
         raise RuntimeError("BRAINIAC_PREPROCESSING_THRESHOLD_MANIFEST_INVALID")
+    if expected_sample_hashes is not None and sorted(map(str, expected_sample_hashes)) != sorted(
+        map(str, sample_hashes)
+    ):
+        raise RuntimeError("BRAINIAC_PREPROCESSING_THRESHOLD_MANIFEST_BINDING_MISMATCH")
+    if expected_receipt_integrity_sha256s is not None and dict(
+        sorted((str(k), str(v)) for k, v in expected_receipt_integrity_sha256s.items())
+    ) != dict(sorted((str(k), str(v)) for k, v in receipt_hashes.items())):
+        raise RuntimeError("BRAINIAC_PREPROCESSING_THRESHOLD_MANIFEST_BINDING_MISMATCH")
+    if expected_contract_bindings is not None and dict(
+        sorted((str(k), str(v)) for k, v in expected_contract_bindings.items())
+    ) != dict(sorted((str(k), str(v)) for k, v in contract_bindings.items())):
+        raise RuntimeError("BRAINIAC_PREPROCESSING_THRESHOLD_MANIFEST_BINDING_MISMATCH")
     return dict(manifest)
 
 

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "artifact": "BRAINIAC_FEATURE_PREPARATION_POLICY_V1",
+  "created_at_utc": "2026-08-23T15:10:00+00:00",
+  "claim_ceiling": "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE",
+  "brainiac_embedding": {
+    "source": "schema_v2_nifti_with_validated_receipts_only",
+    "forbidden_sources": [
+      "t1_volume_cache_128",
+      "master_catalog_outcome_columns",
+      "label",
+      "ab_label",
+      "tabular_feature_arrays",
+      "pet",
+      "is_synthetic",
+      "augmentation",
+      "outer_split_labels"
+    ],
+    "dim": 768,
+    "expected_rows": 1669,
+    "final_h5_datasets_only": ["sample_hash", "embedding"],
+    "provenance_in_manifest_only": true,
+    "batch_selection": {
+      "candidates": [4, 2, 1],
+      "probe": "16_lowest_hash_samples",
+      "min_cosine_vs_batch1": 0.999999,
+      "max_abs_drift_vs_batch1": 1e-6,
+      "vram_budget_gb": 7.5,
+      "nonfinite_or_oom": "REJECT_CANDIDATE_NO_SILENT_RETRY"
+    },
+    "shards": {
+      "ordering": "deterministic_hash_order",
+      "resume": "SKIP_ONLY_EXACT_COMMITTED_SHARD",
+      "merge": "ONLY_AFTER_ALL_SHARDS_INDEPENDENTLY_VALIDATE",
+      "atomic": true
+    }
+  },
+  "split_registry": {
+    "trusted_governance_builder_only_label_access": true,
+    "dev_rows": 1336,
+    "sealed_rows": 333,
+    "sealed_label": "CAFT_HEAD_SEALED_INTERNAL_HOLDOUT",
+    "sealed_is_external_validation": false,
+    "folds": 5,
+    "role_key": "SHA256(sample_hash|fold|13) ascending within class",
+    "sealed_key": "SHA256(sample_hash|caft_r1_sealed_holdout|13) lowest 333",
+    "role_proportions": {
+      "head_fit": 0.65,
+      "model_selection": 0.15,
+      "probability_calibration": 0.10,
+      "conformal_calibration": 0.10
+    },
+    "largest_remainder_tie_break": "role_name",
+    "minority_role_floor": 33,
+    "contradiction_gate": "MACHINE_CHECK_BEFORE_ANY_WRITE",
+    "on_inconsistency": "BLOCKER_WITH_COUNTS_NO_IMPROVISATION",
+    "private_registry": {
+      "labels_allowed_inside": true,
+      "path_restricted_to_h": true,
+      "hash_integrity_and_acl_receipt": true
+    },
+    "public_receipt": "counts_and_hashes_only",
+    "sealed_class_values_locked_until": "EVALUATION_STAGE_AUTHORIZATION"
+  },
+  "resnet34_representation": {
+    "battery_files_read_only": true,
+    "exact_reconstruction": "resnet34_3d latent_128 tabular_32 cross_attention",
+    "strict_load": "missing_0_unexpected_0_coverage_100",
+    "frozen_eval": true,
+    "outer_train_only": true,
+    "outer_loader_calls_allowed_before_lock": 0,
+    "outputs": ["sample_hash", "local_embedding_128", "locked_logit_1"],
+    "latent_access": "read_only_forward_hook_in_src_research_only",
+    "tabular": {
+      "features": ["age", "sex", "education_years", "apoe4_carrier", "mmse_base"],
+      "canonical_order_exact": true,
+      "imputation": "median",
+      "scaling": "standard",
+      "fit_role": "head_fit",
+      "audit_fields_never_predictors": true
+    },
+    "logit_lock": "wrapper_within_locked_tolerance_of_canonical_output"
+  },
+  "execution": {
+    "brainiac_lease": "EXTRACT_FROZEN_BRAINIAC_EMBEDDINGS",
+    "labels_read": false,
+    "pet_read": false,
+    "outer_test_touched": false
+  }
+}

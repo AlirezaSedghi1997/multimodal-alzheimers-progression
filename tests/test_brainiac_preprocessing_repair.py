@@ -42,10 +42,9 @@ def test_perturb_normalization_keeps_background_zero():
     fg_mask[2:6, 2:6, 2:6] = True
     volume[fg_mask] = np.random.default_rng(42).normal(100, 20, size=int(fg_mask.sum())).astype(np.float32)
 
-    nonzero_vals = volume[volume != 0]
-    mean, std = float(nonzero_vals.mean()), float(nonzero_vals.std())
-    out = np.zeros_like(volume)
-    out[fg_mask] = ((volume[fg_mask] - mean) / max(std, 1e-8)).astype(np.float32)
+    from src.research.brainiac_preprocessing_v2 import normalize_foreground
+
+    out = normalize_foreground(volume, fg_mask)
 
     assert float(np.abs(out[~fg_mask]).max()) == 0.0
     assert abs(float(out[fg_mask].mean())) < 1e-6
@@ -74,19 +73,35 @@ def test_mad_outlier_sample_is_blocked():
 # --- stale calibration rejection ----------------------------------------------
 
 def test_stale_calibration_with_old_policy_cannot_reuse(tmp_path):
+    from src.research.brainiac_preprocessing_v2_schema import (
+        THRESHOLD_MANIFEST_ARTIFACT_TYPE,
+        canonical_sha,
+        validate_threshold_manifest,
+    )
+
     old_policy_sha = "f5c69a84" + "7" * 56
     current_policy_sha = "140acc4f" + "1" * 56
+    samples = [f"s_{i:064x}" for i in range(32)]
+    receipt_hashes = {sample: "b" * 64 for sample in samples}
+    contract = {"policy_sha256": old_policy_sha}
     manifest = {
-        "policy_sha256": old_policy_sha,
-        "sample_hashes": ["a" * 64] * 32,
-        "receipt_sha256": ["b" * 64] * 32,
+        "schema_version": 2,
+        "artifact": THRESHOLD_MANIFEST_ARTIFACT_TYPE,
+        "sample_count": 32,
+        "sample_hashes": samples,
+        "receipt_integrity_sha256s": receipt_hashes,
+        "contract_bindings": contract,
+        "pipeline_contract_sha256": canonical_sha(contract),
+        "thresholds": {"foreground_fraction": {"low": 0.1, "high": 0.4}},
     }
-    # Simulate reuse check
-    if manifest["policy_sha256"] != current_policy_sha:
-        rejected = True
-    else:
-        rejected = False
-    assert rejected, "stale calibration must fail closed"
+    manifest["integrity_sha256"] = canonical_sha(manifest)
+    with pytest.raises(RuntimeError, match="BINDING_MISMATCH"):
+        validate_threshold_manifest(
+            manifest,
+            expected_sample_hashes=samples,
+            expected_receipt_integrity_sha256s=receipt_hashes,
+            expected_contract_bindings={"policy_sha256": current_policy_sha},
+        )
 
 
 # --- exit codes ----------------------------------------------------------------
@@ -97,20 +112,19 @@ def test_stale_calibration_with_old_policy_cannot_reuse(tmp_path):
     ("BLOCKED", 3), ("BLOCKED_BY_QUARANTINE", 3),
 ])
 def test_exit_code_mapping(status, expected):
-    if status in {"PASS", "COMPLETED", "ALREADY_COMPLETED"}:
-        assert expected == 0
-    elif status == "PAUSED_RESUMABLE":
-        assert expected == 75
-    else:
-        assert expected == 3
+    from scripts.research.prepare_brainiac_raw_t1_v2 import _exit_code_for
+
+    assert _exit_code_for(status) == expected
 
 
 # --- exception sanitiser --------------------------------------------------------
 
 def test_sanitiser_removes_raw_paths():
+    from scripts.research.prepare_brainiac_raw_t1_v2 import _sanitize_exception_message
+
     raw_root = "H:\\A4 Learn"
     msg = f"FileNotFoundError: {raw_root}\\some_subject\\T1.nii.gz not found"
-    sanitised = msg.replace(raw_root, "<raw-redacted>")
+    sanitised = _sanitize_exception_message(RuntimeError(msg))
     assert raw_root not in sanitised
     assert "<raw-redacted>" in sanitised
 
@@ -118,15 +132,12 @@ def test_sanitiser_removes_raw_paths():
 # --- preflight deep checks -------------------------------------------------------
 
 def test_preflight_insufficient_disk_returns_blocked():
-    free_disk_gb = 10.0  # below 40 GB minimum
-    min_free = 40.0
-    if free_disk_gb < min_free:
-        status = "BLOCKED"
-    else:
-        status = "PASS"
-    assert status == "BLOCKED"
+    from scripts.research.prepare_brainiac_raw_t1_v2 import build_preflight_decision
+
+    assert build_preflight_decision({"storage_free_space": False})["status"] == "BLOCKED"
 
 
 def test_preflight_sufficient_disk_passes():
-    free_disk_gb = 400.0
-    assert free_disk_gb >= 40.0
+    from scripts.research.prepare_brainiac_raw_t1_v2 import build_preflight_decision
+
+    assert build_preflight_decision({"storage_free_space": True})["status"] == "PASS"

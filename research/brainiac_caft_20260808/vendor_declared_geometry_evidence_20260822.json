@@ -1,0 +1,47 @@
+{
+  "artifact_type": "VENDOR_DECLARED_GEOMETRY_EVIDENCE_CODE_DERIVED",
+  "created_utc": "2026-08-22T09:07:56.364930+00:00",
+  "defect_code": "DEF-6-R1-01 (documentation half; runtime proof deferred to R1a post-terminal)",
+  "sources": [
+    {
+      "file": "vendor/<pin>/src/preprocessing/mri_preprocess_3d_simple.py",
+      "sha256": "9adfde673bf7303a7e80b2f9c7ea8f5ed1fad7a90c9024d0cf63fde13b6386c9",
+      "facts": [
+        {
+          "lines": "76-96",
+          "fact": "fixed/template image resampled to 1mm isotropic before rigid registration"
+        },
+        {
+          "line": "210",
+          "fact": "registration template supplied via required external CLI argument --temp_img; NO template NIfTI shipped in pinned snapshot"
+        },
+        {
+          "line": "119",
+          "fact": "SimpleITK rigid registration (learningRate=1.0) — rigid MNI, not nonlinear"
+        }
+      ]
+    },
+    {
+      "file": "vendor/<pin>/src/dataset.py",
+      "sha256": "d5aa98cbf40cb4a57a0013043ac46c5af84e18210e6ec634eb2b2c0921df9eab",
+      "facts": [
+        {
+          "lines": "37-45",
+          "fact": "official validation transform: LoadImaged -> EnsureChannelFirstd -> Resized(spatial_size=(96,96,96), mode=trilinear) -> NormalizeIntensityd(nonzero=True, channel_wise=True) -> ToTensord"
+        },
+        {
+          "lines": "12-35",
+          "fact": "train transform adds RandAffine/RandFlip(axis 2)/smooth/noise/contrast only — no affine reorientation, no resampling beyond the 96 trilinear resize"
+        }
+      ]
+    }
+  ],
+  "conclusions": {
+    "project_transform_equivalence": "scripts/research/preprocess_brainiac_raw_t1.py implements the exact official validation transform (code-level match confirmed 2026-08-22)",
+    "template_identity": "EXTERNAL_RUNTIME_ARGUMENT — canonical upstream training template not distributed in pinned commit; output affine therefore determined by whichever template the operator supplies",
+    "geometry_status_after_this_evidence": "UNCHANGED: UNKNOWN_GEOMETRY_PENDING_VENDOR_TEMPLATE_AFFINE — code reading alone cannot upgrade UNKNOWN to PASS (fail-closed)",
+    "resolution_path": "R1a (post-terminal): run vendor-equivalent preprocessing with the hash-locked SPM avg152T1 1mm template on real subjects and record the resulting output affine + embedding stability; only measured evidence may change the status"
+  },
+  "pin": "ba60f45bed832ee0e5683c678caeaeefe2072f0d",
+  "storage": "H_ONLY"
+}

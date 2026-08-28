@@ -20,6 +20,23 @@ from src.research import brainiac_preprocessing_v2_schema as schema
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def _contract_bindings() -> dict[str, str]:
+    return {
+        "policy_sha256": v2.policy_sha256(),
+        "config_sha256": "7" * 64,
+        "pipeline_contract_sha256": "8" * 64,
+        "dependency_closure_sha256": "9" * 64,
+        "membership_sha256": "a" * 64,
+        "cache_sha256": "b" * 64,
+        "catalog_sha256": "c" * 64,
+        "runtime_lock_sha256": "2" * 64,
+        "vendor_tree_sha256": "3" * 64,
+        "template_lock_sha256": "4" * 64,
+        "official_transform_source_sha256": "5" * 64,
+        "qc_threshold_manifest_sha256": "6" * 64,
+    }
+
+
 # --------------------------------------------------------------------------
 # synthetic deidentified fixture helpers (tiny phantoms, no study data)
 # --------------------------------------------------------------------------
@@ -72,16 +89,19 @@ def _receipt_body(root: Path, sample_hash: str = "s_" + "a" * 16, **overrides):
         "transform_relative_path": f"transforms/{sample_hash}.tfm",
         "transform_sha256": hashlib.sha256(raw_transform).hexdigest(),
         "transform_size": len(raw_transform),
-        "policy_sha256": "1" * 64,
-        "runtime_lock_sha256": "2" * 64,
+        **_contract_bindings(),
         "vendor_commit": v2.VENDOR_COMMIT,
-        "vendor_tree_sha256": "3" * 64,
         "hd_bet_weight_sha256": v2.EXPECTED_HD_BET_WEIGHT_SHA256,
         "template_sha256": v2.EXPECTED_TEMPLATE_SHA256,
-        "template_lock_sha256": "4" * 64,
-        "official_transform_source_sha256": "5" * 64,
-        "affine_before": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0],
-        "affine_after": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+        "affine_before": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+        "affine_after": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+        "spacing_before": [1.0, 1.0, 1.0],
+        "spacing_after": [1.0, 1.0, 1.0],
+        "origin_before": [0.0, 0.0, 0.0],
+        "origin_after": [0.0, 0.0, 0.0],
+        "direction_before": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+        "direction_after": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+        "com_coordinate_frame": "TEMPLATE_PHYSICAL_MM_RELATIVE",
         "rigid_determinant": 1.0,
         "orthogonality_error": 0.0,
         "rotation_deg": 0.0,
@@ -94,7 +114,6 @@ def _receipt_body(root: Path, sample_hash: str = "s_" + "a" * 16, **overrides):
         "center_of_mass_after": [4.0, 4.0, 4.0],
         "registration_similarity_before": -1.0,
         "registration_similarity_after": -0.5,
-        "qc_threshold_manifest_sha256": "6" * 64,
         "labels_read": False,
         "pet_read": False,
         "raw_identifier_persisted": False,
@@ -308,11 +327,22 @@ def test_mad_thresholds_and_mad_zero_fallback() -> None:
 
 def test_threshold_manifest_is_deterministic_and_immutable() -> None:
     metrics = _metrics([round(0.20 + 0.01 * (i % 5), 4) for i in range(32)])
+    selected = {m: v for m, v in list(metrics.items())[:32]}
+    receipt_hashes = {sample: hashlib.sha256(sample.encode()).hexdigest() for sample in selected}
+    contract = {
+        "policy_sha256": "1" * 64,
+        "pipeline_contract_sha256": "2" * 64,
+        "membership_sha256": "3" * 64,
+    }
     first = v2.build_threshold_manifest(
-        {m: v for m, v in list(metrics.items())[:32]}
+        selected,
+        receipt_integrity_sha256s=receipt_hashes,
+        contract_bindings=contract,
     )
     second = v2.build_threshold_manifest(
-        {m: v for m, v in list(metrics.items())[:32]}
+        selected,
+        receipt_integrity_sha256s=receipt_hashes,
+        contract_bindings=contract,
     )
     assert first == second
     schema.validate_threshold_manifest(first)
@@ -344,8 +374,15 @@ class _FakePipeline:
             "transform_path": transform,
             "source_sha256": hashlib.sha256(b"synthetic-source").hexdigest(),
             "source_size": 16,
-            "affine_before": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
-            "affine_after": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+            "affine_before": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+            "affine_after": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+            "spacing_before": [1.0, 1.0, 1.0],
+            "spacing_after": [1.0, 1.0, 1.0],
+            "origin_before": [0.0, 0.0, 0.0],
+            "origin_after": [0.0, 0.0, 0.0],
+            "direction_before": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+            "direction_after": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+            "com_coordinate_frame": "TEMPLATE_PHYSICAL_MM_RELATIVE",
             "rigid_determinant": 1.0,
             "orthogonality_error": 0.0,
             "rotation_deg": 0.0,
@@ -362,14 +399,7 @@ class _FakePipeline:
 
 
 def _binding_overrides(root: Path) -> dict:
-    return {
-        "policy_sha256": v2.policy_sha256(),
-        "runtime_lock_sha256": "2" * 64,
-        "vendor_tree_sha256": "3" * 64,
-        "template_lock_sha256": "4" * 64,
-        "official_transform_source_sha256": "5" * 64,
-        "qc_threshold_manifest_sha256": "6" * 64,
-    }
+    return _contract_bindings()
 
 
 def test_transaction_completes_and_rerun_skips(tmp_path: Path) -> None:
@@ -420,15 +450,18 @@ def test_committed_mismatch_blocks_recompute(tmp_path: Path) -> None:
         )
 
 
-def test_receipt_without_journal_commit_is_invalid(tmp_path: Path) -> None:
+def test_receipt_without_journal_commit_recovers_when_bytes_match(tmp_path: Path) -> None:
     root = tmp_path / "v2root"
     item = {"sample_hash": "s_" + "3" * 16, "t1_file_hash": "t1abc"}
     receipt = v2.run_sample_transaction(
         item, root, pipeline=_FakePipeline(root), bindings=_binding_overrides(root)
     )
     (root / "journals" / item["sample_hash"] / "committed.json").unlink()
-    with pytest.raises(RuntimeError, match="JOURNAL_MISSING_COMMIT"):
-        v2.load_committed_receipt(item["sample_hash"], root)
+    recovered = v2.load_committed_receipt(
+        item["sample_hash"], root, recover_missing_journal=True
+    )
+    assert recovered["integrity_sha256"] == receipt["integrity_sha256"]
+    assert (root / "journals" / item["sample_hash"] / "committed.json").is_file()
 
 
 def test_signal_mid_sample_completes_then_stops_with_75(tmp_path: Path) -> None:

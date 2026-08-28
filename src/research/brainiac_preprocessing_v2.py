@@ -66,7 +66,9 @@ RECEIPT_GENERATION = 1
 
 PRIMARY_ROOT = ROOT / "data" / "derived" / "method_x_brainiac" / "r1_primary_v2"
 SMOKE_ROOT = ROOT / "data" / "derived" / "method_x_brainiac" / "r1_primary_v2_smoke"
-POLICY_PATH = ROOT / "governance" / "brainiac_preprocessing_r1_primary_v2_policy.json"
+POLICY_PATH = (
+    ROOT / "governance" / "brainiac_preprocessing_r1_primary_v2_policy_v2.json"
+)
 
 CALIBRATION_SAMPLE_COUNT = 32
 SENSITIVITY_SAMPLE_COUNT = 64
@@ -84,14 +86,31 @@ def policy_sha256() -> str:
 # ---------------------------------------------------------------------------
 
 
-def assert_no_cnn_writer() -> None:
-    """Block on live CNN writers; a provably stale battery lock is retained."""
+def assert_no_project_gpu_writer(
+    *,
+    process_provider: Any | None = None,
+    gpu_provider: Any | None = None,
+) -> None:
+    """Block Method X, Method Y, BrainIAC, or foreign CUDA writers."""
 
-    from src.training.method_x_autosupervisor import discover_method_x_processes
+    from src.research.brainiac_readiness import (
+        DEFAULT_BATTERY_MANIFEST,
+        _load_json_strict,
+        _writer_blockers,
+        inspect_writer_state,
+    )
 
-    active = discover_method_x_processes(exclude_pids=(os.getpid(),))
-    if active:
-        raise RuntimeError("BRAINIAC_CNN_WRITER_ACTIVE")
+    battery, _ = _load_json_strict(DEFAULT_BATTERY_MANIFEST)
+    writer_state = inspect_writer_state(
+        battery,
+        process_provider=process_provider,
+        gpu_provider=gpu_provider,
+    )
+    blockers = _writer_blockers(writer_state)
+    if blockers:
+        raise RuntimeError(
+            "BRAINIAC_PROJECT_GPU_WRITER_BLOCKED:" + ",".join(blockers)
+        )
     from src.research.brainiac_action_guard import _recorded_lock_status
 
     for battery_dir in sorted((ROOT / "results" / "final_results").glob("*/")):
@@ -100,6 +119,12 @@ def assert_no_cnn_writer() -> None:
         )
         if status.get("liveness") == "LIVE":
             raise RuntimeError("BRAINIAC_BATTERY_LOCK_OWNER_ACTIVE")
+
+
+def assert_no_cnn_writer() -> None:
+    """Backward-compatible name for the all-project GPU writer boundary."""
+
+    assert_no_project_gpu_writer()
 
 
 # ---------------------------------------------------------------------------
@@ -169,7 +194,6 @@ def load_locked_membership(
 def build_raw_index(*, data_root: Path = RAW_DATA_ROOT) -> dict[str, Path]:
     """Filename-hash index over the read-only raw root; paths stay in memory."""
 
-    from scripts.build_mri_volume_cache import iter_t1_files
     from src.data.a4_schema import T1_NAME_PATTERN
     from src.utils.privacy import stable_hash
     import re
@@ -178,7 +202,22 @@ def build_raw_index(*, data_root: Path = RAW_DATA_ROOT) -> dict[str, Path]:
         raise RuntimeError("BRAINIAC_RAW_DATA_ROOT_UNAVAILABLE")
     pattern = re.compile(T1_NAME_PATTERN, re.IGNORECASE)
     index: dict[str, Path] = {}
-    for candidate in iter_t1_files(Path(data_root)):
+    t1_root = Path(data_root) / "T1"
+    roots = [t1_root] if t1_root.exists() else []
+    if not roots:
+        roots = [
+            path
+            for path in Path(data_root).rglob("*")
+            if path.is_dir() and path.name.casefold() == "t1"
+        ]
+    candidates = (
+        candidate
+        for root in roots
+        for candidate in root.rglob("*")
+        if candidate.is_file()
+        and candidate.name.casefold().endswith((".nii", ".nii.gz"))
+    )
+    for candidate in candidates:
         if not pattern.match(candidate.name):
             continue
         file_hash = stable_hash(candidate.name, prefix="t1")
@@ -267,10 +306,23 @@ def compute_mad_thresholds(
 def build_threshold_manifest(
     metrics_by_sample: Mapping[str, Mapping[str, float]],
     *,
+    receipt_integrity_sha256s: Mapping[str, str],
+    contract_bindings: Mapping[str, str],
     fixed_bounds: Mapping[str, tuple[float, float]] | None = None,
 ) -> dict[str, Any]:
     if not metrics_by_sample:
         raise RuntimeError("BRAINIAC_THRESHOLD_MANIFEST_EMPTY")
+    sample_hashes = sorted(map(str, metrics_by_sample))
+    receipt_hashes = dict(
+        sorted((str(key), str(value)) for key, value in receipt_integrity_sha256s.items())
+    )
+    bound_contract = dict(
+        sorted((str(key), str(value)) for key, value in contract_bindings.items())
+    )
+    if set(sample_hashes) != set(receipt_hashes):
+        raise RuntimeError("BRAINIAC_THRESHOLD_RECEIPT_MEMBERSHIP_MISMATCH")
+    if any(len(value) != 64 for value in (*receipt_hashes.values(), *bound_contract.values())):
+        raise RuntimeError("BRAINIAC_THRESHOLD_BINDING_SHA_INVALID")
     bounds = dict(fixed_bounds or {})
     metric_names = sorted(set().union(*(row.keys() for row in metrics_by_sample.values())))
     thresholds: dict[str, dict[str, float]] = {}
@@ -291,6 +343,10 @@ def build_threshold_manifest(
         "artifact": "BRAINIAC_PREPROCESSING_QC_THRESHOLD_MANIFEST_V2",
         "selection_rule": f"{len(metrics_by_sample)}_LOWEST_SHA256_OF_SAMPLE_HASH",
         "sample_count": len(metrics_by_sample),
+        "sample_hashes": sample_hashes,
+        "receipt_integrity_sha256s": receipt_hashes,
+        "contract_bindings": bound_contract,
+        "pipeline_contract_sha256": canonical_sha(bound_contract),
         "metrics": stats,
         "thresholds": thresholds,
         "labels_read": False,
@@ -301,6 +357,48 @@ def build_threshold_manifest(
         {key: value for key, value in body.items() if key != "integrity_sha256"}
     )
     return body
+
+
+def qc_threshold_anomalies(
+    receipt_like: Mapping[str, Any], threshold_manifest: Mapping[str, Any]
+) -> list[str]:
+    """Return MAD-band violations; missing/non-finite fields fail closed."""
+
+    thresholds = threshold_manifest.get("thresholds")
+    if not isinstance(thresholds, Mapping) or not thresholds:
+        raise RuntimeError("BRAINIAC_PREPROCESSING_THRESHOLD_MANIFEST_INVALID")
+    anomalies: list[str] = []
+    for metric, limits in sorted(thresholds.items()):
+        if not isinstance(limits, Mapping) or metric not in receipt_like:
+            raise RuntimeError(f"BRAINIAC_PREPROCESSING_THRESHOLD_METRIC_MISSING:{metric}")
+        value = float(receipt_like[metric])
+        low = float(limits.get("low", float("nan")))
+        high = float(limits.get("high", float("nan")))
+        if not all(math.isfinite(item) for item in (value, low, high)) or low > high:
+            raise RuntimeError("BRAINIAC_PREPROCESSING_THRESHOLD_VALUE_INVALID")
+        if not low <= value <= high:
+            anomalies.append(str(metric))
+    return anomalies
+
+
+def normalize_foreground(volume: Any, foreground_mask: Any) -> Any:
+    """Z-normalize foreground only while preserving exact zero background."""
+
+    import numpy as np
+
+    array = np.asarray(volume, dtype=np.float32)
+    mask = np.asarray(foreground_mask, dtype=bool)
+    if array.shape != mask.shape or not mask.any():
+        raise RuntimeError("BRAINIAC_V2_SENSITIVITY_FOREGROUND_INVALID")
+    values = array[mask]
+    if not np.isfinite(values).all():
+        raise RuntimeError("BRAINIAC_V2_SENSITIVITY_NONFINITE")
+    std = float(values.std())
+    if not math.isfinite(std) or std <= 1e-8:
+        raise RuntimeError("BRAINIAC_V2_SENSITIVITY_FOREGROUND_DEGENERATE")
+    output = np.zeros_like(array, dtype=np.float32)
+    output[mask] = ((values - float(values.mean())) / std).astype(np.float32)
+    return output
 
 
 # ---------------------------------------------------------------------------
@@ -341,7 +439,7 @@ def dilate_mask(mask: Any, *, iterations: int = 1) -> Any:
 
 
 def erode_mask(mask: Any, *, iterations: int = 1) -> Any:
-    """Binary erosion; outside counts as foreground so tissue at the face survives."""
+    """Binary 6-neighbour erosion with a non-wrapping foreground boundary."""
 
     import numpy as np
     from scipy.ndimage import binary_erosion
@@ -350,6 +448,8 @@ def erode_mask(mask: Any, *, iterations: int = 1) -> Any:
         np.asarray(mask, dtype=bool),
         structure=_get_6_connectivity(),
         iterations=int(iterations),
+        # A foreground boundary makes erosion the local inverse of dilation
+        # for tissue touching a cropped face, without reading the opposite face.
         border_value=1,
     )
 
@@ -472,13 +572,37 @@ def _quarantine_move(path: Path, root: Path, sample_hash: str) -> Path | None:
     if not path.exists():
         return None
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-    target_dir = Path(root) / "quarantine" / f"{stamp}-{sample_hash}"
+    target_dir = Path(root) / "quarantine" / f"{stamp}-{time.time_ns()}-{sample_hash}"
     target_dir.mkdir(parents=True, exist_ok=True)
     os.replace(path, target_dir / path.name)
     return target_dir
 
 
-def load_committed_receipt(sample_hash: str, root: Path) -> dict[str, Any]:
+def _archive_stale_scratch(scratch: Path, root: Path, sample_hash: str) -> Path | None:
+    if not scratch.exists():
+        return None
+    stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    target = Path(root) / "quarantine" / f"{stamp}-{time.time_ns()}-{sample_hash}-scratch"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    os.replace(scratch, target)
+    _atomic_write_json(
+        target / "reason.json",
+        {
+            "sample_hash": sample_hash,
+            "reason_code": "STALE_SCRATCH_ARCHIVED",
+            "raw_path_persisted": False,
+        },
+    )
+    return target
+
+
+def load_committed_receipt(
+    sample_hash: str,
+    root: Path,
+    *,
+    expected_bindings: Mapping[str, str] | None = None,
+    recover_missing_journal: bool = False,
+) -> dict[str, Any]:
     receipt_path = Path(root) / "receipts" / f"{sample_hash}.json"
     if not receipt_path.is_file():
         raise RuntimeError("BRAINIAC_PREPROCESSING_NOT_COMMITTED")
@@ -488,14 +612,30 @@ def load_committed_receipt(sample_hash: str, root: Path) -> dict[str, Any]:
     if int(receipt.get("generation", 0)) < RECEIPT_GENERATION:
         raise RuntimeError("BRAINIAC_PREPROCESSING_GENERATION_ROLLBACK")
     try:
-        validate_receipt(receipt, artifact_root=Path(root))
+        validate_receipt(
+            receipt,
+            artifact_root=Path(root),
+            expected_bindings=expected_bindings,
+        )
     except RuntimeError as exc:
         if "BINDING_MISMATCH" in str(exc):
             raise RuntimeError("BRAINIAC_PREPROCESSING_COMMITTED_MISMATCH") from exc
         raise
     committed = Path(root) / "journals" / sample_hash / "committed.json"
     if not committed.is_file():
-        raise RuntimeError("BRAINIAC_PREPROCESSING_JOURNAL_MISSING_COMMIT")
+        if not recover_missing_journal:
+            raise RuntimeError("BRAINIAC_PREPROCESSING_JOURNAL_MISSING_COMMIT")
+        _atomic_write_json(
+            committed,
+            {
+                "sample_hash": sample_hash,
+                "receipt_sha256": receipt["integrity_sha256"],
+                "output_sha256": receipt["output_sha256"],
+                "transform_sha256": receipt["transform_sha256"],
+                "status": "JOURNAL_COMMITTED",
+                "recovered_from_receipt": True,
+            },
+        )
     journal = json.loads(committed.read_text(encoding="utf-8"))
     if (
         journal.get("receipt_sha256") != receipt.get("integrity_sha256")
@@ -507,11 +647,13 @@ def load_committed_receipt(sample_hash: str, root: Path) -> dict[str, Any]:
     return receipt
 
 
-def _reconcile_stale_sample_lock(lock_path: Path) -> None:
-    """Remove a sample lock only with liveness proof (card Step 5).
+def _reconcile_stale_sample_lock(
+    lock_path: Path, *, root: Path, sample_hash: str
+) -> None:
+    """Archive a sample lock only with liveness proof (card Step 5).
 
-    Dead owner PID -> provably stale, remove.  Live PID (or PID-reuse doubt)
-    -> fail closed; never delete a lock we cannot disprove.
+    Dead owner PID -> provably stale, append-only archive.  Live PID (or
+    PID-reuse doubt) -> fail closed; never remove a lock we cannot disprove.
     """
 
     payload = json.loads(lock_path.read_text(encoding="utf-8"))
@@ -525,9 +667,27 @@ def _reconcile_stale_sample_lock(lock_path: Path) -> None:
     if live is None:
         raise RuntimeError("BRAINIAC_PREPROCESSING_SAMPLE_LOCK_LIVENESS_UNKNOWN")
     if live is False:
-        lock_path.unlink()
-        if lock_path.exists():
-            raise RuntimeError("BRAINIAC_PREPROCESSING_SAMPLE_LOCK_RELEASE_FAILED")
+        stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+        target = (
+            Path(root)
+            / "quarantine"
+            / f"{stamp}-{time.time_ns()}-{sample_hash}-dead-lock"
+        )
+        target.mkdir(parents=True, exist_ok=False)
+        archived = target / lock_path.name
+        os.replace(lock_path, archived)
+        _atomic_write_json(
+            target / "reason.json",
+            {
+                "sample_hash": sample_hash,
+                "reason_code": "PROVEN_DEAD_SAMPLE_LOCK_ARCHIVED",
+                "dead_pid": pid,
+                "archived_lock_sha256": sha256_file(archived),
+                "raw_path_persisted": False,
+            },
+        )
+        if lock_path.exists() or not archived.is_file():
+            raise RuntimeError("BRAINIAC_PREPROCESSING_SAMPLE_LOCK_ARCHIVE_FAILED")
         return
     recorded = payload.get("process_create_time")
     if recorded is not None and str(recorded) != str(creation):
@@ -543,6 +703,8 @@ def run_sample_transaction(
     bindings: Mapping[str, str],
     generation: int = RECEIPT_GENERATION,
     quarantine_check: bool = True,
+    threshold_manifest: Mapping[str, Any] | None = None,
+    fault_hook: Callable[[str], None] | None = None,
 ) -> dict[str, Any]:
     """One sample as an OS-durable transaction; committed valid samples skip."""
 
@@ -554,7 +716,16 @@ def run_sample_transaction(
     receipts_dir = root / "receipts"
     receipt_path = receipts_dir / f"{sample_hash}.json"
     if receipt_path.is_file():
-        return load_committed_receipt(sample_hash, root)
+        receipt = load_committed_receipt(
+            sample_hash,
+            root,
+            expected_bindings=bindings,
+            recover_missing_journal=True,
+        )
+        scratch = root / "scratch" / sample_hash
+        if scratch.exists():
+            _archive_stale_scratch(scratch, root, sample_hash)
+        return receipt
 
     output_target = root / "outputs" / f"{sample_hash}.nii.gz"
     transform_target = root / "transforms" / f"{sample_hash}.tfm"
@@ -581,7 +752,9 @@ def run_sample_transaction(
         "sample_hash": sample_hash,
     }
     if lock_path.exists():
-        _reconcile_stale_sample_lock(lock_path)
+        _reconcile_stale_sample_lock(
+            lock_path, root=root, sample_hash=sample_hash
+        )
     try:
         descriptor = os.open(
             lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY | getattr(os, "O_BINARY", 0)
@@ -596,9 +769,21 @@ def run_sample_transaction(
 
     scratch = root / "scratch" / sample_hash
     if scratch.exists():
-        shutil.rmtree(scratch)
+        _archive_stale_scratch(scratch, root, sample_hash)
     scratch.mkdir(parents=True, exist_ok=True)
     try:
+        _atomic_write_json(
+            journal_dir / "scratch.json",
+            {
+                "sample_hash": sample_hash,
+                "status": "SCRATCH",
+                "event_at_utc": time.strftime(
+                    "%Y-%m-%dT%H:%M:%S+00:00", time.gmtime()
+                ),
+            },
+        )
+        if fault_hook is not None:
+            fault_hook("SCRATCH")
         result = dict(pipeline(item, scratch))
         output_path = Path(result["output_path"])
         transform_path = Path(result["transform_path"])
@@ -639,6 +824,13 @@ def run_sample_transaction(
             "template_sha256": EXPECTED_TEMPLATE_SHA256,
             "affine_before": list(result["affine_before"]),
             "affine_after": list(result["affine_after"]),
+            "spacing_before": list(result["spacing_before"]),
+            "spacing_after": list(result["spacing_after"]),
+            "origin_before": list(result["origin_before"]),
+            "origin_after": list(result["origin_after"]),
+            "direction_before": list(result["direction_before"]),
+            "direction_after": list(result["direction_after"]),
+            "com_coordinate_frame": str(result["com_coordinate_frame"]),
             "rigid_determinant": float(result["rigid_determinant"]),
             "orthogonality_error": float(result["orthogonality_error"]),
             "rotation_deg": float(result["rotation_deg"]),
@@ -660,10 +852,24 @@ def run_sample_transaction(
             "raw_identifier_persisted": False,
             "raw_path_persisted": False,
             "direct_128_to_96_used": False,
-            "created_at_utc": time.strftime("%Y-%m-%dT%H:%M:%S+00:00", time.gmtime()),
         }
         body.update(dict(bindings))
         receipt = seal_receipt(body)
+        if threshold_manifest is not None:
+            anomalies = qc_threshold_anomalies(receipt, threshold_manifest)
+            if anomalies:
+                for payload in (output_path, transform_path):
+                    _quarantine_move(payload, root, sample_hash)
+                _atomic_write_json(
+                    journal_dir / "quarantined.json",
+                    {
+                        "sample_hash": sample_hash,
+                        "status": "QUARANTINED",
+                        "reason_code": "MAD_THRESHOLD_ANOMALY",
+                        "anomaly_fields": anomalies,
+                    },
+                )
+                raise RuntimeError("BRAINIAC_PREPROCESSING_QUARANTINE_MAD_ANOMALY")
 
         _atomic_write_json(
             journal_dir / "prepared.json",
@@ -672,8 +878,13 @@ def run_sample_transaction(
                 "output_sha256": receipt["output_sha256"],
                 "transform_sha256": receipt["transform_sha256"],
                 "status": "PREPARED",
+                "event_at_utc": time.strftime(
+                    "%Y-%m-%dT%H:%M:%S+00:00", time.gmtime()
+                ),
             },
         )
+        if fault_hook is not None:
+            fault_hook("PREPARED")
         for source, target in (
             (output_path, output_target),
             (transform_path, transform_target),
@@ -682,8 +893,35 @@ def run_sample_transaction(
                 raise RuntimeError("BRAINIAC_PREPROCESSING_COMMIT_TARGET_EXISTS")
             os.replace(source, target)
             _fsync_file(target)
+        _atomic_write_json(
+            journal_dir / "payload_committed.json",
+            {
+                "sample_hash": sample_hash,
+                "output_sha256": receipt["output_sha256"],
+                "transform_sha256": receipt["transform_sha256"],
+                "status": "PAYLOAD_COMMITTED",
+                "event_at_utc": time.strftime(
+                    "%Y-%m-%dT%H:%M:%S+00:00", time.gmtime()
+                ),
+            },
+        )
+        if fault_hook is not None:
+            fault_hook("PAYLOAD_COMMITTED")
         _atomic_write_json(receipt_path, receipt)
         verify_receipt_artifacts(receipt, artifact_root=root)
+        _atomic_write_json(
+            journal_dir / "receipt_committed.json",
+            {
+                "sample_hash": sample_hash,
+                "receipt_sha256": receipt["integrity_sha256"],
+                "status": "RECEIPT_COMMITTED",
+                "event_at_utc": time.strftime(
+                    "%Y-%m-%dT%H:%M:%S+00:00", time.gmtime()
+                ),
+            },
+        )
+        if fault_hook is not None:
+            fault_hook("RECEIPT_COMMITTED")
         _atomic_write_json(
             journal_dir / "committed.json",
             {
@@ -691,10 +929,17 @@ def run_sample_transaction(
                 "receipt_sha256": receipt["integrity_sha256"],
                 "output_sha256": receipt["output_sha256"],
                 "transform_sha256": receipt["transform_sha256"],
-                "status": "COMMITTED",
+                "status": "JOURNAL_COMMITTED",
+                "event_at_utc": time.strftime(
+                    "%Y-%m-%dT%H:%M:%S+00:00", time.gmtime()
+                ),
             },
         )
-        shutil.rmtree(scratch, ignore_errors=True)
+        if fault_hook is not None:
+            fault_hook("JOURNAL_COMMITTED")
+        shutil.rmtree(scratch)
+        if scratch.exists():
+            raise RuntimeError("BRAINIAC_PREPROCESSING_COMMITTED_SCRATCH_CLEANUP_FAILED")
         return receipt
     finally:
         if lock_path.exists():
@@ -718,6 +963,7 @@ def run_batch(
     pipeline_factory: Callable[[], Callable],
     bindings: Mapping[str, str],
     stop_requested: Callable[[], bool] | None = None,
+    threshold_manifest: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     receipts: list[dict[str, Any]] = []
     quarantined: list[str] = []
@@ -725,10 +971,14 @@ def run_batch(
     for item in items:
         try:
             receipt = run_sample_transaction(
-                item, root, pipeline=pipeline_factory(), bindings=bindings
+                item,
+                root,
+                pipeline=pipeline_factory(),
+                bindings=bindings,
+                threshold_manifest=threshold_manifest,
             )
         except RuntimeError as exc:
-            if "QUARANTINE_BOTH_WORSENED" in str(exc):
+            if "BRAINIAC_PREPROCESSING_QUARANTINE_" in str(exc):
                 quarantined.append(str(item["sample_hash"]))
                 continue
             raise
@@ -759,27 +1009,99 @@ def run_orchestrated(
     bindings: Mapping[str, str],
     cpu_workers: int = 2,
     gpu_workers: int = 1,
+    threshold_manifest: Mapping[str, Any] | None = None,
+    stop_requested: Callable[[], bool] | None = None,
 ) -> list[dict[str, Any]]:
     """Bounded parallel execution whose receipts must equal sequential ones."""
 
-    from concurrent.futures import ThreadPoolExecutor
+    return run_orchestrated_batch(
+        items,
+        root,
+        pipeline_factory=pipeline_factory,
+        bindings=bindings,
+        cpu_workers=cpu_workers,
+        gpu_workers=gpu_workers,
+        threshold_manifest=threshold_manifest,
+        stop_requested=stop_requested,
+    )["receipts"]
 
-    if cpu_workers < 1 or gpu_workers < 1:
+
+def run_orchestrated_batch(
+    items: Sequence[Mapping[str, str]],
+    root: Path,
+    *,
+    pipeline_factory: Callable[[], Callable],
+    bindings: Mapping[str, str],
+    cpu_workers: int = 2,
+    gpu_workers: int = 1,
+    threshold_manifest: Mapping[str, Any] | None = None,
+    stop_requested: Callable[[], bool] | None = None,
+) -> dict[str, Any]:
+    """At most two in-flight samples; stop submits no new work and drains safely."""
+
+    from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
+
+    if cpu_workers < 1 or gpu_workers != 1:
         raise RuntimeError("BRAINIAC_ORCHESTRATION_WORKER_COUNT_INVALID")
-    # CPU stage prepares scratch payloads; the single GPU lane serializes the
-    # device-bound stage.  Callable pipelines execute as one stage on the GPU
-    # lane while scratch preparation stays on the CPU lanes.
-    results: list[dict[str, Any]] = []
+    max_in_flight = min(2, int(cpu_workers))
+    indexed = list(enumerate(items))
+    results: dict[int, dict[str, Any]] = {}
+    quarantined: list[str] = []
+    next_index = 0
 
     def process(item: Mapping[str, str]) -> dict[str, Any]:
         return run_sample_transaction(
-            item, root, pipeline=pipeline_factory(), bindings=bindings
+            item,
+            root,
+            pipeline=pipeline_factory(),
+            bindings=bindings,
+            threshold_manifest=threshold_manifest,
         )
 
-    with ThreadPoolExecutor(max_workers=cpu_workers + gpu_workers) as pool:
-        for receipt in pool.map(process, list(items)):
-            results.append(receipt)
-    return results
+    with ThreadPoolExecutor(max_workers=max_in_flight) as pool:
+        pending: dict[Future, int] = {}
+
+        def submit_available() -> None:
+            nonlocal next_index
+            while (
+                next_index < len(indexed)
+                and len(pending) < max_in_flight
+                and not (stop_requested is not None and stop_requested())
+            ):
+                position, item = indexed[next_index]
+                next_index += 1
+                pending[pool.submit(process, item)] = position
+
+        submit_available()
+        while pending:
+            done, _ = wait(tuple(pending), return_when=FIRST_COMPLETED)
+            for future in done:
+                position = pending.pop(future)
+                try:
+                    results[position] = future.result()
+                except RuntimeError as exc:
+                    if "BRAINIAC_PREPROCESSING_QUARANTINE_" in str(exc):
+                        quarantined.append(str(indexed[position][1]["sample_hash"]))
+                    else:
+                        raise
+            submit_available()
+
+    paused = next_index < len(indexed) and bool(stop_requested and stop_requested())
+    status = (
+        "PAUSED_RESUMABLE"
+        if paused
+        else ("BLOCKED_BY_QUARANTINE" if quarantined else "COMPLETED")
+    )
+    ordered = [results[index] for index in sorted(results)]
+    return {
+        "status": status,
+        "exit_code": 75 if paused else (3 if quarantined else 0),
+        "completed": len(ordered),
+        "selected": len(indexed),
+        "quarantined": quarantined,
+        "receipts": ordered,
+        "max_in_flight": max_in_flight,
+    }
 
 
 def execute(
@@ -792,6 +1114,8 @@ def execute(
     bindings: Mapping[str, str],
     membership: Sequence[Mapping[str, str]],
     stop_requested: Callable[[], bool] | None = None,
+    threshold_manifest: Mapping[str, Any] | None = None,
+    parallel: bool = False,
 ) -> dict[str, Any]:
     """Run one bounded batch strictly inside the B1 PREPARE_RAW_T1 lease."""
 
@@ -801,10 +1125,22 @@ def execute(
     if not items:
         raise RuntimeError("BRAINIAC_PREPROCESSING_BATCH_EMPTY")
     with brainiac_action_lease("PREPARE_RAW_T1"):
+        if parallel:
+            return run_orchestrated_batch(
+                items,
+                root,
+                pipeline_factory=pipeline_factory,
+                bindings=bindings,
+                cpu_workers=2,
+                gpu_workers=1,
+                threshold_manifest=threshold_manifest,
+                stop_requested=stop_requested,
+            )
         return run_batch(
             items,
             root,
             pipeline_factory=pipeline_factory,
             bindings=bindings,
             stop_requested=stop_requested,
+            threshold_manifest=threshold_manifest,
         )

@@ -5,3 +5,10 @@
 *.yml text eol=lf
 *.json text eol=lf
 Makefile text eol=lf
+
+# Pinned BrainIAC vendor text must keep the exact upstream LF bytes used by
+# strict-load/source-tree receipts even when global core.autocrlf=true.
+vendor/BrainIAC/ba60f45bed832ee0e5683c678caeaeefe2072f0d/LICENSE text eol=lf
+vendor/BrainIAC/ba60f45bed832ee0e5683c678caeaeefe2072f0d/requirements.txt text eol=lf
+vendor/BrainIAC/ba60f45bed832ee0e5683c678caeaeefe2072f0d/**/*.csv text eol=lf
+vendor/BrainIAC/ba60f45bed832ee0e5683c678caeaeefe2072f0d/**/*.ipynb text eol=lf

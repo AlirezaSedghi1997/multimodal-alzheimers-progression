@@ -1,0 +1,46 @@
+# BrainIAC feature preparation v1 (Plan 004 / B3)
+# Policy authority: governance/brainiac_feature_preparation_policy_v1.json
+# Layout/runtime knobs only; scientific thresholds live in the policy JSON.
+
+schema_version: 1
+roots:
+  features: data/derived/method_x_brainiac/r1_features_v1
+  brainiac_shards: data/derived/method_x_brainiac/r1_features_v1/brainiac_shards
+  brainiac_smoke_shards: data/derived/method_x_brainiac/r1_features_v1/brainiac_shards_smoke
+  resnet34: data/derived/method_x_brainiac/r1_features_v1/resnet34
+  v2_preprocessing_primary: data/derived/method_x_brainiac/r1_primary_v2
+
+embeddings:
+  dim: 768
+  expected_rows: 1669
+  final_datasets: [sample_hash, embedding]
+  batch_candidates: [4, 2, 1]
+  batch_probe_samples: 16
+  batch_cosine_min: 0.999999
+  batch_abs_drift_max: 1.0e-6
+  vram_budget_gb: 7.5
+
+split_registry:
+  dev_rows: 1336
+  sealed_rows: 333
+  folds: 5
+  role_proportions: {head_fit: 0.65, model_selection: 0.15, probability_calibration: 0.10, conformal_calibration: 0.10}
+  minority_role_floor: 33
+  role_seed_suffix: 13
+  sealed_domain: caft_r1_sealed_holdout
+  sealed_class_values_locked_until: EVALUATION_STAGE_AUTHORIZATION
+
+resnet34:
+  local_embedding_dim: 128
+  locked_logit_dim: 1
+  canonical_features: [age, sex, education_years, apoe4_carrier, mmse_base]
+  tabular_fit_role: head_fit
+  outer_loader_calls_allowed_before_lock: 0
+  battery_root_read_only: true
+
+forbidden_sources: [
+  t1_volume_cache_128, master_catalog, ab_label, pet, is_synthetic,
+  augmentation, fold_, external_holdout,
+]
+
+claim_ceiling: POST_HOC_INTERNAL_TECHNICAL_EVIDENCE
