@@ -131,7 +131,7 @@ DEFAULT_OPTIONAL_ARTIFACTS = {
 }
 
 PINNED_POLICY_SHA256 = "9ef85415fcc1f7608a060ff2c6072841adb8b9e91be97764b70446dc42d46dfc"
-PINNED_SCOPE_AMENDMENT_SHA256 = "6b313303ff16c16c160838c4022801a5a2fd3de0aed2084ac7289cf8ecfae5fc"
+PINNED_SCOPE_AMENDMENT_SHA256 = "d153193ad6f6379300e7c1ce0cff5858a45ee293db19f81b3ec7bc60b8d85386"
 
 EFFECTIVE_FIVE = (
     "resnet10_3d",
@@ -662,6 +662,8 @@ _WRITER_MARKERS = (
     "scripts/train_3d_mri.py",
     "scripts\\run_method_x_claim_benchmark.py",
     "scripts/run_method_x_claim_benchmark.py",
+    "scripts\\run_method_y_image_training_v3.py",
+    "scripts/run_method_y_image_training_v3.py",
     "scripts\\research\\preprocess_brainiac_raw_t1.py",
     "scripts/research/preprocess_brainiac_raw_t1.py",
     "scripts\\research\\extract_brainiac_embeddings.py",
@@ -669,6 +671,27 @@ _WRITER_MARKERS = (
     "scripts\\research\\run_brainiac_caft_pipeline.py",
     "scripts/research/run_brainiac_caft_pipeline.py",
 )
+
+_WRITER_BASENAME_MARKERS = (
+    "train_3d_mri.py",
+    "run_method_x_claim_benchmark.py",
+    "run_method_y_image_training_v3.py",
+    "run_method_y_training_v2.py",
+    "preprocess_brainiac_raw_t1.py",
+    "prepare_brainiac_raw_t1_v2.py",
+    "run_brainiac_caft_pipeline.py",
+)
+
+
+def _command_is_project_writer(command_line: str) -> bool:
+    normalized = str(command_line).replace("\\", "/").casefold()
+    if any(name in normalized for name in _WRITER_BASENAME_MARKERS):
+        return True
+    if re.search(r"(?:^|[/\\s\"'])extract_brainiac_embeddings[^/\\s\"']*\.py", normalized):
+        return True
+    return bool(
+        re.search(r"(?:^|[/\\s\"'])train_[^/\\s\"']*method_y[^/\\s\"']*\.py", normalized)
+    )
 
 
 def _default_process_provider() -> list[dict[str, Any]]:
@@ -700,10 +723,69 @@ def _default_process_provider() -> list[dict[str, Any]]:
     return [dict(row) for row in rows]
 
 
+def _default_gpu_process_provider() -> list[dict[str, Any]]:
+    completed = subprocess.run(
+        [
+            "nvidia-smi",
+            "--query-compute-apps=pid,process_name,used_gpu_memory",
+            "--format=csv,noheader,nounits",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=15,
+    )
+    if completed.returncode != 0:
+        raise RuntimeError("GPU_PROCESS_INSPECTION_FAILED")
+    rows: list[dict[str, Any]] = []
+    for raw_line in completed.stdout.splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        parts = [part.strip() for part in line.split(",", 2)]
+        if len(parts) != 3:
+            raise RuntimeError("GPU_PROCESS_INSPECTION_INVALID")
+        try:
+            pid = int(parts[0])
+        except ValueError as exc:
+            raise RuntimeError("GPU_PROCESS_INSPECTION_INVALID") from exc
+        memory_text = parts[2].strip("[]").strip()
+        try:
+            used_memory = (
+                None
+                if memory_text.casefold() in {"n/a", "not supported", ""}
+                else int(float(memory_text))
+            )
+        except ValueError as exc:
+            raise RuntimeError("GPU_PROCESS_INSPECTION_INVALID") from exc
+        rows.append(
+            {
+                "pid": pid,
+                "process_name": parts[1],
+                "used_gpu_memory_mb": used_memory,
+            }
+        )
+    return rows
+
+
+def _known_nonwriter_host_gpu_client(
+    process: Mapping[str, Any], gpu_row: Mapping[str, Any]
+) -> bool:
+    """Recognize only the Codex desktop UI's non-measurable WDDM client."""
+
+    return (
+        str(process.get("name") or "").casefold() == "chatgpt.exe"
+        and "openai.codex_" in str(process.get("command_line") or "").casefold()
+        and gpu_row.get("used_gpu_memory_mb") is None
+        and not _command_is_project_writer(str(process.get("command_line") or ""))
+    )
+
+
 def inspect_writer_state(
     battery: Mapping[str, Any],
     *,
     process_provider: Any | None = None,
+    gpu_provider: Any | None = None,
 ) -> dict[str, Any]:
     """Inspect live processes and reconcile manifest-recorded owners.
 
@@ -712,6 +794,11 @@ def inspect_writer_state(
     """
 
     provider = process_provider or _default_process_provider
+    gpu_process_provider = (
+        gpu_provider
+        if gpu_provider is not None
+        else ((lambda: []) if process_provider is not None else _default_gpu_process_provider)
+    )
     try:
         supplied = provider() if callable(provider) else provider
         if not isinstance(supplied, Sequence) or isinstance(supplied, (str, bytes)):
@@ -739,10 +826,44 @@ def inspect_writer_state(
                     item.get("CreationDate", item.get("creation_time", "")) or ""
                 ),
             }
+        supplied_gpu = (
+            gpu_process_provider()
+            if callable(gpu_process_provider)
+            else gpu_process_provider
+        )
+        if not isinstance(supplied_gpu, Sequence) or isinstance(
+            supplied_gpu, (str, bytes)
+        ):
+            raise RuntimeError("GPU_PROCESS_INSPECTION_INVALID")
+        gpu_rows: list[dict[str, Any]] = []
+        for item in supplied_gpu:
+            if not isinstance(item, Mapping):
+                raise RuntimeError("GPU_PROCESS_INSPECTION_INVALID")
+            pid = int(item.get("pid", item.get("ProcessId", 0)))
+            if pid <= 0:
+                raise RuntimeError("GPU_PROCESS_INSPECTION_INVALID")
+            used_memory = item.get(
+                "used_gpu_memory_mb", item.get("used_gpu_memory")
+            )
+            if used_memory is not None:
+                used_memory = int(used_memory)
+                if used_memory < 0:
+                    raise RuntimeError("GPU_PROCESS_INSPECTION_INVALID")
+            gpu_rows.append(
+                {
+                    "pid": pid,
+                    "process_name": str(
+                        item.get("process_name", item.get("Name", "")) or ""
+                    ),
+                    "used_gpu_memory_mb": used_memory,
+                }
+            )
     except (OSError, RuntimeError, subprocess.SubprocessError, TypeError, ValueError):
         return {
             "inspection_status": "UNKNOWN",
             "active_writers": [],
+            "foreign_gpu_processes": [],
+            "ambient_gpu_processes": [],
             "recorded_owners": [],
         }
 
@@ -753,7 +874,7 @@ def inspect_writer_state(
         if (
             process["pid"] != os.getpid()
             and executable.startswith("python")
-            and any(marker in lowered for marker in _WRITER_MARKERS)
+            and _command_is_project_writer(lowered)
         ):
             active.append(
                 {
@@ -762,6 +883,32 @@ def inspect_writer_state(
                     "creation_time": process["creation_time"],
                 }
             )
+
+    foreign_gpu_processes: list[dict[str, Any]] = []
+    ambient_gpu_processes: list[dict[str, Any]] = []
+    for gpu_row in gpu_rows:
+        pid = int(gpu_row["pid"])
+        if pid == os.getpid():
+            continue
+        process = processes.get(pid)
+        if process is None:
+            return {
+                "inspection_status": "UNKNOWN",
+                "active_writers": sorted(active, key=lambda row: row["pid"]),
+                "foreign_gpu_processes": [],
+                "ambient_gpu_processes": [],
+                "recorded_owners": [],
+            }
+        public_row = {
+            "pid": pid,
+            "name": process["name"] or gpu_row["process_name"],
+            "creation_time": process["creation_time"],
+            "used_gpu_memory_mb": gpu_row["used_gpu_memory_mb"],
+        }
+        if _known_nonwriter_host_gpu_client(process, gpu_row):
+            ambient_gpu_processes.append(public_row)
+        elif not _command_is_project_writer(process["command_line"]):
+            foreign_gpu_processes.append(public_row)
 
     owners: list[dict[str, Any]] = []
     rows = battery.get("models")
@@ -804,6 +951,12 @@ def inspect_writer_state(
     return {
         "inspection_status": "PASS",
         "active_writers": sorted(active, key=lambda row: row["pid"]),
+        "foreign_gpu_processes": sorted(
+            foreign_gpu_processes, key=lambda row: row["pid"]
+        ),
+        "ambient_gpu_processes": sorted(
+            ambient_gpu_processes, key=lambda row: row["pid"]
+        ),
         "recorded_owners": owners,
     }
 
@@ -1022,11 +1175,18 @@ def _writer_blockers(writer_state: Mapping[str, Any]) -> list[str]:
     if writer_state.get("inspection_status") != "PASS":
         return ["WRITER_LIVENESS_UNKNOWN"]
     active = writer_state.get("active_writers")
+    foreign_gpu = writer_state.get("foreign_gpu_processes", [])
     owners = writer_state.get("recorded_owners")
-    if not isinstance(active, list) or not isinstance(owners, list):
+    if (
+        not isinstance(active, list)
+        or not isinstance(foreign_gpu, list)
+        or not isinstance(owners, list)
+    ):
         return ["WRITER_LIVENESS_UNKNOWN"]
     if active:
         return ["ACTIVE_BRAINIAC_OR_CNN_WRITER"]
+    if foreign_gpu:
+        return ["FOREIGN_CUDA_COMPUTE_PROCESS"]
     for owner in owners:
         if not isinstance(owner, Mapping):
             return ["WRITER_LIVENESS_UNKNOWN"]
