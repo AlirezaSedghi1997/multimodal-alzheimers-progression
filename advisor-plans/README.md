@@ -230,3 +230,49 @@ Plan 007 (R3)، acceptance Plan 008 (R4)، تصمیم اپراتور split (R0)�
 [`GEMINI_GLM_METHOD_Y_IMAGE_V3_MASTER_PROMPT_FA.md`](GEMINI_GLM_METHOD_Y_IMAGE_V3_MASTER_PROMPT_FA.md)
 را کامل کپی کنید و `<ASSIGNED_PLAN>` را تعیین کنید. manifest hashها:
 [`PACKAGE_MANIFEST_METHOD_Y_IMAGE_V3_20260824.md`](PACKAGE_MANIFEST_METHOD_Y_IMAGE_V3_20260824.md).
+
+---
+
+# متمم ناظر BrainIAC پیش از preprocessing — 2026-08-28
+
+این متمم، وضعیت و دستور اجرای فعلی BrainIAC را از روی شواهد زنده بازتعریف
+می‌کند و در هر تعارضی بر بخش BrainIAC مورخ 2026-08-22 اولویت دارد. بخش مستقل
+Method Y بالا/پایین این فایل با این متمم تغییر نمی‌کند.
+
+## منابع مرجع این دور
+
+- [گزارش ممیزی ناظر](BRAINIAC_PREPROCESSING_SUPERVISOR_AUDIT_20260828.md)
+- [ماتریس پذیرش](BRAINIAC_PREPROCESSING_ACCEPTANCE_MATRIX_20260828.md)
+- [پرامپت جامع Gemini/GLM](BRAINIAC_PREPROCESSING_REPAIR_MASTER_PROMPT_20260828_FA.md)
+- [manifest هش بسته](BRAINIAC_PREPROCESSING_REPAIR_PACKAGE_MANIFEST_20260828.md)
+
+## ترتیب اجرای قطعی و وضعیت
+
+هر عامل فقط یک کارت را، به‌ترتیب زیر و در همان worktree اجرا کند. آغاز کارت
+بعدی بدون artifact پذیرش کارت قبلی ممنوع است.
+
+| Plan | عنوان | وابستگی | وضعیت فعلی |
+|---:|---|---|---|
+| 014 | freeze زنده، کشف همهٔ writerها و reconciliation | — | DONE |
+| 015 | بستن Git/dependency closure | 014 | TODO |
+| 016 | سخت‌سازی execution profile، signal و readiness builder | 015 | TODO |
+| 017 | پذیرش واقعی preprocessing بدون primary run | 014–016 | TODO |
+| 018 | بازسازی traceability و صدور readiness preprocessing | 017 | TODO |
+| 019 | اجرای primary روی 1669 MRI پس از readiness | 018 | BLOCKED_PENDING_READINESS |
+
+## supersession و مرز اجرا
+
+- Plan 002 از نظر قرارداد اولیه حفظ می‌شود، اما پذیرش و repair پیاده‌سازی آن
+  فقط با Planهای 014 تا 018 تعیین می‌شود: `SUPERSEDED_FOR_REPAIR_BY_014_018`.
+- بخش runtime در Plan 003 با Plan 019 جایگزین شده است؛ فرمان قدیمی Plan 003
+  پیش از PASS شدن Plan 018 اجرا نشود.
+- Planهای 005 تا 008 هنوز اجرا یا پذیرفته نشده‌اند. Plan 006 فقط scaffold
+  آزمایش‌نشده است و عنوان «trainer آماده» ندارد.
+- هیچ‌یک از کارت‌های 014 تا 018 اجازهٔ اجرای primary 1669، extraction نهایی،
+  CAFT training، outer evaluation یا LoRA را نمی‌دهد.
+- مسیر authoritative همین پوشه روی `H:\New project` است؛ نسخهٔ Desktop ساخته
+  نشده است.
+
+وضعیت شروع این دور: `NOT_READY_FOR_PRIMARY_PREPROCESSING`. صدور
+`READY_TO_START_OR_RESUME_BRAINIAC_PREPROCESSING.json` فقط در پایان Plan 018
+و پس از PASS ماشین‌خوان همهٔ gateهای 014 تا 017 مجاز است.
