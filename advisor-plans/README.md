@@ -254,7 +254,7 @@ Method Y بالا/پایین این فایل با این متمم تغییر ن�
 | Plan | عنوان | وابستگی | وضعیت فعلی |
 |---:|---|---|---|
 | 014 | freeze زنده، کشف همهٔ writerها و reconciliation | — | DONE |
-| 015 | بستن Git/dependency closure | 014 | TODO |
+| 015 | بستن Git/dependency closure | 014 | DONE |
 | 016 | سخت‌سازی execution profile، signal و readiness builder | 015 | TODO |
 | 017 | پذیرش واقعی preprocessing بدون primary run | 014–016 | TODO |
 | 018 | بازسازی traceability و صدور readiness preprocessing | 017 | TODO |
