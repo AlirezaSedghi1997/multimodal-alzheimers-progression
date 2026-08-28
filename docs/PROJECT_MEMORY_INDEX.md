@@ -2,7 +2,7 @@
 
 > **SUPERSESSION 2026-08-26 — ممیزی ناظر نهایی Image v3.2.**
 
-## Live 2026-08-26 - P0-P3 repair gate 7/12
+## Live 2026-08-26 - P0-P3 repair gate 10/12
 
 Gate 12-sample equivalence running: 7/12 sequential receipts (PID 13276, wall ~5h, CPU ~5400s)
 P0 freeze f72bc9f4 + superseded moves after DEAD proof 19216/1360

@@ -33,7 +33,11 @@ Root: `results/final_results/method_x_model_battery_v3_depth_and_diversity_20260
 
 Battery is **TERMINAL** (2026-08-25). Manifest SHA `40a4a009b3a2453fb953e2b2e9b9ec789bdf896741dc2278a898a3b38fdb971d`, 5/5 effective `COMPLETED`, `.battery.lock` ABSENT. The scheduler validates all five rows and skips them. Replay distance is 0. Journal, mirror, reports, manifests and scientific artifacts remain authoritative on H.
 
-## Automated gate status (2026-08-25)
+## Automated gate status (2026-08-26)
+
+- gate 12-sample equivalence: 10/12 sequential receipts (wall ~5h, CPU ~5400s)
+- BrainIAC PREPARE_RAW_T1 gate: llowed:true (uild_live_readiness PASS, prepare_brainiac_raw_t1_v2.py --mode preflight PASS);
+
 
 - official preflight: `PASS` with manifest SHA `40a4a009b3a...` (terminal) and `verify_battery_terminal` `terminal:true`;
 - battery: `TERMINAL` — `FIVE_CNN_BATTERY_NOT_TERMINAL` no longer sole blocker;
