@@ -1,0 +1,139 @@
+{
+  "schema_version": 3,
+  "artifact": "BRAINIAC_PREPROCESSING_R1_PRIMARY_V2_POLICY_V3",
+  "supersedes": "governance/brainiac_preprocessing_r1_primary_v2_policy_v2.json",
+  "created_at_utc": "2026-08-29T06:00:00+00:00",
+  "immutable": true,
+  "claim_ceiling": "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE",
+  "pipeline_contract": {
+    "raw_input": "raw T1 from read-only evidence root, located by filename hash only",
+    "stages": [
+      "full_resolution_N4",
+      "deterministic_rigid_registration_seed_20260821",
+      "vendor_hd_bet_fast_fold0",
+      "official_brainiac_validation_resize_96_trilinear",
+      "nonzero_channel_wise_normalization"
+    ],
+    "affine_or_nonrigid_primary": false,
+    "direct_128_to_96_primary": false,
+    "np_roll_morphology_forbidden": true
+  },
+  "pinned_assets": {
+    "vendor_commit": "ba60f45bed832ee0e5683c678caeaeefe2072f0d",
+    "hd_bet_weight_relative_path": "vendor/BrainIAC/ba60f45bed832ee0e5683c678caeaeefe2072f0d/src/preprocessing/hd-bet_params/0.model",
+    "hd_bet_weight_sha256": "6f75233753c4750672815e2b7a86db754995ae44b8f1cd77bccfc37becd2d83c",
+    "template_relative_path": "models/pretrained/brainiac/templates/spm25_avg152T1_2mm.nii",
+    "template_sha256": "213557a43d4387243c51bf208b3a672ae2eb68091f7ffe47c28a9f69d9e3d9fd",
+    "official_transform_source": "vendor/BrainIAC/ba60f45bed832ee0e5683c678caeaeefe2072f0d/src/dataset.py"
+  },
+  "fixed_qc_limits": {
+    "rigid_determinant": [0.999, 1.001],
+    "orthogonality_error_max": 0.001,
+    "rotation_deg_max": 45.0,
+    "translation_norm_mm_max": 100.0,
+    "foreground_fraction": [0.05, 0.5],
+    "normalized_nonzero_std": [0.95, 1.05],
+    "normalized_nonzero_mean_abs_max": 0.001
+  },
+  "calibration": {
+    "rule": "32_lowest_sha256_of_sample_hash_label_blind",
+    "threshold_rule": "median_pm_6_mad",
+    "mad_zero_fallback": "FIXED_CONTRACT_BOUNDS",
+    "immutable_threshold_manifest": true
+  },
+  "quarantine": {
+    "com_and_similarity_both_worse": "QUARANTINE_SAMPLE_AND_BLOCK_AGGREGATE",
+    "hard_qc_or_mad_anomaly": "QUARANTINE_SAMPLE_AND_BLOCK_AGGREGATE",
+    "auto_accept_forbidden": true
+  },
+  "resume": {
+    "committed_valid_sample": "SKIP",
+    "committed_mismatch": "BLOCK_NEVER_RECOMPUTE",
+    "receipt_without_journal_matching_bytes": "FINALIZE_JOURNAL_ONLY",
+    "uncommitted_payload": "QUARANTINE_NEVER_OVERWRITE",
+    "stale_scratch": "ARCHIVE_WITH_REASON_NEVER_DELETE",
+    "clean_stop_exit_code": 75
+  },
+  "performance_evidence": {
+    "relative_path": "results/method_x_registry/brainiac_r1/brainiac_preprocessing_performance_probe_20260829.json",
+    "sha256": "8e746558a22252210f6be42a9fd7da112267e360d885bdbf8819112ba556ae7b",
+    "scientific_pipeline_changed": false,
+    "concurrent_n4_byte_equivalent": true,
+    "concurrent_registration_rejected": true
+  },
+  "orchestration": {
+    "equivalence_required": true,
+    "equivalence_design": "12_LABEL_BLIND_ONE_SEQUENTIAL_TWO_INDEPENDENT_PARALLEL",
+    "cpu_workers_max": 2,
+    "gpu_workers_max": 1,
+    "max_parallel_samples": 2,
+    "n4_samples_in_flight": 2,
+    "registration_workers_max": 1,
+    "parallel_minimum_speedup_fraction": 0.15,
+    "on_equivalence_failure_or_insufficient_speedup": "SEQUENTIAL_SAFE",
+    "selection_authority": "HASH_LOCKED_EXECUTION_PROFILE_ONLY",
+    "runtime_policy_mutation_forbidden": true,
+    "worker_model": "PARALLEL_N4_SERIAL_REGISTRATION_SERIAL_GPU",
+    "itk_threads_env": "BRAINIAC_V2_ITK_THREADS",
+    "itk_threads_default": 8
+  },
+  "storage_locality": {
+    "authoritative_artifacts": "H_ONLY",
+    "authoritative_roles": [
+      "outputs",
+      "transforms",
+      "receipts",
+      "journals",
+      "quarantine",
+      "manifests",
+      "reports"
+    ],
+    "local_scratch_role": "EPHEMERAL_NONAUTHORITATIVE_ONLY",
+    "local_scratch_allowlist": "C:\\Users\\USER\\AppData\\Local\\AMUSE-X\\brainiac_preprocessing_staging",
+    "local_scratch_max_bytes": 1073741824,
+    "local_scratch_minimum_free_bytes": 21474836480,
+    "local_scratch_expected_peak_per_sample_bytes_lt": 33554432,
+    "cross_volume_commit": "COPY_FSYNC_HASH_VERIFY_THEN_H_ATOMIC_RENAME",
+    "stale_local_scratch": "VERIFIED_ARCHIVE_TO_H_QUARANTINE_BEFORE_REMOVAL",
+    "silent_fallback": false
+  },
+  "sensitivity": {
+    "sample_count": 64,
+    "selection_rule": "lowest_sample_hash",
+    "direct_128_to_96_role": "SENSITIVITY_ONLY_NEVER_PRIMARY",
+    "mask_stability_median_cosine_min": 0.99,
+    "mask_stability_p05_cosine_min": 0.97,
+    "morphology": "THREE_AXIS_SIX_NEIGHBOUR_NO_WRAPAROUND"
+  },
+  "privacy": {
+    "labels_read": false,
+    "pet_read": false,
+    "raw_path_persisted": false,
+    "raw_identifier_persisted": false,
+    "membership_fields": ["sample_hash", "t1_file_hash"],
+    "recursive_key_denylist_enforced": true
+  },
+  "execution": {
+    "requires_brainiac_action_lease": "PREPARE_RAW_T1",
+    "cnn_gpu_exclusion_enforced": true,
+    "production_device": "cuda",
+    "cpu_fallback": false,
+    "exit_codes": {
+      "completed": 0,
+      "fail_closed_blocker": 3,
+      "paused_resumable": 75,
+      "contract_mismatch": 78
+    },
+    "smoke_root_separate_versioned": true,
+    "full_run_root": "data/derived/method_x_brainiac/r1_primary_v2",
+    "smoke_root": "data/derived/method_x_brainiac/r1_primary_v2_smoke"
+  },
+  "downstream_gates": {
+    "plans_005_006_007_before_1669_valid_receipts": "HARD_DISABLED",
+    "external_evaluation_optional_separate_authorization": true
+  },
+  "schema_v1_policy": {
+    "legacy_entrypoints_stay_disabled": true,
+    "historical_receipts_retained_never_counted_in_v2": true
+  }
+}

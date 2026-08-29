@@ -1392,11 +1392,11 @@ def _archive_proven_dead_primary_sample_locks() -> list[str]:
 
 
 def _pin_itk_threads() -> int:
-    """Pin ITK thread pool for bit-deterministic N4/registration (Plan-002 rev)."""
+    """Pin the measured byte-equivalent ITK thread budget (runtime policy v3)."""
 
     import SimpleITK as sitk
 
-    threads = max(1, int(os.environ.get("BRAINIAC_V2_ITK_THREADS", "1")))
+    threads = max(1, int(os.environ.get("BRAINIAC_V2_ITK_THREADS", "8")))
     sitk.ProcessObject.SetGlobalDefaultNumberOfThreads(threads)
     return threads
 
@@ -1506,14 +1506,26 @@ def _policy() -> dict[str, Any]:
     orchestration = payload.get("orchestration")
     execution = payload.get("execution")
     assets = payload.get("pinned_assets")
+    storage = payload.get("storage_locality")
+    performance = payload.get("performance_evidence")
+    performance_path = (
+        ROOT / str(performance.get("relative_path"))
+        if isinstance(performance, Mapping)
+        else ROOT / "__missing_performance_evidence__"
+    )
     if (
-        payload.get("schema_version") != 2
+        payload.get("schema_version") != 3
         or payload.get("immutable") is not True
         or not isinstance(orchestration, Mapping)
         or orchestration.get("runtime_policy_mutation_forbidden") is not True
         or int(orchestration.get("cpu_workers_max", -1)) != 2
         or int(orchestration.get("gpu_workers_max", -1)) != 1
         or int(orchestration.get("max_parallel_samples", -1)) != 2
+        or int(orchestration.get("n4_samples_in_flight", -1)) != 2
+        or int(orchestration.get("registration_workers_max", -1)) != 1
+        or int(orchestration.get("itk_threads_default", -1)) != 8
+        or orchestration.get("worker_model")
+        != "PARALLEL_N4_SERIAL_REGISTRATION_SERIAL_GPU"
         or float(orchestration.get("parallel_minimum_speedup_fraction", -1.0))
         != 0.15
         or not isinstance(execution, Mapping)
@@ -1524,6 +1536,20 @@ def _policy() -> dict[str, Any]:
         or assets.get("hd_bet_weight_sha256")
         != v2.EXPECTED_HD_BET_WEIGHT_SHA256
         or assets.get("template_sha256") != v2.EXPECTED_TEMPLATE_SHA256
+        or not isinstance(storage, Mapping)
+        or storage.get("authoritative_artifacts") != "H_ONLY"
+        or storage.get("local_scratch_allowlist") != str(v2.LOCAL_SCRATCH_ROOT)
+        or int(storage.get("local_scratch_max_bytes", -1))
+        != v2.LOCAL_SCRATCH_MAX_BYTES
+        or int(storage.get("local_scratch_minimum_free_bytes", -1))
+        != v2.LOCAL_SCRATCH_MIN_FREE_BYTES
+        or storage.get("silent_fallback") is not False
+        or not isinstance(performance, Mapping)
+        or performance.get("scientific_pipeline_changed") is not False
+        or performance.get("concurrent_n4_byte_equivalent") is not True
+        or performance.get("concurrent_registration_rejected") is not True
+        or not performance_path.is_file()
+        or sha256_file(performance_path) != performance.get("sha256")
     ):
         raise RuntimeError("BRAINIAC_V2_POLICY_CONTRACT_INVALID")
     return payload
@@ -1540,6 +1566,7 @@ def _config() -> dict[str, Any]:
     calibration = payload.get("calibration")
     sensitivity = payload.get("sensitivity")
     orchestration = payload.get("orchestration")
+    storage = payload.get("storage_locality")
     signal_contract = payload.get("signal")
     device = payload.get("device")
     if (
@@ -1559,6 +1586,11 @@ def _config() -> dict[str, Any]:
         or not isinstance(orchestration, Mapping)
         or int(orchestration.get("cpu_workers_max", -1)) != 2
         or int(orchestration.get("gpu_workers_max", -1)) != 1
+        or int(orchestration.get("n4_samples_in_flight", -1)) != 2
+        or int(orchestration.get("registration_workers_max", -1)) != 1
+        or int(orchestration.get("itk_threads_default", -1)) != 8
+        or orchestration.get("worker_model")
+        != "PARALLEL_N4_SERIAL_REGISTRATION_SERIAL_GPU"
         or orchestration.get("equivalence_required") is not True
         or orchestration.get("equivalence_design")
         != "12_LABEL_BLIND_ONE_SEQUENTIAL_TWO_INDEPENDENT_PARALLEL"
@@ -1567,6 +1599,14 @@ def _config() -> dict[str, Any]:
         != 0.15
         or orchestration.get("execution_profile_authority")
         != "HASH_LOCKED_LIVE_BYTE_VERIFIED"
+        or not isinstance(storage, Mapping)
+        or storage.get("authoritative_artifacts") != "H_ONLY"
+        or storage.get("local_scratch") != str(v2.LOCAL_SCRATCH_ROOT)
+        or int(storage.get("local_scratch_max_bytes", -1))
+        != v2.LOCAL_SCRATCH_MAX_BYTES
+        or int(storage.get("local_scratch_minimum_free_bytes", -1))
+        != v2.LOCAL_SCRATCH_MIN_FREE_BYTES
+        or storage.get("silent_fallback") is not False
         or not isinstance(signal_contract, Mapping)
         or int(signal_contract.get("clean_stop_exit_code", -1)) != 75
         or signal_contract.get("safe_boundary") != "after_current_sample_commit"
@@ -1826,7 +1866,15 @@ def _relative_com(com: Any, template_com: Any) -> list[float]:
     return delta.tolist()
 
 
+_REGISTRATION_LOCK = threading.Lock()
 _GPU_LOCK = threading.Lock()
+
+
+def _serialized_registration_stage(operation: Callable[[], Any]) -> Any:
+    """Keep all random-sampled registration/QC in one deterministic lane."""
+
+    with _REGISTRATION_LOCK:
+        return operation()
 
 
 def _run_hd_bet(registered: Path, brain_output: Path, *, device: str) -> None:
@@ -1902,41 +1950,83 @@ def make_real_pipeline(
         import numpy as np
         import SimpleITK as sitk
 
+        total_started = time.monotonic()
         sample_hash = str(item["sample_hash"])
         source_path = sources[sample_hash]  # in-memory only; never persisted
         source = sitk.ReadImage(str(source_path), sitk.sitkFloat32)
         if source.GetDimension() != 3 or min(source.GetSize()) <= 0:
             raise RuntimeError("BRAINIAC_V2_RAW_T1_GEOMETRY_INVALID")
+        n4_started = time.monotonic()
         n4 = sitk.N4BiasFieldCorrection(source)
-        transform, initial_transform, _metric_after = _registration(
-            fixed_template, n4, sitk
-        )
-        initial_registered = sitk.Resample(
-            n4,
-            fixed_template,
-            initial_transform,
-            sitk.sitkLinear,
-            0.0,
-            sitk.sitkFloat32,
-        )
-        similarity_before = _metric_value(fixed_template, initial_registered, sitk)
-        registered = sitk.Resample(
-            n4, fixed_template, transform, sitk.sitkLinear, 0.0, sitk.sitkFloat32
-        )
-        similarity_after = _metric_value(fixed_template, registered, sitk)
-        template_com = _foreground_com_physical(fixed_template)
-        com_before = _relative_com(
-            _foreground_com_physical(initial_registered), template_com
-        )
-        com_after = _relative_com(_foreground_com_physical(registered), template_com)
-        geometry_before = _image_geometry(initial_registered)
-        geometry_after = _image_geometry(registered)
-        qc_transform = _transform_qc(transform, sitk, fixed_template)
+        n4_seconds = time.monotonic() - n4_started
+
+        registration_started = time.monotonic()
+
+        def registration_stage() -> tuple[Any, Any, Any, float, float, list[float], list[float], dict[str, Any], dict[str, Any], dict[str, float]]:
+            transform, initial_transform, _metric_after = _registration(
+                fixed_template, n4, sitk
+            )
+            initial_registered = sitk.Resample(
+                n4,
+                fixed_template,
+                initial_transform,
+                sitk.sitkLinear,
+                0.0,
+                sitk.sitkFloat32,
+            )
+            similarity_before = _metric_value(fixed_template, initial_registered, sitk)
+            registered = sitk.Resample(
+                n4,
+                fixed_template,
+                transform,
+                sitk.sitkLinear,
+                0.0,
+                sitk.sitkFloat32,
+            )
+            similarity_after = _metric_value(fixed_template, registered, sitk)
+            template_com = _foreground_com_physical(fixed_template)
+            com_before = _relative_com(
+                _foreground_com_physical(initial_registered), template_com
+            )
+            com_after = _relative_com(
+                _foreground_com_physical(registered), template_com
+            )
+            geometry_before = _image_geometry(initial_registered)
+            geometry_after = _image_geometry(registered)
+            qc_transform = _transform_qc(transform, sitk, fixed_template)
+            return (
+                transform,
+                registered,
+                initial_registered,
+                similarity_before,
+                similarity_after,
+                com_before,
+                com_after,
+                geometry_before,
+                geometry_after,
+                qc_transform,
+            )
+
+        (
+            transform,
+            registered,
+            _initial_registered,
+            similarity_before,
+            similarity_after,
+            com_before,
+            com_after,
+            geometry_before,
+            geometry_after,
+            qc_transform,
+        ) = _serialized_registration_stage(registration_stage)
+        registration_seconds = time.monotonic() - registration_started
 
         registered_path, brain_path = _scratch_paths(scratch, sample_hash)
         sitk.WriteImage(registered, str(registered_path), False)
+        hd_bet_started = time.monotonic()
         with _GPU_LOCK:
             _run_hd_bet(registered_path, brain_path, device=device)
+        hd_bet_seconds = time.monotonic() - hd_bet_started
 
         tensor = transform_contract({"image": str(brain_path)})["image"]
         array = tensor.detach().cpu().numpy().astype("float32", copy=False)
@@ -1954,6 +2044,7 @@ def make_real_pipeline(
         nib.save(nib.Nifti1Image(array[0], affine), str(output_path))
         transform_path = scratch / "transform.tfm"
         sitk.WriteTransform(transform, str(transform_path))
+        total_seconds = time.monotonic() - total_started
         if progress is not None:
             progress.tick(sample_hash)
         return {
@@ -1979,6 +2070,12 @@ def make_real_pipeline(
             "center_of_mass_after": com_after,
             "registration_similarity_before": similarity_before,
             "registration_similarity_after": similarity_after,
+            "runtime_stage_seconds": {
+                "n4": n4_seconds,
+                "registration_serial": registration_seconds,
+                "hd_bet_serial": hd_bet_seconds,
+                "total": total_seconds,
+            },
         }
 
     return pipeline
@@ -2085,6 +2182,13 @@ def preflight(*, device: str = "cuda") -> dict[str, Any]:
     checks["storage_nonreparse"] = True if all(
         not v2._is_reparse(path) for path in roots_to_check if path.exists()
     ) else False
+    local_scratch = probe(
+        "local_scratch_storage",
+        lambda: v2.inspect_local_scratch_storage(create=False),
+        lambda value: value.get("status") == "PASS"
+        and int(value.get("used_bytes", -1)) <= v2.LOCAL_SCRATCH_MAX_BYTES
+        and int(value.get("free_bytes", -1)) >= v2.LOCAL_SCRATCH_MIN_FREE_BYTES,
+    )
 
     if device == "cuda":
         try:
@@ -2158,6 +2262,7 @@ def preflight(*, device: str = "cuda") -> dict[str, Any]:
         "resolved_source_count": len(resolved or ()),
         "free_disk_gb": round(free_disk_gb, 1),
         "free_disk_ok": free_disk_gb >= MIN_FREE_DISK_GB,
+        "local_scratch_storage": local_scratch,
         "threshold_manifest_present": THRESHOLD_MANIFEST_PATH.is_file(),
         "calibration_selection_rule": f"{len(calibration)}_lowest_sha256_of_sample_hash",
         "sensitivity_selection_rule": f"{len(sensitivity)}_lowest_sample_hash",
@@ -2777,6 +2882,7 @@ def run_equivalence(
                 cpu_workers=min(2, max(1, int(workers))),
                 gpu_workers=1,
                 stop_requested=lambda: stop.requested,
+                scratch_base=v2.LOCAL_SCRATCH_ROOT,
             )
         par_elapsed = time.monotonic() - started
         if par_report["status"] == "PAUSED_RESUMABLE":
@@ -3733,6 +3839,7 @@ def run_smoke(
             cpu_workers=2,
             gpu_workers=1,
             stop_requested=lambda: stop.requested,
+            scratch_base=v2.LOCAL_SCRATCH_ROOT,
         )
     seq_by_sample = {r["sample_hash"]: r for r in sequential["receipts"]}
     mismatched: list[str] = []

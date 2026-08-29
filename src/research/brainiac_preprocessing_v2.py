@@ -67,8 +67,14 @@ RECEIPT_GENERATION = 1
 PRIMARY_ROOT = ROOT / "data" / "derived" / "method_x_brainiac" / "r1_primary_v2"
 SMOKE_ROOT = ROOT / "data" / "derived" / "method_x_brainiac" / "r1_primary_v2_smoke"
 POLICY_PATH = (
-    ROOT / "governance" / "brainiac_preprocessing_r1_primary_v2_policy_v2.json"
+    ROOT / "governance" / "brainiac_preprocessing_r1_primary_v2_policy_v3.json"
 )
+LOCAL_SCRATCH_ROOT = Path(
+    r"C:\Users\USER\AppData\Local\AMUSE-X\brainiac_preprocessing_staging"
+)
+LOCAL_SCRATCH_MAX_BYTES = 1_073_741_824
+LOCAL_SCRATCH_MIN_FREE_BYTES = 21_474_836_480
+LOCAL_SCRATCH_EXPECTED_PEAK_PER_SAMPLE_BYTES = 33_554_432
 
 CALIBRATION_SAMPLE_COUNT = 32
 SENSITIVITY_SAMPLE_COUNT = 64
@@ -568,13 +574,189 @@ def _fsync_file(path: Path) -> None:
         os.close(descriptor)
 
 
+def _same_volume(first: Path, second: Path) -> bool:
+    """Return whether two paths can use one-volume atomic rename semantics."""
+
+    first = Path(first)
+    second = Path(second)
+    if os.name == "nt":
+        return first.resolve(strict=False).drive.casefold() == second.resolve(
+            strict=False
+        ).drive.casefold()
+
+    def existing_anchor(path: Path) -> Path:
+        candidate = path.resolve(strict=False)
+        while not candidate.exists() and candidate != candidate.parent:
+            candidate = candidate.parent
+        return candidate
+
+    return existing_anchor(first).stat().st_dev == existing_anchor(second).stat().st_dev
+
+
+def _tree_size_and_validate(root: Path) -> int:
+    """Measure a controlled scratch tree without following links/reparse points."""
+
+    root = Path(root)
+    if not root.exists():
+        return 0
+    if not root.is_dir() or _is_reparse(root):
+        raise RuntimeError("BRAINIAC_LOCAL_SCRATCH_REPARSE_FORBIDDEN")
+    total = 0
+    for current, directories, files in os.walk(root, followlinks=False):
+        current_path = Path(current)
+        for name in list(directories):
+            candidate = current_path / name
+            if _is_reparse(candidate):
+                raise RuntimeError("BRAINIAC_LOCAL_SCRATCH_REPARSE_FORBIDDEN")
+        for name in files:
+            candidate = current_path / name
+            if _is_reparse(candidate) or not candidate.is_file():
+                raise RuntimeError("BRAINIAC_LOCAL_SCRATCH_ENTRY_INVALID")
+            total += candidate.stat().st_size
+    return total
+
+
+def inspect_local_scratch_storage(
+    *, scratch_base: Path | None = None, create: bool = False
+) -> dict[str, Any]:
+    """Validate the single allow-listed, bounded NVMe scratch authority."""
+
+    configured_lexical = Path(os.path.abspath(str(LOCAL_SCRATCH_ROOT)))
+    requested_lexical = Path(
+        os.path.abspath(str(Path(scratch_base or LOCAL_SCRATCH_ROOT)))
+    )
+    if requested_lexical != configured_lexical:
+        raise RuntimeError("BRAINIAC_LOCAL_SCRATCH_OUTSIDE_ALLOWLIST")
+    anchor = requested_lexical
+    while not anchor.exists() and anchor != anchor.parent:
+        anchor = anchor.parent
+    if not anchor.exists() or _is_reparse(anchor):
+        raise RuntimeError("BRAINIAC_LOCAL_SCRATCH_ANCHOR_INVALID")
+    current = requested_lexical
+    while current != anchor:
+        if current.exists() and _is_reparse(current):
+            raise RuntimeError("BRAINIAC_LOCAL_SCRATCH_REPARSE_FORBIDDEN")
+        current = current.parent
+    if create:
+        requested_lexical.mkdir(parents=True, exist_ok=True)
+    base = requested_lexical.resolve(strict=False)
+    if base != configured_lexical.resolve(strict=False):
+        raise RuntimeError("BRAINIAC_LOCAL_SCRATCH_REPARSE_FORBIDDEN")
+    used = _tree_size_and_validate(base) if base.exists() else 0
+    free = shutil.disk_usage(anchor).free
+    if used > int(LOCAL_SCRATCH_MAX_BYTES):
+        raise RuntimeError("LOCAL_SCRATCH_CAP_EXCEEDED")
+    if free < int(LOCAL_SCRATCH_MIN_FREE_BYTES):
+        raise RuntimeError("BRAINIAC_LOCAL_SCRATCH_FREE_SPACE_INSUFFICIENT")
+    return {
+        "status": "PASS",
+        "exists": base.exists(),
+        "used_bytes": int(used),
+        "free_bytes": int(free),
+        "maximum_bytes": int(LOCAL_SCRATCH_MAX_BYTES),
+        "minimum_free_bytes": int(LOCAL_SCRATCH_MIN_FREE_BYTES),
+        "authoritative": False,
+    }
+
+
+def _sample_scratch_path(root: Path, sample_hash: str, base: Path) -> Path:
+    run_key = hashlib.sha256(
+        str(Path(root).resolve(strict=False)).casefold().encode("utf-8")
+    ).hexdigest()[:20]
+    return Path(base) / run_key / sample_hash
+
+
+def resolve_sample_scratch(
+    root: Path,
+    sample_hash: str,
+    *,
+    scratch_base: Path | None = None,
+) -> Path:
+    """Resolve a privacy-bounded local scratch path and enforce its storage cap."""
+
+    base = Path(scratch_base or LOCAL_SCRATCH_ROOT)
+    storage = inspect_local_scratch_storage(scratch_base=base, create=True)
+    projected = min(
+        int(LOCAL_SCRATCH_EXPECTED_PEAK_PER_SAMPLE_BYTES),
+        max(0, int(LOCAL_SCRATCH_MAX_BYTES) // 2),
+    )
+    if int(storage["used_bytes"]) + projected > int(LOCAL_SCRATCH_MAX_BYTES):
+        raise RuntimeError("LOCAL_SCRATCH_CAP_EXCEEDED")
+    scratch = _sample_scratch_path(root, sample_hash, base.resolve(strict=True))
+    base_resolved = base.resolve(strict=True)
+    try:
+        scratch.resolve(strict=False).relative_to(base_resolved)
+    except ValueError as exc:
+        raise RuntimeError("BRAINIAC_LOCAL_SCRATCH_OUTSIDE_ALLOWLIST") from exc
+    current = scratch
+    while current != base_resolved:
+        if current.exists() and _is_reparse(current):
+            raise RuntimeError("BRAINIAC_LOCAL_SCRATCH_REPARSE_FORBIDDEN")
+        current = current.parent
+    return scratch
+
+
+def _commit_staged_file(source: Path, target: Path) -> None:
+    """Commit a staged file to H atomically, verifying cross-volume copies."""
+
+    source = Path(source)
+    target = Path(target)
+    if not source.is_file() or _is_reparse(source):
+        raise RuntimeError("BRAINIAC_PREPROCESSING_STAGED_FILE_INVALID")
+    if target.exists():
+        raise RuntimeError("BRAINIAC_PREPROCESSING_COMMIT_TARGET_EXISTS")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    source_size = source.stat().st_size
+    source_sha = sha256_file(source)
+    if _same_volume(source, target):
+        os.replace(source, target)
+    else:
+        temporary = target.with_name(
+            target.name + f".tmp-{os.getpid()}-{time.time_ns()}"
+        )
+        if temporary.exists():
+            raise RuntimeError("BRAINIAC_PREPROCESSING_COMMIT_TEMP_EXISTS")
+        try:
+            with source.open("rb") as reader, temporary.open("xb") as writer:
+                shutil.copyfileobj(reader, writer, length=8 * 1024 * 1024)
+                writer.flush()
+                os.fsync(writer.fileno())
+            if (
+                temporary.stat().st_size != source_size
+                or sha256_file(temporary) != source_sha
+            ):
+                raise RuntimeError("BRAINIAC_PREPROCESSING_CROSS_VOLUME_COPY_MISMATCH")
+            os.replace(temporary, target)
+            _fsync_file(target)
+            if target.stat().st_size != source_size or sha256_file(target) != source_sha:
+                raise RuntimeError("BRAINIAC_PREPROCESSING_CROSS_VOLUME_COMMIT_MISMATCH")
+            source.unlink()
+        finally:
+            if temporary.exists():
+                temporary.unlink()
+    _fsync_file(target)
+
+
+def _tree_manifest(root: Path) -> dict[str, tuple[int, str]]:
+    manifest: dict[str, tuple[int, str]] = {}
+    for path in sorted(Path(root).rglob("*")):
+        if _is_reparse(path):
+            raise RuntimeError("BRAINIAC_PREPROCESSING_SCRATCH_REPARSE_FORBIDDEN")
+        if path.is_file():
+            manifest[path.relative_to(root).as_posix()] = (
+                path.stat().st_size,
+                sha256_file(path),
+            )
+    return manifest
+
+
 def _quarantine_move(path: Path, root: Path, sample_hash: str) -> Path | None:
     if not path.exists():
         return None
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     target_dir = Path(root) / "quarantine" / f"{stamp}-{time.time_ns()}-{sample_hash}"
     target_dir.mkdir(parents=True, exist_ok=True)
-    os.replace(path, target_dir / path.name)
+    _commit_staged_file(path, target_dir / path.name)
     return target_dir
 
 
@@ -584,7 +766,23 @@ def _archive_stale_scratch(scratch: Path, root: Path, sample_hash: str) -> Path 
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     target = Path(root) / "quarantine" / f"{stamp}-{time.time_ns()}-{sample_hash}-scratch"
     target.parent.mkdir(parents=True, exist_ok=True)
-    os.replace(scratch, target)
+    if _same_volume(scratch, target):
+        os.replace(scratch, target)
+    else:
+        temporary = target.with_name(target.name + f".tmp-{os.getpid()}-{time.time_ns()}")
+        if temporary.exists():
+            raise RuntimeError("BRAINIAC_PREPROCESSING_SCRATCH_ARCHIVE_TEMP_EXISTS")
+        try:
+            shutil.copytree(scratch, temporary, copy_function=shutil.copy2)
+            if _tree_manifest(temporary) != _tree_manifest(scratch):
+                raise RuntimeError("BRAINIAC_PREPROCESSING_SCRATCH_ARCHIVE_MISMATCH")
+            os.replace(temporary, target)
+            if _tree_manifest(target) != _tree_manifest(scratch):
+                raise RuntimeError("BRAINIAC_PREPROCESSING_SCRATCH_ARCHIVE_MISMATCH")
+            shutil.rmtree(scratch)
+        finally:
+            if temporary.exists():
+                shutil.rmtree(temporary)
     _atomic_write_json(
         target / "reason.json",
         {
@@ -705,6 +903,7 @@ def run_sample_transaction(
     quarantine_check: bool = True,
     threshold_manifest: Mapping[str, Any] | None = None,
     fault_hook: Callable[[str], None] | None = None,
+    scratch_base: Path | None = None,
 ) -> dict[str, Any]:
     """One sample as an OS-durable transaction; committed valid samples skip."""
 
@@ -722,7 +921,11 @@ def run_sample_transaction(
             expected_bindings=bindings,
             recover_missing_journal=True,
         )
-        scratch = root / "scratch" / sample_hash
+        scratch = (
+            resolve_sample_scratch(root, sample_hash, scratch_base=scratch_base)
+            if scratch_base is not None
+            else root / "scratch" / sample_hash
+        )
         if scratch.exists():
             _archive_stale_scratch(scratch, root, sample_hash)
         return receipt
@@ -767,10 +970,24 @@ def run_sample_transaction(
     finally:
         os.close(descriptor)
 
-    scratch = root / "scratch" / sample_hash
-    if scratch.exists():
-        _archive_stale_scratch(scratch, root, sample_hash)
-    scratch.mkdir(parents=True, exist_ok=True)
+    try:
+        scratch = (
+            resolve_sample_scratch(root, sample_hash, scratch_base=scratch_base)
+            if scratch_base is not None
+            else root / "scratch" / sample_hash
+        )
+        if scratch.exists():
+            _archive_stale_scratch(scratch, root, sample_hash)
+        scratch.mkdir(parents=True, exist_ok=True)
+    except BaseException:
+        if lock_path.exists():
+            live = json.loads(lock_path.read_text(encoding="utf-8"))
+            if live.get("nonce") != nonce:
+                raise RuntimeError(
+                    "BRAINIAC_PREPROCESSING_SAMPLE_LOCK_OWNERSHIP_LOST"
+                )
+            lock_path.unlink()
+        raise
     try:
         _atomic_write_json(
             journal_dir / "scratch.json",
@@ -785,8 +1002,40 @@ def run_sample_transaction(
         if fault_hook is not None:
             fault_hook("SCRATCH")
         result = dict(pipeline(item, scratch))
+        if scratch_base is not None:
+            inspect_local_scratch_storage(scratch_base=scratch_base, create=False)
+        runtime_stage_seconds = result.get("runtime_stage_seconds")
+        if runtime_stage_seconds is not None:
+            if not isinstance(runtime_stage_seconds, Mapping):
+                raise RuntimeError("BRAINIAC_PREPROCESSING_RUNTIME_TELEMETRY_INVALID")
+            allowed_runtime_fields = (
+                "n4",
+                "registration_serial",
+                "hd_bet_serial",
+                "total",
+            )
+            runtime_payload: dict[str, Any] = {
+                "schema_version": 1,
+                "sample_hash": sample_hash,
+                "status": "MEASURED_NONSCIENTIFIC_RUNTIME_TELEMETRY",
+                "raw_path_persisted": False,
+            }
+            for field in allowed_runtime_fields:
+                value = float(runtime_stage_seconds[field])
+                if not math.isfinite(value) or value < 0:
+                    raise RuntimeError("BRAINIAC_PREPROCESSING_RUNTIME_TELEMETRY_INVALID")
+                runtime_payload[field + "_seconds"] = value
+            _atomic_write_json(journal_dir / "runtime.json", runtime_payload)
         output_path = Path(result["output_path"])
         transform_path = Path(result["transform_path"])
+        scratch_resolved = scratch.resolve(strict=True)
+        for staged_path in (output_path, transform_path):
+            try:
+                staged_path.resolve(strict=True).relative_to(scratch_resolved)
+            except (OSError, ValueError) as exc:
+                raise RuntimeError(
+                    "BRAINIAC_PREPROCESSING_STAGED_FILE_OUTSIDE_SCRATCH"
+                ) from exc
         _fsync_file(output_path)
         _fsync_file(transform_path)
         if result.get("finite") is not True:
@@ -891,8 +1140,7 @@ def run_sample_transaction(
         ):
             if target.exists():
                 raise RuntimeError("BRAINIAC_PREPROCESSING_COMMIT_TARGET_EXISTS")
-            os.replace(source, target)
-            _fsync_file(target)
+            _commit_staged_file(source, target)
         _atomic_write_json(
             journal_dir / "payload_committed.json",
             {
@@ -964,6 +1212,7 @@ def run_batch(
     bindings: Mapping[str, str],
     stop_requested: Callable[[], bool] | None = None,
     threshold_manifest: Mapping[str, Any] | None = None,
+    scratch_base: Path | None = None,
 ) -> dict[str, Any]:
     receipts: list[dict[str, Any]] = []
     quarantined: list[str] = []
@@ -976,6 +1225,7 @@ def run_batch(
                 pipeline=pipeline_factory(),
                 bindings=bindings,
                 threshold_manifest=threshold_manifest,
+                scratch_base=scratch_base,
             )
         except RuntimeError as exc:
             if "BRAINIAC_PREPROCESSING_QUARANTINE_" in str(exc):
@@ -1011,6 +1261,7 @@ def run_orchestrated(
     gpu_workers: int = 1,
     threshold_manifest: Mapping[str, Any] | None = None,
     stop_requested: Callable[[], bool] | None = None,
+    scratch_base: Path | None = None,
 ) -> list[dict[str, Any]]:
     """Bounded parallel execution whose receipts must equal sequential ones."""
 
@@ -1023,6 +1274,7 @@ def run_orchestrated(
         gpu_workers=gpu_workers,
         threshold_manifest=threshold_manifest,
         stop_requested=stop_requested,
+        scratch_base=scratch_base,
     )["receipts"]
 
 
@@ -1036,6 +1288,7 @@ def run_orchestrated_batch(
     gpu_workers: int = 1,
     threshold_manifest: Mapping[str, Any] | None = None,
     stop_requested: Callable[[], bool] | None = None,
+    scratch_base: Path | None = None,
 ) -> dict[str, Any]:
     """At most two in-flight samples; stop submits no new work and drains safely."""
 
@@ -1056,6 +1309,7 @@ def run_orchestrated_batch(
             pipeline=pipeline_factory(),
             bindings=bindings,
             threshold_manifest=threshold_manifest,
+            scratch_base=scratch_base,
         )
 
     with ThreadPoolExecutor(max_workers=max_in_flight) as pool:
@@ -1116,6 +1370,7 @@ def execute(
     stop_requested: Callable[[], bool] | None = None,
     threshold_manifest: Mapping[str, Any] | None = None,
     parallel: bool = False,
+    scratch_base: Path | None = None,
 ) -> dict[str, Any]:
     """Run one bounded batch strictly inside the B1 PREPARE_RAW_T1 lease."""
 
@@ -1124,6 +1379,13 @@ def execute(
     items = list(membership) if mode == "run" else list(membership)[: max(0, int(limit))]
     if not items:
         raise RuntimeError("BRAINIAC_PREPROCESSING_BATCH_EMPTY")
+    if scratch_base is None:
+        derived_root = ROOT / "data" / "derived" / "method_x_brainiac"
+        try:
+            Path(root).resolve(strict=False).relative_to(derived_root.resolve(strict=False))
+            scratch_base = LOCAL_SCRATCH_ROOT
+        except ValueError:
+            scratch_base = None
     with brainiac_action_lease("PREPARE_RAW_T1"):
         if parallel:
             return run_orchestrated_batch(
@@ -1135,6 +1397,7 @@ def execute(
                 gpu_workers=1,
                 threshold_manifest=threshold_manifest,
                 stop_requested=stop_requested,
+                scratch_base=scratch_base,
             )
         return run_batch(
             items,
@@ -1143,4 +1406,5 @@ def execute(
             bindings=bindings,
             stop_requested=stop_requested,
             threshold_manifest=threshold_manifest,
+            scratch_base=scratch_base,
         )

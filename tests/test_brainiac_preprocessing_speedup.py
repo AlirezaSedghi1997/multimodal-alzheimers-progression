@@ -90,7 +90,7 @@ def test_policy_defers_execution_mode_to_immutable_equivalence_profile():
     assert orch["equivalence_design"] == (
         "12_LABEL_BLIND_ONE_SEQUENTIAL_TWO_INDEPENDENT_PARALLEL"
     )
-    assert int(orch.get("itk_threads_default", 0)) == 1
+    assert int(orch.get("itk_threads_default", 0)) == 8
 
 
 def _write_execution_profile(path, mode="SEQUENTIAL_SAFE", contract="c" * 64):

@@ -1,5 +1,5 @@
 # BrainIAC raw-T1 preprocessing, schema v2 (Plan 002 / B2)
-# Policy authority: governance/brainiac_preprocessing_r1_primary_v2_policy_v2.json
+# Policy authority: governance/brainiac_preprocessing_r1_primary_v2_policy_v3.json
 # This file holds layout/runtime knobs only; every scientific threshold lives
 # in the policy JSON and is hash-bound into each receipt.
 
@@ -39,11 +39,22 @@ sensitivity:
 orchestration:
   cpu_workers_max: 2
   gpu_workers_max: 1
+  n4_samples_in_flight: 2
+  registration_workers_max: 1
+  itk_threads_default: 8
+  worker_model: PARALLEL_N4_SERIAL_REGISTRATION_SERIAL_GPU
   equivalence_required: true
   equivalence_design: 12_LABEL_BLIND_ONE_SEQUENTIAL_TWO_INDEPENDENT_PARALLEL
   parallel_repeat_count: 2
   parallel_minimum_speedup_fraction: 0.15
   execution_profile_authority: HASH_LOCKED_LIVE_BYTE_VERIFIED
+
+storage_locality:
+  authoritative_artifacts: H_ONLY
+  local_scratch: "C:\\Users\\USER\\AppData\\Local\\AMUSE-X\\brainiac_preprocessing_staging"
+  local_scratch_max_bytes: 1073741824
+  local_scratch_minimum_free_bytes: 21474836480
+  silent_fallback: false
 
 signal:
   clean_stop_exit_code: 75
