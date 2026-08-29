@@ -137,6 +137,112 @@ def _junit_summary(path: Path) -> dict[str, int]:
     }
 
 
+def _validate_manifest_self_hash(payload: Mapping[str, Any]) -> None:
+    body = dict(payload)
+    recorded = str(body.pop("integrity_sha256", ""))
+    if len(recorded) != 64 or recorded != runner.canonical_sha(body):
+        raise RuntimeError("BRAINIAC_ACCEPTANCE_TEST_EXISTING_MANIFEST_CORRUPT")
+
+
+def _binding_is_live(binding: Mapping[str, Any]) -> bool:
+    try:
+        path = (ROOT / str(binding["path"])).resolve(strict=True)
+        path.relative_to(ROOT.resolve(strict=True))
+        return (
+            path.is_file()
+            and int(binding["bytes"]) == path.stat().st_size
+            and str(binding["sha256"]) == runner.sha256_file(path)
+        )
+    except (KeyError, OSError, RuntimeError, TypeError, ValueError):
+        return False
+
+
+def _current_manifest_is_reusable(
+    payload: Mapping[str, Any], dependency: Mapping[str, Any]
+) -> bool:
+    _validate_manifest_self_hash(payload)
+    if (
+        payload.get("schema_version") != 2
+        or payload.get("artifact")
+        != "BRAINIAC_PREPROCESSING_ACCEPTANCE_TEST_MANIFEST"
+        or payload.get("status") != "PASS"
+        or str(payload.get("git_head", "")).casefold()
+        != _git("rev-parse", "HEAD").casefold()
+        or payload.get("dependency_closure_sha256") != dependency.get("closure_sha256")
+        or set(dict(payload.get("required_checks") or {})) != set(CHECK_SELECTORS)
+    ):
+        return False
+    summary = payload.get("summary")
+    evidence = payload.get("evidence_bindings")
+    if (
+        not isinstance(summary, Mapping)
+        or int(summary.get("failed", -1)) != 0
+        or int(summary.get("errors", -1)) != 0
+        or int(summary.get("skipped", -1)) != 0
+        or not isinstance(evidence, Mapping)
+    ):
+        raise RuntimeError("BRAINIAC_ACCEPTANCE_TEST_EXISTING_MANIFEST_INVALID")
+    bindings = [evidence.get("junit")]
+    bindings.extend(list(evidence.get("test_files") or ()))
+    bindings.extend(list(evidence.get("source_files") or ()))
+    if not bindings or not all(
+        isinstance(binding, Mapping) and _binding_is_live(binding)
+        for binding in bindings
+    ):
+        raise RuntimeError("BRAINIAC_ACCEPTANCE_TEST_EXISTING_EVIDENCE_DRIFT")
+    return True
+
+
+def _archive_superseded_manifest(
+    target: Path, existing: Mapping[str, Any], candidate: Mapping[str, Any]
+) -> Path:
+    """Preserve a valid old manifest and an append-only supersession receipt."""
+
+    _validate_manifest_self_hash(existing)
+    if (
+        existing.get("schema_version") != 2
+        or existing.get("artifact")
+        != "BRAINIAC_PREPROCESSING_ACCEPTANCE_TEST_MANIFEST"
+        or existing.get("status") != "PASS"
+    ):
+        raise RuntimeError("BRAINIAC_ACCEPTANCE_TEST_EXISTING_MANIFEST_INVALID")
+    old_sha = str(existing["integrity_sha256"])
+    new_sha = str(candidate["integrity_sha256"])
+    archive_dir = target.parent / "superseded" / "acceptance_test_manifests"
+    archive_dir.mkdir(parents=True, exist_ok=True)
+    stamp = str(existing.get("created_at_utc") or "unknown").replace(":", "").replace(
+        "+", "_"
+    )
+    archived = archive_dir / f"{stamp}-{old_sha}.json"
+    if archived.exists():
+        archived_payload = json.loads(archived.read_text(encoding="utf-8"))
+        if archived_payload != dict(existing):
+            raise RuntimeError("BRAINIAC_ACCEPTANCE_TEST_SUPERSEDED_COLLISION")
+        target.unlink()
+    else:
+        os.replace(target, archived)
+    receipt: dict[str, Any] = {
+        "schema_version": 1,
+        "artifact": "BRAINIAC_ACCEPTANCE_TEST_MANIFEST_SUPERSESSION",
+        "status": "SUPERSEDED_APPEND_ONLY",
+        "created_at_utc": _utc_now(),
+        "reason_code": "SOURCE_POLICY_OR_DEPENDENCY_CONTRACT_ADVANCED",
+        "superseded_manifest": runner._artifact_binding(archived),
+        "superseded_integrity_sha256": old_sha,
+        "replacement_integrity_sha256": new_sha,
+        "human_approval_required": False,
+        "manual_override_allowed": False,
+    }
+    receipt["integrity_sha256"] = runner.canonical_sha(receipt)
+    receipt_path = archive_dir / f"{old_sha}-to-{new_sha}.supersession.json"
+    if receipt_path.exists():
+        if json.loads(receipt_path.read_text(encoding="utf-8")) != receipt:
+            raise RuntimeError("BRAINIAC_ACCEPTANCE_TEST_SUPERSESSION_COLLISION")
+    else:
+        runner._atomic_write_json(receipt_path, receipt)
+    return archived
+
+
 def build_manifest() -> dict[str, Any]:
     if platform.system() != "Windows":
         raise RuntimeError("BRAINIAC_ACCEPTANCE_TEST_WINDOWS_REQUIRED")
@@ -147,6 +253,11 @@ def build_manifest() -> dict[str, Any]:
         raise RuntimeError("BRAINIAC_ACCEPTANCE_TEST_DEPENDENCY_UNTRACKED")
     inputs = _manifest_input_paths(dependency)
     _assert_scoped_git_clean(inputs)
+    target = runner.ACCEPTANCE_TEST_MANIFEST_PATH
+    if target.exists():
+        existing = json.loads(target.read_text(encoding="utf-8"))
+        if _current_manifest_is_reusable(existing, dependency):
+            return existing
 
     run_id = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()) + "-" + uuid.uuid4().hex[:12]
     run_root = runner.REGISTRY_ROOT / "test_runs" / "acceptance" / run_id
@@ -228,21 +339,11 @@ def build_manifest() -> dict[str, Any]:
     body["integrity_sha256"] = runner.canonical_sha(body)
     runner._atomic_write_json(run_root / "manifest.json", body)
 
-    target = runner.ACCEPTANCE_TEST_MANIFEST_PATH
     if target.exists():
         existing = json.loads(target.read_text(encoding="utf-8"))
-        if existing != body:
-            blocked = {
-                "schema_version": 1,
-                "status": "BLOCKED",
-                "reason_code": "ACCEPTANCE_TEST_MANIFEST_IMMUTABLE_MISMATCH",
-                "existing_sha256": runner.sha256_file(target),
-                "candidate_sha256": body["integrity_sha256"],
-            }
-            blocked["integrity_sha256"] = runner.canonical_sha(blocked)
-            runner._atomic_write_json(run_root / "BLOCKED_MANIFEST_MISMATCH.json", blocked)
-            raise RuntimeError("BRAINIAC_ACCEPTANCE_TEST_MANIFEST_IMMUTABLE_MISMATCH")
-        return existing
+        if existing == body:
+            return existing
+        _archive_superseded_manifest(target, existing, body)
     runner._atomic_write_json(target, body)
     runner._validated_acceptance_test_manifest()
     return body

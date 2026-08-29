@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
+import json
 from pathlib import Path
 import threading
 import time
@@ -296,3 +297,39 @@ def test_local_scratch_cap_is_rechecked_after_pipeline(
         )
     assert not (root / "journals" / item["sample_hash"] / ".sample.lock").exists()
     assert not list((root / "receipts").glob("*.json"))
+
+
+def test_acceptance_manifest_supersession_is_append_only(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from scripts.research import (
+        build_brainiac_preprocessing_acceptance_test_manifest as builder,
+    )
+
+    monkeypatch.setattr(builder, "ROOT", tmp_path)
+    monkeypatch.setattr(builder.runner, "ROOT", tmp_path)
+    target = tmp_path / "registry" / "acceptance.json"
+    target.parent.mkdir(parents=True)
+    existing = {
+        "schema_version": 2,
+        "artifact": "BRAINIAC_PREPROCESSING_ACCEPTANCE_TEST_MANIFEST",
+        "status": "PASS",
+        "created_at_utc": "2026-08-28T00:00:00+00:00",
+        "git_head": "a" * 40,
+    }
+    existing["integrity_sha256"] = builder.runner.canonical_sha(existing)
+    candidate = dict(existing)
+    candidate["git_head"] = "b" * 40
+    candidate.pop("integrity_sha256")
+    candidate["integrity_sha256"] = builder.runner.canonical_sha(candidate)
+    builder.runner._atomic_write_json(target, existing)
+
+    archived = builder._archive_superseded_manifest(target, existing, candidate)
+    assert not target.exists()
+    assert archived.is_file()
+    assert json.loads(archived.read_text(encoding="utf-8")) == existing
+    receipts = list(archived.parent.glob("*.supersession.json"))
+    assert len(receipts) == 1
+    receipt = json.loads(receipts[0].read_text(encoding="utf-8"))
+    assert receipt["superseded_integrity_sha256"] == existing["integrity_sha256"]
+    assert receipt["replacement_integrity_sha256"] == candidate["integrity_sha256"]
