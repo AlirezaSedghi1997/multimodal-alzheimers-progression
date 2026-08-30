@@ -342,6 +342,41 @@ def test_acceptance_manifest_supersession_is_append_only(
     assert receipt["replacement_integrity_sha256"] == candidate["integrity_sha256"]
 
 
+def test_full_test_manifest_supersession_is_append_only(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from scripts.research import build_brainiac_preprocessing_full_test_manifest as builder
+
+    monkeypatch.setattr(builder, "ROOT", tmp_path)
+    monkeypatch.setattr(builder.runner, "ROOT", tmp_path)
+    target = tmp_path / "registry" / "full.json"
+    target.parent.mkdir(parents=True)
+    existing = {
+        "schema_version": 1,
+        "artifact": "BRAINIAC_PREPROCESSING_FULL_TEST_MANIFEST",
+        "status": "PASS",
+        "created_at_utc": "2026-08-29T00:00:00+00:00",
+        "git_head": "a" * 40,
+    }
+    existing["integrity_sha256"] = builder.runner.canonical_sha(existing)
+    candidate = dict(existing)
+    candidate["git_head"] = "b" * 40
+    candidate.pop("integrity_sha256")
+    candidate["integrity_sha256"] = builder.runner.canonical_sha(candidate)
+    builder.runner._atomic_write_json(target, existing)
+
+    archived = builder._archive_superseded_manifest(target, existing, candidate)
+
+    assert not target.exists()
+    assert archived.is_file()
+    assert json.loads(archived.read_text(encoding="utf-8")) == existing
+    receipts = list(archived.parent.glob("*.supersession.json"))
+    assert len(receipts) == 1
+    receipt = json.loads(receipts[0].read_text(encoding="utf-8"))
+    assert receipt["superseded_integrity_sha256"] == existing["integrity_sha256"]
+    assert receipt["replacement_integrity_sha256"] == candidate["integrity_sha256"]
+
+
 def test_rigid_transform_canonicalization_removes_subprecision_optimizer_jitter():
     """Sub-voxel optimizer jitter must not change the locked transform bytes."""
 

@@ -82,6 +82,61 @@ def _git_head() -> str:
     return completed.stdout.strip().casefold()
 
 
+def _validate_existing_manifest(payload: Mapping[str, Any]) -> None:
+    body = dict(payload)
+    recorded = str(body.pop("integrity_sha256", ""))
+    if (
+        payload.get("schema_version") != 1
+        or payload.get("artifact") != "BRAINIAC_PREPROCESSING_FULL_TEST_MANIFEST"
+        or payload.get("status") != "PASS"
+        or len(recorded) != 64
+        or recorded != runner.canonical_sha(body)
+    ):
+        raise RuntimeError("BRAINIAC_FULL_TEST_EXISTING_MANIFEST_INVALID")
+
+
+def _archive_superseded_manifest(
+    target: Path, existing: Mapping[str, Any], candidate: Mapping[str, Any]
+) -> Path:
+    """Move a valid prior full-suite manifest with a sealed lineage receipt."""
+
+    _validate_existing_manifest(existing)
+    old_sha = str(existing["integrity_sha256"])
+    new_sha = str(candidate["integrity_sha256"])
+    archive_dir = target.parent / "superseded" / "full_test_manifests"
+    archive_dir.mkdir(parents=True, exist_ok=True)
+    stamp = str(existing.get("created_at_utc") or "unknown").replace(":", "").replace(
+        "+", "_"
+    )
+    archived = archive_dir / f"{stamp}-{old_sha}.json"
+    if archived.exists():
+        if json.loads(archived.read_text(encoding="utf-8")) != dict(existing):
+            raise RuntimeError("BRAINIAC_FULL_TEST_SUPERSEDED_COLLISION")
+        target.unlink()
+    else:
+        os.replace(target, archived)
+    receipt: dict[str, Any] = {
+        "schema_version": 1,
+        "artifact": "BRAINIAC_FULL_TEST_MANIFEST_SUPERSESSION",
+        "status": "SUPERSEDED_APPEND_ONLY",
+        "created_at_utc": _utc_now(),
+        "reason_code": "SOURCE_POLICY_OR_DEPENDENCY_CONTRACT_ADVANCED",
+        "superseded_manifest": runner._artifact_binding(archived),
+        "superseded_integrity_sha256": old_sha,
+        "replacement_integrity_sha256": new_sha,
+        "human_approval_required": False,
+        "manual_override_allowed": False,
+    }
+    receipt["integrity_sha256"] = runner.canonical_sha(receipt)
+    receipt_path = archive_dir / f"{old_sha}-to-{new_sha}.supersession.json"
+    if receipt_path.exists():
+        if json.loads(receipt_path.read_text(encoding="utf-8")) != receipt:
+            raise RuntimeError("BRAINIAC_FULL_TEST_SUPERSESSION_COLLISION")
+    else:
+        runner._atomic_write_json(receipt_path, receipt)
+    return archived
+
+
 def _summary(junit: Path, stdout: str) -> dict[str, int]:
     root = ET.parse(junit).getroot()
     suites = [root] if root.tag == "testsuite" else list(root.findall("testsuite"))
@@ -226,9 +281,9 @@ def build_manifest() -> dict[str, Any]:
     runner._atomic_write_json(run_root / "manifest.json", body)
     if OUTPUT.exists():
         existing = json.loads(OUTPUT.read_text(encoding="utf-8"))
-        if existing != body:
-            raise RuntimeError("BRAINIAC_FULL_TEST_MANIFEST_IMMUTABLE_MISMATCH")
-        return existing
+        if existing == body:
+            return existing
+        _archive_superseded_manifest(OUTPUT, existing, body)
     runner._atomic_write_json(OUTPUT, body)
     return body
 
