@@ -1859,11 +1859,15 @@ def _registration(fixed: Any, moving: Any, sitk: Any) -> tuple[Any, Any, float]:
     method.SetMetricAsMattesMutualInformation(numberOfHistogramBins=50)
     method.SetMetricSamplingStrategy(method.NONE)
     method.SetInterpolator(sitk.sitkLinear)
-    method.SetOptimizerAsGradientDescent(
-        learningRate=1.0,
-        numberOfIterations=100,
+    method.SetOptimizerAsGradientDescentLineSearch(
+        learningRate=0.5,
+        numberOfIterations=10,
         convergenceMinimumValue=1e-6,
         convergenceWindowSize=10,
+        lineSearchLowerLimit=0.0,
+        lineSearchUpperLimit=2.0,
+        lineSearchEpsilon=0.02,
+        lineSearchMaximumIterations=5,
     )
     method.SetOptimizerScalesFromPhysicalShift()
     method.SetShrinkFactorsPerLevel(shrinkFactors=[4, 2, 1])

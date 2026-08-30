@@ -206,6 +206,23 @@ def run(sample_hash: str, output: Path, *, profile: str = "comprehensive") -> di
                     lineSearchMaximumIterations=5,
                 ),
             )
+    elif profile == "repeat_line_search":
+        for repeat in range(3):
+            variants[f"line_search_lr_0.5_iter_10_repeat_{repeat + 1}"] = _run_variant(
+                fixed,
+                moving,
+                initial,
+                lambda method: method.SetOptimizerAsGradientDescentLineSearch(
+                    learningRate=0.5,
+                    numberOfIterations=10,
+                    convergenceMinimumValue=1e-6,
+                    convergenceWindowSize=10,
+                    lineSearchLowerLimit=0.0,
+                    lineSearchUpperLimit=2.0,
+                    lineSearchEpsilon=0.02,
+                    lineSearchMaximumIterations=5,
+                ),
+            )
     else:
         raise RuntimeError("BRAINIAC_RIGID_DIAGNOSTIC_PROFILE_INVALID")
     for result in variants.values():
@@ -248,7 +265,11 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--sample-hash", required=True)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument("--profile", choices=("comprehensive", "fast"), default="comprehensive")
+    parser.add_argument(
+        "--profile",
+        choices=("comprehensive", "fast", "repeat_line_search"),
+        default="comprehensive",
+    )
     args = parser.parse_args()
     try:
         result = run(args.sample_hash, args.output, profile=args.profile)

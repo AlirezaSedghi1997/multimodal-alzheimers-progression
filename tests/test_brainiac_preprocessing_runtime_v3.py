@@ -94,7 +94,7 @@ def _no_live_writer(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(v2, "assert_no_cnn_writer", lambda: None)
 
 
-def test_policy_v5_locks_fast_profile_and_live_root_isolation() -> None:
+def test_policy_v6_locks_line_search_and_live_root_isolation() -> None:
     import json
 
     from src.research import brainiac_preprocessing_v2 as v2
@@ -112,6 +112,9 @@ def test_policy_v5_locks_fast_profile_and_live_root_isolation() -> None:
     assert registration["parameter_quantization_decimals"] == 4
     assert registration["metric_quantization_decimals"] == 7
     assert registration["quality_selection_or_fallback"] is False
+    assert registration["optimizer"] == "GradientDescentLineSearch"
+    assert registration["maximum_iterations"] == 10
+    assert registration["line_search_maximum_iterations"] == 5
     storage = policy["storage_locality"]
     assert storage["authoritative_artifacts"] == "H_ONLY"
     assert storage["local_scratch_max_bytes"] == 1_073_741_824
@@ -147,6 +150,18 @@ def test_registration_stage_is_serialized() -> None:
     with ThreadPoolExecutor(max_workers=2) as pool:
         assert list(pool.map(lambda _index: prep._serialized_registration_stage(operation), range(2))) == ["ok", "ok"]
     assert maximum == 1
+
+
+def test_registration_uses_bounded_deterministic_line_search() -> None:
+    import inspect
+
+    import scripts.research.prepare_brainiac_raw_t1_v2 as prep
+
+    source = inspect.getsource(prep._registration)
+    assert "SetOptimizerAsGradientDescentLineSearch" in source
+    assert "numberOfIterations=10" in source
+    assert "lineSearchMaximumIterations=5" in source
+    assert "lineSearchUpperLimit=2.0" in source
 
 
 def test_local_scratch_is_hashed_bounded_and_not_authoritative(

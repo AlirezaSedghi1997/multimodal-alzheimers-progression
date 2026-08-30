@@ -67,7 +67,7 @@ RECEIPT_GENERATION = 1
 PRIMARY_ROOT = ROOT / "data" / "derived" / "method_x_brainiac" / "r1_primary_v2"
 SMOKE_ROOT = ROOT / "data" / "derived" / "method_x_brainiac" / "r1_primary_v2_smoke"
 POLICY_PATH = (
-    ROOT / "governance" / "brainiac_preprocessing_r1_primary_v2_policy_v5.json"
+    ROOT / "governance" / "brainiac_preprocessing_r1_primary_v2_policy_v6.json"
 )
 LOCAL_SCRATCH_ROOT = Path(
     r"C:\Users\USER\AppData\Local\AMUSE-X\brainiac_preprocessing_staging"

@@ -1,5 +1,5 @@
 # BrainIAC raw-T1 preprocessing, schema v2 (Plan 002 / B2)
-# Policy authority: governance/brainiac_preprocessing_r1_primary_v2_policy_v5.json
+# Policy authority: governance/brainiac_preprocessing_r1_primary_v2_policy_v6.json
 # This file holds layout/runtime knobs only; every scientific threshold lives
 # in the policy JSON and is hash-bound into each receipt.
 
