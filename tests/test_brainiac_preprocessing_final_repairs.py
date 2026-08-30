@@ -709,20 +709,26 @@ def test_current_equivalence_tree_with_stale_contract_is_archived_as_one_generat
     assert len(archived) == 1
 
 
-def test_stale_scratch_is_archived_with_reason_instead_of_deleted(tmp_path: Path):
+def test_stale_scratch_is_archived_outside_live_run_with_reason(tmp_path: Path):
     item = {"sample_hash": "s_" + "c" * 16, "t1_file_hash": "t1"}
-    scratch = tmp_path / "scratch" / item["sample_hash"]
+    run_root = tmp_path / "live_run"
+    scratch = run_root / "scratch" / item["sample_hash"]
     scratch.mkdir(parents=True)
     (scratch / "evidence.bin").write_bytes(b"partial")
     v2.run_sample_transaction(
-        item, tmp_path, pipeline=_Pipeline(), bindings=_bindings()
+        item, run_root, pipeline=_Pipeline(), bindings=_bindings()
     )
-    archived = list((tmp_path / "quarantine").rglob("evidence.bin"))
-    reasons = list((tmp_path / "quarantine").rglob("reason.json"))
+    archive_root = tmp_path / "superseded_stale_scratch"
+    archived = list(archive_root.rglob("evidence.bin"))
+    reasons = list(archive_root.rglob("reason.json"))
     assert len(archived) == 1
+    assert not list((run_root / "quarantine").rglob("*"))
+    assert not archived[0].is_relative_to(run_root)
     assert any(
-        json.loads(path.read_text(encoding="utf-8"))["reason_code"]
-        == "STALE_SCRATCH_ARCHIVED"
+        (
+            json.loads(path.read_text(encoding="utf-8"))["reason_code"]
+            == "STALE_SCRATCH_ARCHIVED_OUTSIDE_LIVE_RUN"
+        )
         for path in reasons
     )
 

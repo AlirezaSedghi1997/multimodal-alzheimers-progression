@@ -94,7 +94,7 @@ def _no_live_writer(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(v2, "assert_no_cnn_writer", lambda: None)
 
 
-def test_policy_v4_locks_fast_profile_and_deterministic_registration_repair() -> None:
+def test_policy_v5_locks_fast_profile_and_live_root_isolation() -> None:
     import json
 
     from src.research import brainiac_preprocessing_v2 as v2
@@ -117,6 +117,14 @@ def test_policy_v4_locks_fast_profile_and_deterministic_registration_repair() ->
     assert storage["local_scratch_max_bytes"] == 1_073_741_824
     assert storage["local_scratch_minimum_free_bytes"] == 21_474_836_480
     assert storage["silent_fallback"] is False
+    assert (
+        storage["stale_local_scratch"]
+        == "VERIFIED_ARCHIVE_TO_H_SUPERSEDED_EVIDENCE_OUTSIDE_LIVE_RUN_ROOT"
+    )
+    assert (
+        policy["resume"]["stale_scratch"]
+        == "ARCHIVE_OUTSIDE_LIVE_RUN_ROOT_WITH_REASON_NEVER_DELETE"
+    )
 
 
 def test_registration_stage_is_serialized() -> None:

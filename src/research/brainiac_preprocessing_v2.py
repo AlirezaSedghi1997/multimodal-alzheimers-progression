@@ -67,7 +67,7 @@ RECEIPT_GENERATION = 1
 PRIMARY_ROOT = ROOT / "data" / "derived" / "method_x_brainiac" / "r1_primary_v2"
 SMOKE_ROOT = ROOT / "data" / "derived" / "method_x_brainiac" / "r1_primary_v2_smoke"
 POLICY_PATH = (
-    ROOT / "governance" / "brainiac_preprocessing_r1_primary_v2_policy_v4.json"
+    ROOT / "governance" / "brainiac_preprocessing_r1_primary_v2_policy_v5.json"
 )
 LOCAL_SCRATCH_ROOT = Path(
     r"C:\Users\USER\AppData\Local\AMUSE-X\brainiac_preprocessing_staging"
@@ -763,21 +763,37 @@ def _quarantine_move(path: Path, root: Path, sample_hash: str) -> Path | None:
 def _archive_stale_scratch(scratch: Path, root: Path, sample_hash: str) -> Path | None:
     if not scratch.exists():
         return None
+    live_root = Path(root)
+    archive_root = live_root.parent / "superseded_stale_scratch"
+    try:
+        archive_root.resolve(strict=False).relative_to(live_root.resolve(strict=False))
+    except ValueError:
+        pass
+    else:
+        raise RuntimeError("BRAINIAC_PREPROCESSING_SCRATCH_ARCHIVE_INSIDE_LIVE_RUN")
+    if archive_root.exists() and _is_reparse(archive_root):
+        raise RuntimeError("BRAINIAC_PREPROCESSING_SCRATCH_ARCHIVE_REPARSE")
+    source_manifest = _tree_manifest(scratch)
+    source_manifest_sha256 = canonical_sha(
+        {name: [size, digest] for name, (size, digest) in source_manifest.items()}
+    )
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-    target = Path(root) / "quarantine" / f"{stamp}-{time.time_ns()}-{sample_hash}-scratch"
+    target = archive_root / f"{stamp}-{time.time_ns()}-{sample_hash}-scratch"
     target.parent.mkdir(parents=True, exist_ok=True)
     if _same_volume(scratch, target):
         os.replace(scratch, target)
+        if _tree_manifest(target) != source_manifest:
+            raise RuntimeError("BRAINIAC_PREPROCESSING_SCRATCH_ARCHIVE_MISMATCH")
     else:
         temporary = target.with_name(target.name + f".tmp-{os.getpid()}-{time.time_ns()}")
         if temporary.exists():
             raise RuntimeError("BRAINIAC_PREPROCESSING_SCRATCH_ARCHIVE_TEMP_EXISTS")
         try:
             shutil.copytree(scratch, temporary, copy_function=shutil.copy2)
-            if _tree_manifest(temporary) != _tree_manifest(scratch):
+            if _tree_manifest(temporary) != source_manifest:
                 raise RuntimeError("BRAINIAC_PREPROCESSING_SCRATCH_ARCHIVE_MISMATCH")
             os.replace(temporary, target)
-            if _tree_manifest(target) != _tree_manifest(scratch):
+            if _tree_manifest(target) != source_manifest:
                 raise RuntimeError("BRAINIAC_PREPROCESSING_SCRATCH_ARCHIVE_MISMATCH")
             shutil.rmtree(scratch)
         finally:
@@ -787,7 +803,11 @@ def _archive_stale_scratch(scratch: Path, root: Path, sample_hash: str) -> Path 
         target / "reason.json",
         {
             "sample_hash": sample_hash,
-            "reason_code": "STALE_SCRATCH_ARCHIVED",
+            "reason_code": "STALE_SCRATCH_ARCHIVED_OUTSIDE_LIVE_RUN",
+            "archive_scope": "SUPERSEDED_EVIDENCE_OUTSIDE_LIVE_RUN_ROOT",
+            "archived_payload_file_count": len(source_manifest),
+            "archived_payload_bytes": sum(size for size, _ in source_manifest.values()),
+            "archived_payload_manifest_sha256": source_manifest_sha256,
             "raw_path_persisted": False,
         },
     )
