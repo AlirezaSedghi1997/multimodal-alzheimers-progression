@@ -671,6 +671,44 @@ def test_legacy_generation_is_moved_with_byte_verified_receipt(
     assert Path(receipt["receipt_path"]).is_file()
 
 
+def test_current_equivalence_tree_with_stale_contract_is_archived_as_one_generation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    smoke = tmp_path / "smoke"
+    leg = smoke / "equivalence_v2" / "sequential"
+    receipts = leg / "receipts"
+    outputs = leg / "outputs"
+    transforms = leg / "transforms"
+    receipts.mkdir(parents=True)
+    outputs.mkdir()
+    transforms.mkdir()
+    sample_hash = "s_" + "e" * 16
+    (outputs / f"{sample_hash}.nii.gz").write_bytes(b"old-output")
+    (transforms / f"{sample_hash}.tfm").write_bytes(b"old-transform")
+    (receipts / f"{sample_hash}.json").write_text(
+        json.dumps({"policy_sha256": "old-contract"}), encoding="utf-8"
+    )
+    registry = tmp_path / "registry"
+    monkeypatch.setattr(runner, "ROOT", tmp_path)
+    monkeypatch.setattr(runner, "REGISTRY_ROOT", registry)
+    monkeypatch.setattr(runner, "CALIBRATION_ROOT", tmp_path / "calibration")
+    monkeypatch.setattr(runner, "EXECUTION_PROFILE_PATH", registry / "profile.json")
+    monkeypatch.setattr(v2, "SMOKE_ROOT", smoke)
+    monkeypatch.setattr(runner, "_base_bindings", _bindings)
+
+    receipt = runner._archive_legacy_incompatible_artifacts()
+
+    assert receipt is not None
+    assert receipt["artifact_count"] == 1
+    assert not (smoke / "equivalence_v2").exists()
+    archived = list(
+        (tmp_path / "data/derived/method_x_brainiac/superseded").rglob(
+            f"{sample_hash}.json"
+        )
+    )
+    assert len(archived) == 1
+
+
 def test_stale_scratch_is_archived_with_reason_instead_of_deleted(tmp_path: Path):
     item = {"sample_hash": "s_" + "c" * 16, "t1_file_hash": "t1"}
     scratch = tmp_path / "scratch" / item["sample_hash"]

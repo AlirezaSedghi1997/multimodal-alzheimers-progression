@@ -1289,6 +1289,28 @@ def _legacy_incompatible_artifacts() -> list[Path]:
     legacy_report = REGISTRY_ROOT / "brainiac_preprocessing_v2_equivalence.json"
     if legacy_report.is_file() and not EXECUTION_PROFILE_PATH.is_file():
         candidates.append(legacy_report)
+    current_equivalence = v2.SMOKE_ROOT / "equivalence_v2"
+    if current_equivalence.is_dir():
+        receipt_paths = sorted(current_equivalence.glob("*/receipts/*.json"))
+        expected_bindings = _base_bindings()
+        incompatible = False
+        for receipt_path in receipt_paths:
+            try:
+                receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+                validate_receipt(
+                    receipt,
+                    artifact_root=receipt_path.parents[1],
+                    expected_bindings=expected_bindings,
+                )
+            except (OSError, RuntimeError, TypeError, ValueError, json.JSONDecodeError):
+                incompatible = True
+                break
+        if incompatible:
+            candidates.append(current_equivalence)
+            if EXECUTION_PROFILE_PATH.is_file():
+                candidates.append(EXECUTION_PROFILE_PATH)
+            if legacy_report.is_file():
+                candidates.append(legacy_report)
     return [path for path in candidates if path.exists()]
 
 
