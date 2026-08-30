@@ -96,7 +96,7 @@ def _run_variant(
     return result
 
 
-def run(sample_hash: str, output: Path) -> dict[str, Any]:
+def run(sample_hash: str, output: Path, *, profile: str = "comprehensive") -> dict[str, Any]:
     if not sample_hash.startswith("s_") or len(sample_hash) != 18:
         raise RuntimeError("BRAINIAC_RIGID_DIAGNOSTIC_SAMPLE_HASH_INVALID")
     membership = v2.load_locked_membership()
@@ -123,45 +123,91 @@ def run(sample_hash: str, output: Path) -> dict[str, Any]:
     baseline = _evaluate(fixed, moving, initial)
 
     variants: dict[str, dict[str, Any]] = {}
-    for learning_rate in (0.02, 0.05, 0.1):
-        variants[f"gradient_descent_lr_{learning_rate}"] = _run_variant(
+    if profile == "comprehensive":
+        for learning_rate in (0.02, 0.05, 0.1):
+            variants[f"gradient_descent_lr_{learning_rate}"] = _run_variant(
+                fixed,
+                moving,
+                initial,
+                lambda method, lr=learning_rate: method.SetOptimizerAsGradientDescent(
+                    learningRate=lr,
+                    numberOfIterations=100,
+                    convergenceMinimumValue=1e-6,
+                    convergenceWindowSize=10,
+                ),
+            )
+        variants["regular_step_lr_0.25"] = _run_variant(
             fixed,
             moving,
             initial,
-            lambda method, lr=learning_rate: method.SetOptimizerAsGradientDescent(
-                learningRate=lr,
-                numberOfIterations=100,
-                convergenceMinimumValue=1e-6,
-                convergenceWindowSize=10,
+            lambda method: method.SetOptimizerAsRegularStepGradientDescent(
+                learningRate=0.25,
+                minStep=1e-4,
+                numberOfIterations=150,
+                relaxationFactor=0.5,
+                gradientMagnitudeTolerance=1e-8,
             ),
         )
-    variants["regular_step_lr_0.25"] = _run_variant(
-        fixed,
-        moving,
-        initial,
-        lambda method: method.SetOptimizerAsRegularStepGradientDescent(
-            learningRate=0.25,
-            minStep=1e-4,
-            numberOfIterations=150,
-            relaxationFactor=0.5,
-            gradientMagnitudeTolerance=1e-8,
-        ),
-    )
-    variants["gradient_descent_line_search_lr_0.5"] = _run_variant(
-        fixed,
-        moving,
-        initial,
-        lambda method: method.SetOptimizerAsGradientDescentLineSearch(
-            learningRate=0.5,
-            numberOfIterations=60,
-            convergenceMinimumValue=1e-6,
-            convergenceWindowSize=10,
-            lineSearchLowerLimit=0.0,
-            lineSearchUpperLimit=2.0,
-            lineSearchEpsilon=0.01,
-            lineSearchMaximumIterations=10,
-        ),
-    )
+        variants["gradient_descent_line_search_lr_0.5"] = _run_variant(
+            fixed,
+            moving,
+            initial,
+            lambda method: method.SetOptimizerAsGradientDescentLineSearch(
+                learningRate=0.5,
+                numberOfIterations=60,
+                convergenceMinimumValue=1e-6,
+                convergenceWindowSize=10,
+                lineSearchLowerLimit=0.0,
+                lineSearchUpperLimit=2.0,
+                lineSearchEpsilon=0.01,
+                lineSearchMaximumIterations=10,
+            ),
+        )
+    elif profile == "fast":
+        for learning_rate in (0.001, 0.01, 0.1):
+            variants[f"gradient_descent_never_lr_{learning_rate}"] = _run_variant(
+                fixed,
+                moving,
+                initial,
+                lambda method, lr=learning_rate: method.SetOptimizerAsGradientDescent(
+                    learningRate=lr,
+                    numberOfIterations=50,
+                    convergenceMinimumValue=1e-6,
+                    convergenceWindowSize=10,
+                    estimateLearningRate=sitk.ImageRegistrationMethod.Never,
+                ),
+            )
+        for iterations in (20, 40):
+            variants[f"regular_step_lr_0.25_iter_{iterations}"] = _run_variant(
+                fixed,
+                moving,
+                initial,
+                lambda method, n=iterations: method.SetOptimizerAsRegularStepGradientDescent(
+                    learningRate=0.25,
+                    minStep=1e-4,
+                    numberOfIterations=n,
+                    relaxationFactor=0.5,
+                    gradientMagnitudeTolerance=1e-8,
+                ),
+            )
+        for iterations in (10, 20):
+            variants[f"line_search_lr_0.5_iter_{iterations}"] = _run_variant(
+                fixed,
+                moving,
+                initial,
+                lambda method, n=iterations: method.SetOptimizerAsGradientDescentLineSearch(
+                    learningRate=0.5,
+                    numberOfIterations=n,
+                    convergenceMinimumValue=1e-6,
+                    convergenceWindowSize=10,
+                    lineSearchLowerLimit=0.0,
+                    lineSearchUpperLimit=2.0,
+                    lineSearchEpsilon=0.02,
+                    lineSearchMaximumIterations=5,
+                ),
+            )
+    else:
+        raise RuntimeError("BRAINIAC_RIGID_DIAGNOSTIC_PROFILE_INVALID")
     for result in variants.values():
         result["both_com_and_similarity_worsened"] = bool(
             result["com_norm_mm"] > baseline["com_norm_mm"]
@@ -179,6 +225,7 @@ def run(sample_hash: str, output: Path) -> dict[str, Any]:
         "created_at_utc": time.strftime("%Y-%m-%dT%H:%M:%S+00:00", time.gmtime()),
         "sample_hash": sample_hash,
         "selection_role": "QC_FAILURE_REPAIR_LABEL_BLIND",
+        "diagnostic_profile": profile,
         "n4_seconds": n4_seconds,
         "baseline_centered_initial": baseline,
         "variants": variants,
@@ -201,9 +248,10 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--sample-hash", required=True)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--profile", choices=("comprehensive", "fast"), default="comprehensive")
     args = parser.parse_args()
     try:
-        result = run(args.sample_hash, args.output)
+        result = run(args.sample_hash, args.output, profile=args.profile)
     except Exception as exc:
         print(json.dumps({"status": "BLOCKED", "reason_code": type(exc).__name__}))
         return 3
