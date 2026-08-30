@@ -33,7 +33,7 @@ import subprocess
 import sys
 import threading
 import time
-from typing import Any, Callable, Mapping
+from typing import Any, Callable, Mapping, Sequence
 
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
@@ -1508,10 +1508,16 @@ def _policy() -> dict[str, Any]:
     assets = payload.get("pinned_assets")
     storage = payload.get("storage_locality")
     performance = payload.get("performance_evidence")
-    performance_path = (
-        ROOT / str(performance.get("relative_path"))
+    registration = payload.get("registration_contract")
+    previous_performance_path = (
+        ROOT / str(performance.get("previous_runtime_probe_relative_path"))
         if isinstance(performance, Mapping)
         else ROOT / "__missing_performance_evidence__"
+    )
+    repair_evidence_path = (
+        ROOT / str(performance.get("determinism_repair_relative_path"))
+        if isinstance(performance, Mapping)
+        else ROOT / "__missing_determinism_repair_evidence__"
     )
     if (
         payload.get("schema_version") != 3
@@ -1531,6 +1537,15 @@ def _policy() -> dict[str, Any]:
         or not isinstance(execution, Mapping)
         or execution.get("production_device") != "cuda"
         or execution.get("cpu_fallback") is not False
+        or not isinstance(registration, Mapping)
+        or registration.get("sampling_strategy") != "NONE_FULL"
+        or int(registration.get("registration_threads", -1)) != 1
+        or int(registration.get("registration_work_units", -1)) != 1
+        or int(registration.get("parameter_quantization_decimals", -1))
+        != RIGID_PARAMETER_QUANTIZATION_DECIMALS
+        or int(registration.get("metric_quantization_decimals", -1))
+        != REGISTRATION_METRIC_QUANTIZATION_DECIMALS
+        or registration.get("quality_selection_or_fallback") is not False
         or not isinstance(assets, Mapping)
         or assets.get("vendor_commit") != v2.VENDOR_COMMIT
         or assets.get("hd_bet_weight_sha256")
@@ -1545,11 +1560,16 @@ def _policy() -> dict[str, Any]:
         != v2.LOCAL_SCRATCH_MIN_FREE_BYTES
         or storage.get("silent_fallback") is not False
         or not isinstance(performance, Mapping)
-        or performance.get("scientific_pipeline_changed") is not False
-        or performance.get("concurrent_n4_byte_equivalent") is not True
-        or performance.get("concurrent_registration_rejected") is not True
-        or not performance_path.is_file()
-        or sha256_file(performance_path) != performance.get("sha256")
+        or performance.get("scientific_pipeline_changed") is not True
+        or performance.get("concurrent_n4_byte_equivalent_prior_probe") is not True
+        or performance.get("seeded_random_registration_rejected") is not True
+        or performance.get("final_exact_equivalence_pending_plan017") is not True
+        or not previous_performance_path.is_file()
+        or sha256_file(previous_performance_path)
+        != performance.get("previous_runtime_probe_sha256")
+        or not repair_evidence_path.is_file()
+        or sha256_file(repair_evidence_path)
+        != performance.get("determinism_repair_sha256")
     ):
         raise RuntimeError("BRAINIAC_V2_POLICY_CONTRACT_INVALID")
     return payload
@@ -1566,6 +1586,7 @@ def _config() -> dict[str, Any]:
     calibration = payload.get("calibration")
     sensitivity = payload.get("sensitivity")
     orchestration = payload.get("orchestration")
+    registration = payload.get("registration")
     storage = payload.get("storage_locality")
     signal_contract = payload.get("signal")
     device = payload.get("device")
@@ -1599,6 +1620,17 @@ def _config() -> dict[str, Any]:
         != 0.15
         or orchestration.get("execution_profile_authority")
         != "HASH_LOCKED_LIVE_BYTE_VERIFIED"
+        or not isinstance(registration, Mapping)
+        or registration.get("transform") != "Euler3D_rigid"
+        or registration.get("metric") != "MattesMutualInformation"
+        or int(registration.get("histogram_bins", -1)) != 50
+        or registration.get("sampling_strategy") != "NONE_FULL"
+        or int(registration.get("threads", -1)) != 1
+        or int(registration.get("work_units", -1)) != 1
+        or int(registration.get("parameter_quantization_decimals", -1))
+        != RIGID_PARAMETER_QUANTIZATION_DECIMALS
+        or int(registration.get("metric_quantization_decimals", -1))
+        != REGISTRATION_METRIC_QUANTIZATION_DECIMALS
         or not isinstance(storage, Mapping)
         or storage.get("authoritative_artifacts") != "H_ONLY"
         or storage.get("local_scratch") != str(v2.LOCAL_SCRATCH_ROOT)
@@ -1744,6 +1776,54 @@ def _load_fixed_template() -> Any:
     return sitk.ReadImage(str(DERIVED_TEMPLATE), sitk.sitkFloat32)
 
 
+RIGID_PARAMETER_QUANTIZATION_DECIMALS = 4
+REGISTRATION_METRIC_QUANTIZATION_DECIMALS = 7
+
+
+def _canonical_rigid_parameters(parameters: Sequence[float]) -> tuple[float, ...]:
+    """Remove scientifically irrelevant optimizer jitter before resampling.
+
+    Full Mattes-MI evaluation on the pinned Windows/SimpleITK build still
+    varied at roughly 1e-6 mm / 1e-9 rad between otherwise identical calls.
+    Rounding all six Euler parameters to 1e-4 is far below the 1 mm template
+    resolution while making the transform a stable, receipt-bindable object.
+    """
+
+    values = tuple(float(value) for value in parameters)
+    if len(values) != 6 or not all(math.isfinite(value) for value in values):
+        raise RuntimeError("BRAINIAC_V2_RIGID_PARAMETERS_INVALID")
+    canonical = tuple(
+        round(value, RIGID_PARAMETER_QUANTIZATION_DECIMALS) for value in values
+    )
+    return tuple(0.0 if value == 0.0 else value for value in canonical)
+
+
+def _canonical_registration_metric(value: float) -> float:
+    metric = float(value)
+    if not math.isfinite(metric):
+        raise RuntimeError("BRAINIAC_V2_RIGID_REGISTRATION_METRIC_NONFINITE")
+    canonical = round(metric, REGISTRATION_METRIC_QUANTIZATION_DECIMALS)
+    return 0.0 if canonical == 0.0 else canonical
+
+
+def _canonicalize_rigid_transform(transform: Any, sitk: Any) -> Any:
+    candidate = transform
+    if hasattr(transform, "GetNumberOfTransforms"):
+        count = int(transform.GetNumberOfTransforms())
+        if count != 1:
+            raise RuntimeError("BRAINIAC_V2_RIGID_TRANSFORM_COMPOSITION_INVALID")
+        candidate = transform.GetBackTransform()
+    try:
+        canonical = sitk.Euler3DTransform(candidate)
+    except RuntimeError as exc:
+        raise RuntimeError("BRAINIAC_V2_RIGID_TRANSFORM_TYPE_INVALID") from exc
+    fixed = tuple(float(value) for value in canonical.GetFixedParameters())
+    if not fixed or not all(math.isfinite(value) for value in fixed):
+        raise RuntimeError("BRAINIAC_V2_RIGID_FIXED_PARAMETERS_INVALID")
+    canonical.SetParameters(_canonical_rigid_parameters(canonical.GetParameters()))
+    return canonical
+
+
 def _registration(fixed: Any, moving: Any, sitk: Any) -> tuple[Any, Any, float]:
     initial = sitk.CenteredTransformInitializer(
         fixed,
@@ -1752,9 +1832,10 @@ def _registration(fixed: Any, moving: Any, sitk: Any) -> tuple[Any, Any, float]:
         sitk.CenteredTransformInitializerFilter.GEOMETRY,
     )
     method = sitk.ImageRegistrationMethod()
+    method.SetNumberOfThreads(1)
+    method.SetNumberOfWorkUnits(1)
     method.SetMetricAsMattesMutualInformation(numberOfHistogramBins=50)
-    method.SetMetricSamplingStrategy(method.RANDOM)
-    method.SetMetricSamplingPercentage(0.01, seed=v2.REGISTRATION_SEED)
+    method.SetMetricSamplingStrategy(method.NONE)
     method.SetInterpolator(sitk.sitkLinear)
     method.SetOptimizerAsGradientDescent(
         learningRate=1.0,
@@ -1767,20 +1848,19 @@ def _registration(fixed: Any, moving: Any, sitk: Any) -> tuple[Any, Any, float]:
     method.SetSmoothingSigmasPerLevel(smoothingSigmas=[2, 1, 0])
     method.SmoothingSigmasAreSpecifiedInPhysicalUnitsOn()
     method.SetInitialTransform(initial, inPlace=False)
-    transform = method.Execute(fixed, moving)
-    metric = float(method.GetMetricValue())
-    if not math.isfinite(metric):
-        raise RuntimeError("BRAINIAC_V2_RIGID_REGISTRATION_METRIC_NONFINITE")
+    transform = _canonicalize_rigid_transform(method.Execute(fixed, moving), sitk)
+    metric = _canonical_registration_metric(float(method.GetMetricValue()))
     return transform, initial, metric
 
 
 def _metric_value(fixed: Any, moving: Any, sitk: Any) -> float:
     method = sitk.ImageRegistrationMethod()
+    method.SetNumberOfThreads(1)
+    method.SetNumberOfWorkUnits(1)
     method.SetMetricAsMattesMutualInformation(numberOfHistogramBins=50)
-    method.SetMetricSamplingStrategy(method.RANDOM)
-    method.SetMetricSamplingPercentage(0.01, seed=v2.REGISTRATION_SEED)
+    method.SetMetricSamplingStrategy(method.NONE)
     method.SetInterpolator(sitk.sitkLinear)
-    return float(method.MetricEvaluate(fixed, moving))
+    return _canonical_registration_metric(float(method.MetricEvaluate(fixed, moving)))
 
 
 def _transform_qc(transform: Any, sitk: Any, fixed_template: Any) -> dict[str, float]:
@@ -1943,7 +2023,7 @@ def make_real_pipeline(
 ) -> Callable[[Mapping[str, str], Path], dict[str, Any]]:
     """One sample: N4 -> rigid -> HD-BET -> official 96^3 -> nonzero normalize."""
 
-    _pin_itk_threads()
+    itk_threads = _pin_itk_threads()
 
     def pipeline(item: Mapping[str, str], scratch: Path) -> dict[str, Any]:
         import nibabel as nib
@@ -1957,7 +2037,10 @@ def make_real_pipeline(
         if source.GetDimension() != 3 or min(source.GetSize()) <= 0:
             raise RuntimeError("BRAINIAC_V2_RAW_T1_GEOMETRY_INVALID")
         n4_started = time.monotonic()
-        n4 = sitk.N4BiasFieldCorrection(source)
+        n4_filter = sitk.N4BiasFieldCorrectionImageFilter()
+        n4_filter.SetNumberOfThreads(itk_threads)
+        n4_filter.SetNumberOfWorkUnits(itk_threads)
+        n4 = n4_filter.Execute(source)
         n4_seconds = time.monotonic() - n4_started
 
         registration_started = time.monotonic()

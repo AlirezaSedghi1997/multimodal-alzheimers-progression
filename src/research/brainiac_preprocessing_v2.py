@@ -67,7 +67,7 @@ RECEIPT_GENERATION = 1
 PRIMARY_ROOT = ROOT / "data" / "derived" / "method_x_brainiac" / "r1_primary_v2"
 SMOKE_ROOT = ROOT / "data" / "derived" / "method_x_brainiac" / "r1_primary_v2_smoke"
 POLICY_PATH = (
-    ROOT / "governance" / "brainiac_preprocessing_r1_primary_v2_policy_v3.json"
+    ROOT / "governance" / "brainiac_preprocessing_r1_primary_v2_policy_v4.json"
 )
 LOCAL_SCRATCH_ROOT = Path(
     r"C:\Users\USER\AppData\Local\AMUSE-X\brainiac_preprocessing_staging"
@@ -1046,11 +1046,27 @@ def run_sample_transaction(
             similarity_before=float(result["registration_similarity_before"]),
             similarity_after=float(result["registration_similarity_after"]),
         ) == "QUARANTINE_BOTH_WORSENED":
+            com_before = [float(value) for value in result["center_of_mass_before"]]
+            com_after = [float(value) for value in result["center_of_mass_after"]]
+            similarity_before = float(result["registration_similarity_before"])
+            similarity_after = float(result["registration_similarity_after"])
             for payload in (output_path, transform_path):
                 _quarantine_move(payload, root, sample_hash)
             _atomic_write_json(
                 journal_dir / "quarantined.json",
-                {"sample_hash": sample_hash, "status": "QUARANTINED"},
+                {
+                    "sample_hash": sample_hash,
+                    "status": "QUARANTINED",
+                    "reason_code": "BOTH_COM_AND_MATTES_MI_WORSENED",
+                    "com_coordinate_frame": "TEMPLATE_PHYSICAL_MM_RELATIVE",
+                    "center_of_mass_before": com_before,
+                    "center_of_mass_after": com_after,
+                    "com_norm_before_mm": math.dist((0.0, 0.0, 0.0), com_before),
+                    "com_norm_after_mm": math.dist((0.0, 0.0, 0.0), com_after),
+                    "registration_similarity_before": similarity_before,
+                    "registration_similarity_after": similarity_after,
+                    "similarity_semantics": "NEGATIVE_MATTES_MI_LOWER_IS_BETTER",
+                },
             )
             raise RuntimeError("BRAINIAC_PREPROCESSING_QUARANTINE_BOTH_WORSENED")
 

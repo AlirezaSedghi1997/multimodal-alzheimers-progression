@@ -1,5 +1,5 @@
 # BrainIAC raw-T1 preprocessing, schema v2 (Plan 002 / B2)
-# Policy authority: governance/brainiac_preprocessing_r1_primary_v2_policy_v3.json
+# Policy authority: governance/brainiac_preprocessing_r1_primary_v2_policy_v4.json
 # This file holds layout/runtime knobs only; every scientific threshold lives
 # in the policy JSON and is hash-bound into each receipt.
 
@@ -48,6 +48,16 @@ orchestration:
   parallel_repeat_count: 2
   parallel_minimum_speedup_fraction: 0.15
   execution_profile_authority: HASH_LOCKED_LIVE_BYTE_VERIFIED
+
+registration:
+  transform: Euler3D_rigid
+  metric: MattesMutualInformation
+  histogram_bins: 50
+  sampling_strategy: NONE_FULL
+  threads: 1
+  work_units: 1
+  parameter_quantization_decimals: 4
+  metric_quantization_decimals: 7
 
 storage_locality:
   authoritative_artifacts: H_ONLY

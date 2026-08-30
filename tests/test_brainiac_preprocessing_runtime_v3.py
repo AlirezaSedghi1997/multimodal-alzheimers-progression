@@ -94,7 +94,7 @@ def _no_live_writer(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(v2, "assert_no_cnn_writer", lambda: None)
 
 
-def test_policy_v3_locks_measured_fast_profile() -> None:
+def test_policy_v4_locks_fast_profile_and_deterministic_registration_repair() -> None:
     import json
 
     from src.research import brainiac_preprocessing_v2 as v2
@@ -105,6 +105,13 @@ def test_policy_v3_locks_measured_fast_profile() -> None:
     assert policy["orchestration"]["n4_samples_in_flight"] == 2
     assert policy["orchestration"]["registration_workers_max"] == 1
     assert policy["orchestration"]["gpu_workers_max"] == 1
+    registration = policy["registration_contract"]
+    assert registration["sampling_strategy"] == "NONE_FULL"
+    assert registration["registration_threads"] == 1
+    assert registration["registration_work_units"] == 1
+    assert registration["parameter_quantization_decimals"] == 4
+    assert registration["metric_quantization_decimals"] == 7
+    assert registration["quality_selection_or_fallback"] is False
     storage = policy["storage_locality"]
     assert storage["authoritative_artifacts"] == "H_ONLY"
     assert storage["local_scratch_max_bytes"] == 1_073_741_824
@@ -333,3 +340,84 @@ def test_acceptance_manifest_supersession_is_append_only(
     receipt = json.loads(receipts[0].read_text(encoding="utf-8"))
     assert receipt["superseded_integrity_sha256"] == existing["integrity_sha256"]
     assert receipt["replacement_integrity_sha256"] == candidate["integrity_sha256"]
+
+
+def test_rigid_transform_canonicalization_removes_subprecision_optimizer_jitter():
+    """Sub-voxel optimizer jitter must not change the locked transform bytes."""
+
+    from scripts.research import prepare_brainiac_raw_t1_v2 as prep
+
+    canonical_first = prep._canonical_rigid_parameters(
+        (-0.1338013622, -0.0072943913, 0.0693304712, 1.6131162, -0.3580641, -56.9335221)
+    )
+    canonical_second = prep._canonical_rigid_parameters(
+        (-0.1338013608, -0.0072943903, 0.0693304723, 1.6131155, -0.3580635, -56.9335214)
+    )
+
+    assert canonical_first == canonical_second
+    assert canonical_first == (
+        -0.1338,
+        -0.0073,
+        0.0693,
+        1.6131,
+        -0.3581,
+        -56.9335,
+    )
+
+
+def test_registration_source_uses_full_sampling_and_per_object_single_thread():
+    """A seed on RANDOM sampling was empirically non-deterministic on Windows."""
+
+    import inspect
+    from scripts.research import prepare_brainiac_raw_t1_v2 as prep
+
+    registration_source = inspect.getsource(prep._registration)
+    metric_source = inspect.getsource(prep._metric_value)
+    for source in (registration_source, metric_source):
+        assert "SetMetricSamplingStrategy(method.NONE)" in source
+        assert "SetNumberOfThreads(1)" in source
+        assert "SetNumberOfWorkUnits(1)" in source
+        assert "method.RANDOM" not in source
+
+
+def test_both_worsened_quarantine_records_numeric_scientific_evidence(tmp_path: Path):
+    """A quarantine decision must remain independently auditable after failure."""
+
+    from src.research import brainiac_preprocessing_v2 as v2
+
+    class BothWorsened(_Pipeline):
+        def __call__(self, item, scratch: Path):
+            result = super().__call__(item, scratch)
+            result["center_of_mass_before"] = [1.0, 0.0, 0.0]
+            result["center_of_mass_after"] = [2.0, 0.0, 0.0]
+            result["registration_similarity_before"] = -1.2
+            result["registration_similarity_after"] = -0.8
+            return result
+
+    item = {"sample_hash": "s_" + "d" * 16, "t1_file_hash": "t1"}
+    with pytest.raises(RuntimeError, match="QUARANTINE_BOTH_WORSENED"):
+        v2.run_sample_transaction(
+            item,
+            tmp_path,
+            pipeline=BothWorsened(),
+            bindings=_bindings(),
+        )
+
+    evidence = json.loads(
+        (tmp_path / "journals" / item["sample_hash"] / "quarantined.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert evidence == {
+        "sample_hash": item["sample_hash"],
+        "status": "QUARANTINED",
+        "reason_code": "BOTH_COM_AND_MATTES_MI_WORSENED",
+        "com_coordinate_frame": "TEMPLATE_PHYSICAL_MM_RELATIVE",
+        "center_of_mass_before": [1.0, 0.0, 0.0],
+        "center_of_mass_after": [2.0, 0.0, 0.0],
+        "com_norm_before_mm": 1.0,
+        "com_norm_after_mm": 2.0,
+        "registration_similarity_before": -1.2,
+        "registration_similarity_after": -0.8,
+        "similarity_semantics": "NEGATIVE_MATTES_MI_LOWER_IS_BETTER",
+    }
