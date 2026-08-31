@@ -265,6 +265,9 @@ def build_traceability() -> dict[str, Any]:
             "primary_binding_source_compatibility": runner._artifact_binding(
                 runner.PRIMARY_BINDING_SOURCE_COMPATIBILITY_PATH
             ),
+            "calibration_reconciliation_source_compatibility": runner._artifact_binding(
+                runner.CALIBRATION_RECONCILIATION_SOURCE_COMPATIBILITY_PATH
+            ),
             "legacy_smoke_reconciliation": runner._artifact_binding(
                 runner.LEGACY_SMOKE_RECONCILIATION_PATH
             ),
@@ -333,6 +336,9 @@ def issue_readiness() -> dict[str, Any]:
         ),
         "primary_binding_source_compatibility": runner._artifact_binding(
             runner.PRIMARY_BINDING_SOURCE_COMPATIBILITY_PATH
+        ),
+        "calibration_reconciliation_source_compatibility": runner._artifact_binding(
+            runner.CALIBRATION_RECONCILIATION_SOURCE_COMPATIBILITY_PATH
         ),
         "legacy_smoke_reconciliation": runner._artifact_binding(
             runner.LEGACY_SMOKE_RECONCILIATION_PATH

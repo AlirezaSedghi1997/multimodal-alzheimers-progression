@@ -122,8 +122,23 @@ PRIMARY_BINDING_SOURCE_COMPATIBILITY_PATH = (
     REGISTRY_ROOT
     / "BRAINIAC_PLAN017_PRIMARY_BINDING_SOURCE_COMPATIBILITY_V3.json"
 )
+CALIBRATION_RECONCILIATION_SOURCE_COMPATIBILITY_PATH = (
+    REGISTRY_ROOT
+    / "BRAINIAC_PLAN017_CALIBRATION_RECONCILIATION_SOURCE_COMPATIBILITY_V4.json"
+)
+FALSE_CALIBRATION_RECONCILIATION_PATH = (
+    REGISTRY_ROOT
+    / "superseded"
+    / "20260831T140348Z-1788185028106323300-preprocessing-artifact-reconciliation.json"
+)
 PLAN017_LOCKED_EVIDENCE_DEPENDENCY_CLOSURE_SHA256 = (
     "93fbd6011cce4fd0f906c7e90f41fff44cffd30345ff57cfa877550d4d867ae0"
+)
+PLAN017_PRIMARY_BINDING_V3_DEPENDENCY_CLOSURE_SHA256 = (
+    "d82d4f0b4061d5f92a9435eb85bb6b0970919baad3808773ef096e7d3017e946"
+)
+PLAN017_PRIMARY_BINDING_V3_RUNNER_SHA256 = (
+    "e3fbb930e5a1ced765bcd17b0ab97dec4d07c57f534c233bd5c96849570add60"
 )
 P08_STATUS_PATH = (
     ROOT
@@ -1328,10 +1343,11 @@ def _calibration_generation_is_current() -> bool:
             [str(row["sample_hash"]) for row in membership]
         )
     )
-    bindings = _base_bindings()
-    bindings["qc_threshold_manifest_sha256"] = hashlib.sha256(
-        b"NOT_YET_CALIBRATED_PLAN_003"
-    ).hexdigest()
+    # Calibration receipts are immutable pre-threshold evidence.  A later
+    # source-only compatibility closure must not make those byte-valid receipts
+    # look legacy: validate them against the same locked historical bindings
+    # used by threshold reconstruction and equivalence replay.
+    bindings = _equivalence_receipt_bindings()
     receipts_dir = CALIBRATION_ROOT / "receipts"
     for receipt_path in sorted(receipts_dir.glob("*.json")):
         sample_hash = receipt_path.stem
@@ -3510,6 +3526,7 @@ def _validated_traceability_manifest() -> dict[str, Any]:
         "source_only_resume_migration": SOURCE_ONLY_RESUME_MIGRATION_PATH,
         "postcalibration_source_migration": POSTCALIBRATION_SOURCE_MIGRATION_PATH,
         "primary_binding_source_compatibility": PRIMARY_BINDING_SOURCE_COMPATIBILITY_PATH,
+        "calibration_reconciliation_source_compatibility": CALIBRATION_RECONCILIATION_SOURCE_COMPATIBILITY_PATH,
         "legacy_smoke_reconciliation": LEGACY_SMOKE_RECONCILIATION_PATH,
     }
     if set(bindings) != set(expected):
@@ -3529,6 +3546,7 @@ def _validated_traceability_manifest() -> dict[str, Any]:
     _validated_source_only_resume_migration()
     _validated_postcalibration_source_migration()
     _validated_primary_binding_source_compatibility()
+    _validated_calibration_reconciliation_source_compatibility()
     _validated_legacy_smoke_reconciliation()
     return report
 
@@ -3613,6 +3631,8 @@ def _validated_postcalibration_source_migration() -> dict[str, Any]:
 
 
 def _validated_primary_binding_source_compatibility() -> dict[str, Any]:
+    """Validate the immutable V3 link, independent of later live source drift."""
+
     if not PRIMARY_BINDING_SOURCE_COMPATIBILITY_PATH.is_file():
         raise RuntimeError("BRAINIAC_PRIMARY_BINDING_SOURCE_COMPATIBILITY_MISSING")
     report = json.loads(
@@ -3621,7 +3641,6 @@ def _validated_primary_binding_source_compatibility() -> dict[str, Any]:
     body = dict(report)
     recorded = body.pop("integrity_sha256", None)
     parent = report.get("parent_migration")
-    dependency = _dependency_manifest()
     transition = report.get("allowed_source_transition")
     if (
         report.get("schema_version") != 1
@@ -3633,7 +3652,7 @@ def _validated_primary_binding_source_compatibility() -> dict[str, Any]:
         or report.get("old_dependency_closure_sha256")
         != PLAN017_LOCKED_EVIDENCE_DEPENDENCY_CLOSURE_SHA256
         or report.get("new_dependency_closure_sha256")
-        != dependency.get("closure_sha256")
+        != PLAN017_PRIMARY_BINDING_V3_DEPENDENCY_CLOSURE_SHA256
         or not isinstance(parent, Mapping)
         or _validate_artifact_binding(parent)
         != POSTCALIBRATION_SOURCE_MIGRATION_PATH.resolve(strict=True)
@@ -3643,7 +3662,7 @@ def _validated_primary_binding_source_compatibility() -> dict[str, Any]:
         or transition.get("old_sha256")
         != "3084e52fccec3e19bcd77331c324ee0c7ea606f142d1bd5e9f45fc5984b26c63"
         or transition.get("new_sha256")
-        != sha256_file(ROOT / "scripts/research/prepare_brainiac_raw_t1_v2.py")
+        != PLAN017_PRIMARY_BINDING_V3_RUNNER_SHA256
         or int(report.get("scientific_preprocessing_function_drift_count", -1))
         != 0
         or int(report.get("output_byte_drift_count", -1)) != 0
@@ -3661,6 +3680,108 @@ def _validated_primary_binding_source_compatibility() -> dict[str, Any]:
         != "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE"
     ):
         raise RuntimeError("BRAINIAC_PRIMARY_BINDING_SOURCE_COMPATIBILITY_INVALID")
+    return report
+
+
+def _validated_calibration_reconciliation_source_compatibility() -> dict[str, Any]:
+    """Validate the append-only V4 repair of the false calibration archive."""
+
+    if not CALIBRATION_RECONCILIATION_SOURCE_COMPATIBILITY_PATH.is_file():
+        raise RuntimeError(
+            "BRAINIAC_CALIBRATION_RECONCILIATION_SOURCE_COMPATIBILITY_MISSING"
+        )
+    report = json.loads(
+        CALIBRATION_RECONCILIATION_SOURCE_COMPATIBILITY_PATH.read_text(
+            encoding="utf-8"
+        )
+    )
+    body = dict(report)
+    recorded = body.pop("integrity_sha256", None)
+    parent = report.get("parent_v3")
+    reconciliation = report.get("false_reconciliation")
+    transition = report.get("allowed_source_transition")
+    current_dependency = report.get("current_dependency_manifest")
+    archived_dependency = report.get("archived_dependency_manifest")
+    live_dependency = _dependency_manifest()
+    if (
+        report.get("schema_version") != 1
+        or report.get("artifact")
+        != "BRAINIAC_PLAN017_CALIBRATION_RECONCILIATION_SOURCE_COMPATIBILITY_V4"
+        or report.get("status")
+        != "PASS_FALSE_CALIBRATION_RECONCILIATION_REPAIRED"
+        or recorded != canonical_sha(body)
+        or not isinstance(parent, Mapping)
+        or _validate_artifact_binding(parent)
+        != PRIMARY_BINDING_SOURCE_COMPATIBILITY_PATH.resolve(strict=True)
+        or not isinstance(reconciliation, Mapping)
+        or _validate_artifact_binding(reconciliation)
+        != FALSE_CALIBRATION_RECONCILIATION_PATH.resolve(strict=True)
+        or not isinstance(transition, Mapping)
+        or transition.get("path")
+        != "scripts/research/prepare_brainiac_raw_t1_v2.py"
+        or transition.get("old_sha256")
+        != PLAN017_PRIMARY_BINDING_V3_RUNNER_SHA256
+        or transition.get("new_sha256")
+        != sha256_file(ROOT / "scripts/research/prepare_brainiac_raw_t1_v2.py")
+        or report.get("old_dependency_closure_sha256")
+        != PLAN017_PRIMARY_BINDING_V3_DEPENDENCY_CLOSURE_SHA256
+        or report.get("new_dependency_closure_sha256")
+        != live_dependency.get("closure_sha256")
+        or not isinstance(current_dependency, Mapping)
+        or _validate_artifact_binding(current_dependency)
+        != DEPENDENCY_MANIFEST_PATH.resolve(strict=True)
+        or not isinstance(archived_dependency, Mapping)
+        or not _validate_artifact_binding(archived_dependency).is_file()
+        or int(report.get("scientific_preprocessing_function_drift_count", -1))
+        != 0
+        or int(report.get("output_byte_drift_count", -1)) != 0
+        or int(report.get("transform_byte_drift_count", -1)) != 0
+        or int(report.get("threshold_numeric_drift_count", -1)) != 0
+        or report.get("calibration_restored_from_exact_archive") is not True
+        or int(report.get("historical_calibration_receipt_count", -1)) != 32
+        or report.get("preprocessing_reexecuted") is not False
+        or int(report.get("outer_loader_invocation_count", -1)) != 0
+        or report.get("primary_valid_n") != 0
+        or report.get("plans_005_006_007_allowed") is not False
+        or report.get("manual_override_allowed") is not False
+        or report.get("claim_ceiling")
+        != "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE"
+    ):
+        raise RuntimeError(
+            "BRAINIAC_CALIBRATION_RECONCILIATION_SOURCE_COMPATIBILITY_INVALID"
+        )
+    _validated_primary_binding_source_compatibility()
+    reconciliation_report = json.loads(
+        FALSE_CALIBRATION_RECONCILIATION_PATH.read_text(encoding="utf-8")
+    )
+    reconciliation_body = dict(reconciliation_report)
+    reconciliation_integrity = reconciliation_body.pop("integrity_sha256", None)
+    rows = reconciliation_report.get("artifacts")
+    if (
+        reconciliation_report.get("status")
+        != "ARCHIVED_INCOMPATIBLE_PREPROCESSING_GENERATION"
+        or reconciliation_integrity != canonical_sha(reconciliation_body)
+        or not isinstance(rows, list)
+        or len(rows) != 1
+        or rows[0].get("source_role") != "r1_primary_v2_calibration"
+    ):
+        raise RuntimeError("BRAINIAC_FALSE_CALIBRATION_RECONCILIATION_INVALID")
+    restored_tree = report.get("restored_calibration_tree")
+    if (
+        not isinstance(restored_tree, Mapping)
+        or restored_tree != _tree_evidence(CALIBRATION_ROOT)
+        or restored_tree.get("tree_sha256") != rows[0].get("tree_sha256")
+        or restored_tree.get("file_count") != rows[0].get("file_count")
+        or restored_tree.get("bytes") != rows[0].get("bytes")
+    ):
+        raise RuntimeError("BRAINIAC_RESTORED_CALIBRATION_TREE_INVALID")
+    _load_bound_threshold_manifest()
+    receipts = CALIBRATION_ROOT / "receipts"
+    if not receipts.is_dir() or len(list(receipts.glob("*.json"))) != 32:
+        raise RuntimeError("BRAINIAC_RESTORED_CALIBRATION_RECEIPTS_INVALID")
+    primary_receipts = v2.PRIMARY_ROOT / "receipts"
+    if primary_receipts.is_dir() and any(primary_receipts.glob("*.json")):
+        raise RuntimeError("BRAINIAC_PRIMARY_STARTED_BEFORE_V4_COMPATIBILITY")
     return report
 
 
@@ -3887,6 +4008,7 @@ def validate_final_preprocessing_readiness(
         "source_only_resume_migration": SOURCE_ONLY_RESUME_MIGRATION_PATH,
         "postcalibration_source_migration": POSTCALIBRATION_SOURCE_MIGRATION_PATH,
         "primary_binding_source_compatibility": PRIMARY_BINDING_SOURCE_COMPATIBILITY_PATH,
+        "calibration_reconciliation_source_compatibility": CALIBRATION_RECONCILIATION_SOURCE_COMPATIBILITY_PATH,
         "legacy_smoke_reconciliation": LEGACY_SMOKE_RECONCILIATION_PATH,
     }
     if not isinstance(bindings, Mapping) or set(bindings) != set(expected_paths):
@@ -3909,6 +4031,7 @@ def validate_final_preprocessing_readiness(
     _validated_source_only_resume_migration()
     _validated_postcalibration_source_migration()
     _validated_primary_binding_source_compatibility()
+    _validated_calibration_reconciliation_source_compatibility()
     _validated_legacy_smoke_reconciliation()
     for evidence_path, expected_status in (
         (P08_STATUS_PATH, "R0_COMPLETE_PREPARATION_PARTIAL_NONBLOCKING_FOR_MAIN_CNN"),
@@ -4143,6 +4266,9 @@ def run_acceptance(
         return {"status": "BLOCKED", "exit_code": code, "readiness_valid": False}
     if stop.requested:
         return {"status": "PAUSED_RESUMABLE", "exit_code": 75}
+    # Acceptance must prove the complete append-only source/reconciliation
+    # chain before it is allowed to reuse calibration or issue a candidate.
+    _validated_calibration_reconciliation_source_compatibility()
     locked, passed = _parallel_unlock_state()
     if locked and not passed:
         gate = run_equivalence(limit=12, device=device, stop=stop)

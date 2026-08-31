@@ -678,11 +678,16 @@ def test_legacy_generation_is_moved_with_byte_verified_receipt(
 def test_current_calibration_generation_is_preserved_for_exact_resume(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """A current, byte-valid calibration root is resumable evidence, not legacy."""
+    """Locked historical calibration remains resumable after source-only drift."""
 
     calibration = tmp_path / "calibration"
     item = {"sample_hash": "s_" + "7" * 16, "t1_file_hash": "t1"}
-    calibration_bindings = _bindings()
+    current_bindings = _bindings()
+    current_bindings["dependency_closure_sha256"] = _sha("current-closure")
+    calibration_bindings = dict(current_bindings)
+    calibration_bindings["dependency_closure_sha256"] = _sha(
+        "locked-historical-closure"
+    )
     calibration_bindings["qc_threshold_manifest_sha256"] = hashlib.sha256(
         b"NOT_YET_CALIBRATED_PLAN_003"
     ).hexdigest()
@@ -705,7 +710,12 @@ def test_current_calibration_generation_is_preserved_for_exact_resume(
     monkeypatch.setattr(runner, "CALIBRATION_ROOT", calibration)
     monkeypatch.setattr(runner, "EXECUTION_PROFILE_PATH", profile)
     monkeypatch.setattr(runner, "_parallel_unlock_state", lambda: (False, True))
-    monkeypatch.setattr(runner, "_base_bindings", _bindings)
+    monkeypatch.setattr(runner, "_base_bindings", lambda: dict(current_bindings))
+    monkeypatch.setattr(
+        runner,
+        "_equivalence_receipt_bindings",
+        lambda: dict(calibration_bindings),
+    )
     monkeypatch.setattr(v2, "SMOKE_ROOT", smoke)
     monkeypatch.setattr(v2, "load_locked_membership", lambda: [item])
     monkeypatch.setattr(
