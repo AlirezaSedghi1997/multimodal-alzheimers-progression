@@ -96,16 +96,16 @@ def _validate_sealed(path: Path, *, expected_status: str) -> dict[str, Any]:
 
 def _validate_full_test_fixture_lineage(full_tests: Mapping[str, Any]) -> None:
     expected = (
-        runner.REGISTRY_ROOT / "BRAINIAC_PLAN017_TEST_FIXTURE_SUPERSESSION_V6.json"
+        runner.REGISTRY_ROOT / "BRAINIAC_PLAN018_LIVE_STATUS_SUPERSESSION_V7.json"
     )
-    binding = full_tests.get("test_fixture_supersession")
+    binding = full_tests.get("release_supersession")
     if (
         not isinstance(binding, Mapping)
         or runner._validate_artifact_binding(binding) != expected.resolve(strict=True)
     ):
         raise RuntimeError("BRAINIAC_PLAN018_TEST_FIXTURE_LINEAGE_INVALID")
     _validate_sealed(
-        expected, expected_status="PASS_TEST_FIXTURE_CHAIN_SUPERSESSION"
+        expected, expected_status="PASS_PLAN018_LIVE_STATUS_SUPERSESSION"
     )
 
 
@@ -170,8 +170,6 @@ def _facts(full_tests: Mapping[str, Any]) -> dict[str, Any]:
         "plan_015": "DONE",
         "plan_016": "DONE",
         "plan_017": "PASS_ACCEPTANCE_PRIMARY_NOT_STARTED",
-        "plan_018": "IN_PROGRESS_ISSUING_READINESS",
-        "plan_019": "BLOCKED_PENDING_FINAL_READINESS",
         "plans_005_006_007_allowed": False,
         "plan_005": "NOT_EXECUTED",
         "plan_006": "CODE_ONLY_UNACCEPTED",
@@ -185,19 +183,23 @@ def _facts(full_tests: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
-def _update_human_traceability(facts: Mapping[str, Any]) -> list[dict[str, Any]]:
-    section = f"""## BrainIAC preprocessing — generated live status (Plan 018)
+def _render_human_traceability(facts: Mapping[str, Any]) -> str:
+    return f"""## BrainIAC preprocessing — generated live status (Plan 018)
 
 - R0: `{facts['r0']}`; citation: `{facts['citation_corroboration']}`; novelty: `{facts['novelty']}`.
 - Five-CNN battery: `{facts['battery']}`.
 - Plan 002: `{facts['plan_002']}`; Plan 003: `{facts['plan_003']}`.
-- Plans 014–017: `DONE/DONE/DONE/PASS`; Plan 019 waits only for final preprocessing readiness.
+- Plans 014–017: `DONE/DONE/DONE/PASS`; Plan 019 may start only when final readiness validates live.
 - Plans 005–007: `NOT_EXECUTED / CODE_ONLY_UNACCEPTED / NOT_EXECUTED` and remain hard-disabled until `1669/1669`.
 - Tests: `{facts['test_passed']} passed`, `{facts['test_failed']} failed`, `{facts['test_errors']} errors` (live manifest-bound run).
 - External data: `{facts['external']}`; internal substitute is `{facts['external_evidence_label']}`.
 - Claim ceiling: `{facts['claim_ceiling']}`.
 - Runtime counts must be read from `prepare_brainiac_raw_t1_v2.py --mode status`; no PID/count in this section is treated as timeless.
 """
+
+
+def _update_human_traceability(facts: Mapping[str, Any]) -> list[dict[str, Any]]:
+    section = _render_human_traceability(facts)
     for path in (ROADMAP_MD, MEMORY_INDEX, *SDD_PROGRESS, ADVISOR_README):
         _write_generated_section(path, section)
 

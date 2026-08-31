@@ -1284,6 +1284,19 @@ def test_traceability_revalidates_frozen_battery_before_document_mutation(
         release.build_traceability()
 
 
+def test_plan18_traceability_omits_transactionally_stale_plan_states() -> None:
+    from scripts.research import build_brainiac_preprocessing_release as release
+
+    facts = release._facts(
+        {"summary": {"passed": 595, "failed": 0, "errors": 0}}
+    )
+    assert "plan_018" not in facts
+    assert "plan_019" not in facts
+    section = release._render_human_traceability(facts)
+    assert "waits only for final preprocessing readiness" not in section
+    assert "Plan 019 may start only when final readiness validates live" in section
+
+
 def test_final_readiness_never_accepts_an_acceptance_candidate_as_release(
     tmp_path: Path,
 ) -> None:

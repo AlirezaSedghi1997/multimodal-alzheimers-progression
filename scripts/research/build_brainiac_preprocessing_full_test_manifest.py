@@ -24,11 +24,11 @@ from src.research.brainiac_dependency_closure import verify_manifest_tracking  #
 
 
 OUTPUT = runner.REGISTRY_ROOT / "brainiac_preprocessing_test_manifest_v1.json"
-TEST_FIXTURE_SUPERSESSION_V5 = (
-    runner.REGISTRY_ROOT / "BRAINIAC_PLAN017_TEST_FIXTURE_SUPERSESSION_V5.json"
-)
-TEST_FIXTURE_SUPERSESSION = (
+RELEASE_SUPERSESSION_V6 = (
     runner.REGISTRY_ROOT / "BRAINIAC_PLAN017_TEST_FIXTURE_SUPERSESSION_V6.json"
+)
+RELEASE_SUPERSESSION = (
+    runner.REGISTRY_ROOT / "BRAINIAC_PLAN018_LIVE_STATUS_SUPERSESSION_V7.json"
 )
 # Cross-method source isolation is exercised by
 # ``test_brainiac_completion_gates.py`` inside the BrainIAC set.  Do not bind
@@ -101,14 +101,14 @@ def _validate_existing_manifest(payload: Mapping[str, Any]) -> None:
         raise RuntimeError("BRAINIAC_FULL_TEST_EXISTING_MANIFEST_INVALID")
 
 
-def _validated_test_fixture_supersession() -> dict[str, Any]:
-    if not TEST_FIXTURE_SUPERSESSION.is_file():
-        raise RuntimeError("BRAINIAC_TEST_FIXTURE_SUPERSESSION_MISSING")
-    payload = json.loads(TEST_FIXTURE_SUPERSESSION.read_text(encoding="utf-8"))
+def _validated_release_supersession() -> dict[str, Any]:
+    if not RELEASE_SUPERSESSION.is_file():
+        raise RuntimeError("BRAINIAC_RELEASE_SUPERSESSION_MISSING")
+    payload = json.loads(RELEASE_SUPERSESSION.read_text(encoding="utf-8"))
     body = dict(payload)
     recorded = body.pop("integrity_sha256", None)
     if (
-        payload.get("status") != "PASS_TEST_FIXTURE_CHAIN_SUPERSESSION"
+        payload.get("status") != "PASS_PLAN018_LIVE_STATUS_SUPERSESSION"
         or recorded != runner.canonical_sha(body)
         or payload.get("new_git_head") != _git_head()
         or payload.get("dependency_closure_sha256")
@@ -116,14 +116,14 @@ def _validated_test_fixture_supersession() -> dict[str, Any]:
         or payload.get("primary_valid_n") != 0
         or payload.get("preprocessing_reexecuted") is not False
     ):
-        raise RuntimeError("BRAINIAC_TEST_FIXTURE_SUPERSESSION_INVALID")
-    parent = payload.get("parent_v5")
+        raise RuntimeError("BRAINIAC_RELEASE_SUPERSESSION_INVALID")
+    parent = payload.get("parent_v6")
     if (
         not isinstance(parent, Mapping)
         or runner._validate_artifact_binding(parent)
-        != TEST_FIXTURE_SUPERSESSION_V5.resolve(strict=True)
+        != RELEASE_SUPERSESSION_V6.resolve(strict=True)
     ):
-        raise RuntimeError("BRAINIAC_TEST_FIXTURE_SUPERSESSION_PARENT_INVALID")
+        raise RuntimeError("BRAINIAC_RELEASE_SUPERSESSION_PARENT_INVALID")
     return payload
 
 
@@ -222,7 +222,7 @@ def build_manifest() -> dict[str, Any]:
     if len(tests) < 20:
         raise RuntimeError("BRAINIAC_FULL_TEST_FILE_SET_INCOMPLETE")
     dependency = runner._dependency_manifest()
-    fixture_supersession = _validated_test_fixture_supersession()
+    release_supersession = _validated_release_supersession()
     if verify_manifest_tracking(dependency):
         raise RuntimeError("BRAINIAC_FULL_TEST_DEPENDENCY_UNTRACKED")
     source_paths = _dependency_paths(dependency) | _scientific_source_paths()
@@ -302,11 +302,11 @@ def build_manifest() -> dict[str, Any]:
         "exit_code": int(completed.returncode),
         "summary": summary,
         "dependency_closure_sha256": dependency["closure_sha256"],
-        "test_fixture_supersession": runner._artifact_binding(
-            TEST_FIXTURE_SUPERSESSION
+        "release_supersession": runner._artifact_binding(
+            RELEASE_SUPERSESSION
         ),
-        "superseded_failed_full_test_junit": fixture_supersession[
-            "failed_full_test_junit"
+        "superseded_pre_status_fix_full_test_manifest": release_supersession[
+            "superseded_full_test_manifest"
         ],
         "test_files": [runner._artifact_binding(path) for path in tests],
         "source_files": [
