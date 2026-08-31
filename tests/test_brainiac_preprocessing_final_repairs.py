@@ -985,6 +985,9 @@ def test_execution_profile_recomputes_live_receipts_and_rejects_byte_drift(
     profile_path.write_text(json.dumps(profile), encoding="utf-8")
     monkeypatch.setattr(runner, "EXECUTION_PROFILE_PATH", profile_path)
     monkeypatch.setattr(runner, "_base_bindings", lambda: bindings)
+    monkeypatch.setattr(
+        runner, "_equivalence_receipt_bindings", lambda: dict(bindings)
+    )
     monkeypatch.setattr(runner, "_current_equivalence_contract_sha256", lambda: contract)
     assert runner._parallel_unlock_state() == (False, True)
 
