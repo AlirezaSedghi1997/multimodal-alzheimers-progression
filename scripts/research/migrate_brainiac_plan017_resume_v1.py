@@ -39,7 +39,7 @@ OLD_PROFILE_INTEGRITY_SHA256 = (
 ALLOWED_SOURCE_TRANSITIONS = {
     "scripts/research/prepare_brainiac_raw_t1_v2.py": (
         "2c5956ed9f6afe1a87fd6c56953aebd488bb43ad8a55ef8d55adfb71552cdc77",
-        "e654ee103bcd42f99f5d9ea9683f31026acfccd7328162ea5c0279e2c897f1a1",
+        "224985f6bd6fd00ea0cb1bb92bde2dcd8194a3521cf26432a0d14223d307691b",
     ),
     "src/research/brainiac_preprocessing_v2.py": (
         "3c9e00c7bf111beccc24f1a2f66536fea6a341ef31828b4eaaf74d62f4cad3f4",

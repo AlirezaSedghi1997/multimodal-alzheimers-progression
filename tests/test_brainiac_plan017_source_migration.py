@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from pathlib import Path
 
 import pytest
@@ -133,3 +134,49 @@ def test_dependency_transition_rejects_any_scientific_input_drift() -> None:
 def test_migration_source_transition_allowlist_matches_live_bytes() -> None:
     for relative, (_old, expected_new) in migration.ALLOWED_SOURCE_TRANSITIONS.items():
         assert migration.runner.sha256_file(migration.ROOT / relative) == expected_new
+
+
+def test_release_validator_requires_zero_drift_source_only_migration(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    closure = _sha("new-closure")
+    body = {
+        "schema_version": 1,
+        "artifact": "BRAINIAC_PLAN017_SOURCE_ONLY_RESUME_MIGRATION_V1",
+        "status": "PASS_SOURCE_ONLY_RUNTIME_RESUME_MIGRATION",
+        "new_dependency_closure_sha256": closure,
+        "scientific_input_drift_count": 0,
+        "output_byte_drift_count": 0,
+        "transform_byte_drift_count": 0,
+        "scientific_receipt_field_drift_count": 0,
+        "preprocessing_reexecuted": False,
+        "outer_loader_invocation_count": 0,
+        "migrated_equivalence_receipts": 36,
+        "migrated_calibration_receipts": 4,
+        "primary_valid_n": 0,
+        "plans_005_006_007_allowed": False,
+        "manual_override_allowed": False,
+        "claim_ceiling": "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE",
+    }
+    body["integrity_sha256"] = migration.runner.canonical_sha(body)
+    path = tmp_path / "migration.json"
+    path.write_text(json.dumps(body), encoding="utf-8")
+    monkeypatch.setattr(
+        migration.runner, "SOURCE_ONLY_RESUME_MIGRATION_PATH", path
+    )
+    monkeypatch.setattr(
+        migration.runner,
+        "_dependency_manifest",
+        lambda: {"closure_sha256": closure},
+    )
+    assert (
+        migration.runner._validated_source_only_resume_migration()["status"]
+        == "PASS_SOURCE_ONLY_RUNTIME_RESUME_MIGRATION"
+    )
+    body["output_byte_drift_count"] = 1
+    body["integrity_sha256"] = migration.runner.canonical_sha(
+        {key: value for key, value in body.items() if key != "integrity_sha256"}
+    )
+    path.write_text(json.dumps(body), encoding="utf-8")
+    with pytest.raises(RuntimeError, match="SOURCE_ONLY_RESUME_MIGRATION_INVALID"):
+        migration.runner._validated_source_only_resume_migration()

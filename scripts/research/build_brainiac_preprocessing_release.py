@@ -256,6 +256,9 @@ def build_traceability() -> dict[str, Any]:
             "dependency_manifest": runner._artifact_binding(
                 runner.DEPENDENCY_MANIFEST_PATH
             ),
+            "source_only_resume_migration": runner._artifact_binding(
+                runner.SOURCE_ONLY_RESUME_MIGRATION_PATH
+            ),
         },
         "documentation_bindings": documents,
         "full_battery_tree_preservation_pre_traceability": preservation,
@@ -312,6 +315,9 @@ def issue_readiness() -> dict[str, Any]:
         ),
         "dependency_manifest": runner._artifact_binding(
             runner.DEPENDENCY_MANIFEST_PATH
+        ),
+        "source_only_resume_migration": runner._artifact_binding(
+            runner.SOURCE_ONLY_RESUME_MIGRATION_PATH
         ),
         "preflight": candidate["evidence_bindings"]["preflight"],
         "execution_profile": candidate["evidence_bindings"]["execution_profile"],

@@ -108,6 +108,9 @@ FULL_TEST_MANIFEST_PATH = (
 TRACEABILITY_MANIFEST_PATH = (
     REGISTRY_ROOT / "brainiac_preprocessing_traceability_manifest_v1.json"
 )
+SOURCE_ONLY_RESUME_MIGRATION_PATH = (
+    REGISTRY_ROOT / "BRAINIAC_PLAN017_SOURCE_ONLY_RESUME_MIGRATION_V1.json"
+)
 P08_STATUS_PATH = (
     ROOT
     / "results"
@@ -3413,6 +3416,7 @@ def _validated_traceability_manifest() -> dict[str, Any]:
         "p08_status": P08_STATUS_PATH,
         "novelty_matrix": NOVELTY_MATRIX_V3_PATH,
         "dependency_manifest": DEPENDENCY_MANIFEST_PATH,
+        "source_only_resume_migration": SOURCE_ONLY_RESUME_MIGRATION_PATH,
     }
     if set(bindings) != set(expected):
         raise RuntimeError("BRAINIAC_TRACEABILITY_BINDINGS_INVALID")
@@ -3428,6 +3432,43 @@ def _validated_traceability_manifest() -> dict[str, Any]:
         if not isinstance(binding, Mapping):
             raise RuntimeError("BRAINIAC_TRACEABILITY_DOCUMENT_BINDING_INVALID")
         _validate_artifact_binding(binding)
+    _validated_source_only_resume_migration()
+    return report
+
+
+def _validated_source_only_resume_migration() -> dict[str, Any]:
+    if not SOURCE_ONLY_RESUME_MIGRATION_PATH.is_file():
+        raise RuntimeError("BRAINIAC_SOURCE_ONLY_RESUME_MIGRATION_MISSING")
+    report = json.loads(
+        SOURCE_ONLY_RESUME_MIGRATION_PATH.read_text(encoding="utf-8")
+    )
+    body = dict(report)
+    recorded = body.pop("integrity_sha256", None)
+    dependency = _dependency_manifest()
+    if (
+        report.get("schema_version") != 1
+        or report.get("artifact")
+        != "BRAINIAC_PLAN017_SOURCE_ONLY_RESUME_MIGRATION_V1"
+        or report.get("status")
+        != "PASS_SOURCE_ONLY_RUNTIME_RESUME_MIGRATION"
+        or recorded != canonical_sha(body)
+        or report.get("new_dependency_closure_sha256")
+        != dependency.get("closure_sha256")
+        or int(report.get("scientific_input_drift_count", -1)) != 0
+        or int(report.get("output_byte_drift_count", -1)) != 0
+        or int(report.get("transform_byte_drift_count", -1)) != 0
+        or int(report.get("scientific_receipt_field_drift_count", -1)) != 0
+        or report.get("preprocessing_reexecuted") is not False
+        or int(report.get("outer_loader_invocation_count", -1)) != 0
+        or int(report.get("migrated_equivalence_receipts", -1)) != 36
+        or int(report.get("migrated_calibration_receipts", -1)) != 4
+        or report.get("primary_valid_n") != 0
+        or report.get("plans_005_006_007_allowed") is not False
+        or report.get("manual_override_allowed") is not False
+        or report.get("claim_ceiling")
+        != "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE"
+    ):
+        raise RuntimeError("BRAINIAC_SOURCE_ONLY_RESUME_MIGRATION_INVALID")
     return report
 
 
@@ -3613,6 +3654,7 @@ def validate_final_preprocessing_readiness(
         "smoke_report": SMOKE_REPORT,
         "pre_repair_freeze": PRE_REPAIR_LIVE_FREEZE_PATH,
         "battery_manifest": BATTERY_MANIFEST_PATH,
+        "source_only_resume_migration": SOURCE_ONLY_RESUME_MIGRATION_PATH,
     }
     if not isinstance(bindings, Mapping) or set(bindings) != set(expected_paths):
         raise RuntimeError("BRAINIAC_FINAL_PREPROCESSING_READINESS_INVALID")
@@ -3631,6 +3673,7 @@ def validate_final_preprocessing_readiness(
     validate_acceptance_candidate(candidate_path)
     _validated_full_test_manifest()
     _validated_traceability_manifest()
+    _validated_source_only_resume_migration()
     for evidence_path, expected_status in (
         (P08_STATUS_PATH, "R0_COMPLETE_PREPARATION_PARTIAL_NONBLOCKING_FOR_MAIN_CNN"),
         (NOVELTY_MATRIX_V3_PATH, "R0_COMPLETE_NOVELTY_CANDIDATE"),
