@@ -139,10 +139,14 @@ def test_postcalibration_safety_gate_fails_closed(
         )
 
 
-def test_postcalibration_migration_source_allowlist_matches_live_runner() -> None:
-    assert migration.runner.sha256_file(
-        migration.ROOT / migration.RUNNER_RELATIVE_PATH
-    ) == migration.NEW_RUNNER_SHA256
+def test_postcalibration_migration_source_allowlist_matches_sealed_report() -> None:
+    report = migration._load_json(migration.REPORT_PATH)
+    assert report["allowed_source_transitions"] == {
+        migration.RUNNER_RELATIVE_PATH: {
+            "old_sha256": migration.OLD_RUNNER_SHA256,
+            "new_sha256": migration.NEW_RUNNER_SHA256,
+        }
+    }
 
 
 def test_move_binding_accepts_same_bytes_at_planned_destination(

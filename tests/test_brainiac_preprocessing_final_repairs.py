@@ -1127,6 +1127,9 @@ def test_readiness_builder_never_promotes_unknown_or_missing_test_evidence(
     threshold = tmp_path / "threshold.json"
     threshold.write_text("{}", encoding="utf-8")
     monkeypatch.setattr(runner, "THRESHOLD_MANIFEST_PATH", threshold)
+    monkeypatch.setattr(
+        runner, "ACCEPTANCE_CANDIDATE_PATH", tmp_path / "candidate.json"
+    )
 
     blocked = runner.build_preprocessing_readiness_candidate(
         preflight_report={"status": "PASS"},

@@ -109,6 +109,7 @@ def test_equivalence_binding_stays_precalibration_after_threshold_lock(
     actual_threshold = "a" * 64
     base = {
         "policy_sha256": "1" * 64,
+        "dependency_closure_sha256": "2" * 64,
         "qc_threshold_manifest_sha256": actual_threshold,
     }
     monkeypatch.setattr(runner, "_base_bindings", lambda: dict(base))
