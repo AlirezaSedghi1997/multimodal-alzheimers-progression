@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import os
 from pathlib import Path
 
 import pytest
@@ -143,3 +144,19 @@ def test_postcalibration_migration_source_allowlist_matches_live_runner() -> Non
         migration.ROOT / migration.RUNNER_RELATIVE_PATH
     ) == migration.NEW_RUNNER_SHA256
 
+
+def test_move_binding_accepts_same_bytes_at_planned_destination(
+    tmp_path: Path,
+) -> None:
+    source = tmp_path / "source.json"
+    destination = tmp_path / "archive" / "destination.json"
+    source.write_bytes(b"sealed-evidence")
+    expected = migration._binding(source)
+    destination.parent.mkdir(parents=True)
+    os.replace(source, destination)
+
+    migration._validate_binding_at(destination, expected)
+
+    destination.write_bytes(b"mutated-evidence")
+    with pytest.raises(RuntimeError, match="MOVE_BINDING_DRIFT"):
+        migration._validate_binding_at(destination, expected)

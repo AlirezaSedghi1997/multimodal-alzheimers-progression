@@ -103,13 +103,13 @@ def _binding(path: Path) -> dict[str, Any]:
     raise RuntimeError("BRAINIAC_POSTCALIBRATION_EVIDENCE_MISSING")
 
 
-def _binding_without_kind(binding: Mapping[str, Any]) -> dict[str, Any]:
-    return {key: value for key, value in binding.items() if key != "kind"}
-
-
 def _validate_binding_at(path: Path, expected: Mapping[str, Any]) -> None:
     observed = _binding(path)
-    if observed != dict(expected):
+    observed_content = {key: value for key, value in observed.items() if key != "path"}
+    expected_content = {
+        key: value for key, value in expected.items() if key != "path"
+    }
+    if observed_content != expected_content:
         raise RuntimeError("BRAINIAC_POSTCALIBRATION_MOVE_BINDING_DRIFT")
 
 
@@ -801,8 +801,35 @@ def _validate_new_live(transaction: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
+def _archive_prior_blocker() -> dict[str, Any] | None:
+    if not BLOCKED_PATH.is_file():
+        return None
+    payload = _load_json(BLOCKED_PATH)
+    body = dict(payload)
+    recorded = body.pop("integrity_sha256", None)
+    if payload.get("status") != "BLOCKED" or recorded != runner.canonical_sha(body):
+        raise RuntimeError("BRAINIAC_POSTCALIBRATION_BLOCKER_INVALID")
+    digest = runner.sha256_file(BLOCKED_PATH)
+    target = (
+        runner.REGISTRY_ROOT
+        / "superseded"
+        / "plan017_postcalibration_blockers"
+        / f"sha256-{digest}.json"
+    )
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if target.exists():
+        if runner.sha256_file(target) != digest:
+            raise RuntimeError("BRAINIAC_POSTCALIBRATION_BLOCKER_ARCHIVE_COLLISION")
+        raise RuntimeError("BRAINIAC_POSTCALIBRATION_BLOCKER_DUPLICATE_LIVE_FILE")
+    os.replace(BLOCKED_PATH, target)
+    return runner._artifact_binding(target)
+
+
 def _final_report(
-    transaction: Mapping[str, Any], live: Mapping[str, Any]
+    transaction: Mapping[str, Any],
+    live: Mapping[str, Any],
+    *,
+    superseded_blocker: Mapping[str, Any] | None,
 ) -> dict[str, Any]:
     data_archive = _resolve_relative(str(transaction["data_archive"]))
     result_archive = _resolve_relative(str(transaction["result_archive"]))
@@ -869,6 +896,8 @@ def _final_report(
         "unknown_is_pass": False,
         "claim_ceiling": "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE",
     }
+    if superseded_blocker is not None:
+        body["superseded_blocker"] = dict(superseded_blocker)
     body["integrity_sha256"] = runner.canonical_sha(body)
     return body
 
@@ -888,7 +917,10 @@ def migrate() -> dict[str, Any]:
     transaction = _update_transaction(transaction, phase="INSTALLED_NEW")
     live = _validate_new_live(transaction)
     transaction = _update_transaction(transaction, phase="LIVE_VALIDATED")
-    report = _final_report(transaction, live)
+    superseded_blocker = _archive_prior_blocker()
+    report = _final_report(
+        transaction, live, superseded_blocker=superseded_blocker
+    )
     _write_json(REPORT_PATH, report)
     runner._validated_postcalibration_source_migration()
     _update_transaction(transaction, phase="SEALED", status="COMPLETED")
