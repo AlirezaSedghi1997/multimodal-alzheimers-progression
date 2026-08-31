@@ -1277,15 +1277,68 @@ def _tree_evidence(path: Path) -> dict[str, Any]:
     }
 
 
+def _calibration_generation_is_current() -> bool:
+    """Return True only for a resumable calibration root under the live contract.
+
+    A calibration directory is not legacy merely because it exists.  It is a
+    sample-boundary checkpoint: every committed receipt must remain reusable
+    after SIGINT, SIGTERM, or a later restart.  Pre-equivalence roots and roots
+    whose committed receipts do not validate against the current scientific
+    bindings are still classified as incompatible and archived append-only.
+    """
+
+    if not CALIBRATION_ROOT.exists():
+        return True
+    if not CALIBRATION_ROOT.is_dir() or v2._is_reparse(CALIBRATION_ROOT):
+        return False
+    _sequential_only, profile_valid = _parallel_unlock_state()
+    if not profile_valid:
+        return False
+    allowed_top_level = {
+        "outputs",
+        "transforms",
+        "receipts",
+        "quarantine",
+        "journals",
+    }
+    if any(path.name not in allowed_top_level for path in CALIBRATION_ROOT.iterdir()):
+        return False
+    membership = v2.load_locked_membership()
+    selected = set(
+        v2.select_calibration_samples(
+            [str(row["sample_hash"]) for row in membership]
+        )
+    )
+    bindings = _base_bindings()
+    bindings["qc_threshold_manifest_sha256"] = hashlib.sha256(
+        b"NOT_YET_CALIBRATED_PLAN_003"
+    ).hexdigest()
+    receipts_dir = CALIBRATION_ROOT / "receipts"
+    for receipt_path in sorted(receipts_dir.glob("*.json")):
+        sample_hash = receipt_path.stem
+        if sample_hash not in selected:
+            return False
+        try:
+            v2.load_committed_receipt(
+                sample_hash,
+                CALIBRATION_ROOT,
+                expected_bindings=bindings,
+            )
+        except (OSError, RuntimeError, TypeError, ValueError, json.JSONDecodeError):
+            return False
+    return True
+
+
 def _legacy_incompatible_artifacts() -> list[Path]:
     candidates = [
-        CALIBRATION_ROOT,
         v2.SMOKE_ROOT / "eq_sequential",
         v2.SMOKE_ROOT / "eq_parallel",
         v2.SMOKE_ROOT / "sequential",
         v2.SMOKE_ROOT / "orchestrated",
         LEGACY_EXECUTION_PROFILE_PATH,
     ]
+    if CALIBRATION_ROOT.exists() and not _calibration_generation_is_current():
+        candidates.append(CALIBRATION_ROOT)
     legacy_report = REGISTRY_ROOT / "brainiac_preprocessing_v2_equivalence.json"
     if legacy_report.is_file() and not EXECUTION_PROFILE_PATH.is_file():
         candidates.append(legacy_report)
@@ -1381,9 +1434,9 @@ def _archive_legacy_incompatible_artifacts() -> dict[str, Any] | None:
     return {**body, "receipt_path": str(receipt)}
 
 
-def _inspect_primary_sample_locks() -> list[dict[str, Any]]:
+def _inspect_sample_locks(root: Path) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
-    for lock in sorted(v2.PRIMARY_ROOT.glob("journals/*/.sample.lock")):
+    for lock in sorted(Path(root).glob("journals/*/.sample.lock")):
         try:
             payload = json.loads(lock.read_text(encoding="utf-8"))
             pid = int(payload.get("pid", -1))
@@ -1402,15 +1455,23 @@ def _inspect_primary_sample_locks() -> list[dict[str, Any]]:
     return rows
 
 
-def _archive_proven_dead_primary_sample_locks() -> list[str]:
+def _inspect_primary_sample_locks() -> list[dict[str, Any]]:
+    return _inspect_sample_locks(v2.PRIMARY_ROOT)
+
+
+def _archive_proven_dead_sample_locks(root: Path) -> list[str]:
     archived: list[str] = []
-    for lock in sorted(v2.PRIMARY_ROOT.glob("journals/*/.sample.lock")):
+    for lock in sorted(Path(root).glob("journals/*/.sample.lock")):
         sample_hash = lock.parent.name
         v2._reconcile_stale_sample_lock(
-            lock, root=v2.PRIMARY_ROOT, sample_hash=sample_hash
+            lock, root=Path(root), sample_hash=sample_hash
         )
         archived.append(sample_hash[:10])
     return archived
+
+
+def _archive_proven_dead_primary_sample_locks() -> list[str]:
+    return _archive_proven_dead_sample_locks(v2.PRIMARY_ROOT)
 
 
 def _pin_itk_threads() -> int:
@@ -2343,6 +2404,12 @@ def preflight(*, device: str = "cuda") -> dict[str, Any]:
     checks["primary_sample_locks_absent"] = True if not sample_locks else (
         "BLOCKED:PRIMARY_SAMPLE_LOCKS_PRESENT"
     )
+    calibration_sample_locks = _inspect_sample_locks(CALIBRATION_ROOT)
+    checks["calibration_sample_locks_absent"] = (
+        True
+        if not calibration_sample_locks
+        else "BLOCKED:CALIBRATION_SAMPLE_LOCKS_PRESENT"
+    )
     legacy_artifacts = _legacy_incompatible_artifacts()
     checks["legacy_incompatible_artifacts_absent"] = (
         True if not legacy_artifacts else "BLOCKED:LEGACY_GENERATION_REQUIRES_ARCHIVE"
@@ -2398,6 +2465,7 @@ def preflight(*, device: str = "cuda") -> dict[str, Any]:
         "battery_manifest_sha256": live_battery_sha,
         "runtime_evidence": evidence,
         "primary_sample_locks": sample_locks,
+        "calibration_sample_locks": calibration_sample_locks,
         "legacy_incompatible_artifacts": [
             path.relative_to(ROOT).as_posix() for path in legacy_artifacts
         ],
@@ -3121,6 +3189,23 @@ def _preflight_and_reconcile(*, device: str) -> tuple[dict[str, Any], int]:
                 {
                     "phase": "reconciliation",
                     "status": "ARCHIVED_PROVEN_DEAD_PRIMARY_SAMPLE_LOCKS",
+                    "count": len(archived),
+                }
+            )
+        )
+    calibration_locks = list(pre.get("calibration_sample_locks") or ())
+    if (
+        writer_clear
+        and calibration_locks
+        and all(row.get("liveness") == "DEAD" for row in calibration_locks)
+    ):
+        archived = _archive_proven_dead_sample_locks(CALIBRATION_ROOT)
+        reconciled = True
+        _print_flush(
+            json.dumps(
+                {
+                    "phase": "reconciliation",
+                    "status": "ARCHIVED_PROVEN_DEAD_CALIBRATION_SAMPLE_LOCKS",
                     "count": len(archived),
                 }
             )

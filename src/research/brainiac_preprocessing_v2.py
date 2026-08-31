@@ -886,9 +886,28 @@ def _reconcile_stale_sample_lock(
         raise RuntimeError("BRAINIAC_PREPROCESSING_SAMPLE_LOCK_LIVENESS_UNKNOWN")
     if live is False:
         stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+        live_root = Path(root)
+        archive_root = (
+            live_root.parent
+            / "superseded_dead_sample_locks"
+            / live_root.name
+        )
+        try:
+            archive_root.resolve(strict=False).relative_to(
+                live_root.resolve(strict=False)
+            )
+        except ValueError:
+            pass
+        else:
+            raise RuntimeError(
+                "BRAINIAC_PREPROCESSING_DEAD_LOCK_ARCHIVE_INSIDE_LIVE_RUN"
+            )
+        if archive_root.exists() and _is_reparse(archive_root):
+            raise RuntimeError(
+                "BRAINIAC_PREPROCESSING_DEAD_LOCK_ARCHIVE_REPARSE"
+            )
         target = (
-            Path(root)
-            / "quarantine"
+            archive_root
             / f"{stamp}-{time.time_ns()}-{sample_hash}-dead-lock"
         )
         target.mkdir(parents=True, exist_ok=False)

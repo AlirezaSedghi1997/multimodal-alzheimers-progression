@@ -429,9 +429,13 @@ def test_proven_dead_sample_lock_is_archived_with_reason(
     monkeypatch.setattr(v2, "_pid_identity", lambda _pid: (False, None))
     v2._reconcile_stale_sample_lock(lock, root=tmp_path, sample_hash=sample)
     assert not lock.exists()
-    archived = list((tmp_path / "quarantine").rglob(".sample.lock"))
-    reasons = list((tmp_path / "quarantine").rglob("reason.json"))
+    external_archive = (
+        tmp_path.parent / "superseded_dead_sample_locks" / tmp_path.name
+    )
+    archived = list(external_archive.rglob(".sample.lock"))
+    reasons = list(external_archive.rglob("reason.json"))
     assert len(archived) == 1
+    assert not list((tmp_path / "quarantine").rglob("*"))
     assert any(
         json.loads(path.read_text(encoding="utf-8"))["reason_code"]
         == "PROVEN_DEAD_SAMPLE_LOCK_ARCHIVED"
@@ -669,6 +673,103 @@ def test_legacy_generation_is_moved_with_byte_verified_receipt(
     assert len(archives) == 1
     assert archives[0].read_bytes() == b"old-calibration-evidence"
     assert Path(receipt["receipt_path"]).is_file()
+
+
+def test_current_calibration_generation_is_preserved_for_exact_resume(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A current, byte-valid calibration root is resumable evidence, not legacy."""
+
+    calibration = tmp_path / "calibration"
+    item = {"sample_hash": "s_" + "7" * 16, "t1_file_hash": "t1"}
+    calibration_bindings = _bindings()
+    calibration_bindings["qc_threshold_manifest_sha256"] = hashlib.sha256(
+        b"NOT_YET_CALIBRATED_PLAN_003"
+    ).hexdigest()
+    local_scratch = tmp_path / "local_scratch"
+    monkeypatch.setattr(v2, "LOCAL_SCRATCH_ROOT", local_scratch)
+    original = v2.run_sample_transaction(
+        item,
+        calibration,
+        pipeline=_Pipeline(),
+        bindings=calibration_bindings,
+        scratch_base=local_scratch,
+    )
+    registry = tmp_path / "registry"
+    registry.mkdir()
+    profile = registry / "profile.json"
+    profile.write_text("{}", encoding="utf-8")
+    smoke = tmp_path / "smoke"
+    monkeypatch.setattr(runner, "ROOT", tmp_path)
+    monkeypatch.setattr(runner, "REGISTRY_ROOT", registry)
+    monkeypatch.setattr(runner, "CALIBRATION_ROOT", calibration)
+    monkeypatch.setattr(runner, "EXECUTION_PROFILE_PATH", profile)
+    monkeypatch.setattr(runner, "_parallel_unlock_state", lambda: (False, True))
+    monkeypatch.setattr(runner, "_base_bindings", _bindings)
+    monkeypatch.setattr(v2, "SMOKE_ROOT", smoke)
+    monkeypatch.setattr(v2, "load_locked_membership", lambda: [item])
+    monkeypatch.setattr(
+        v2,
+        "select_calibration_samples",
+        lambda members: list(members),
+    )
+
+    assert runner._legacy_incompatible_artifacts() == []
+    assert runner._archive_legacy_incompatible_artifacts() is None
+    resumed = v2.load_committed_receipt(
+        item["sample_hash"], calibration, expected_bindings=calibration_bindings
+    )
+    assert resumed["integrity_sha256"] == original["integrity_sha256"]
+    assert calibration.is_dir()
+
+
+def test_preflight_reconciles_only_proven_dead_calibration_lock(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    calibration = tmp_path / "calibration"
+    reports = iter(
+        [
+            {
+                "status": "BLOCKED",
+                "free_disk_ok": True,
+                "writer_exclusion": {"status": "PASS", "blockers": []},
+                "checks": {"cnn_writer_scan": True},
+                "legacy_incompatible_artifacts": [],
+                "primary_sample_locks": [],
+                "calibration_sample_locks": [{"liveness": "DEAD"}],
+            },
+            {
+                "status": "PASS",
+                "free_disk_ok": True,
+                "writer_exclusion": {"status": "PASS", "blockers": []},
+                "checks": {"cnn_writer_scan": True},
+                "legacy_incompatible_artifacts": [],
+                "primary_sample_locks": [],
+                "calibration_sample_locks": [],
+            },
+        ]
+    )
+    archived: list[Path] = []
+    monkeypatch.setattr(runner, "CALIBRATION_ROOT", calibration)
+    monkeypatch.setattr(runner, "preflight", lambda **_kwargs: next(reports))
+    monkeypatch.setattr(
+        runner,
+        "_archive_proven_dead_sample_locks",
+        lambda root: archived.append(Path(root)) or ["s_deadlock"],
+    )
+    monkeypatch.setattr(
+        runner,
+        "_archive_legacy_incompatible_artifacts",
+        lambda: (_ for _ in ()).throw(
+            AssertionError("current calibration generation must not be archived")
+        ),
+    )
+
+    report, code = runner._preflight_and_reconcile(device="cuda")
+
+    assert code == 0
+    assert report["status"] == "PASS"
+    assert archived == [calibration]
 
 
 def test_current_equivalence_tree_with_stale_contract_is_archived_as_one_generation(
