@@ -191,7 +191,7 @@ def _restore_calibration_tree(row: Mapping[str, Any], archive: Path) -> dict[str
     evidence = _validate_calibration_tree(live, row)
     if archive.exists():
         raise RuntimeError("BRAINIAC_CALIBRATION_REPAIR_ARCHIVE_MOVE_INCOMPLETE")
-    runner._load_bound_threshold_manifest()
+    runner._load_bound_threshold_manifest(runner._threshold_evidence_bindings())
     return evidence
 
 
@@ -324,6 +324,7 @@ def seal() -> dict[str, Any]:
         return runner._validated_calibration_reconciliation_source_compatibility()
     state = _validate_live_state(restore=True)
     stale_paths = {
+        "blocked_attempt": BLOCKED_PATH,
         "acceptance_candidate": runner.ACCEPTANCE_CANDIDATE_PATH,
         "acceptance_preflight_snapshot": runner.ACCEPTANCE_PREFLIGHT_SNAPSHOT_PATH,
         "acceptance_test_manifest": runner.ACCEPTANCE_TEST_MANIFEST_PATH,

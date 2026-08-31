@@ -146,3 +146,13 @@ def test_acceptance_requires_v4_compatibility_before_calibration() -> None:
     )
     assert compatibility_call in source
     assert source.index(compatibility_call) < source.index("_calibrate_if_needed")
+
+
+def test_v4_revalidates_threshold_with_explicit_historical_bindings() -> None:
+    validator_source = inspect.getsource(
+        runner._validated_calibration_reconciliation_source_compatibility
+    )
+    sealer_source = inspect.getsource(reconciliation_v4._restore_calibration_tree)
+    expected = "_load_bound_threshold_manifest(_threshold_evidence_bindings())"
+    assert expected in validator_source.replace("runner.", "")
+    assert expected in sealer_source.replace("runner.", "")

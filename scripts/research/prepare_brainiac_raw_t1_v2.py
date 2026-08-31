@@ -3775,7 +3775,7 @@ def _validated_calibration_reconciliation_source_compatibility() -> dict[str, An
         or restored_tree.get("bytes") != rows[0].get("bytes")
     ):
         raise RuntimeError("BRAINIAC_RESTORED_CALIBRATION_TREE_INVALID")
-    _load_bound_threshold_manifest()
+    _load_bound_threshold_manifest(_threshold_evidence_bindings())
     receipts = CALIBRATION_ROOT / "receipts"
     if not receipts.is_dir() or len(list(receipts.glob("*.json"))) != 32:
         raise RuntimeError("BRAINIAC_RESTORED_CALIBRATION_RECEIPTS_INVALID")
