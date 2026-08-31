@@ -252,11 +252,17 @@ def test_acceptance_passes_same_stop_flag_to_calibration(monkeypatch, tmp_path):
     monkeypatch.setattr(prep, "_parallel_unlock_state", lambda: (False, True))
     monkeypatch.setattr(
         prep,
+        "_validated_calibration_reconciliation_source_compatibility",
+        lambda: {"status": "PASS_FALSE_CALIBRATION_RECONCILIATION_REPAIRED"},
+    )
+    monkeypatch.setattr(
+        prep,
         "validate_execution_profile",
         lambda *args, **kwargs: {"status": "PASS"},
     )
     monkeypatch.setattr(prep, "_current_equivalence_contract_sha256", lambda: "c" * 64)
     monkeypatch.setattr(prep, "_base_bindings", lambda: {})
+    monkeypatch.setattr(prep, "_equivalence_receipt_bindings", lambda: {})
 
     def paused_calibration(*, device, stop=None):
         observed["stop"] = stop
@@ -331,6 +337,7 @@ def test_acceptance_candidate_cannot_create_final_readiness(monkeypatch, tmp_pat
         path.write_text("{}", encoding="utf-8")
     monkeypatch.setattr(prep.v2, "load_locked_membership", lambda: [])
     monkeypatch.setattr(prep, "_base_bindings", lambda: {})
+    monkeypatch.setattr(prep, "_equivalence_receipt_bindings", lambda: {})
     monkeypatch.setattr(
         prep, "_current_equivalence_contract_sha256", lambda: "c" * 64
     )

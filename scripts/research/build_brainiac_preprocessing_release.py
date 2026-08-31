@@ -94,6 +94,21 @@ def _validate_sealed(path: Path, *, expected_status: str) -> dict[str, Any]:
     return payload
 
 
+def _validate_full_test_fixture_lineage(full_tests: Mapping[str, Any]) -> None:
+    expected = (
+        runner.REGISTRY_ROOT / "BRAINIAC_PLAN017_TEST_FIXTURE_SUPERSESSION_V5.json"
+    )
+    binding = full_tests.get("test_fixture_supersession")
+    if (
+        not isinstance(binding, Mapping)
+        or runner._validate_artifact_binding(binding) != expected.resolve(strict=True)
+    ):
+        raise RuntimeError("BRAINIAC_PLAN018_TEST_FIXTURE_LINEAGE_INVALID")
+    _validate_sealed(
+        expected, expected_status="PASS_TEST_FIXTURE_ONLY_SUPERSESSION"
+    )
+
+
 def _materialize_p08() -> dict[str, Any]:
     report = p08_builder.build_status()
     target = p08_builder.OUTPUT
@@ -206,6 +221,7 @@ def _update_human_traceability(facts: Mapping[str, Any]) -> list[dict[str, Any]]
 def build_traceability() -> dict[str, Any]:
     candidate = runner.validate_acceptance_candidate()
     full_tests = runner._validated_full_test_manifest()
+    _validate_full_test_fixture_lineage(full_tests)
     novelty = _validate_sealed(
         runner.NOVELTY_MATRIX_V3_PATH,
         expected_status="R0_COMPLETE_NOVELTY_CANDIDATE",
@@ -298,6 +314,7 @@ def build_traceability() -> dict[str, Any]:
 def issue_readiness() -> dict[str, Any]:
     candidate = runner.validate_acceptance_candidate()
     full_tests = runner._validated_full_test_manifest()
+    _validate_full_test_fixture_lineage(full_tests)
     traceability = runner._validated_traceability_manifest()
     exclusion = inspect_action_exclusion()
     if exclusion.get("status") != "PASS" or exclusion.get("blockers"):
