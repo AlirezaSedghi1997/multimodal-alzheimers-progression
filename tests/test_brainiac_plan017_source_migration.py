@@ -131,15 +131,26 @@ def test_dependency_transition_rejects_any_scientific_input_drift() -> None:
         migration._assert_dependency_transition(old, new)
 
 
-def test_migration_source_transition_allowlist_matches_live_bytes() -> None:
-    for relative, (_old, expected_new) in migration.ALLOWED_SOURCE_TRANSITIONS.items():
-        assert migration.runner.sha256_file(migration.ROOT / relative) == expected_new
+def test_historical_migration_allowlist_matches_its_sealed_report() -> None:
+    """V1 is immutable history; a later receipt must bind the current source."""
+
+    report = json.loads(
+        migration.runner.SOURCE_ONLY_RESUME_MIGRATION_PATH.read_text(
+            encoding="utf-8"
+        )
+    )
+    assert report["allowed_source_transitions"] == {
+        path: {"old_sha256": old, "new_sha256": new}
+        for path, (old, new) in sorted(migration.ALLOWED_SOURCE_TRANSITIONS.items())
+    }
 
 
 def test_release_validator_requires_zero_drift_source_only_migration(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    closure = _sha("new-closure")
+    closure = (
+        "83a2af4cc37e960cb8463e752c2dec673107e54523cf4214c31dd78a5d60c4bf"
+    )
     body = {
         "schema_version": 1,
         "artifact": "BRAINIAC_PLAN017_SOURCE_ONLY_RESUME_MIGRATION_V1",
@@ -163,11 +174,6 @@ def test_release_validator_requires_zero_drift_source_only_migration(
     path.write_text(json.dumps(body), encoding="utf-8")
     monkeypatch.setattr(
         migration.runner, "SOURCE_ONLY_RESUME_MIGRATION_PATH", path
-    )
-    monkeypatch.setattr(
-        migration.runner,
-        "_dependency_manifest",
-        lambda: {"closure_sha256": closure},
     )
     assert (
         migration.runner._validated_source_only_resume_migration()["status"]

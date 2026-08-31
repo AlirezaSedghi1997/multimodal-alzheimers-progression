@@ -310,7 +310,7 @@ def _live_evidence() -> tuple[dict[str, Any], dict[str, Any]]:
     profile = runner.validate_execution_profile(
         profile_raw,
         expected_contract_sha256=runner._current_equivalence_contract_sha256(),
-        expected_receipt_bindings=runner._base_bindings(),
+        expected_receipt_bindings=runner._equivalence_receipt_bindings(),
     )
     source = verify_frozen_method_x_source_contract(
         expected_digest=runner.EXPECTED_METHOD_X_SOURCE_DIGEST

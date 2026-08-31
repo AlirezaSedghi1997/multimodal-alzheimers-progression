@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 
 import pytest
@@ -9,6 +10,7 @@ from scripts.research.reconcile_brainiac_plan017_legacy_smoke_v1 import (
     LEGACY_SMOKE_PAYLOAD,
     reconcile_legacy_smoke,
 )
+from scripts.research import prepare_brainiac_raw_t1_v2 as runner
 
 
 def _write_json(path: Path, payload: dict[str, object]) -> None:
@@ -99,3 +101,50 @@ def test_reconciliation_refuses_nonzero_primary_or_incomplete_calibration(
             expected_current_scientific={"schema_version": 3},
             evidence={"primary_valid_n": 1, "calibration_valid_n": 32},
         )
+
+
+def test_equivalence_binding_stays_precalibration_after_threshold_lock(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    actual_threshold = "a" * 64
+    base = {
+        "policy_sha256": "1" * 64,
+        "qc_threshold_manifest_sha256": actual_threshold,
+    }
+    monkeypatch.setattr(runner, "_base_bindings", lambda: dict(base))
+
+    bindings = runner._equivalence_receipt_bindings()
+
+    assert bindings["qc_threshold_manifest_sha256"] == hashlib.sha256(
+        b"NOT_YET_CALIBRATED_PLAN_003"
+    ).hexdigest()
+    assert bindings["qc_threshold_manifest_sha256"] != actual_threshold
+    assert base["qc_threshold_manifest_sha256"] == actual_threshold
+
+
+def test_parallel_unlock_validates_profile_with_precalibration_binding(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    profile_path = tmp_path / "profile.json"
+    _write_json(profile_path, {"execution_mode": "PARALLEL_SAFE"})
+    monkeypatch.setattr(runner, "EXECUTION_PROFILE_PATH", profile_path)
+    monkeypatch.setattr(
+        runner, "_current_equivalence_contract_sha256", lambda: "c" * 64
+    )
+    expected = {"qc_threshold_manifest_sha256": "p" * 64}
+    monkeypatch.setattr(
+        runner, "_equivalence_receipt_bindings", lambda: dict(expected)
+    )
+    observed: dict[str, object] = {}
+
+    def _validate(profile, *, expected_contract_sha256, expected_receipt_bindings):
+        observed["profile"] = profile
+        observed["contract"] = expected_contract_sha256
+        observed["bindings"] = expected_receipt_bindings
+        return {"execution_mode": "PARALLEL_SAFE"}
+
+    monkeypatch.setattr(runner, "validate_execution_profile", _validate)
+
+    assert runner._parallel_unlock_state() == (False, True)
+    assert observed["contract"] == "c" * 64
+    assert observed["bindings"] == expected

@@ -259,6 +259,12 @@ def build_traceability() -> dict[str, Any]:
             "source_only_resume_migration": runner._artifact_binding(
                 runner.SOURCE_ONLY_RESUME_MIGRATION_PATH
             ),
+            "postcalibration_source_migration": runner._artifact_binding(
+                runner.POSTCALIBRATION_SOURCE_MIGRATION_PATH
+            ),
+            "legacy_smoke_reconciliation": runner._artifact_binding(
+                runner.LEGACY_SMOKE_RECONCILIATION_PATH
+            ),
         },
         "documentation_bindings": documents,
         "full_battery_tree_preservation_pre_traceability": preservation,
@@ -318,6 +324,12 @@ def issue_readiness() -> dict[str, Any]:
         ),
         "source_only_resume_migration": runner._artifact_binding(
             runner.SOURCE_ONLY_RESUME_MIGRATION_PATH
+        ),
+        "postcalibration_source_migration": runner._artifact_binding(
+            runner.POSTCALIBRATION_SOURCE_MIGRATION_PATH
+        ),
+        "legacy_smoke_reconciliation": runner._artifact_binding(
+            runner.LEGACY_SMOKE_RECONCILIATION_PATH
         ),
         "preflight": candidate["evidence_bindings"]["preflight"],
         "execution_profile": candidate["evidence_bindings"]["execution_profile"],

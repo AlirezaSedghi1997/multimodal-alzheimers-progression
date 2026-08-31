@@ -111,6 +111,13 @@ TRACEABILITY_MANIFEST_PATH = (
 SOURCE_ONLY_RESUME_MIGRATION_PATH = (
     REGISTRY_ROOT / "BRAINIAC_PLAN017_SOURCE_ONLY_RESUME_MIGRATION_V1.json"
 )
+POSTCALIBRATION_SOURCE_MIGRATION_PATH = (
+    REGISTRY_ROOT
+    / "BRAINIAC_PLAN017_POSTCALIBRATION_SOURCE_MIGRATION_V2.json"
+)
+LEGACY_SMOKE_RECONCILIATION_PATH = (
+    REGISTRY_ROOT / "BRAINIAC_PLAN017_LEGACY_SMOKE_RECONCILIATION_V1.json"
+)
 P08_STATUS_PATH = (
     ROOT
     / "results"
@@ -1073,7 +1080,9 @@ def recompute_execution_leg(
     receipt_paths = sorted(receipts_dir.glob("*.json")) if receipts_dir.is_dir() else []
     if len(receipt_paths) != 12:
         raise RuntimeError("BRAINIAC_EQUIVALENCE_SAMPLE_COUNT_INVALID")
-    expected_bindings = dict(expected_receipt_bindings or _base_bindings())
+    expected_bindings = dict(
+        expected_receipt_bindings or _equivalence_receipt_bindings()
+    )
     if canonical_sha(_threshold_contract_bindings(expected_bindings)) != expected_contract_sha256:
         raise RuntimeError("BRAINIAC_EQUIVALENCE_CONTRACT_BINDING_INVALID")
     receipts: dict[str, dict[str, Any]] = {}
@@ -1348,7 +1357,7 @@ def _legacy_incompatible_artifacts() -> list[Path]:
     current_equivalence = v2.SMOKE_ROOT / "equivalence_v2"
     if current_equivalence.is_dir():
         receipt_paths = sorted(current_equivalence.glob("*/receipts/*.json"))
-        expected_bindings = _base_bindings()
+        expected_bindings = _equivalence_receipt_bindings()
         incompatible = False
         for receipt_path in receipt_paths:
             try:
@@ -1804,6 +1813,23 @@ def _base_bindings() -> dict[str, str]:
         bindings["qc_threshold_manifest_sha256"] = hashlib.sha256(
             b"NOT_YET_CALIBRATED_PLAN_003"
         ).hexdigest()
+    return bindings
+
+
+def _equivalence_receipt_bindings() -> dict[str, str]:
+    """Return the immutable pre-calibration bindings for equivalence evidence.
+
+    The sequential/parallel equivalence legs are intentionally executed before
+    the 32-sample threshold is locked.  Their provenance must therefore keep
+    the pre-calibration sentinel even after the threshold file exists.  Using
+    ``_base_bindings`` directly after calibration would both misrepresent that
+    chronology and falsely invalidate byte-identical equivalence receipts.
+    """
+
+    bindings = _base_bindings()
+    bindings["qc_threshold_manifest_sha256"] = hashlib.sha256(
+        b"NOT_YET_CALIBRATED_PLAN_003"
+    ).hexdigest()
     return bindings
 
 
@@ -2689,7 +2715,7 @@ def run_primary(*, device: str, stop: _StopFlag | None = None) -> dict[str, Any]
             "status": "BLOCKED",
             "reason_code": "BRAINIAC_V2_THRESHOLD_MANIFEST_REQUIRED_BEFORE_RUN",
         }
-    bindings = _base_bindings()
+    bindings = _equivalence_receipt_bindings()
     threshold_manifest = _load_bound_threshold_manifest(bindings)
     fixed = _load_fixed_template()
     transform_contract, _ = v2.build_contract_transform()
@@ -2971,7 +2997,7 @@ def run_equivalence(
     )
     items = [row for row in membership if row["sample_hash"] in selected]
     fixed = _load_fixed_template()
-    bindings = _base_bindings()
+    bindings = _equivalence_receipt_bindings()
     transform_contract, _ = v2.build_contract_transform()
     index = v2.build_raw_index()
 
@@ -3127,7 +3153,9 @@ def _policy_path() -> Path:
 
 
 def _current_equivalence_contract_sha256() -> str:
-    return canonical_sha(_threshold_contract_bindings(_base_bindings()))
+    return canonical_sha(
+        _threshold_contract_bindings(_equivalence_receipt_bindings())
+    )
 
 
 def _parallel_unlock_state() -> tuple[bool, bool]:
@@ -3140,6 +3168,7 @@ def _parallel_unlock_state() -> tuple[bool, bool]:
         checked = validate_execution_profile(
             profile,
             expected_contract_sha256=_current_equivalence_contract_sha256(),
+            expected_receipt_bindings=_equivalence_receipt_bindings(),
         )
         return checked["execution_mode"] != "PARALLEL_SAFE", True
     except (OSError, RuntimeError, ValueError, TypeError, json.JSONDecodeError):
@@ -3417,6 +3446,8 @@ def _validated_traceability_manifest() -> dict[str, Any]:
         "novelty_matrix": NOVELTY_MATRIX_V3_PATH,
         "dependency_manifest": DEPENDENCY_MANIFEST_PATH,
         "source_only_resume_migration": SOURCE_ONLY_RESUME_MIGRATION_PATH,
+        "postcalibration_source_migration": POSTCALIBRATION_SOURCE_MIGRATION_PATH,
+        "legacy_smoke_reconciliation": LEGACY_SMOKE_RECONCILIATION_PATH,
     }
     if set(bindings) != set(expected):
         raise RuntimeError("BRAINIAC_TRACEABILITY_BINDINGS_INVALID")
@@ -3433,6 +3464,8 @@ def _validated_traceability_manifest() -> dict[str, Any]:
             raise RuntimeError("BRAINIAC_TRACEABILITY_DOCUMENT_BINDING_INVALID")
         _validate_artifact_binding(binding)
     _validated_source_only_resume_migration()
+    _validated_postcalibration_source_migration()
+    _validated_legacy_smoke_reconciliation()
     return report
 
 
@@ -3453,7 +3486,7 @@ def _validated_source_only_resume_migration() -> dict[str, Any]:
         != "PASS_SOURCE_ONLY_RUNTIME_RESUME_MIGRATION"
         or recorded != canonical_sha(body)
         or report.get("new_dependency_closure_sha256")
-        != dependency.get("closure_sha256")
+        != "83a2af4cc37e960cb8463e752c2dec673107e54523cf4214c31dd78a5d60c4bf"
         or int(report.get("scientific_input_drift_count", -1)) != 0
         or int(report.get("output_byte_drift_count", -1)) != 0
         or int(report.get("transform_byte_drift_count", -1)) != 0
@@ -3469,6 +3502,88 @@ def _validated_source_only_resume_migration() -> dict[str, Any]:
         != "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE"
     ):
         raise RuntimeError("BRAINIAC_SOURCE_ONLY_RESUME_MIGRATION_INVALID")
+    return report
+
+
+def _validated_postcalibration_source_migration() -> dict[str, Any]:
+    if not POSTCALIBRATION_SOURCE_MIGRATION_PATH.is_file():
+        raise RuntimeError("BRAINIAC_POSTCALIBRATION_SOURCE_MIGRATION_MISSING")
+    report = json.loads(
+        POSTCALIBRATION_SOURCE_MIGRATION_PATH.read_text(encoding="utf-8")
+    )
+    body = dict(report)
+    recorded = body.pop("integrity_sha256", None)
+    dependency = _dependency_manifest()
+    parent = report.get("parent_migration")
+    if (
+        report.get("schema_version") != 1
+        or report.get("artifact")
+        != "BRAINIAC_PLAN017_POSTCALIBRATION_SOURCE_MIGRATION_V2"
+        or report.get("status")
+        != "PASS_POSTCALIBRATION_SOURCE_ONLY_MIGRATION"
+        or recorded != canonical_sha(body)
+        or report.get("old_dependency_closure_sha256")
+        != "83a2af4cc37e960cb8463e752c2dec673107e54523cf4214c31dd78a5d60c4bf"
+        or report.get("new_dependency_closure_sha256")
+        != dependency.get("closure_sha256")
+        or not isinstance(parent, Mapping)
+        or _validate_artifact_binding(parent)
+        != SOURCE_ONLY_RESUME_MIGRATION_PATH.resolve(strict=True)
+        or int(report.get("scientific_input_drift_count", -1)) != 0
+        or int(report.get("output_byte_drift_count", -1)) != 0
+        or int(report.get("transform_byte_drift_count", -1)) != 0
+        or int(report.get("scientific_receipt_field_drift_count", -1)) != 0
+        or int(report.get("threshold_numeric_drift_count", -1)) != 0
+        or report.get("preprocessing_reexecuted") is not False
+        or int(report.get("outer_loader_invocation_count", -1)) != 0
+        or int(report.get("migrated_equivalence_receipts", -1)) != 36
+        or int(report.get("migrated_calibration_receipts", -1)) != 32
+        or report.get("threshold_manifest_migrated") is not True
+        or report.get("primary_valid_n") != 0
+        or report.get("plans_005_006_007_allowed") is not False
+        or report.get("manual_override_allowed") is not False
+        or report.get("claim_ceiling")
+        != "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE"
+    ):
+        raise RuntimeError("BRAINIAC_POSTCALIBRATION_SOURCE_MIGRATION_INVALID")
+    return report
+
+
+def _validated_legacy_smoke_reconciliation() -> dict[str, Any]:
+    if not LEGACY_SMOKE_RECONCILIATION_PATH.is_file():
+        raise RuntimeError("BRAINIAC_LEGACY_SMOKE_RECONCILIATION_MISSING")
+    report = json.loads(
+        LEGACY_SMOKE_RECONCILIATION_PATH.read_text(encoding="utf-8")
+    )
+    body = dict(report)
+    recorded = body.pop("integrity_sha256", None)
+    archived = report.get("archived_smoke")
+    reason = report.get("reason_receipt")
+    if (
+        report.get("schema_version") != 1
+        or report.get("artifact")
+        != "BRAINIAC_PLAN017_LEGACY_SMOKE_RECONCILIATION"
+        or report.get("status") != "PASS"
+        or report.get("action")
+        != "ARCHIVED_EXACT_LEGACY_SCHEMA2_SMOKE"
+        or recorded != canonical_sha(body)
+        or report.get("legacy_file_sha256")
+        != "c132a7ccdfe88673d592d6f37128133d3a345a5df750bb2c3f64238bd30a01a3"
+        or not isinstance(archived, Mapping)
+        or not isinstance(reason, Mapping)
+        or report.get("preprocessing_reexecuted") is not False
+        or int(report.get("outer_loader_invocation_count", -1)) != 0
+        or report.get("primary_valid_n") != 0
+        or report.get("calibration_valid_n") != 32
+        or report.get("plans_005_006_007_allowed") is not False
+        or report.get("training_authorization") is not False
+        or report.get("manual_override_allowed") is not False
+        or report.get("claim_ceiling")
+        != "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE"
+    ):
+        raise RuntimeError("BRAINIAC_LEGACY_SMOKE_RECONCILIATION_INVALID")
+    _validate_artifact_binding(archived)
+    _validate_artifact_binding(reason)
     return report
 
 
@@ -3573,7 +3688,7 @@ def validate_acceptance_candidate(
     validate_execution_profile(
         profile,
         expected_contract_sha256=_current_equivalence_contract_sha256(),
-        expected_receipt_bindings=_base_bindings(),
+        expected_receipt_bindings=_equivalence_receipt_bindings(),
     )
     _validated_acceptance_test_manifest()
     branch, head, dirty = _acceptance_scoped_git_state()
@@ -3655,6 +3770,8 @@ def validate_final_preprocessing_readiness(
         "pre_repair_freeze": PRE_REPAIR_LIVE_FREEZE_PATH,
         "battery_manifest": BATTERY_MANIFEST_PATH,
         "source_only_resume_migration": SOURCE_ONLY_RESUME_MIGRATION_PATH,
+        "postcalibration_source_migration": POSTCALIBRATION_SOURCE_MIGRATION_PATH,
+        "legacy_smoke_reconciliation": LEGACY_SMOKE_RECONCILIATION_PATH,
     }
     if not isinstance(bindings, Mapping) or set(bindings) != set(expected_paths):
         raise RuntimeError("BRAINIAC_FINAL_PREPROCESSING_READINESS_INVALID")
@@ -3674,6 +3791,8 @@ def validate_final_preprocessing_readiness(
     _validated_full_test_manifest()
     _validated_traceability_manifest()
     _validated_source_only_resume_migration()
+    _validated_postcalibration_source_migration()
+    _validated_legacy_smoke_reconciliation()
     for evidence_path, expected_status in (
         (P08_STATUS_PATH, "R0_COMPLETE_PREPARATION_PARTIAL_NONBLOCKING_FOR_MAIN_CNN"),
         (NOVELTY_MATRIX_V3_PATH, "R0_COMPLETE_NOVELTY_CANDIDATE"),
@@ -3754,7 +3873,7 @@ def build_preprocessing_readiness_candidate(
         checked_profile = validate_execution_profile(
             execution_profile,
             expected_contract_sha256=_current_equivalence_contract_sha256(),
-            expected_receipt_bindings=_base_bindings(),
+            expected_receipt_bindings=_equivalence_receipt_bindings(),
         )
     except (OSError, RuntimeError, ValueError, TypeError, json.JSONDecodeError):
         checked_profile = {}
@@ -3918,7 +4037,7 @@ def run_acceptance(
     profile = validate_execution_profile(
         profile,
         expected_contract_sha256=_current_equivalence_contract_sha256(),
-        expected_receipt_bindings=_base_bindings(),
+        expected_receipt_bindings=_equivalence_receipt_bindings(),
     )
     calibration = _calibrate_if_needed(device=device, stop=stop)
     if calibration.get("status") == "PAUSED_RESUMABLE":
