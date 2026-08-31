@@ -1236,6 +1236,11 @@ def test_traceability_revalidates_frozen_battery_before_document_mutation(
         "_validated_full_test_manifest",
         lambda: {"summary": {"passed": 1, "failed": 0, "errors": 0}},
     )
+    monkeypatch.setattr(
+        release,
+        "_validate_full_test_fixture_lineage",
+        lambda _manifest: None,
+    )
 
     def sealed(_path: Path, *, expected_status: str) -> dict[str, object]:
         if expected_status == "R0_COMPLETE_NOVELTY_CANDIDATE":

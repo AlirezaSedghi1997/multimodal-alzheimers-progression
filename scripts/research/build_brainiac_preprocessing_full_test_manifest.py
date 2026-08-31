@@ -24,8 +24,11 @@ from src.research.brainiac_dependency_closure import verify_manifest_tracking  #
 
 
 OUTPUT = runner.REGISTRY_ROOT / "brainiac_preprocessing_test_manifest_v1.json"
-TEST_FIXTURE_SUPERSESSION = (
+TEST_FIXTURE_SUPERSESSION_V5 = (
     runner.REGISTRY_ROOT / "BRAINIAC_PLAN017_TEST_FIXTURE_SUPERSESSION_V5.json"
+)
+TEST_FIXTURE_SUPERSESSION = (
+    runner.REGISTRY_ROOT / "BRAINIAC_PLAN017_TEST_FIXTURE_SUPERSESSION_V6.json"
 )
 # Cross-method source isolation is exercised by
 # ``test_brainiac_completion_gates.py`` inside the BrainIAC set.  Do not bind
@@ -105,7 +108,7 @@ def _validated_test_fixture_supersession() -> dict[str, Any]:
     body = dict(payload)
     recorded = body.pop("integrity_sha256", None)
     if (
-        payload.get("status") != "PASS_TEST_FIXTURE_ONLY_SUPERSESSION"
+        payload.get("status") != "PASS_TEST_FIXTURE_CHAIN_SUPERSESSION"
         or recorded != runner.canonical_sha(body)
         or payload.get("new_git_head") != _git_head()
         or payload.get("dependency_closure_sha256")
@@ -114,6 +117,13 @@ def _validated_test_fixture_supersession() -> dict[str, Any]:
         or payload.get("preprocessing_reexecuted") is not False
     ):
         raise RuntimeError("BRAINIAC_TEST_FIXTURE_SUPERSESSION_INVALID")
+    parent = payload.get("parent_v5")
+    if (
+        not isinstance(parent, Mapping)
+        or runner._validate_artifact_binding(parent)
+        != TEST_FIXTURE_SUPERSESSION_V5.resolve(strict=True)
+    ):
+        raise RuntimeError("BRAINIAC_TEST_FIXTURE_SUPERSESSION_PARENT_INVALID")
     return payload
 
 

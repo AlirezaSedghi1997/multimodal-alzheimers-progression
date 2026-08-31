@@ -96,7 +96,7 @@ def _validate_sealed(path: Path, *, expected_status: str) -> dict[str, Any]:
 
 def _validate_full_test_fixture_lineage(full_tests: Mapping[str, Any]) -> None:
     expected = (
-        runner.REGISTRY_ROOT / "BRAINIAC_PLAN017_TEST_FIXTURE_SUPERSESSION_V5.json"
+        runner.REGISTRY_ROOT / "BRAINIAC_PLAN017_TEST_FIXTURE_SUPERSESSION_V6.json"
     )
     binding = full_tests.get("test_fixture_supersession")
     if (
@@ -105,7 +105,7 @@ def _validate_full_test_fixture_lineage(full_tests: Mapping[str, Any]) -> None:
     ):
         raise RuntimeError("BRAINIAC_PLAN018_TEST_FIXTURE_LINEAGE_INVALID")
     _validate_sealed(
-        expected, expected_status="PASS_TEST_FIXTURE_ONLY_SUPERSESSION"
+        expected, expected_status="PASS_TEST_FIXTURE_CHAIN_SUPERSESSION"
     )
 
 
