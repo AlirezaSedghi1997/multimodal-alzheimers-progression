@@ -1,0 +1,208 @@
+{
+  "branch_cache_sha256": {
+    "amyloid": "31981b33e3c344f593094c7da6b1ca813e0c80cd5a3914f2402e2f04f3955921",
+    "tau": "4095fcbc1199fdaf1bedc1fcfbfd9a51fdde9d8b63b88c1a736ddfeac1b007d6"
+  },
+  "candidate_envelopes": [
+    {
+      "candidate_id": "identity",
+      "rotation": 0.0,
+      "translation": 0.0
+    },
+    {
+      "candidate_id": "primary",
+      "rotation": 1.0,
+      "translation": 0.5
+    },
+    {
+      "candidate_id": "upper",
+      "rotation": 2.0,
+      "translation": 1.0
+    }
+  ],
+  "candidate_results": [
+    {
+      "branch_sample_counts": {
+        "amyloid": 30,
+        "tau": 30
+      },
+      "candidate_id": "identity",
+      "metrics": {
+        "absolute_mass_ratio": {
+          "max": 1.0000000797185171,
+          "mean": 0.9999999690393934,
+          "median": 1.0,
+          "min": 0.9999998239456767,
+          "p05": 0.9999998873253363,
+          "p95": 1.0
+        },
+        "foreground_dice": {
+          "max": 1.0,
+          "mean": 1.0,
+          "median": 1.0,
+          "min": 1.0,
+          "p05": 1.0,
+          "p95": 1.0
+        },
+        "normalized_mae": {
+          "max": 1.290596705591613e-07,
+          "mean": 8.468138682198424e-08,
+          "median": 8.55060110455003e-08,
+          "min": 5.1080403563878e-08,
+          "p05": 5.7967232054625936e-08,
+          "p95": 1.1585928914967425e-07
+        },
+        "pearson": {
+          "max": 1.0,
+          "mean": 0.9999999999998713,
+          "median": 0.9999999999998912,
+          "min": 0.9999999999996697,
+          "p05": 0.9999999999997009,
+          "p95": 0.9999999999999563
+        }
+      },
+      "rotation": 0.0,
+      "scale_max": 1.0,
+      "scale_min": 1.0,
+      "status": "PASS",
+      "translation": 0.0
+    },
+    {
+      "branch_sample_counts": {
+        "amyloid": 30,
+        "tau": 30
+      },
+      "candidate_id": "primary",
+      "metrics": {
+        "absolute_mass_ratio": {
+          "max": 0.9984844494640397,
+          "mean": 0.9861194608043043,
+          "median": 0.9853966002892988,
+          "min": 0.977607406234762,
+          "p05": 0.97994157057422,
+          "p95": 0.9951195547443874
+        },
+        "foreground_dice": {
+          "max": 0.9999169032189231,
+          "mean": 0.9946736389823573,
+          "median": 0.9944461099401781,
+          "min": 0.9904107675663864,
+          "p05": 0.9919882979291766,
+          "p95": 0.9976923831728093
+        },
+        "normalized_mae": {
+          "max": 0.04082382108728834,
+          "mean": 0.021869924601085392,
+          "median": 0.0216427022430056,
+          "min": 0.011984840046416262,
+          "p05": 0.012486962148449271,
+          "p95": 0.030608637616817876
+        },
+        "pearson": {
+          "max": 0.9989030993032587,
+          "mean": 0.9964944552530871,
+          "median": 0.9967102027937313,
+          "min": 0.9893321379404865,
+          "p05": 0.9919399511444179,
+          "p95": 0.998633411053418
+        }
+      },
+      "rotation": 1.0,
+      "scale_max": 1.0,
+      "scale_min": 1.0,
+      "status": "PASS",
+      "translation": 0.5
+    },
+    {
+      "branch_sample_counts": {
+        "amyloid": 30,
+        "tau": 30
+      },
+      "candidate_id": "upper",
+      "metrics": {
+        "absolute_mass_ratio": {
+          "max": 0.9979041316875521,
+          "mean": 0.9775534966098595,
+          "median": 0.9764371505415236,
+          "min": 0.9614522309255813,
+          "p05": 0.9662695904244785,
+          "p95": 0.9929756670031636
+        },
+        "foreground_dice": {
+          "max": 0.9930616293305424,
+          "mean": 0.9877051617423944,
+          "median": 0.9880992283615657,
+          "min": 0.9803203251122703,
+          "p05": 0.9833463739836165,
+          "p95": 0.9918495307653045
+        },
+        "normalized_mae": {
+          "max": 0.0777801774391945,
+          "mean": 0.040884042258063566,
+          "median": 0.040065622625424055,
+          "min": 0.021378749017189856,
+          "p05": 0.022943620246514945,
+          "p95": 0.05782344559694416
+        },
+        "pearson": {
+          "max": 0.9967083216526308,
+          "mean": 0.9893828091888284,
+          "median": 0.9900552946139418,
+          "min": 0.9690156739469863,
+          "p05": 0.9778446898209674,
+          "p95": 0.9961481176207897
+        }
+      },
+      "rotation": 2.0,
+      "scale_max": 1.0,
+      "scale_min": 1.0,
+      "status": "FAIL",
+      "translation": 1.0
+    }
+  ],
+  "claim_scope": "AUGMENTATION_STABILITY_ONLY_NOT_QUANTITATIVE_EQUIVALENCE",
+  "contract_sha256": "a4f64d9ee89a0e88e7abdaedd6714f87c5674e989337075c6ca9fc320fbf2e72",
+  "count_noise_status": "DISABLED_NO_RAW_COUNT_OR_CALIBRATED_NOISE_MODEL",
+  "draws_per_subject": 1,
+  "explicitly_unused": [
+    "outcome",
+    "event",
+    "time_days",
+    "label",
+    "outer_test_metric"
+  ],
+  "foreground_mask_sha256": "44f5333cad31510a47ab4d478565c92e75497842728fb2599408e91edb9b78ab",
+  "implementation_source_sha256": {
+    "pet_augmentation_qc_v4.py": "2242236f7247c1cef2a6a5d7060bfc03234949ad78792c21684cd544ebde2ccc",
+    "pet_augmentation_v4.py": "1fe9e4020621ada3ae76377c077a7365ef7fe90c1f9b737e39beeb6a94b7b2d3"
+  },
+  "method": "OUTCOME_BLIND_PERTURBATION_STABILITY_QC",
+  "psf_smoothing_status": "DISABLED_NO_SCANNER_MODEL_PSF_REGISTRY",
+  "qc_design_sha256": "42e5926c4f02d50050267a420c012ef33f61a0d15e830d0636b9e849037671a4",
+  "sample_count_per_branch": 30,
+  "sample_subject_set_sha256": {
+    "amyloid": "3e906caadd03bb5300527444a3d491552bd76106bb51565c1a2c750765a96e1a",
+    "tau": "391e896da6c64ee877be92a4fb21e56684fd6d838910ae46749f5ccb23b665bb"
+  },
+  "scale": [
+    1.0,
+    1.0
+  ],
+  "schema_version": "4.0",
+  "seed": 20260714,
+  "selected_envelope": {
+    "candidate_id": "primary",
+    "max_rotation_degrees": 1.0,
+    "max_translation_voxels": 0.5,
+    "scale_max": 1.0,
+    "scale_min": 1.0
+  },
+  "status": "PASS",
+  "thresholds": {
+    "absolute_mass_ratio_p05_min": 0.95,
+    "absolute_mass_ratio_p95_max": 1.05,
+    "foreground_dice_p05_min": 0.99,
+    "normalized_mae_p95_max": 0.35,
+    "pearson_p05_min": 0.95
+  }
+}
