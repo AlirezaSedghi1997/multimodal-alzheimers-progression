@@ -366,6 +366,25 @@ def fit_survival_model_v4(
     else:
         autocast_dtype = torch.float16
     scaler_enabled = bool(amp_enabled and autocast_dtype == torch.float16)
+
+    def _portable_state_dict(state: Any) -> dict[str, Any]:
+        """Return a detached CPU copy suitable for portable comparisons/saves.
+
+        A checkpoint written during CUDA training can contain a best-model state
+        that is resident on ``cuda:0`` after resume, whereas the locked artifact
+        is deliberately loaded on CPU.  Comparing those tensors directly raises
+        a device-mismatch error.  Normalising both sides here also keeps resumed
+        checkpoints byte/device portable without changing model numerics.
+        """
+        if not isinstance(state, dict):
+            raise TrainingRuntimeV4Error("MODEL_STATE_MUST_BE_MAPPING")
+        return {
+            str(key): value.detach().to(device="cpu").clone()
+            if torch.is_tensor(value)
+            else value
+            for key, value in state.items()
+        }
+
     try:
         scaler = torch.amp.GradScaler(
             "cuda",
@@ -397,11 +416,12 @@ def fit_survival_model_v4(
         best = checkpoint.get("best_model_state")
         if best is None:
             raise TrainingRuntimeV4Error("FINALIZE_MISSING_BEST_STATE")
+        best = _portable_state_dict(best)
         if locked_path.is_file():
             existing = torch.load(locked_path, map_location="cpu", weights_only=False)
             if existing.get("run_contract_digest") != run_contract_digest:
                 raise TrainingRuntimeV4Error("LOCKED_CHECKPOINT_CONTRACT_MISMATCH")
-            existing_state = existing.get("model_state", {})
+            existing_state = _portable_state_dict(existing.get("model_state", {}))
             if set(existing_state) != set(best) or any(
                 not torch.equal(existing_state[key], best[key]) for key in best
             ):
@@ -455,7 +475,7 @@ def fit_survival_model_v4(
         history = list(checkpoint["history"])
         best_validation = float(checkpoint["best_validation"])
         best_epoch = int(checkpoint["best_epoch"])
-        best_state = checkpoint["best_model_state"]
+        best_state = _portable_state_dict(checkpoint["best_model_state"])
         patience_counter = int(checkpoint["patience_counter"])
         resumed_from_epoch = int(checkpoint["epoch_completed"])
         start_epoch = resumed_from_epoch + 1

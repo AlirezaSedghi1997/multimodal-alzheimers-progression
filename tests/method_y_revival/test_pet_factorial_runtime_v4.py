@@ -327,3 +327,62 @@ def test_cuda_interruption_resume_is_bitwise_exact_with_pet_augmentation(
         torch.backends.cudnn.deterministic = prior_deterministic
         torch.backends.cuda.matmul.allow_tf32 = prior_tf32_matmul
         torch.backends.cudnn.allow_tf32 = prior_tf32_cudnn
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA_NOT_AVAILABLE")
+def test_cuda_rerun_of_terminal_fold_with_existing_lock_is_device_safe(
+    tmp_path: Path,
+) -> None:
+    """A completed fold must be idempotent when its lock was written on CPU.
+
+    Production checkpoints are intentionally portable CPU state, while the
+    resumed trainer runs on CUDA.  Re-entering a terminal fold therefore must
+    compare state dictionaries after normalising devices, without retraining or
+    rewriting the locked artifact.
+    """
+    os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
+    prior_benchmark = torch.backends.cudnn.benchmark
+    prior_deterministic = torch.backends.cudnn.deterministic
+    prior_tf32_matmul = torch.backends.cuda.matmul.allow_tf32
+    prior_tf32_cudnn = torch.backends.cudnn.allow_tf32
+    prior_algorithms = torch.are_deterministic_algorithms_enabled()
+    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cuda.matmul.allow_tf32 = False
+    torch.backends.cudnn.allow_tf32 = False
+    torch.use_deterministic_algorithms(True)
+    try:
+        dataset = _dataset(
+            tmp_path / "cuda_terminal_data",
+            split_role="outer_train",
+            defer_batch_augmentation=True,
+        )
+        output = tmp_path / "cuda_terminal_output"
+        first = _train(
+            dataset,
+            output,
+            interrupt_after_epoch=None,
+            device="cuda",
+            amp=True,
+        )
+        assert first["status"] == "CHECKPOINT_LOCKED"
+        locked_path = output / "locked_checkpoint.pt"
+        before = locked_path.read_bytes()
+
+        rerun = _train(
+            dataset,
+            output,
+            interrupt_after_epoch=None,
+            device="cuda",
+            amp=True,
+        )
+
+        assert rerun["status"] == "CHECKPOINT_LOCKED"
+        assert rerun["resumed_from_epoch"] == first["epoch_completed"]
+        assert locked_path.read_bytes() == before
+    finally:
+        torch.use_deterministic_algorithms(prior_algorithms)
+        torch.backends.cudnn.benchmark = prior_benchmark
+        torch.backends.cudnn.deterministic = prior_deterministic
+        torch.backends.cuda.matmul.allow_tf32 = prior_tf32_matmul
+        torch.backends.cudnn.allow_tf32 = prior_tf32_cudnn
