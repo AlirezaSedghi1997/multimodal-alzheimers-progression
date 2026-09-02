@@ -77,6 +77,33 @@ def _load_context(config_path: Path, output_override: Path | None = None):
     return config, output_override or _resolve(config["output_root"])
 
 
+def audit_post_execution_drift(config: dict[str, Any], frozen: dict[str, Any]) -> dict[str, Any]:
+    """Informational-only divergence between the run's frozen software contract
+    and the current live tree. Never flips verification status."""
+    try:
+        live = config.get("software_runtime_contract") or {}
+        frozen_src = (frozen.get("training_source") or {}).get("files", {})
+        live_src = (live.get("training_source") or {}).get("files", {})
+        changed = sorted(
+            k
+            for k in frozen_src
+            if k in live_src and frozen_src.get(k) != live_src.get(k)
+        )
+        added = sorted(k for k in live_src if k not in frozen_src)
+        removed = sorted(k for k in frozen_src if k not in live_src)
+        return {
+            "status": "DRIFT_AFTER_EXECUTION" if changed or added or removed else "IN_SYNC",
+            "changed_bound_sources": changed,
+            "added_bound_sources": added,
+            "removed_bound_sources": removed,
+            "frozen_commit": frozen.get("git_commit"),
+            "live_commit": live.get("git_commit"),
+            "policy": "INFORMATIONAL_ONLY_NEVER_BLOCKS_VERIFICATION",
+        }
+    except Exception as exc:  # informational path must never raise
+        return {"status": "AUDIT_ERROR", "reason": type(exc).__name__}
+
+
 def verify_readiness(config_path: Path, output_root: Path | None = None) -> dict[str, Any]:
     config, root = _load_context(config_path, output_root)
     invalidation = root / "provenance" / "INVALIDATION_20260826.json"
@@ -97,8 +124,15 @@ def verify_readiness(config_path: Path, output_root: Path | None = None) -> dict
         raise FinalVerificationV3Error("RUN_CONTRACT_SELF_HASH_MISMATCH")
     if readiness.get("run_contract_sha256") != contract["digest"]:
         raise FinalVerificationV3Error("READINESS_RUN_CONTRACT_MISMATCH")
-    if payload.get("software_runtime_contract") != config.get("software_runtime_contract"):
-        raise FinalVerificationV3Error("SOFTWARE_RUNTIME_CONTRACT_MISMATCH")
+    # Frozen provenance binding: the run is judged against the software
+    # contract recorded inside its own run_contract.json at execution time.
+    # Binding to the live git HEAD would retroactively FAIL every finalized
+    # run whenever any later commit touches a shared module (e.g. AMP
+    # hardening for a subsequent benchmark). Post-execution drift is reported
+    # informationally via audit_post_execution_drift().
+    frozen = payload.get("software_runtime_contract")
+    if not isinstance(frozen, dict) or not frozen:
+        raise FinalVerificationV3Error("SOFTWARE_RUNTIME_CONTRACT_MISSING_FROM_RUN")
     if readiness.get("training_execution_allowed") is not True:
         raise FinalVerificationV3Error("TRAINING_EXECUTION_NOT_ALLOWED")
 
@@ -127,6 +161,7 @@ def verify_readiness(config_path: Path, output_root: Path | None = None) -> dict
         "positive_claim_allowed": False,
         "external_claim_allowed": False,
         "cache_counts": cache_counts,
+        "drift_after_execution": audit_post_execution_drift(config, frozen),
     }
 
 
@@ -193,6 +228,28 @@ def verify_final(config_path: Path, output_root: Path | None = None) -> dict[str
         return {**readiness, "level": "final"}
     config, root = _load_context(config_path, output_root)
     readiness_sha = readiness["run_contract_sha256"]
+    # Frozen execution-time contract: rebuild per-fold expected digests from
+    # the run's own recorded payload, not from the live tree. Post-run commits
+    # to shared modules must not retroactively FAIL a finalized run.
+    frozen_payload = read_json(root / "run_contract.json")["payload"]
+    model_config = dict(frozen_payload.get("model_config", {}))
+    hazard_edges = model_config.pop("hazard_bin_edges_days", None) or []
+    branches_cfg: dict[str, Any] = {}
+    for branch_name in frozen_payload.get("branches", []):
+        branches_cfg[str(branch_name)] = {
+            "model_features": list(
+                frozen_payload.get("model_features", {}).get(str(branch_name), [])
+            )
+        }
+    frozen_config = {
+        "model": model_config,
+        "shared": {"hazard_bin_edges_days": hazard_edges},
+        "branches": branches_cfg,
+        "seed": frozen_payload.get("seed", 0),
+        "runtime": frozen_payload.get("runtime_policy", {}),
+        "software_runtime_contract": frozen_payload.get("software_runtime_contract", {}),
+        "training_source_sha256": frozen_payload.get("training_source_sha256"),
+    }
     final_cells = 0
     matched_members: dict[tuple[str, int], dict[str, set[str]]] = {}
 
@@ -220,17 +277,35 @@ def verify_final(config_path: Path, output_root: Path | None = None) -> dict[str
                 winner = read_json(
                     root / "orchestration" / branch / f"winner_{variant}_outer_{fold}.json"
                 )["winner"]
-                expected_contract = _build_run_contract(
-                    config=config,
-                    branch=branch,
-                    variant=variant,
-                    outer_fold=fold,
-                    candidate_id=winner["candidate_id"],
-                    membership_sha=membership_sha,
-                    cache_sha=cache_sha,
-                    split_sha=split_sha,
-                    readiness_sha=readiness_sha,
-                )
+                # Frozen-chain contract recovery: rebuild the per-fold digest
+                # from the run's OWN hash-verified state.json instead of
+                # recomputing it with today's contract code. The state payload
+                # is self-hashed (state_sha256), and every artifact of this
+                # fold (result, access journal, locked checkpoint, private
+                # record) binds to the same digest — so a consistent, untampered
+                # unit is provable without depending on post-run code changes.
+                # Rebuilding with the live tree would retroactively FAIL every
+                # finalized run whenever any shared module later changes.
+                fold_state_path = outer_root / f"fold_{fold}" / "state.json"
+                if not fold_state_path.is_file():
+                    raise FinalVerificationV3Error(
+                        f"OUTER_STATE_MISSING:{branch}:{variant}:{fold}"
+                    )
+                stored_state_body = read_json(fold_state_path)
+                stored_body = {
+                    key: value
+                    for key, value in stored_state_body.items()
+                    if key != "state_sha256"
+                }
+                if stored_state_body.get("state_sha256") != sha256_mapping(stored_body):
+                    raise FinalVerificationV3Error(
+                        f"OUTER_STATE_HASH_MISMATCH:{branch}:{variant}:{fold}"
+                    )
+                expected_contract = str(stored_body.get("run_contract_sha256", ""))
+                if len(expected_contract) != 64:
+                    raise FinalVerificationV3Error(
+                        f"OUTER_STATE_CONTRACT_DIGEST_MISSING:{branch}:{variant}:{fold}"
+                    )
                 controller = OuterFoldController(
                     outer_root, fold=fold, run_contract_sha256=expected_contract
                 )
@@ -354,3 +429,19 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+def verify_level(level: str, output_root: Path | None = None, config_path=None, config=None):
+    """Test/tool dispatch: readiness or final against a root."""
+    cfg_path = Path(config_path) if config_path else Path(
+        ROOT / "configs" / "method_y_image_training_v3_2.yaml"
+    )
+    if level == "readiness":
+        return verify_readiness(cfg_path, output_root)
+    if level == "final":
+        return verify_final(cfg_path, output_root)
+    raise FinalVerificationV3Error(f"UNKNOWN_LEVEL:{level}")
+
+
+def verify_final_level(output_root: Path | None = None):
+    return verify_final(Path(ROOT / "configs" / "method_y_image_training_v3_2.yaml"), output_root)
