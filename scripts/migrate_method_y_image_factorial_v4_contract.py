@@ -612,17 +612,28 @@ def _load_or_prepare_plan(
     provenance_dir = output_root / "provenance"
     provenance_dir.mkdir(parents=True, exist_ok=True)
     provenance_path = provenance_dir / MIGRATION_FILE
+    # Always compute the CURRENT plan: a previously committed migration must not
+    # shadow a fresh one when the contract formula (not the file bytes) changed
+    # after that migration (e.g. moving git_commit out of the digest).
+    plan = _validate_and_plan(config_path=config_path, output_root=output_root)
     if provenance_path.is_file():
         existing = read_json(provenance_path)
-        if existing.get("status") == "COMMITTED":
-            # A committed migration is verified against the current contract below.
+        committed_matches_current = (
+            existing.get("status") == "COMMITTED"
+            and existing.get("new_run_contract_sha256")
+            == plan["new_run_contract_sha256"]
+        )
+        if not committed_matches_current:
+            # Different migration target -> new auditable provenance entry.
+            if apply:
+                stamp = _utc_now().replace(":", "").replace("-", "")[:15]
+                provenance_path = (
+                    provenance_dir
+                    / f"contract_migration_v4_{stamp}.json"
+                )
+                plan["supersedes"] = existing.get("migration_id")
+        elif existing.get("status") == "COMMITTED":
             return existing, provenance_path
-        if existing.get("status") == "PREPARED":
-            if Path(existing.get("output_root", "")).resolve() != output_root.resolve():
-                raise MigrationError("MIGRATION_ROOT_MISMATCH")
-            return existing, provenance_path
-        raise MigrationError("MIGRATION_PROVENANCE_STATUS_INVALID")
-    plan = _validate_and_plan(config_path=config_path, output_root=output_root)
     if apply:
         atomic_write_json(provenance_path, plan)
     return plan, provenance_path

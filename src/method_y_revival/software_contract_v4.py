@@ -93,8 +93,6 @@ def build_software_runtime_contract_v4(
             "files": files,
             "bundle_sha256": sha256_mapping(files),
         },
-        "git_commit": commit,
-        "scoped_dirty_digest": hashlib.sha256(scoped_status.encode("utf-8")).hexdigest(),
         "python": platform.python_version(),
         "torch": _package_version("torch"),
         "cuda_runtime": _cuda_runtime_version(),
@@ -111,7 +109,19 @@ def build_software_runtime_contract_v4(
         "factorial_arms": copy.deepcopy(config.get("factorial_arms", {})),
         "augmentation_policy": copy.deepcopy(config.get("augmentation", {})),
     }
-    return {**payload, "contract_sha256": sha256_mapping(payload)}
+    # Digest-bound core must depend only on bytes of the actually-imported
+    # sources plus locked environment/policy facts. The live git HEAD and the
+    # transient dirty-status digest are recorded as provenance metadata OUTSIDE
+    # the digest: a docs-only commit that touches no bound source must never
+    # break an in-flight resumable run, while a single-byte change in any bound
+    # source still changes bundle_sha256 -> contract_sha256 (fail-closed).
+    contract = {**payload, "contract_sha256": sha256_mapping(payload)}
+    contract["git_provenance_status"] = scoped_status
+    contract["git_commit"] = commit
+    contract["scoped_dirty_digest"] = hashlib.sha256(
+        scoped_status.encode("utf-8")
+    ).hexdigest()
+    return contract
 
 
 def _cuda_runtime_version() -> str:
