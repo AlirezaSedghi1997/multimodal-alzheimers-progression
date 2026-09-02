@@ -1,5 +1,25 @@
 # نمایه‌ی حافظه‌ی پروژه
 
+## زنده‌ترین — ۲۰۲۶-۰۹-۰۲ (v3.2 VERIFY PASS + v4 factorial در حال اجرا)
+
+0. **v3.2 (root v2) تکمیل و VERIFY شد:** `verify --level final` = **PASS**
+   (۲۰/۲۰ سلول، exactly-once=۱، privacy PASS، inner = IPCW-IBS). نتایج: amyloid
+   base 0.676C/0.097IBS → aug 0.695C/0.096IBS (dIBS CI شامل صفر → عدم‌برتری
+   ثبت شد)؛ tau base 0.616C/0.149IBS → aug 0.706C/0.125IBS (بهبود داخلی؛ claim
+   بسته). `positive/external=false`, POST_HOC/EXPLORATORY حفظ.
+1. **رفع نقص provenance در verifier (`211dd49`):** readiness/final قبلاً
+   software contract را با HEAD زنده مقایسه می‌کردند → هر commit بعدی نتیجهٔ
+   finalize شده را RETRO-FAIL می‌کرد. اکنون readiness به قرارداد frozen داخل
+   `run_contract.json` می‌بندد؛ final digest per-fold را از state.json
+   self-hashed بازیابی می‌کند (frozen-chain). `audit_post_execution_drift`
+   فقط اطلاع‌رسانی (INFORMATIONAL_ONLY). +۴ تست adversarial (۱۹/۱۹ سبز).
+2. **v4 factorial (کد Codex، بازبینی این جلسه):** ۵ arm matched
+   A0/A1(+aug)/A2(ResNet10-GN)/A3(+aug+R10)/A4(R18-GN@0.25)؛ aug ۱°/۰٫۵voxel
+   فقط train (QC-locked، envelope ۲° رد، scale/PSF/noise بدون شاهد غیرفعال)؛
+   انتخاب فقط inner IPCW-IBS. اجرا در amyloid/A0/outer_0/inner_1/cand۳/epoch13
+   متوقف شد (توقف اپراتور) — resumable. تله‌متری ~۱۲-۱۵s/epoch → کل ≈۱۸-۲۸h.
+   تعمیر device-mismatch + migration قراردادی (وزن‌ها ثابت) بازبینی شد.
+
 > **SUPERSESSION 2026-08-26 — ممیزی ناظر نهایی Image v3.2.**
 
 ## Live 2026-08-26 - P0-P3 repair gate 10/12
@@ -129,3 +149,17 @@ Digest 9b0f90a5... and battery 40a4a009... preserved
 - `docs/method_x_live_progress_report.md` — هنوز مدل‌ها را `NOT_STARTED` می‌نویسد؛ با باتری زنده در تضاد است.
 
 این نمایه جایگزین فایل‌های کامل نیست. اگر بین این نمایه، گزارش کهنه، و artifact دارای hash/contract اختلاف بود، artifact زنده و دفتر ثبت نشست ۲۰۲۶-۰۸-۱۵ بر snapshot تیرماه مقدم است.
+
+<!-- BRAINIAC_PREPROCESSING_PLAN018_LIVE_START -->
+## BrainIAC preprocessing — generated live status (Plan 018)
+
+- R0: `R0_COMPLETE`; citation: `CITATION_CORROBORATION_PARTIAL`; novelty: `NOVELTY_CANDIDATE`.
+- Five-CNN battery: `VERIFIED_TERMINAL`.
+- Plan 002: `ACCEPTED_READY_FOR_PRIMARY`; Plan 003: `NOT_STARTED_PRIMARY_0_OF_1669`.
+- Plans 014–017: `DONE/DONE/DONE/PASS`; Plan 019 may start only when final readiness validates live.
+- Plans 005–007: `NOT_EXECUTED / CODE_ONLY_UNACCEPTED / NOT_EXECUTED` and remain hard-disabled until `1669/1669`.
+- Tests: `596 passed`, `0 failed`, `0 errors` (live manifest-bound run).
+- External data: `OPTIONAL_UNAVAILABLE_NONBLOCKING`; internal substitute is `ROBUSTNESS_EVIDENCE_NOT_EXTERNAL_VALIDATION`.
+- Claim ceiling: `POST_HOC_INTERNAL_TECHNICAL_EVIDENCE`.
+- Runtime counts must be read from `prepare_brainiac_raw_t1_v2.py --mode status`; no PID/count in this section is treated as timeless.
+<!-- BRAINIAC_PREPROCESSING_PLAN018_LIVE_END -->

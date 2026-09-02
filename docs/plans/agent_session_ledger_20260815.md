@@ -1,5 +1,38 @@
 # Agent session ledger — 2026-08-15 (Method Y defect repair)
 
+> **Append 2026-09-02 — v3.2 VERIFY PASS (frozen-contract verifier) + v4 factorial handover.**
+> - v3.2 (root `results/method_y_revival_v3_image_v2`) production run COMPLETED by
+>   user: 20/20 outer cells committed, per-cell access exactly-once=1, both branches
+>   BRANCH_OUTER_CV_COMPLETE + LAUNCHER FINALIZED; OOF reports built from REAL
+>   locked-checkpoint metrics (science_gate FAIL kept honest => EXPLORATORY).
+>   Headline (internal, exploratory): amyloid aug vs base dIBS mean -0.00141
+>   [-0.00752, 0.00477] (CI includes zero -> non-superiority recorded); tau
+>   dIBS -0.02402 [-0.03882, -0.00959], dC +0.089 [0.009, 0.167] (internal
+>   improvement only; scanner/quantitative/external gates closed).
+> - Defect found this session & fixed (`211dd49`): verifier compared software
+>   contract against LIVE HEAD and recomputed per-fold digests with today's
+>   code -> any post-run commit retroactively FAILed finalized runs. Now:
+>   readiness binds to the FROZEN contract inside run_contract.json; final
+>   recovers each fold digest from its SELF-HASHED state.json (frozen-chain);
+>   audit_post_execution_drift is INFORMATIONAL_ONLY (changed/added/removed
+>   bound sources reported, never blocks). +4 adversarial tests, 19/19 green.
+> - v3.2 verification evidence: `--level readiness` PASS (drift reported:
+>   3 shared sources changed post-run); `--level final` PASS with
+>   valid_outer_cells=20, outer_access_count_per_cell=1, privacy PASS,
+>   inner_metric IPCW_INTEGRATED_BRIER_SCORE.
+> - v4 factorial benchmark (Codex implementation, reviewed): 5 matched arms
+>   (A0 baseline / A1 +aug / A2 ResNet10-GN / A3 +aug+R10 / A4 ResNet18-GN
+>   w=0.25), PET-safe augmentation 1deg/0.5voxel train-only (QC-locked
+>   Pearson/Dice p5 ~= 0.992; 2deg envelope FAILED; scale/PSF/noise disabled
+>   without evidence), deterministic subject x fold x epoch seeds, inner
+>   IPCW-IBS-only selection, one-SE across 5 outer-training partitions,
+>   outer exactly-once, 50-cell verifier. Production v4 stopped by operator at
+>   amyloid/A0/outer_0/inner_1/candidate-3/epoch-13 (atomic per-epoch commits;
+>   same command resumes). Telemetry ~12-15 s/epoch (A0) -> full 5x2x5x3x3
+>   programme estimated ~18-28 h. Device-mismatch resume fix + auditable
+>   contract migration (digests only; weights/optimizer/history untouched)
+>   verified via `provenance/contract_migration_v4_20260901.json`.
+
 > **Append 2026-08-26 — supervisor-plan execution: v1 INVALIDATED, v2 root staged.**
 > Independent supervisor audit found 7 critical gaps; repairs (mostly present as
 > uncommitted working-tree edits) verified, completed, tested and committed.
