@@ -1,5 +1,26 @@
 # Agent session ledger — 2026-08-15 (Method Y defect repair)
 
+> **Append 2026-09-02 (afternoon) — v4 RUN_CONTRACT_MISMATCH root-caused & fixed (contract HEAD-independence).**
+> - User-reported: `run_method_y_image_factorial_v4.ps1` blocked with RUN_CONTRACT_MISMATCH
+>   after the v3-verifier commits. Diagnosis: `software_contract_v4.contract_sha256`
+>   included the LIVE git commit in the resume-binding digest — a docs-only commit
+>   changed HEAD and fail-closed an in-flight run despite ZERO bound-source byte changes.
+> - Fix (`bebad7b`): digest-bound core = bound-source bytes + toolchain versions + CUDA
+>   runtime/hardware + locked policies ONLY. `git_commit`/`git_provenance_status`/
+>   `scoped_dirty_digest` demoted to provenance metadata outside the digest (mirrors the
+>   frozen-contract semantics proven in the v3.2 verifier fix `211dd49`). Byte change in
+>   any bound source still flips the digest (adversarial test).
+> - Migration tool hardened: committed plans no longer shadow fresh ones after a digest
+>   FORMULA change (supersedes chain, new auditable provenance file). Applied
+>   `d521fa67 -> a2013821` over 8 checkpoints / 22 files / 1 master / run_contract with
+>   semantic fingerprints verified — weights untouched, zero outer exposure.
+> - Proof: 5 new binding tests + 42/42 v4 suites green; live run resumed under the new
+>   contract (A1/outer_0/inner_1 committing epochs). v4 run_contract digest is now
+>   `a2013821a158305b7061131da8c2e8be4706c951924f314b223669260842beb5`.
+> - Operator skill review: no dedicated contract-migration skill exists in the shared
+>   catalog; used repo's own proven atomic-migration pattern + TDD, consistent with
+>   available testing/debugging skills.
+
 > **Append 2026-09-02 — v3.2 VERIFY PASS (frozen-contract verifier) + v4 factorial handover.**
 > - v3.2 (root `results/method_y_revival_v3_image_v2`) production run COMPLETED by
 >   user: 20/20 outer cells committed, per-cell access exactly-once=1, both branches
