@@ -1,5 +1,37 @@
 # Agent session ledger — 2026-08-15 (Method Y defect repair)
 
+> **Append 2026-09-03 — v4 contract second-recurrence fix complete (fully HEAD/dirty-independent).**
+> Covers commits `7628305` (+ prior `bebad7b` foundation) and the applied migration chain.
+> - **Recurrence root cause:** the first HEAD-independence fix removed git_commit from
+>   `contract_sha256` but still stored `git_commit` / `git_provenance_status` /
+>   `scoped_dirty_digest` INSIDE `software_runtime_contract`, which itself entered the
+>   run-contract digest AND resume equality. Result: every commit still moved the digest,
+>   and live dirty-status text (stored verbatim as `git_provenance_status`) moved it too.
+> - **Final semantics (`7628305`):** digest binds ONLY to bound-source bytes
+>   (bundle_sha256), toolchain versions, CUDA runtime/hardware and locked policies. All
+>   git metadata lives under one `git_provenance` block — recorded, marked
+>   INFORMATIONAL_ONLY_NEVER_RESUME_BINDING, excluded from digest and from
+>   `_ensure_run_contract` equality. Preflight is now READY even with dirty files.
+> - **Migration tool hardened to frozen-chain (mirrors v3.2 verifier `211dd49`):**
+>   per-cell old digests are recovered from the checkpoint/master/winner files
+>   themselves instead of recomputation (earlier generations embedded live
+>   git-status text — not bit-reproducible); winner_*.json selection artifacts migrate
+>   via digest-rewrite ONLY when `_reverify_winner_selection` proves the winner
+>   reproducible from its own inner-IBS records (one-SE + complexity-rank); winner
+>   self-hash refreshed + idempotent REPAIR_ONLY_CURRENT path; committed plans no
+>   longer shadow fresh formula migrations (supersedes chain, timestamped provenance).
+> - **Applied migration chain** on `results/method_y_revival_v4_image_factorial_v1`:
+>   `a2013821 -> ec968b9b` (18 checkpoints / 52 files / 1 master / winner), zero outer
+>   exposure, semantic fingerprints verified — weights/optimizer/history untouched.
+>   Winner amyloid/A0/outer_0 (`lr1e4_wd1e3`) selection re-verified reproducible.
+> - **Verification:** binding suite 6/6 (HEAD move, dirty move, byte change, provenance
+>   placement, live-vs-stored) + v4 suites 48/48 green; preflight READY with digest
+>   `ec968b9b1897...`; winner self-hash OK. Operator requested halt before resuming
+>   production run — training is STOPPED, resume point = last atomic epoch checkpoint.
+> - **Remaining for next agent:** verify preflight READY, optionally rerun migration
+>   tool `--apply` (expect REPAIR_ONLY_CURRENT), relaunch production
+>   `run_method_y_image_factorial_v4.ps1`, then the full 50-cell verifier.
+
 > **Append 2026-09-02 (afternoon) — v4 RUN_CONTRACT_MISMATCH root-caused & fixed (contract HEAD-independence).**
 > - User-reported: `run_method_y_image_factorial_v4.ps1` blocked with RUN_CONTRACT_MISMATCH
 >   after the v3-verifier commits. Diagnosis: `software_contract_v4.contract_sha256`

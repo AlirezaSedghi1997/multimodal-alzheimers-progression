@@ -1,5 +1,28 @@
 # نمایه‌ی حافظه‌ی پروژه
 
+## زنده‌ترین — ۲۰۲۶-۰۹-۰۳ (قرارداد v4 کاملاً مستقل از HEAD/dirty؛ آموزش متوقف)
+
+0. **دومین عود `RUN_CONTRACT_MISMATCH` ریشه‌یابی و رفع نهایی شد (`7628305`):**
+   ریشهٔ کامل = `git_commit`/`git_provenance_status`/`scoped_dirty_digest` هنوز
+   داخل `software_runtime_contract` بودند → digest با هر commit و حتی متن
+   dirty-status زنده جابه‌جا می‌شد. اکنون digest فقط به bytes منابع bound
+   (`bundle_sha256`) + نسخه‌های toolchain + CUDA + سیاست‌های قفل‌شده بسته است؛
+   متادیتای git زیر یک بلاک `git_provenance` (INFORMATIONAL_ONLY) خارج از
+   digest و خارج از برابری resume.
+1. **ابزار migration با frozen-chain کامل شد:** digestهای قدیمی هر سلول از خود
+   فایل بازمی‌گردند (بازمحاسبه با فرمول امروز ممکن نیست چون نسل‌های قبلی متن
+   status زنده را embed کرده بودند)؛ winner_*.json فقط وقتی migrate می‌شود که
+   `_reverify_winner_selection` انتخاب را از inner-IBS (one-SE+rank) بازتولیدپذیر
+   اثبات کند؛ self-hash برنده + مسیر idempotent `REPAIR_ONLY_CURRENT`.
+2. **Migration اعمال‌شده:** `a2013821→ec968b9b` (۱۸ checkpoint/۵۲ فایل/۱
+   master/winner؛ وزن‌ها دست‌نخورده؛ بدون outer exposure). برندهٔ amyloid/A0/outer_0
+   (`lr1e4_wd1e3`) بازتولیدپذیری‌اش اثبات شد.
+3. **تأیید:** binding ۶/۶ + v4 suites ۴۸/۴۸ سبز؛ preflight READY حتی با فایل‌های
+   dirty؛ digest فعال `ec968b9b1897...`.
+4. **وضعیت اجرا:** آموزش تولیدی v4 به درخواست اپراتور **متوقف** است؛ نقطهٔ
+   resume = آخرین epoch_checkpoint اتمیک (A1 در حال آموزش بود). فرمان ادامه همان
+   `run_method_y_image_factorial_v4.ps1`.
+
 ## زنده‌ترین — ۲۰۲۶-۰۹-۰۲ (v3.2 VERIFY PASS + v4 factorial در حال اجرا)
 
 0. **v3.2 (root v2) تکمیل و VERIFY شد:** `verify --level final` = **PASS**
