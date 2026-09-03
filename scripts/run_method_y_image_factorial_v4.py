@@ -227,12 +227,17 @@ def _preflight(config_path: Path) -> dict[str, Any]:
         branch_summary[branch] = _validate_development_split_contract(
             development, split, branch=branch
         )
+    sw_contract = config["software_runtime_contract"]
+    git_provenance = dict(sw_contract.get("git_provenance", {}))
+    binding_core = {
+        key: value for key, value in sw_contract.items() if key != "git_provenance"
+    }
     contract_body = {
         "schema_version": "4.0",
         "config_sha256": _sha256_file(config_path),
         "input_fingerprints": fingerprints,
         "augmentation_qc_contract_sha256": expected_qc,
-        "software_runtime_contract": config["software_runtime_contract"],
+        "software_runtime_contract": binding_core,
         "factorial_arms": config["factorial_arms"],
         "runtime": config["runtime"],
         "seed": int(config["seed"]),
@@ -253,6 +258,7 @@ def _preflight(config_path: Path) -> dict[str, Any]:
         },
         "run_contract_body": contract_body,
         "run_contract_sha256": digest,
+        "git_provenance": git_provenance,
         "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
     }
 
@@ -265,7 +271,15 @@ def _ensure_run_contract(output_root: Path, preflight: dict[str, Any]) -> None:
     }
     if path.is_file():
         existing = read_json(path)
-        if existing != payload:
+        # Resume equality is over BINDING fields only. git_provenance (HEAD
+        # commit, dirty status) is informational metadata: it may differ between
+        # launches without changing the resume-binding contract.
+        existing_core = {
+            key: value
+            for key, value in existing.items()
+            if key != "git_provenance"
+        }
+        if existing_core != payload:
             raise FactorialLauncherV4Error("RUN_CONTRACT_MISMATCH")
     else:
         atomic_write_json(path, payload)

@@ -86,8 +86,10 @@ def test_head_and_dirty_recorded_as_provenance(tmp_path, monkeypatch, scoped_sou
     repo = _fake_repo(tmp_path)
     _patch_head(monkeypatch, "a" * 40, dirty=" M scripts/x.py")
     c = sc4.build_software_runtime_contract_v4(repo, {})
-    assert c.get("git_commit") == "a" * 40
-    assert c.get("git_provenance_status") == " M scripts/x.py" or c.get("scoped_dirty_digest")
+    gp = c.get("git_provenance", {})
+    assert gp.get("commit") == "a" * 40
+    assert str(gp.get("scoped_status", "")).strip() == "M scripts/x.py"
+    assert gp.get("scoped_dirty_digest")
 
 
 def test_real_byte_change_changes_digest(tmp_path, monkeypatch, scoped_sources):
@@ -110,3 +112,19 @@ def test_live_v4_bundle_matches_stored_run_contract():
     stored_bundle = stored["software_runtime_contract"]["training_source"]["bundle_sha256"]
     live = sc4.build_software_runtime_contract_v4(ROOT, {})
     assert live["training_source"]["bundle_sha256"] == stored_bundle
+
+
+def test_git_provenance_is_informational_contract_field():
+    """git metadata must live under git_provenance, excluded from
+    contract_sha256 inputs and from launcher resume equality."""
+    c = sc4.build_software_runtime_contract_v4(ROOT, {})
+    gp = c.get("git_provenance")
+    assert isinstance(gp, dict)
+    assert gp.get("policy") == "INFORMATIONAL_ONLY_NEVER_RESUME_BINDING"
+    for legacy in ("git_commit", "git_provenance_status", "scoped_dirty_digest"):
+        assert legacy not in c, f"legacy provenance field must not be top-level: {legacy}"
+
+    src = (ROOT / "scripts" / "run_method_y_image_factorial_v4.py").read_text(encoding="utf-8")
+    assert 'if key != "git_provenance"' in src, (
+        "launcher equality must exclude git_provenance from resume binding"
+    )

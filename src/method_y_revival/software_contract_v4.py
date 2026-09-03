@@ -116,11 +116,18 @@ def build_software_runtime_contract_v4(
     # break an in-flight resumable run, while a single-byte change in any bound
     # source still changes bundle_sha256 -> contract_sha256 (fail-closed).
     contract = {**payload, "contract_sha256": sha256_mapping(payload)}
-    contract["git_provenance_status"] = scoped_status
-    contract["git_commit"] = commit
-    contract["scoped_dirty_digest"] = hashlib.sha256(
-        scoped_status.encode("utf-8")
-    ).hexdigest()
+    # Provenance metadata — RECORDED but never resume-binding: excluded from
+    # contract_sha256 (above) and from run-contract equality by the launcher.
+    # HEAD moves and dirty-status drift must not fail-close an in-flight run
+    # when no bound-source byte changed.
+    contract["git_provenance"] = {
+        "commit": commit,
+        "scoped_status": scoped_status,
+        "scoped_dirty_digest": hashlib.sha256(
+            scoped_status.encode("utf-8")
+        ).hexdigest(),
+        "policy": "INFORMATIONAL_ONLY_NEVER_RESUME_BINDING",
+    }
     return contract
 
 
