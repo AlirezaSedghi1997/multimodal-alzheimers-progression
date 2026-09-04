@@ -1,5 +1,12 @@
 # نمایه‌ی حافظه‌ی پروژه
 
+## زنده‌ترین — ۲۰۲۶-۰۹-۰۴ شب (رزنت deterministic شد؛ A2 در حال آموزش؛ resume دو بار اثبات شد؛ آماده تولید)
+
+0. **مانع رزنت رفع شد:** استم `MaxPool3d` (و بعد `AvgPool3d`) backward deterministic در CUDA ندارند → جایگزینی با depthwise strided conv (`k3/s2/p1`)؛ همان downsampling و RF، deterministic-safe. تست جدید ۲/۲ سبز؛ کل suite متمرکز سبز.
+1. **مهاجرت قراردادی `654f→969e`:** ۱۸ سلول/۵۴ فایل/۱ master با fingerprint معنایی (وزن‌ها دست‌نخورده)، zero outer exposure، هر دو winner به master جدید `37910a4d...` re-point شدند. Binding ۱۲/۱۲ سبز؛ preflight READY.
+2. **اثبات resume دو باره:** اجرا۱ (A2 epoch 10-13) → توقف (lock stale ماند، PID مرده تأیید شد) → اجرا۲ بدون حذف دستی lock را auto-recover کرد (epoch 16-19) → توقف تمیز. GPU خالی، بدون writer.
+3. **آماده تولید:** digest زنده `969ebd0f61d9...`؛ فرمان همان PS1 تکی (تک‌نویسنده). Verifier همچنان FAIL درست (۲/۵۰). تخمین باقی‌مانده با نرخ واقعی A2 (~۱۶.۵s/epoch): کل ≈۱۸-۳۰h.
+
 ## زنده‌ترین — ۲۰۲۶-۰۹-۰۴ عصر (تست resume FAIL-closed؛ master `be75` در برابر `d7e0`؛ بدون corruption)
 
 0. **نتیجه تست resumability (به درخواست اپراتور):** اجرای آزمایشی بلافاصله `BLOCKED:RUN_CONTRACT_MISMATCH:MASTER` شد؛ هیچ epoch شروع نشد، GPU خالی، lock نیست، چک‌پوینت‌ها دست‌نخورده. این fail-closed درست است — retry بیهوده نکنید.

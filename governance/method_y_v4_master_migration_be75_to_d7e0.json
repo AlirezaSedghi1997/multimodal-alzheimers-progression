@@ -1,0 +1,22 @@
+{
+  "branch": "amyloid",
+  "global_run_digest": "654f8ce59934586f0a125225aa3cbb4a00bfbc11f755bb706c080fbd7cb8392c",
+  "host": "DESKTOP-V0DFFKD",
+  "migration_id": "METHOD_Y_V4_MASTER_MIGRATION_be7589d844cc_d7e061c39675",
+  "new_master_digest": "d7e061c396752c1d198d881e1fa2da8c2e4d38e9aff068b57e8a663212d14f7e",
+  "old_master_digest": "be7589d844ccf98bca91792244adce1fcb0e8f9182cf9576d1065c5d75147be5",
+  "outer_test_exposure": {
+    "accessed": false,
+    "files": 0
+  },
+  "output_root": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1",
+  "preservation": {
+    "inner_records_changed": false,
+    "model_values_changed": false
+  },
+  "recorded_utc": "2026-09-04T05:31:09.517387+00:00",
+  "schema_version": "1.0",
+  "winners_relabeled": [
+    "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\orchestration\\amyloid\\winner_A0_outer_0.json"
+  ]
+}

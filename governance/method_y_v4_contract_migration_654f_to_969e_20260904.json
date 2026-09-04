@@ -1,0 +1,1299 @@
+{
+  "checkpoint_mappings": [
+    {
+      "arm": "A0",
+      "branch": "amyloid",
+      "candidate_id": "lr1e4_wd1e3",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e3\\fold_0\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "dd10df17ef9fc766bd72da1ead54ec366ee9d61f7622575eaa235e1585d430dc",
+          "new_sha256": "3d11fde52fc2b0f39d5ef4781a1b82a2ab46825d63ac520ebcecde3f3cf4a57f",
+          "old_contract_digest": "742172ed8f65094ebc7ea82465389180db46e27943111150ed485a97f8484f6a",
+          "old_sha256": "b598ad7eea861ecc6242b3609131dba309f61c747452a3d402415e2dc2d4614f",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e3\\fold_0\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "1c8da694fe001a4f14c3e13abd0852dc6f87b9252805ade1bbd10b0b373bf974"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "dd10df17ef9fc766bd72da1ead54ec366ee9d61f7622575eaa235e1585d430dc",
+          "new_sha256": "82ebd49ee5cbd464dec795c1167ad5fe2cf7316f475cf3c5dd4748343291b452",
+          "old_contract_digest": "742172ed8f65094ebc7ea82465389180db46e27943111150ed485a97f8484f6a",
+          "old_sha256": "6c2b75dd483b4d4ff3d2eb45819d65db798b617cac0aa294f8fc2f756b72f31a",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e3\\fold_0\\locked_checkpoint.pt",
+          "semantic_fingerprint": "f76b89288dc8613396596bdfdceecd509b29459be5cf778ad81ff4a09c57c665"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "dd10df17ef9fc766bd72da1ead54ec366ee9d61f7622575eaa235e1585d430dc",
+          "new_sha256": "43fd063d585c22bb9caf05ad6465e0e1c7b32c78549587132a5288e1f88f9cbc",
+          "old_contract_digest": "742172ed8f65094ebc7ea82465389180db46e27943111150ed485a97f8484f6a",
+          "old_sha256": "e87f4dfa0b6195e9db30f499badf61b9fac3c25adc652d0fa0af9973dc269edf",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e3\\fold_0\\training_summary.json",
+          "semantic_fingerprint": "c2ccf09ce12348ff60eeef946198a4a12207dc446c58c555fcf0add366ad6b89"
+        }
+      ],
+      "inner_fold": 0,
+      "new_cell_digest": "dd10df17ef9fc766bd72da1ead54ec366ee9d61f7622575eaa235e1585d430dc",
+      "old_cell_digest": "742172ed8f65094ebc7ea82465389180db46e27943111150ed485a97f8484f6a",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A0",
+      "branch": "amyloid",
+      "candidate_id": "lr1e4_wd1e3",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e3\\fold_1\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "8c0fbe66303b725cd078528fc558f59fec5f513d18a8ad0c04b2215c75827e4e",
+          "new_sha256": "9123a94e23acf4b06146b4d037d25f7d625e84aad3f09156d950e41a6a8348c6",
+          "old_contract_digest": "ad64f3066aac0a56fa3745cb920f70ae840e5d8213174afc82480b6718f7a6b1",
+          "old_sha256": "2f01a5c1b246bb2b3b9a1df0ac448fea6f350b5f5b07cc3980dd88a3ae79e929",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e3\\fold_1\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "3bb3ccb59f08dc3d0980fd0da5adac59a0e2c7a99bb1c405d5165447f3a98793"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "8c0fbe66303b725cd078528fc558f59fec5f513d18a8ad0c04b2215c75827e4e",
+          "new_sha256": "dc61c3e052bdc905742ab869c765b11222c12f02a2568c3383eda19d2877ccad",
+          "old_contract_digest": "ad64f3066aac0a56fa3745cb920f70ae840e5d8213174afc82480b6718f7a6b1",
+          "old_sha256": "eee473ba326037fad55a4759b52f7aee0e11a6462e09139915126496e75d45be",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e3\\fold_1\\locked_checkpoint.pt",
+          "semantic_fingerprint": "27e91ed81686d0a0b85f23028df26cc9ad11aebe800f09b77db875b75cab0503"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "8c0fbe66303b725cd078528fc558f59fec5f513d18a8ad0c04b2215c75827e4e",
+          "new_sha256": "eabe5b3085565b8a4f651ee4083464d53a0e0ec6a53df85f4c0a2972911069fd",
+          "old_contract_digest": "ad64f3066aac0a56fa3745cb920f70ae840e5d8213174afc82480b6718f7a6b1",
+          "old_sha256": "871918456f99d4de7b1d9b644ad74e7618dc4779d9055de41cdee5be1602cd62",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e3\\fold_1\\training_summary.json",
+          "semantic_fingerprint": "da789230bfa3ec7db2f87eaacc14347cd34bb08f1b65adfe401b5ef2bd17df6a"
+        }
+      ],
+      "inner_fold": 1,
+      "new_cell_digest": "8c0fbe66303b725cd078528fc558f59fec5f513d18a8ad0c04b2215c75827e4e",
+      "old_cell_digest": "ad64f3066aac0a56fa3745cb920f70ae840e5d8213174afc82480b6718f7a6b1",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A0",
+      "branch": "amyloid",
+      "candidate_id": "lr1e4_wd1e3",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e3\\fold_2\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "5e0ac701603d9c782b04d047b2d968da2717c9a7f224beb3577cc81cda47f2b2",
+          "new_sha256": "d40611c4687fd105a1f3f0e219f372fc604701f8fc4afb2632b25cc35744ec66",
+          "old_contract_digest": "d6defd8095617bb5e7e9a5b87d2f1eb97b8964c28dbe2af3722d6f068c16fade",
+          "old_sha256": "bd82a2500f5c978afecbe9dc71f7f5fe71c92f5f87175a8d36e4d8df7cc19f81",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e3\\fold_2\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "6e271bd0cdfd24a979b2944d9f70437c6ce91ac26942d226792c3975c7040f92"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "5e0ac701603d9c782b04d047b2d968da2717c9a7f224beb3577cc81cda47f2b2",
+          "new_sha256": "0560200b5468b84a2424c2cea2cb0108e55f05d2939f1a96eda201e359c8c044",
+          "old_contract_digest": "d6defd8095617bb5e7e9a5b87d2f1eb97b8964c28dbe2af3722d6f068c16fade",
+          "old_sha256": "ca680c7f4c2c12f39b94cc79dd74af84a027304d6890337865fccf28b5979d28",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e3\\fold_2\\locked_checkpoint.pt",
+          "semantic_fingerprint": "20ab5a1af0d6e4be847e88d819f6cd9e82ae58a7bf7abf85a290a1611f1595f1"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "5e0ac701603d9c782b04d047b2d968da2717c9a7f224beb3577cc81cda47f2b2",
+          "new_sha256": "f89507dab0ed7ebefd5230ee6301d3f918478cf886b1403e9c344096885b944c",
+          "old_contract_digest": "d6defd8095617bb5e7e9a5b87d2f1eb97b8964c28dbe2af3722d6f068c16fade",
+          "old_sha256": "b889db09c117c835642611d398a9be34bea0a1719504508a96b99388b3593723",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e3\\fold_2\\training_summary.json",
+          "semantic_fingerprint": "3a968bbfe285d66b6a742960ab51e0aa6a2e105b59b26426bd7b5c3fba53ef35"
+        }
+      ],
+      "inner_fold": 2,
+      "new_cell_digest": "5e0ac701603d9c782b04d047b2d968da2717c9a7f224beb3577cc81cda47f2b2",
+      "old_cell_digest": "d6defd8095617bb5e7e9a5b87d2f1eb97b8964c28dbe2af3722d6f068c16fade",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A0",
+      "branch": "amyloid",
+      "candidate_id": "lr1e4_wd1e4",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e4\\fold_0\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "7b968b64fe5e39fe5656b846ace44065e7fd4be710f18dc783a28b1c24b80ecc",
+          "new_sha256": "1811fe3efe6f50557350491972c1b5630a1e5230a4d5ce7fef391fd3856c2b2f",
+          "old_contract_digest": "3f850acb132659b212280bac2c094cfd3b927b38e8c3b276cf53c75b7a5a4c11",
+          "old_sha256": "1576ffe8b2d24ff45c6093d651a31920293a4f72b22e7a9343a7cfe2a9546a41",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e4\\fold_0\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "589d29cfdff150196c471fa2caa894dc962ada9b3d9dd1a3572b60ac89c3bfe4"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "7b968b64fe5e39fe5656b846ace44065e7fd4be710f18dc783a28b1c24b80ecc",
+          "new_sha256": "fe247d2639816a41cfcad8792e28e75756373b554df3fd4b8a4a4c33b9602230",
+          "old_contract_digest": "3f850acb132659b212280bac2c094cfd3b927b38e8c3b276cf53c75b7a5a4c11",
+          "old_sha256": "c242bc1245fdaba0d2047d2c91ad22823858c769d74bdfff42507827dc1052f8",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e4\\fold_0\\locked_checkpoint.pt",
+          "semantic_fingerprint": "05b53f0e04fd7eb5e9cd909438cb307fc91a88e83f008a00d0300f97ad75dc7d"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "7b968b64fe5e39fe5656b846ace44065e7fd4be710f18dc783a28b1c24b80ecc",
+          "new_sha256": "ad9a9a17e51e25cef7d07bd2651f4c688e070675c9ae0d8da2d35daf896a4457",
+          "old_contract_digest": "3f850acb132659b212280bac2c094cfd3b927b38e8c3b276cf53c75b7a5a4c11",
+          "old_sha256": "506727ef99bc3f982ed1761bcbbed80386078a678f272d0b3078c1214eb6d6fa",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e4\\fold_0\\training_summary.json",
+          "semantic_fingerprint": "ee360fc663d54937558e5229827e638cce9b4cdb9f4edd255ad998df8f5db18d"
+        }
+      ],
+      "inner_fold": 0,
+      "new_cell_digest": "7b968b64fe5e39fe5656b846ace44065e7fd4be710f18dc783a28b1c24b80ecc",
+      "old_cell_digest": "3f850acb132659b212280bac2c094cfd3b927b38e8c3b276cf53c75b7a5a4c11",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A0",
+      "branch": "amyloid",
+      "candidate_id": "lr1e4_wd1e4",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e4\\fold_1\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "fe739e749cd5203dd2b2f98bdb36eb8b54968101c536ffcf685f3714e9019a3f",
+          "new_sha256": "5693ebd5ed5e499c599c359b57fb6f15b788499284fcf30d2c545c07e0a1dc7f",
+          "old_contract_digest": "1c3f1c526cddea93658bf032860c625736780d6e30f9d3199f24b2f161a17d36",
+          "old_sha256": "804baf94a2d0889b61846f0f9810c9ff2138cd1400b6fc1a45eb32086fb475cd",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e4\\fold_1\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "9e571eda293ba341247bc51a38c9fb3e097c93e38e6bd11c14554f6367a38af9"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "fe739e749cd5203dd2b2f98bdb36eb8b54968101c536ffcf685f3714e9019a3f",
+          "new_sha256": "44759a30e9c065d5e27dd28bff9d81e463aa208fd81d4b4556fb29e4b04d3879",
+          "old_contract_digest": "1c3f1c526cddea93658bf032860c625736780d6e30f9d3199f24b2f161a17d36",
+          "old_sha256": "18361e474919139a496c2737ad36e23f2be93abf67da84bc5a34faebed534fd9",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e4\\fold_1\\locked_checkpoint.pt",
+          "semantic_fingerprint": "6e7f638f2dc03535a8d1f3b49de2830955005eb1b242955dfcd2e1de54944775"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "fe739e749cd5203dd2b2f98bdb36eb8b54968101c536ffcf685f3714e9019a3f",
+          "new_sha256": "2d862ca1f6d11a76e19ccf1aef446f0fbdafb106643f7e0895094172ee21bf38",
+          "old_contract_digest": "1c3f1c526cddea93658bf032860c625736780d6e30f9d3199f24b2f161a17d36",
+          "old_sha256": "077df38e70209d6c40c8fc582817a34937374c92d1355ca25210eca77db5ab28",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e4\\fold_1\\training_summary.json",
+          "semantic_fingerprint": "513f879de2382b99447489145d6985f75dc1aacec29de99680a41db756f711af"
+        }
+      ],
+      "inner_fold": 1,
+      "new_cell_digest": "fe739e749cd5203dd2b2f98bdb36eb8b54968101c536ffcf685f3714e9019a3f",
+      "old_cell_digest": "1c3f1c526cddea93658bf032860c625736780d6e30f9d3199f24b2f161a17d36",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A0",
+      "branch": "amyloid",
+      "candidate_id": "lr1e4_wd1e4",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e4\\fold_2\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "71e940c3872a076c5b8ec9878556c69c92a5cc2ffc9194d7e03a2c258ffa9fba",
+          "new_sha256": "ae966e38f7b8cfe6dfda49a3f13dc1f42bf085db3225462ac2e0c6e1c5dd0a5a",
+          "old_contract_digest": "175665dcb80595952ec2a142d2f561483a39c0c9b9336369f27873134f0b1569",
+          "old_sha256": "b37abc33ffbf50bc6a33472f15eee7dbd361ec635be08bb47f92ef2d34ce3f17",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e4\\fold_2\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "43d0c38b6dd3a70f72d9213ecbdb9373fd899cc6c5b47b0d9b3992d2b680bc03"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "71e940c3872a076c5b8ec9878556c69c92a5cc2ffc9194d7e03a2c258ffa9fba",
+          "new_sha256": "e033ee9afbb471be32c553ad0399d66244eca1af76bbda8f61297068e6eb1456",
+          "old_contract_digest": "175665dcb80595952ec2a142d2f561483a39c0c9b9336369f27873134f0b1569",
+          "old_sha256": "baebc9ebb93b9adecbfe4eb80cb3883d2c3ce4a541f44695cb79191c2aec3efa",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e4\\fold_2\\locked_checkpoint.pt",
+          "semantic_fingerprint": "2ee8b43ef7cc7fa228c7d32a5aa5f671b7e753fd22996083da7451d22da8f4f3"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "71e940c3872a076c5b8ec9878556c69c92a5cc2ffc9194d7e03a2c258ffa9fba",
+          "new_sha256": "f528a8bca7b11f0d40d5f99949a079b88cb8008dc8578a30185f02f6a0316512",
+          "old_contract_digest": "175665dcb80595952ec2a142d2f561483a39c0c9b9336369f27873134f0b1569",
+          "old_sha256": "8b51e955e166cca1c273fbc01b195d511e544291d08079e8bb27dcc59ad27e82",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr1e4_wd1e4\\fold_2\\training_summary.json",
+          "semantic_fingerprint": "1792e275f09fa0a8d247e5cbcd4201dc583bfab747efafee5ab27b8e628cf7db"
+        }
+      ],
+      "inner_fold": 2,
+      "new_cell_digest": "71e940c3872a076c5b8ec9878556c69c92a5cc2ffc9194d7e03a2c258ffa9fba",
+      "old_cell_digest": "175665dcb80595952ec2a142d2f561483a39c0c9b9336369f27873134f0b1569",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A0",
+      "branch": "amyloid",
+      "candidate_id": "lr3e4_wd1e4",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr3e4_wd1e4\\fold_0\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "c66fc3cad05aec977af7ac1bad4d2c993e9dbdab00a6c146af6b0e989d4af293",
+          "new_sha256": "6c5d5f96f30b382febb2da021aebcab272e5a2f75015f73dc1123dde32b1bef3",
+          "old_contract_digest": "db0bb500cda8436d6c28e0d5dbd07257948603ecf16fbbe38aaa021acb12e611",
+          "old_sha256": "9761cc13e9011d05704e44ad932e3982d42a7df78e581ae69a3180f77ed58d3a",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr3e4_wd1e4\\fold_0\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "cee657d3be991545173a93ac2d4cff52aa8d3ddd7fdadfdead047b4cd22fce0d"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "c66fc3cad05aec977af7ac1bad4d2c993e9dbdab00a6c146af6b0e989d4af293",
+          "new_sha256": "838165164accda5fc7b08df53e9fa20443e72f0717827d1af98838778be44b7e",
+          "old_contract_digest": "db0bb500cda8436d6c28e0d5dbd07257948603ecf16fbbe38aaa021acb12e611",
+          "old_sha256": "d7e47e269d91d7bbecd1bfeb7df89c896e3c180d8c48161024541e36cecf396c",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr3e4_wd1e4\\fold_0\\locked_checkpoint.pt",
+          "semantic_fingerprint": "ea622d46d1bb4fb5f9b40e3ff6d0fb837bfad116f3e715f58de70a196f5d9794"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "c66fc3cad05aec977af7ac1bad4d2c993e9dbdab00a6c146af6b0e989d4af293",
+          "new_sha256": "4b71a2eb35f700a8edced8f230f3ac87bb82b7bb7aac3f92685e8a56373b7910",
+          "old_contract_digest": "db0bb500cda8436d6c28e0d5dbd07257948603ecf16fbbe38aaa021acb12e611",
+          "old_sha256": "769dfbb74c287fcceef55b4f2a4e076b420a598ab5c61a0f6218deaea0308301",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr3e4_wd1e4\\fold_0\\training_summary.json",
+          "semantic_fingerprint": "408537f7cf1427f1d5cfa6786fea4d8765ad5ca494da29ce5dd147134502412d"
+        }
+      ],
+      "inner_fold": 0,
+      "new_cell_digest": "c66fc3cad05aec977af7ac1bad4d2c993e9dbdab00a6c146af6b0e989d4af293",
+      "old_cell_digest": "db0bb500cda8436d6c28e0d5dbd07257948603ecf16fbbe38aaa021acb12e611",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A0",
+      "branch": "amyloid",
+      "candidate_id": "lr3e4_wd1e4",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr3e4_wd1e4\\fold_1\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "ef8a68784ad3f427c9e1658d306b8cd4f190cee8d9beaa0280de24e5dd3deca2",
+          "new_sha256": "90aad9d2ef7acda67c4d4dbb84c7d8e08a7713ca529a79fbc52b61b24e7fb233",
+          "old_contract_digest": "de88db04a9a4433e52427d185b240595df5e70c8c2242163e10c70e54aa1149d",
+          "old_sha256": "7a39f67a24e31a9a15b174015a7792cccac9992e2ae5f4b6c236608439d97790",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr3e4_wd1e4\\fold_1\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "d105ea5726450bfe81ecf6dd03bd1a6f15bb5af8dabb1f8245460e2d3ab4fa93"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "ef8a68784ad3f427c9e1658d306b8cd4f190cee8d9beaa0280de24e5dd3deca2",
+          "new_sha256": "ac38e5c2ba384c27353e15a4e9ec1f19d0cfced13e14dc688ad31763c45200b3",
+          "old_contract_digest": "de88db04a9a4433e52427d185b240595df5e70c8c2242163e10c70e54aa1149d",
+          "old_sha256": "c06fc4ccb82ce30cedc6d31fe014b9d9610eaa15005929bc7f8f20d44ebe8a4b",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr3e4_wd1e4\\fold_1\\locked_checkpoint.pt",
+          "semantic_fingerprint": "6675cfc3135694ea1edb80639e4dd2d172ba527a9753f1594a2411c1ed092b2d"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "ef8a68784ad3f427c9e1658d306b8cd4f190cee8d9beaa0280de24e5dd3deca2",
+          "new_sha256": "8feac39357485595f5e39d825cf3ed602f5046051bf4544fa4ae2a26c8493d83",
+          "old_contract_digest": "de88db04a9a4433e52427d185b240595df5e70c8c2242163e10c70e54aa1149d",
+          "old_sha256": "4fe166d39751d82321178c5de387e52a296d75cd7f0c12a4fb5c7161c82256cb",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr3e4_wd1e4\\fold_1\\training_summary.json",
+          "semantic_fingerprint": "d255499164c8d9bcf63cbe7531367abed1ae2abe10656bab309ad14da336fb22"
+        }
+      ],
+      "inner_fold": 1,
+      "new_cell_digest": "ef8a68784ad3f427c9e1658d306b8cd4f190cee8d9beaa0280de24e5dd3deca2",
+      "old_cell_digest": "de88db04a9a4433e52427d185b240595df5e70c8c2242163e10c70e54aa1149d",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A0",
+      "branch": "amyloid",
+      "candidate_id": "lr3e4_wd1e4",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr3e4_wd1e4\\fold_2\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "e2546d969a396e73c7e8c36a4390c090d74d9b03283b3d7a9678a4dcef5c4ac9",
+          "new_sha256": "edf761b096987bff2874fc7f0924b3082950111c5cccb399ef389ce35778a1cb",
+          "old_contract_digest": "a267ea830d6af8258ceb9ac1959731f9a9f2cee7a55ed66b88a3771bedd3d50e",
+          "old_sha256": "bb4f071bc8a23f8da5277e1414a30ee32d4be0259123bcf26860b4829668c998",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr3e4_wd1e4\\fold_2\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "890e91725d5c215e1cb13384fbfece25efbb5c91fbd86edb2080e963408e8ddf"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "e2546d969a396e73c7e8c36a4390c090d74d9b03283b3d7a9678a4dcef5c4ac9",
+          "new_sha256": "a3688c849bc952c27a92e7c4d37e6cc21445d0555c1692c7cfaa5b39abc2c880",
+          "old_contract_digest": "a267ea830d6af8258ceb9ac1959731f9a9f2cee7a55ed66b88a3771bedd3d50e",
+          "old_sha256": "03f0b7fe984b14ea35285c9fbacbbca2af3f9a98853cedb144f5836825ba3049",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr3e4_wd1e4\\fold_2\\locked_checkpoint.pt",
+          "semantic_fingerprint": "e7d29f1066a4928f9ee6dcc4d1e05d2b45fee04fbad9ca9137a404083bbe2387"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "e2546d969a396e73c7e8c36a4390c090d74d9b03283b3d7a9678a4dcef5c4ac9",
+          "new_sha256": "415e2b80266d7609fcd1608aae80b40207cb83a0ec6784671c4142ced20ee01c",
+          "old_contract_digest": "a267ea830d6af8258ceb9ac1959731f9a9f2cee7a55ed66b88a3771bedd3d50e",
+          "old_sha256": "18ef76aecbb540e1edc681f4301f495bd3e306b54b2f2aef9be7633ee220f262",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A0\\outer_0\\inner\\lr3e4_wd1e4\\fold_2\\training_summary.json",
+          "semantic_fingerprint": "6f1fe0370bf2dedebb7683d34352574a3bbcf8fc07c53fc6615507b1b87414de"
+        }
+      ],
+      "inner_fold": 2,
+      "new_cell_digest": "e2546d969a396e73c7e8c36a4390c090d74d9b03283b3d7a9678a4dcef5c4ac9",
+      "old_cell_digest": "a267ea830d6af8258ceb9ac1959731f9a9f2cee7a55ed66b88a3771bedd3d50e",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A1",
+      "branch": "amyloid",
+      "candidate_id": "lr1e4_wd1e3",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e3\\fold_0\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "f9a58c1ac2afea64193b54e2a01737677178d517b720faf76c5be546898d45b0",
+          "new_sha256": "0550bab84ed74f44fba6f99f44a5f197ee19346d35c9f8a6bd34d7a2293c6ad6",
+          "old_contract_digest": "d06dcad834c36648c9adc59aab9d6ebc6a1b7646e980d5399d1ba8a833f7c9d4",
+          "old_sha256": "87a450558cda59f44970312c67eabf12d4b76a471e891d45d5d572036e513580",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e3\\fold_0\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "976feb7d85e5c4daceb9a2cbad9978987087aa6fc675d3d925d6fea3f1bc0a72"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "f9a58c1ac2afea64193b54e2a01737677178d517b720faf76c5be546898d45b0",
+          "new_sha256": "c98cc6e66a7b92811e14bf59379c4b3aff9449547b3ab6269c184439b6bac0b9",
+          "old_contract_digest": "d06dcad834c36648c9adc59aab9d6ebc6a1b7646e980d5399d1ba8a833f7c9d4",
+          "old_sha256": "6215d53683df6aab02a9bf0a4c1af6f227a2a5aa7ec805dc9982605b0d8857d5",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e3\\fold_0\\locked_checkpoint.pt",
+          "semantic_fingerprint": "b866d46a599c66603e3c00730d45294f015ab929212d998e3f0653487820edc3"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "f9a58c1ac2afea64193b54e2a01737677178d517b720faf76c5be546898d45b0",
+          "new_sha256": "e8d6e98bd1ece7e79ea3b63cea06cde79168a2ee8fb1699aea0c0982c1a5d301",
+          "old_contract_digest": "d06dcad834c36648c9adc59aab9d6ebc6a1b7646e980d5399d1ba8a833f7c9d4",
+          "old_sha256": "3329818b2eeaa02b6afabcdcede042983fbe4268493486c6fcc4dbe67de715f1",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e3\\fold_0\\training_summary.json",
+          "semantic_fingerprint": "c132d0efc50502ec1a20fc1df0f014dd2fa81d6676e035dcc901e95bc77465b3"
+        }
+      ],
+      "inner_fold": 0,
+      "new_cell_digest": "f9a58c1ac2afea64193b54e2a01737677178d517b720faf76c5be546898d45b0",
+      "old_cell_digest": "d06dcad834c36648c9adc59aab9d6ebc6a1b7646e980d5399d1ba8a833f7c9d4",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A1",
+      "branch": "amyloid",
+      "candidate_id": "lr1e4_wd1e3",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e3\\fold_1\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "cfbf4751af1cf58d3f56fb5ffd1480dd7bcdb871639dae74092c3eb6f5fc9ba3",
+          "new_sha256": "7242836b478f0c48443ba99a31df482144347f6d0bf68fc8e20bcda0e5b67118",
+          "old_contract_digest": "9faf2c3d427e2830b9e6b5bb8b6576c58695b45d5e710d40081aea52f0cb10d8",
+          "old_sha256": "334b075bc4f4a4d07e6375608ca980b5021431441e8d63abbfb7b5462f24d97e",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e3\\fold_1\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "fa3e7b282a4043478f81ebb4fa69dd485c7cd1cff822a1a977abdc850a2f71c0"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "cfbf4751af1cf58d3f56fb5ffd1480dd7bcdb871639dae74092c3eb6f5fc9ba3",
+          "new_sha256": "2b38b825d9314bb0b6033e0aafe70372b9b9914bd116ed5f0130a6af2195defc",
+          "old_contract_digest": "9faf2c3d427e2830b9e6b5bb8b6576c58695b45d5e710d40081aea52f0cb10d8",
+          "old_sha256": "e548c073fe632a45950448102043408d796adf1cfc49ee8ede3b1315455285a0",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e3\\fold_1\\locked_checkpoint.pt",
+          "semantic_fingerprint": "b14adc48ab5c0e0f7211457f25137b284954f31cbdd09add52b1d64d699d131e"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "cfbf4751af1cf58d3f56fb5ffd1480dd7bcdb871639dae74092c3eb6f5fc9ba3",
+          "new_sha256": "2b1027ffc77e7075870c49706c1f5314951605967f5b1fdfea36f68946ee0d59",
+          "old_contract_digest": "9faf2c3d427e2830b9e6b5bb8b6576c58695b45d5e710d40081aea52f0cb10d8",
+          "old_sha256": "fdac857b53ee2c3a32a930f949ea1378db1b6fb989381f96454d0f7bc6b4fa65",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e3\\fold_1\\training_summary.json",
+          "semantic_fingerprint": "3240a0fbf29e81460e5e6d23bc133ab735dc70fe282d4086f6be96ef4c630fa5"
+        }
+      ],
+      "inner_fold": 1,
+      "new_cell_digest": "cfbf4751af1cf58d3f56fb5ffd1480dd7bcdb871639dae74092c3eb6f5fc9ba3",
+      "old_cell_digest": "9faf2c3d427e2830b9e6b5bb8b6576c58695b45d5e710d40081aea52f0cb10d8",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A1",
+      "branch": "amyloid",
+      "candidate_id": "lr1e4_wd1e3",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e3\\fold_2\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "a2a11dfd0d2598fd0a310e97918e3d0b8530bea8d00cb134df28900167327793",
+          "new_sha256": "e0344d9300389905f7216b7a5ee47fa0483ef4f54293299df439f06476faba94",
+          "old_contract_digest": "5087174f1cc11711801a3b8c4eade7e85b81a5fafde841cf92eed1af97c09240",
+          "old_sha256": "090db3b3ffbe4f2200c9089542432da1a9634232a2ee4f2883785fb5a8e1cf67",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e3\\fold_2\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "78e95a84163e1788c7087090f372fa353d1ee1f63788a443ed60ac1234562759"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "a2a11dfd0d2598fd0a310e97918e3d0b8530bea8d00cb134df28900167327793",
+          "new_sha256": "ff590c267d1568c363b3cdc351fee339e576f8567b3d33a0809e4adf6ce78b8e",
+          "old_contract_digest": "5087174f1cc11711801a3b8c4eade7e85b81a5fafde841cf92eed1af97c09240",
+          "old_sha256": "8156431145b733dcc1cfd81bca80fd88e0ff8b1b50745b1a6a4359217aef798a",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e3\\fold_2\\locked_checkpoint.pt",
+          "semantic_fingerprint": "153724c47c0c7ee19c37ae6641aac9e2283efd5c40ad4fc853649c29c6b8c0fb"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "a2a11dfd0d2598fd0a310e97918e3d0b8530bea8d00cb134df28900167327793",
+          "new_sha256": "e9b89941845a2b8b86e72e8e24d74403aacdc8d1f9e8051ab6fc9a3f890650d1",
+          "old_contract_digest": "5087174f1cc11711801a3b8c4eade7e85b81a5fafde841cf92eed1af97c09240",
+          "old_sha256": "189c35d6ef71155320bcc30019398f4fef76a13a9171744481a444cbb4e41cad",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e3\\fold_2\\training_summary.json",
+          "semantic_fingerprint": "5e74b61a237553b025ca8d7c23fd6ee703ec8b88a914159c724bc6e46908159f"
+        }
+      ],
+      "inner_fold": 2,
+      "new_cell_digest": "a2a11dfd0d2598fd0a310e97918e3d0b8530bea8d00cb134df28900167327793",
+      "old_cell_digest": "5087174f1cc11711801a3b8c4eade7e85b81a5fafde841cf92eed1af97c09240",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A1",
+      "branch": "amyloid",
+      "candidate_id": "lr1e4_wd1e4",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e4\\fold_0\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "049c9e24533ebb2e0529765e78b62d091f2da8fb0b6a2b3929afd93b4c039129",
+          "new_sha256": "c835058424648ee2c098784ed56273528adc131bd7558c67b5d502ec78b41250",
+          "old_contract_digest": "4252266ec1463f5d47346d9dad6173e98f98527279db7a0a280b316283640b8a",
+          "old_sha256": "a6efbc43552a61717c2e40a4ae3d56b6f430a5c44d868fedb11441fd5fbf7698",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e4\\fold_0\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "7e8230596ae0328c8a35f2f7c0891685eee906392e3241e6803879ceb79bfa46"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "049c9e24533ebb2e0529765e78b62d091f2da8fb0b6a2b3929afd93b4c039129",
+          "new_sha256": "b2d87cecb2896fb097f0b64bcabcad48fbc8c8d65aec582f08b0db3522c5e290",
+          "old_contract_digest": "4252266ec1463f5d47346d9dad6173e98f98527279db7a0a280b316283640b8a",
+          "old_sha256": "e75872e08102f50a4e5007bd788ba06cd561501ab29e6a2565f4485c50663e47",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e4\\fold_0\\locked_checkpoint.pt",
+          "semantic_fingerprint": "cb78c6b8863e67e8ed82c6d3fa630005e9519ecd26385d2555cc808b298d5ce9"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "049c9e24533ebb2e0529765e78b62d091f2da8fb0b6a2b3929afd93b4c039129",
+          "new_sha256": "667817e0b41662a1fa7216fc5cd9a7992ad9bfcac8a112b51af601aeac99ab29",
+          "old_contract_digest": "4252266ec1463f5d47346d9dad6173e98f98527279db7a0a280b316283640b8a",
+          "old_sha256": "fac041ca5b3b5e99be2baad65612c72f5f04617e410b5b0d89bcf7905b5d516b",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e4\\fold_0\\training_summary.json",
+          "semantic_fingerprint": "bf56776ec80de6cb3d72b416c8c41167bbff483ea2666ae38e795a294b75c32c"
+        }
+      ],
+      "inner_fold": 0,
+      "new_cell_digest": "049c9e24533ebb2e0529765e78b62d091f2da8fb0b6a2b3929afd93b4c039129",
+      "old_cell_digest": "4252266ec1463f5d47346d9dad6173e98f98527279db7a0a280b316283640b8a",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A1",
+      "branch": "amyloid",
+      "candidate_id": "lr1e4_wd1e4",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e4\\fold_1\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "a4afa95bd21511b4c0cade1825073e40eb8a47ed8b6d09c73f14c604d0a93f7c",
+          "new_sha256": "f9c57cf74d79e5dd9c90178865e9d4dcb460eb74e4f8689e9e52e95ba9b9541d",
+          "old_contract_digest": "a58ab7bf5f65755b5ba85f3f3011917805f211f3b9e93f402b9b6f8ed9354297",
+          "old_sha256": "c99afcdb6da76494583c57559060c23f783c7c2f1dd3df0bcedcd650bed1d31b",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e4\\fold_1\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "65c6dd80cae93420304baaa246994675e9a368e9d989145f494f33d53519a5c3"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "a4afa95bd21511b4c0cade1825073e40eb8a47ed8b6d09c73f14c604d0a93f7c",
+          "new_sha256": "195a0e4be5a9a8e779c39d604cf5fcf5c6475d3e5a13d8df51e3e8ca9f5abe87",
+          "old_contract_digest": "a58ab7bf5f65755b5ba85f3f3011917805f211f3b9e93f402b9b6f8ed9354297",
+          "old_sha256": "0328285b065bab85ce3a72326bd0a389b55a250421df7e3808d3f56a0b58de9c",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e4\\fold_1\\locked_checkpoint.pt",
+          "semantic_fingerprint": "e8121e32404794b69fce813b88f025f50b546996c725c248dd783131bbf149d8"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "a4afa95bd21511b4c0cade1825073e40eb8a47ed8b6d09c73f14c604d0a93f7c",
+          "new_sha256": "4274d5f7a7e0748e229c2d8eecdd7b6b1511494a400e35763bcdedd003d1d006",
+          "old_contract_digest": "a58ab7bf5f65755b5ba85f3f3011917805f211f3b9e93f402b9b6f8ed9354297",
+          "old_sha256": "8c76554647d51973695ea405919ad74d8884929b98339933536ba9e5b4655378",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e4\\fold_1\\training_summary.json",
+          "semantic_fingerprint": "77015b86005859b8cc091dfdb100325f7049f05f9237bef56b87713955388d54"
+        }
+      ],
+      "inner_fold": 1,
+      "new_cell_digest": "a4afa95bd21511b4c0cade1825073e40eb8a47ed8b6d09c73f14c604d0a93f7c",
+      "old_cell_digest": "a58ab7bf5f65755b5ba85f3f3011917805f211f3b9e93f402b9b6f8ed9354297",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A1",
+      "branch": "amyloid",
+      "candidate_id": "lr1e4_wd1e4",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e4\\fold_2\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "28ac2ad4c68ceb58345a1bd1a9b0c384833f84a97c229c3e52666feb7af53de7",
+          "new_sha256": "bc2b07559aa8d5f9778b75e7483d5419a46a12cf331bd61aced1f834776bbe8e",
+          "old_contract_digest": "d340003835ca0c67a11bf35af15fc524d2a7ef46906d47f41e7164dc8884ec6b",
+          "old_sha256": "d772d9c1fdfcfa414d193306306e1e70e2ca15f5f0639e455a77c95b08fce20f",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e4\\fold_2\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "8285cc8608e4266e4458456709edc0802fee6d847637e1bb56fdcdec62f2634f"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "28ac2ad4c68ceb58345a1bd1a9b0c384833f84a97c229c3e52666feb7af53de7",
+          "new_sha256": "1e0f46e70f5caa30eb8b14d95103022769a6631d7a489d1fe1cf86cd627f90b7",
+          "old_contract_digest": "d340003835ca0c67a11bf35af15fc524d2a7ef46906d47f41e7164dc8884ec6b",
+          "old_sha256": "60b72f8e15b7a922cb5f911e91c47ec40eeaa80ca0980b33734dd3fb40dc11da",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e4\\fold_2\\locked_checkpoint.pt",
+          "semantic_fingerprint": "06f4e73f4ecbbc5b1377ba7386231c71ad5cc96ce23eb9c6a17795261d5339bf"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "28ac2ad4c68ceb58345a1bd1a9b0c384833f84a97c229c3e52666feb7af53de7",
+          "new_sha256": "f4934e8a4f6b08ef3b4f80b9737e5be4e92589b00b3134c6ee04443925e0310b",
+          "old_contract_digest": "d340003835ca0c67a11bf35af15fc524d2a7ef46906d47f41e7164dc8884ec6b",
+          "old_sha256": "0f24bfcfae79ddc3ac05811d05295ccf20816935238e81522598cc826a6e7b22",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr1e4_wd1e4\\fold_2\\training_summary.json",
+          "semantic_fingerprint": "ca73cdec317394241cd65451aca0f315796762ec396e1893e3e93e0df417c28c"
+        }
+      ],
+      "inner_fold": 2,
+      "new_cell_digest": "28ac2ad4c68ceb58345a1bd1a9b0c384833f84a97c229c3e52666feb7af53de7",
+      "old_cell_digest": "d340003835ca0c67a11bf35af15fc524d2a7ef46906d47f41e7164dc8884ec6b",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A1",
+      "branch": "amyloid",
+      "candidate_id": "lr3e4_wd1e4",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr3e4_wd1e4\\fold_0\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "e5973282fa7051f4289f83fcac9bbf945da3d0d570906453c1048b76518a4416",
+          "new_sha256": "e2e2ccbf880c895d7d0a024d21ee3f42fe1225ae237add40b25e229cc753781f",
+          "old_contract_digest": "2a87795917cf86d12dc35246f5df731fc1c9e10b175169492d745c3128dda1fc",
+          "old_sha256": "63e28fb37a67e2b815fe89cc516fed67c35e1a6df795385776d8816259765f2f",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr3e4_wd1e4\\fold_0\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "c9460f9994f617995587da3b0da8501bbc25a80dabcbdb3ce487227bebcd953c"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "e5973282fa7051f4289f83fcac9bbf945da3d0d570906453c1048b76518a4416",
+          "new_sha256": "ed1103709d5c0fab26da0bfaca4cdd46793bae99e76558e7af2e216ee54aa54a",
+          "old_contract_digest": "2a87795917cf86d12dc35246f5df731fc1c9e10b175169492d745c3128dda1fc",
+          "old_sha256": "0b9fa151ebd04e179203929a2e55d10990581daa784a76ecbd7c390db3125deb",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr3e4_wd1e4\\fold_0\\locked_checkpoint.pt",
+          "semantic_fingerprint": "124dcb82374c3136b8f0fa152a12f38a38ab589e5f955c5c7fc1d8714aedc624"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "e5973282fa7051f4289f83fcac9bbf945da3d0d570906453c1048b76518a4416",
+          "new_sha256": "b265bf657f68d4f834f4753c1d43c76457f461299b837493f9d90bc379e3ff2c",
+          "old_contract_digest": "2a87795917cf86d12dc35246f5df731fc1c9e10b175169492d745c3128dda1fc",
+          "old_sha256": "68bb07a6914d6c40055018518a9ddf57c3fe2d90512618f4cf9d2d26573f2704",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr3e4_wd1e4\\fold_0\\training_summary.json",
+          "semantic_fingerprint": "74e2ab2203d27f52677854254cddba0f435a6d28f591260be4c3db0ed138ecc0"
+        }
+      ],
+      "inner_fold": 0,
+      "new_cell_digest": "e5973282fa7051f4289f83fcac9bbf945da3d0d570906453c1048b76518a4416",
+      "old_cell_digest": "2a87795917cf86d12dc35246f5df731fc1c9e10b175169492d745c3128dda1fc",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A1",
+      "branch": "amyloid",
+      "candidate_id": "lr3e4_wd1e4",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr3e4_wd1e4\\fold_1\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "e9f9f230ad3d6fb658401770197f95633617f3bc07a24ad1fcc27a3da5d9f5f2",
+          "new_sha256": "f26a6a8bc63d589600e8766880295c9c5a79b3d3760e304553c637e172de40fc",
+          "old_contract_digest": "ce275a4929d812bda2ed1b817f551730f0585639ef751d1186ca978b0d64f547",
+          "old_sha256": "852390f9d725bd60684aa7fc8197ba404af21acfd5316237ace3853cbb98cf32",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr3e4_wd1e4\\fold_1\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "165f46b35fd6f8d16138b2abff5a97306da3304b2ba219c182119ad21be04a9e"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "e9f9f230ad3d6fb658401770197f95633617f3bc07a24ad1fcc27a3da5d9f5f2",
+          "new_sha256": "3d355fdf092fb98ffbe2e1f3ec66a95a74fc1c1bbb7bd96e8172f30097626ef8",
+          "old_contract_digest": "ce275a4929d812bda2ed1b817f551730f0585639ef751d1186ca978b0d64f547",
+          "old_sha256": "e9158fb9322ce98eb05f88da585b92280fd445b476fa3ed80246a29a2bde092e",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr3e4_wd1e4\\fold_1\\locked_checkpoint.pt",
+          "semantic_fingerprint": "08e7227a1907499483a7d77f96af64ca49e9d22a3deefa0440b805a88d93e212"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "e9f9f230ad3d6fb658401770197f95633617f3bc07a24ad1fcc27a3da5d9f5f2",
+          "new_sha256": "175f2dbe50964d03bd78a3e442ea3d68f9aa7adfa6d01905e3d8677289253692",
+          "old_contract_digest": "ce275a4929d812bda2ed1b817f551730f0585639ef751d1186ca978b0d64f547",
+          "old_sha256": "e6802b82b10a3b73e1f12fe391c0c6ef403e14edcca22bb50a5c6729b7456b0b",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr3e4_wd1e4\\fold_1\\training_summary.json",
+          "semantic_fingerprint": "66572d25dace616930843490bdf096f6a73404e1c50c3aa5e1a955adaa24220c"
+        }
+      ],
+      "inner_fold": 1,
+      "new_cell_digest": "e9f9f230ad3d6fb658401770197f95633617f3bc07a24ad1fcc27a3da5d9f5f2",
+      "old_cell_digest": "ce275a4929d812bda2ed1b817f551730f0585639ef751d1186ca978b0d64f547",
+      "outer_fold": 0
+    },
+    {
+      "arm": "A1",
+      "branch": "amyloid",
+      "candidate_id": "lr3e4_wd1e4",
+      "checkpoint": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr3e4_wd1e4\\fold_2\\epoch_checkpoint.pt",
+      "files": [
+        {
+          "kind": "torch",
+          "new_contract_digest": "7ab4a46e6f49affc4f98c97c9bfe58e1591660a1706bb0412c73dcfc8cf45bcf",
+          "new_sha256": "5522aa5ec4fb2d5a70e2b6d9a1d8c2beb5049719d3db8808640e60d94404b16b",
+          "old_contract_digest": "43d537cf24e02e009f2bfc389fc976a6b10381afcdac09d75f777c60c09a5462",
+          "old_sha256": "d10ad8f3d49e9cc8df99350040501d38c9e56fe2d4a16dbd17308d3fe3e7cc60",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr3e4_wd1e4\\fold_2\\epoch_checkpoint.pt",
+          "semantic_fingerprint": "5eab24ef37516744fced0385bccadf505f39fed244276915142c20cf33055c6b"
+        },
+        {
+          "kind": "torch",
+          "new_contract_digest": "7ab4a46e6f49affc4f98c97c9bfe58e1591660a1706bb0412c73dcfc8cf45bcf",
+          "new_sha256": "c43577a0bd0d6b3dac77af34dbb65b0afb966f62acb7250eeae34fe6a5e0eea4",
+          "old_contract_digest": "43d537cf24e02e009f2bfc389fc976a6b10381afcdac09d75f777c60c09a5462",
+          "old_sha256": "63fb1ae2e89dfa09f6a7750248ff06ec67e8071e18900f66473d01451e2ac9d1",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr3e4_wd1e4\\fold_2\\locked_checkpoint.pt",
+          "semantic_fingerprint": "19d31b4ba29b17afa7ee455345b1f67aa489e053edbbce6d3472585fd5bbd999"
+        },
+        {
+          "kind": "json",
+          "new_contract_digest": "7ab4a46e6f49affc4f98c97c9bfe58e1591660a1706bb0412c73dcfc8cf45bcf",
+          "new_sha256": "f9502f15dd3ddbf888a9088b57ed53c4668e76573099dcab32b4670e44abbb26",
+          "old_contract_digest": "43d537cf24e02e009f2bfc389fc976a6b10381afcdac09d75f777c60c09a5462",
+          "old_sha256": "d8f3fba5e6172195465ab7c95ff5d63515fba6ce9a461ad7af93707bed83d663",
+          "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\development\\amyloid\\A1\\outer_0\\inner\\lr3e4_wd1e4\\fold_2\\training_summary.json",
+          "semantic_fingerprint": "d6e183bea4a1a40d80bc2396ae2eb8188b4ac26562f05b0e90bd3b9c7b163b90"
+        }
+      ],
+      "inner_fold": 2,
+      "new_cell_digest": "7ab4a46e6f49affc4f98c97c9bfe58e1591660a1706bb0412c73dcfc8cf45bcf",
+      "old_cell_digest": "43d537cf24e02e009f2bfc389fc976a6b10381afcdac09d75f777c60c09a5462",
+      "outer_fold": 0
+    }
+  ],
+  "committed_utc": "2026-09-04T05:49:58.886400+00:00",
+  "config_path": "H:\\New project\\configs\\method_y_image_factorial_v4.yaml",
+  "created_utc": "2026-09-04T05:49:47.138603+00:00",
+  "host": "DESKTOP-V0DFFKD",
+  "master_mappings": [
+    {
+      "branch": "amyloid",
+      "migration_id": "METHOD_Y_V4_CONTRACT_MIGRATION_654f8ce59934_969ebd0f61d9",
+      "new_master_digest": "37910a4d8a0215972017e3b95bdbaa57ffd897a992939f6247b3ec483db211de",
+      "new_sha256": "a42c8a9227ad4561f663ce3ca7959dea3be41aae423b15daa1dcc51b38121520",
+      "old_master_digest": "d7e061c396752c1d198d881e1fa2da8c2e4d38e9aff068b57e8a663212d14f7e",
+      "old_sha256": "0dfaf992f6bf2de176b7731df8770a951c07a31d985c55bd854a465f2ab67eec",
+      "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\orchestration\\amyloid\\master_contract.json"
+    }
+  ],
+  "migration_id": "METHOD_Y_V4_CONTRACT_MIGRATION_654f8ce59934_969ebd0f61d9",
+  "new_run_contract": {
+    "augmentation_qc_contract_sha256": "a4f64d9ee89a0e88e7abdaedd6714f87c5674e989337075c6ca9fc320fbf2e72",
+    "config_sha256": "3e6d6607210413de0790495a421df5eddbc433c8c7c289ffcafb042e5dc4bab6",
+    "digest": "969ebd0f61d9ffc3bc262c5476c75b23575d64d1f5703d23fe04d1095d07743e",
+    "factorial_arms": {
+      "A0": {
+        "augmentation_profile": "NONE",
+        "encoder_family": "GROUPNORM_RESIDUAL_TINY_3D",
+        "model_overrides": {}
+      },
+      "A1": {
+        "augmentation_profile": "PET_SAFE_V1",
+        "encoder_family": "GROUPNORM_RESIDUAL_TINY_3D",
+        "model_overrides": {}
+      },
+      "A2": {
+        "augmentation_profile": "NONE",
+        "encoder_family": "RESNET10_3D_GROUPNORM",
+        "model_overrides": {
+          "resnet_width_multiplier": 0.25
+        }
+      },
+      "A3": {
+        "augmentation_profile": "PET_SAFE_V1",
+        "encoder_family": "RESNET10_3D_GROUPNORM",
+        "model_overrides": {
+          "resnet_width_multiplier": 0.25
+        }
+      },
+      "A4": {
+        "augmentation_profile": "PET_SAFE_V1",
+        "encoder_family": "RESNET18_3D_GROUPNORM",
+        "model_overrides": {
+          "resnet_width_multiplier": 0.25
+        },
+        "outcome_blind_width_sensitivity": {
+          "additional_width_multiplier": 0.5,
+          "role": "RESOURCE_FEASIBILITY_ONLY_UNLESS_NEW_VERSIONED_ARM_IS_LOCKED"
+        }
+      }
+    },
+    "input_fingerprints": {
+      "amyloid_membership": {
+        "path": "H:\\New project\\results\\method_y_revival_v3_image_v2\\private\\amyloid_image_membership.parquet",
+        "sha256": "c02a93747e86167c7e80b9c9c4f4631b2ab57480bb82c752315a21b217f9ebf0",
+        "size": 147391
+      },
+      "amyloid_pattern_cache": {
+        "path": "H:\\New project\\caches\\method_y\\revival_v3_image\\amyloid_pattern_128_v1.h5",
+        "sha256": "31981b33e3c344f593094c7da6b1ca813e0c80cd5a3914f2402e2f04f3955921",
+        "size": 1543490958
+      },
+      "amyloid_splits": {
+        "path": "H:\\New project\\results\\method_y_revival_v2\\splits\\amyloid_nested_splits.json",
+        "sha256": "110ddcfe5628b20fd90d67d1c42760f720bfc59bd23577fe4678302ecf2ef9b6",
+        "size": 930273
+      },
+      "augmentation_qc_contract": {
+        "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\provenance\\pet_augmentation_qc_contract.json",
+        "sha256": "c46ddb5072376d50c0c17a939371eadade93af7f5688005db331380c906f6913",
+        "size": 6061
+      },
+      "foreground_mask": {
+        "path": "H:\\New project\\data\\templates\\method_y_mni152nlin2009casym_v1\\pet_augmentation_foreground_mask_v4.nii.gz",
+        "sha256": "44f5333cad31510a47ab4d478565c92e75497842728fb2599408e91edb9b78ab",
+        "size": 18489
+      },
+      "reference_template": {
+        "path": "H:\\New project\\data\\templates\\method_y_mni152nlin2009casym_v1\\reference_128_1p5mm.nii.gz",
+        "sha256": "b30c0c8083070f60e0b3c5927c1dda7661b3e5562e9d9d4c4b2ae0ffe38b2a68",
+        "size": 3317142
+      },
+      "tau_membership": {
+        "path": "H:\\New project\\results\\method_y_revival_v3_image_v2\\private\\tau_image_membership.parquet",
+        "sha256": "b511ffc2d82d0d4f01894c63f48b1032b7188ab407485aa56eac93c45eac0a92",
+        "size": 67677
+      },
+      "tau_pattern_cache": {
+        "path": "H:\\New project\\caches\\method_y\\revival_v3_image\\tau_pattern_128_v1.h5",
+        "sha256": "4095fcbc1199fdaf1bedc1fcfbfd9a51fdde9d8b63b88c1a736ddfeac1b007d6",
+        "size": 695953377
+      },
+      "tau_splits": {
+        "path": "H:\\New project\\results\\method_y_revival_v2\\splits\\tau_nested_splits.json",
+        "sha256": "b0d0652cd65d17aa6ccbbd839f42940a363394edf6249545e1f53c6e2333ad3f",
+        "size": 214973
+      }
+    },
+    "runtime": {
+      "allow_tf32": false,
+      "checkpoint_atomic_after_every_epoch": true,
+      "cublas_workspace_config": ":4096:8",
+      "cudnn_benchmark": false,
+      "cudnn_deterministic": true,
+      "deterministic_algorithms": true,
+      "deterministic_cuda": true,
+      "max_vram_fraction_for_smoke": 0.85,
+      "no_internal_timeout": true,
+      "outer_test_exactly_once": true,
+      "output_and_temp_must_be_on_h": true,
+      "resume": true
+    },
+    "schema_version": "4.0",
+    "seed": 20260714,
+    "software_runtime_contract": {
+      "augmentation_policy": {
+        "count_noise_enabled": false,
+        "count_noise_status": "DISABLED_NO_RAW_COUNT_OR_CALIBRATED_NOISE_MODEL",
+        "exposure_scope": "TRAIN_ONLY",
+        "image_and_mask_share_transform": true,
+        "max_rotation_degrees": 1.0,
+        "max_translation_voxels": 0.5,
+        "probability": 1.0,
+        "profile": "PET_SAFE_V1",
+        "psf_smoothing_enabled": false,
+        "psf_status": "DISABLED_NO_SCANNER_MODEL_PSF_REGISTRY",
+        "scale_max": 1.0,
+        "scale_min": 1.0,
+        "seed_unit": "SUBJECT_X_BRANCH_X_OUTER_FOLD_X_INNER_FOLD_X_EPOCH",
+        "validation_and_test_are_unaugmented": true
+      },
+      "contract_sha256": "74854b5a1f7c1b2695baac917e30b32bfae6921f1b5e539bdd6eaaa04ebcecb8",
+      "cuda_hardware": {
+        "available": true,
+        "compute_capability": [
+          8,
+          9
+        ],
+        "cudnn_version": 90100,
+        "device_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "total_memory_bytes": 8585216000
+      },
+      "cuda_runtime": "12.1",
+      "factorial_arms": {
+        "A0": {
+          "augmentation_profile": "NONE",
+          "encoder_family": "GROUPNORM_RESIDUAL_TINY_3D",
+          "model_overrides": {}
+        },
+        "A1": {
+          "augmentation_profile": "PET_SAFE_V1",
+          "encoder_family": "GROUPNORM_RESIDUAL_TINY_3D",
+          "model_overrides": {}
+        },
+        "A2": {
+          "augmentation_profile": "NONE",
+          "encoder_family": "RESNET10_3D_GROUPNORM",
+          "model_overrides": {
+            "resnet_width_multiplier": 0.25
+          }
+        },
+        "A3": {
+          "augmentation_profile": "PET_SAFE_V1",
+          "encoder_family": "RESNET10_3D_GROUPNORM",
+          "model_overrides": {
+            "resnet_width_multiplier": 0.25
+          }
+        },
+        "A4": {
+          "augmentation_profile": "PET_SAFE_V1",
+          "encoder_family": "RESNET18_3D_GROUPNORM",
+          "model_overrides": {
+            "resnet_width_multiplier": 0.25
+          },
+          "outcome_blind_width_sensitivity": {
+            "additional_width_multiplier": 0.5,
+            "role": "RESOURCE_FEASIBILITY_ONLY_UNLESS_NEW_VERSIONED_ARM_IS_LOCKED"
+          }
+        }
+      },
+      "h5py": "3.16.0",
+      "model_policy": {
+        "amp": true,
+        "amp_dtype": "bfloat16",
+        "base_channels": 8,
+        "batch_size": 2,
+        "checkpoint_every_epochs": 1,
+        "dropout": 0.25,
+        "early_stopping_patience": 8,
+        "effective_batch_size": 8,
+        "embedding_dim": 64,
+        "family": "DISCRETE_TIME_3D_SURVIVAL",
+        "gradient_accumulation_steps": 4,
+        "hpo_candidates": [
+          {
+            "candidate_id": "lr1e4_wd1e3",
+            "complexity_rank": 0,
+            "learning_rate": 0.0001,
+            "weight_decay": 0.001
+          },
+          {
+            "candidate_id": "lr1e4_wd1e4",
+            "complexity_rank": 1,
+            "learning_rate": 0.0001,
+            "weight_decay": 0.0001
+          },
+          {
+            "candidate_id": "lr3e4_wd1e4",
+            "complexity_rank": 2,
+            "learning_rate": 0.0003,
+            "weight_decay": 0.0001
+          }
+        ],
+        "in_channels": 1,
+        "max_epochs": 40,
+        "normalization": "GROUPNORM",
+        "num_workers": 0,
+        "pin_memory": true,
+        "selection_metric": "IPCW_INTEGRATED_BRIER_SCORE",
+        "selection_rule": "ONE_STANDARD_ERROR_THEN_LOWEST_COMPLEXITY_RANK",
+        "tabular_hidden_dim": 32
+      },
+      "monai": "1.5.2",
+      "nibabel": "5.3.3",
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "python": "3.11.15",
+      "runtime_policy": {
+        "allow_tf32": false,
+        "checkpoint_atomic_after_every_epoch": true,
+        "cublas_workspace_config": ":4096:8",
+        "cudnn_benchmark": false,
+        "cudnn_deterministic": true,
+        "deterministic_algorithms": true,
+        "deterministic_cuda": true,
+        "max_vram_fraction_for_smoke": 0.85,
+        "no_internal_timeout": true,
+        "outer_test_exactly_once": true,
+        "output_and_temp_must_be_on_h": true,
+        "resume": true
+      },
+      "scikit_survival": "0.27.0",
+      "scipy": "1.15.3",
+      "torch": "2.5.1+cu121",
+      "training_source": {
+        "bundle_sha256": "0f172c434293b6930920455c9b400cc5e75dcbf76f653b09066e77629344267a",
+        "files": {
+          "scripts/build_method_y_pet_augmentation_qc_v4.py": "e21dd935cd1ae4ded70e59d5f354822a684a785402b9af4c4558f3d11d93e9ec",
+          "scripts/run_method_y_image_factorial_v4.py": "dd85e862b8592bb007b547740665814f80e651e34055526eb548a832579d8720",
+          "scripts/verify_method_y_image_factorial_v4.py": "799114b7e19e64df56395bd461f3a2b20687df56fcc131175ddda9e1e0da24eb",
+          "src/method_y_revival/atomic_io.py": "82f2a57d5d71890f1cf5a2f92fee0b3c26aa1485fbc3f15a08d0393859225533",
+          "src/method_y_revival/contracts.py": "cbbdc5100f34733a32b6f4333ee6cd2ebae9568b9961ec0d07ecada1214b5fff",
+          "src/method_y_revival/image_factorial_orchestrator_v4.py": "8bf50a4a54ce3e5b3682d28107b9de99fc584917cbd1bd2a29c5969eaff9f06b",
+          "src/method_y_revival/image_factorial_reporting_v4.py": "510441c9d1029a3c3dfe38f2376972b86c8c875725cbf200669d545be80189ad",
+          "src/method_y_revival/image_factorial_v4.py": "49f8d7fa675c0dcf952b11983f3cfcd0d43c41c82b33a82764cdde56e7b0ac5e",
+          "src/method_y_revival/image_modeling_v3.py": "4af0ab1591f56a06dae1f5bc9acd6c90b7a2a81dc29bdbb49cbff4d6e0e5ecf8",
+          "src/method_y_revival/image_outer_eval_v3.py": "23e53e0d4119bbb07491938107183a77a4d20ab1f8d3b494df59c68ce2ca2564",
+          "src/method_y_revival/image_outer_eval_v4.py": "8ef56c7902944ba4b0e4f18ee7d6e2920617a3eeaa3795bebf6ffa02275acf15",
+          "src/method_y_revival/image_reporting_v3.py": "643b7fb465826ae5c7f01d2104b02afbbe407fe30d6d847f83ef2647da10558f",
+          "src/method_y_revival/image_robustness_v3.py": "ccbb340857cbe96c9d8520d762873d5b9287fef91ed9e9d9991d0b1bd46aed89",
+          "src/method_y_revival/image_survival_v3.py": "e255adb297e487e7da15ffa88f0295656b4da8c779b985df432f0ccb997a0c33",
+          "src/method_y_revival/image_training_orchestrator_v3.py": "3beaec31e5e14bd9a7faac8f36f10efa362c66104f72d86ada89bfd0d359b586",
+          "src/method_y_revival/image_training_runtime_v3.py": "2a15e7af5623d4cabfb1c726c6752146443a50dfa51deec25a8491fa39791275",
+          "src/method_y_revival/image_training_runtime_v4.py": "532687a025c97c4494533227d888517963744b35e0aff934be24119e66365d32",
+          "src/method_y_revival/oof_reporting.py": "ac681bbc627b987e69071eb4a0b2749bb49b4a38cbb45a1001e8315c92a4fe06",
+          "src/method_y_revival/outer_evaluation_control.py": "3c6cfb0fcd92300ac568031710ef13e9477ef0aa520ac496a688e38b4cea7d29",
+          "src/method_y_revival/pet_augmentation_qc_v4.py": "2242236f7247c1cef2a6a5d7060bfc03234949ad78792c21684cd544ebde2ccc",
+          "src/method_y_revival/pet_augmentation_v4.py": "1fe9e4020621ada3ae76377c077a7365ef7fe90c1f9b737e39beeb6a94b7b2d3",
+          "src/method_y_revival/process_guard.py": "f082e63d766025f4e423e83adc32ef195e076813acd5538784c58e5ca107710f",
+          "src/method_y_revival/science_gates.py": "da8ec51b71a30bf374412a1d56e79f27b038f684fb207ea63d5bdfef65b24539",
+          "src/method_y_revival/software_contract_v4.py": "bcd17be746b2107480995c904a49f5479d813a1a80fb19b875125906f93a588e",
+          "src/method_y_revival/survival_models.py": "744d9b76c1e51d7c75604ace063760ec2c921611009ac222cb6a54205bcfd192"
+        }
+      }
+    }
+  },
+  "new_run_contract_sha256": "969ebd0f61d9ffc3bc262c5476c75b23575d64d1f5703d23fe04d1095d07743e",
+  "old_run_contract": {
+    "augmentation_qc_contract_sha256": "a4f64d9ee89a0e88e7abdaedd6714f87c5674e989337075c6ca9fc320fbf2e72",
+    "config_sha256": "3e6d6607210413de0790495a421df5eddbc433c8c7c289ffcafb042e5dc4bab6",
+    "digest": "654f8ce59934586f0a125225aa3cbb4a00bfbc11f755bb706c080fbd7cb8392c",
+    "factorial_arms": {
+      "A0": {
+        "augmentation_profile": "NONE",
+        "encoder_family": "GROUPNORM_RESIDUAL_TINY_3D",
+        "model_overrides": {}
+      },
+      "A1": {
+        "augmentation_profile": "PET_SAFE_V1",
+        "encoder_family": "GROUPNORM_RESIDUAL_TINY_3D",
+        "model_overrides": {}
+      },
+      "A2": {
+        "augmentation_profile": "NONE",
+        "encoder_family": "RESNET10_3D_GROUPNORM",
+        "model_overrides": {
+          "resnet_width_multiplier": 0.25
+        }
+      },
+      "A3": {
+        "augmentation_profile": "PET_SAFE_V1",
+        "encoder_family": "RESNET10_3D_GROUPNORM",
+        "model_overrides": {
+          "resnet_width_multiplier": 0.25
+        }
+      },
+      "A4": {
+        "augmentation_profile": "PET_SAFE_V1",
+        "encoder_family": "RESNET18_3D_GROUPNORM",
+        "model_overrides": {
+          "resnet_width_multiplier": 0.25
+        },
+        "outcome_blind_width_sensitivity": {
+          "additional_width_multiplier": 0.5,
+          "role": "RESOURCE_FEASIBILITY_ONLY_UNLESS_NEW_VERSIONED_ARM_IS_LOCKED"
+        }
+      }
+    },
+    "input_fingerprints": {
+      "amyloid_membership": {
+        "path": "H:\\New project\\results\\method_y_revival_v3_image_v2\\private\\amyloid_image_membership.parquet",
+        "sha256": "c02a93747e86167c7e80b9c9c4f4631b2ab57480bb82c752315a21b217f9ebf0",
+        "size": 147391
+      },
+      "amyloid_pattern_cache": {
+        "path": "H:\\New project\\caches\\method_y\\revival_v3_image\\amyloid_pattern_128_v1.h5",
+        "sha256": "31981b33e3c344f593094c7da6b1ca813e0c80cd5a3914f2402e2f04f3955921",
+        "size": 1543490958
+      },
+      "amyloid_splits": {
+        "path": "H:\\New project\\results\\method_y_revival_v2\\splits\\amyloid_nested_splits.json",
+        "sha256": "110ddcfe5628b20fd90d67d1c42760f720bfc59bd23577fe4678302ecf2ef9b6",
+        "size": 930273
+      },
+      "augmentation_qc_contract": {
+        "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\provenance\\pet_augmentation_qc_contract.json",
+        "sha256": "c46ddb5072376d50c0c17a939371eadade93af7f5688005db331380c906f6913",
+        "size": 6061
+      },
+      "foreground_mask": {
+        "path": "H:\\New project\\data\\templates\\method_y_mni152nlin2009casym_v1\\pet_augmentation_foreground_mask_v4.nii.gz",
+        "sha256": "44f5333cad31510a47ab4d478565c92e75497842728fb2599408e91edb9b78ab",
+        "size": 18489
+      },
+      "reference_template": {
+        "path": "H:\\New project\\data\\templates\\method_y_mni152nlin2009casym_v1\\reference_128_1p5mm.nii.gz",
+        "sha256": "b30c0c8083070f60e0b3c5927c1dda7661b3e5562e9d9d4c4b2ae0ffe38b2a68",
+        "size": 3317142
+      },
+      "tau_membership": {
+        "path": "H:\\New project\\results\\method_y_revival_v3_image_v2\\private\\tau_image_membership.parquet",
+        "sha256": "b511ffc2d82d0d4f01894c63f48b1032b7188ab407485aa56eac93c45eac0a92",
+        "size": 67677
+      },
+      "tau_pattern_cache": {
+        "path": "H:\\New project\\caches\\method_y\\revival_v3_image\\tau_pattern_128_v1.h5",
+        "sha256": "4095fcbc1199fdaf1bedc1fcfbfd9a51fdde9d8b63b88c1a736ddfeac1b007d6",
+        "size": 695953377
+      },
+      "tau_splits": {
+        "path": "H:\\New project\\results\\method_y_revival_v2\\splits\\tau_nested_splits.json",
+        "sha256": "b0d0652cd65d17aa6ccbbd839f42940a363394edf6249545e1f53c6e2333ad3f",
+        "size": 214973
+      }
+    },
+    "runtime": {
+      "allow_tf32": false,
+      "checkpoint_atomic_after_every_epoch": true,
+      "cublas_workspace_config": ":4096:8",
+      "cudnn_benchmark": false,
+      "cudnn_deterministic": true,
+      "deterministic_algorithms": true,
+      "deterministic_cuda": true,
+      "max_vram_fraction_for_smoke": 0.85,
+      "no_internal_timeout": true,
+      "outer_test_exactly_once": true,
+      "output_and_temp_must_be_on_h": true,
+      "resume": true
+    },
+    "schema_version": "4.0",
+    "seed": 20260714,
+    "software_runtime_contract": {
+      "augmentation_policy": {
+        "count_noise_enabled": false,
+        "count_noise_status": "DISABLED_NO_RAW_COUNT_OR_CALIBRATED_NOISE_MODEL",
+        "exposure_scope": "TRAIN_ONLY",
+        "image_and_mask_share_transform": true,
+        "max_rotation_degrees": 1.0,
+        "max_translation_voxels": 0.5,
+        "probability": 1.0,
+        "profile": "PET_SAFE_V1",
+        "psf_smoothing_enabled": false,
+        "psf_status": "DISABLED_NO_SCANNER_MODEL_PSF_REGISTRY",
+        "scale_max": 1.0,
+        "scale_min": 1.0,
+        "seed_unit": "SUBJECT_X_BRANCH_X_OUTER_FOLD_X_INNER_FOLD_X_EPOCH",
+        "validation_and_test_are_unaugmented": true
+      },
+      "contract_sha256": "45da8582abb22e0f0c2419f0db51546ddfc7a7bc96d31664bf93fe12b185a397",
+      "cuda_hardware": {
+        "available": true,
+        "compute_capability": [
+          8,
+          9
+        ],
+        "cudnn_version": 90100,
+        "device_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "total_memory_bytes": 8585216000
+      },
+      "cuda_runtime": "12.1",
+      "factorial_arms": {
+        "A0": {
+          "augmentation_profile": "NONE",
+          "encoder_family": "GROUPNORM_RESIDUAL_TINY_3D",
+          "model_overrides": {}
+        },
+        "A1": {
+          "augmentation_profile": "PET_SAFE_V1",
+          "encoder_family": "GROUPNORM_RESIDUAL_TINY_3D",
+          "model_overrides": {}
+        },
+        "A2": {
+          "augmentation_profile": "NONE",
+          "encoder_family": "RESNET10_3D_GROUPNORM",
+          "model_overrides": {
+            "resnet_width_multiplier": 0.25
+          }
+        },
+        "A3": {
+          "augmentation_profile": "PET_SAFE_V1",
+          "encoder_family": "RESNET10_3D_GROUPNORM",
+          "model_overrides": {
+            "resnet_width_multiplier": 0.25
+          }
+        },
+        "A4": {
+          "augmentation_profile": "PET_SAFE_V1",
+          "encoder_family": "RESNET18_3D_GROUPNORM",
+          "model_overrides": {
+            "resnet_width_multiplier": 0.25
+          },
+          "outcome_blind_width_sensitivity": {
+            "additional_width_multiplier": 0.5,
+            "role": "RESOURCE_FEASIBILITY_ONLY_UNLESS_NEW_VERSIONED_ARM_IS_LOCKED"
+          }
+        }
+      },
+      "h5py": "3.16.0",
+      "model_policy": {
+        "amp": true,
+        "amp_dtype": "bfloat16",
+        "base_channels": 8,
+        "batch_size": 2,
+        "checkpoint_every_epochs": 1,
+        "dropout": 0.25,
+        "early_stopping_patience": 8,
+        "effective_batch_size": 8,
+        "embedding_dim": 64,
+        "family": "DISCRETE_TIME_3D_SURVIVAL",
+        "gradient_accumulation_steps": 4,
+        "hpo_candidates": [
+          {
+            "candidate_id": "lr1e4_wd1e3",
+            "complexity_rank": 0,
+            "learning_rate": 0.0001,
+            "weight_decay": 0.001
+          },
+          {
+            "candidate_id": "lr1e4_wd1e4",
+            "complexity_rank": 1,
+            "learning_rate": 0.0001,
+            "weight_decay": 0.0001
+          },
+          {
+            "candidate_id": "lr3e4_wd1e4",
+            "complexity_rank": 2,
+            "learning_rate": 0.0003,
+            "weight_decay": 0.0001
+          }
+        ],
+        "in_channels": 1,
+        "max_epochs": 40,
+        "normalization": "GROUPNORM",
+        "num_workers": 0,
+        "pin_memory": true,
+        "selection_metric": "IPCW_INTEGRATED_BRIER_SCORE",
+        "selection_rule": "ONE_STANDARD_ERROR_THEN_LOWEST_COMPLEXITY_RANK",
+        "tabular_hidden_dim": 32
+      },
+      "monai": "1.5.2",
+      "nibabel": "5.3.3",
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "python": "3.11.15",
+      "runtime_policy": {
+        "allow_tf32": false,
+        "checkpoint_atomic_after_every_epoch": true,
+        "cublas_workspace_config": ":4096:8",
+        "cudnn_benchmark": false,
+        "cudnn_deterministic": true,
+        "deterministic_algorithms": true,
+        "deterministic_cuda": true,
+        "max_vram_fraction_for_smoke": 0.85,
+        "no_internal_timeout": true,
+        "outer_test_exactly_once": true,
+        "output_and_temp_must_be_on_h": true,
+        "resume": true
+      },
+      "scikit_survival": "0.27.0",
+      "scipy": "1.15.3",
+      "torch": "2.5.1+cu121",
+      "training_source": {
+        "bundle_sha256": "dcb23df6949489de16abe1ab773287d9182b063cbd7603e45341bf3572cdad58",
+        "files": {
+          "scripts/build_method_y_pet_augmentation_qc_v4.py": "e21dd935cd1ae4ded70e59d5f354822a684a785402b9af4c4558f3d11d93e9ec",
+          "scripts/run_method_y_image_factorial_v4.py": "dd85e862b8592bb007b547740665814f80e651e34055526eb548a832579d8720",
+          "scripts/verify_method_y_image_factorial_v4.py": "799114b7e19e64df56395bd461f3a2b20687df56fcc131175ddda9e1e0da24eb",
+          "src/method_y_revival/atomic_io.py": "82f2a57d5d71890f1cf5a2f92fee0b3c26aa1485fbc3f15a08d0393859225533",
+          "src/method_y_revival/contracts.py": "cbbdc5100f34733a32b6f4333ee6cd2ebae9568b9961ec0d07ecada1214b5fff",
+          "src/method_y_revival/image_factorial_orchestrator_v4.py": "8bf50a4a54ce3e5b3682d28107b9de99fc584917cbd1bd2a29c5969eaff9f06b",
+          "src/method_y_revival/image_factorial_reporting_v4.py": "510441c9d1029a3c3dfe38f2376972b86c8c875725cbf200669d545be80189ad",
+          "src/method_y_revival/image_factorial_v4.py": "104474890822c151c64db522a6d3765c6b2dc4f0f47b5baafcbce9b21cd38f6a",
+          "src/method_y_revival/image_modeling_v3.py": "4af0ab1591f56a06dae1f5bc9acd6c90b7a2a81dc29bdbb49cbff4d6e0e5ecf8",
+          "src/method_y_revival/image_outer_eval_v3.py": "23e53e0d4119bbb07491938107183a77a4d20ab1f8d3b494df59c68ce2ca2564",
+          "src/method_y_revival/image_outer_eval_v4.py": "8ef56c7902944ba4b0e4f18ee7d6e2920617a3eeaa3795bebf6ffa02275acf15",
+          "src/method_y_revival/image_reporting_v3.py": "643b7fb465826ae5c7f01d2104b02afbbe407fe30d6d847f83ef2647da10558f",
+          "src/method_y_revival/image_robustness_v3.py": "ccbb340857cbe96c9d8520d762873d5b9287fef91ed9e9d9991d0b1bd46aed89",
+          "src/method_y_revival/image_survival_v3.py": "e255adb297e487e7da15ffa88f0295656b4da8c779b985df432f0ccb997a0c33",
+          "src/method_y_revival/image_training_orchestrator_v3.py": "3beaec31e5e14bd9a7faac8f36f10efa362c66104f72d86ada89bfd0d359b586",
+          "src/method_y_revival/image_training_runtime_v3.py": "2a15e7af5623d4cabfb1c726c6752146443a50dfa51deec25a8491fa39791275",
+          "src/method_y_revival/image_training_runtime_v4.py": "532687a025c97c4494533227d888517963744b35e0aff934be24119e66365d32",
+          "src/method_y_revival/oof_reporting.py": "ac681bbc627b987e69071eb4a0b2749bb49b4a38cbb45a1001e8315c92a4fe06",
+          "src/method_y_revival/outer_evaluation_control.py": "3c6cfb0fcd92300ac568031710ef13e9477ef0aa520ac496a688e38b4cea7d29",
+          "src/method_y_revival/pet_augmentation_qc_v4.py": "2242236f7247c1cef2a6a5d7060bfc03234949ad78792c21684cd544ebde2ccc",
+          "src/method_y_revival/pet_augmentation_v4.py": "1fe9e4020621ada3ae76377c077a7365ef7fe90c1f9b737e39beeb6a94b7b2d3",
+          "src/method_y_revival/process_guard.py": "f082e63d766025f4e423e83adc32ef195e076813acd5538784c58e5ca107710f",
+          "src/method_y_revival/science_gates.py": "da8ec51b71a30bf374412a1d56e79f27b038f684fb207ea63d5bdfef65b24539",
+          "src/method_y_revival/software_contract_v4.py": "bcd17be746b2107480995c904a49f5479d813a1a80fb19b875125906f93a588e",
+          "src/method_y_revival/survival_models.py": "744d9b76c1e51d7c75604ace063760ec2c921611009ac222cb6a54205bcfd192"
+        }
+      }
+    }
+  },
+  "old_run_contract_sha256": "654f8ce59934586f0a125225aa3cbb4a00bfbc11f755bb706c080fbd7cb8392c",
+  "outer_test_exposure": {
+    "access_journal_count": 0,
+    "outer_accessed": false,
+    "result_count": 0
+  },
+  "output_root": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1",
+  "pid_preflight": 12640,
+  "preservation": {
+    "history_changed": false,
+    "membership_cache_split_changed": false,
+    "model_values_changed": false,
+    "optimizer_values_changed": false,
+    "outer_results_changed": false
+  },
+  "schema_version": "1.0",
+  "stale_training_lock_snapshot": null,
+  "state_new_sha256": "7372802c168ee60b3c3141a885c5f99148fce37ec05c1bc34ec2b4fb27eccc94",
+  "state_old_sha256": "79339835b3dfd38366fd545574bf799c5d3bf00b7c9a01510681ef8f57448723",
+  "state_path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\orchestration_state.json",
+  "status": "COMMITTED",
+  "supersedes": "METHOD_Y_V4_CONTRACT_MIGRATION_72c2d83ce0aa_d521fa67e36e",
+  "winner_mappings": [
+    {
+      "branch": "amyloid",
+      "kind": "json",
+      "new_sha256": "58fbb0397770c99f5939da1b0638de5a3ecfcfe48e66f988eb1749c88a953449",
+      "old_sha256": "1db63556c05490fa81de8b127180d61db45e66abfed7226414f5594d90a6f6c4",
+      "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\orchestration\\amyloid\\winner_A0_outer_0.json",
+      "preserves": "winner_identity_and_inner_ibs_records_verbatim",
+      "semantic_fingerprint": "a33c77ea2ef1ccf66e6e23534c82f96dfec1126ff07826474ebcdae37bdf485a",
+      "target_master_digest": "37910a4d8a0215972017e3b95bdbaa57ffd897a992939f6247b3ec483db211de"
+    },
+    {
+      "branch": "amyloid",
+      "kind": "json",
+      "new_sha256": "c71f48ec4d84ea2bb56a266f8931e70489998aee7680d4f452087646c6748b67",
+      "old_sha256": "4b2feaaef7561d5e4a39cd46af6bc9ca9c7adf58455a0a5637bd2ec8a3f268e5",
+      "path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\orchestration\\amyloid\\winner_A1_outer_0.json",
+      "preserves": "winner_identity_and_inner_ibs_records_verbatim",
+      "semantic_fingerprint": "23beedb89cd0ab3a94ab4881f92d312b42f7e9dd1048ad5650c2c57d8108f7e3",
+      "target_master_digest": "37910a4d8a0215972017e3b95bdbaa57ffd897a992939f6247b3ec483db211de"
+    }
+  ]
+}

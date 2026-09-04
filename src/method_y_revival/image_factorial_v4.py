@@ -162,7 +162,23 @@ def _resnet_modules():
                 ),
                 nn.GroupNorm(_group_count(self.in_channels), self.in_channels),
                 nn.SiLU(inplace=True),
-                nn.MaxPool3d(kernel_size=3, stride=2, padding=1),
+                # Determinism contract: pooling backward on CUDA has no
+                # deterministic implementation (MaxPool3d AND AvgPool3d both
+                # throw under torch.use_deterministic_algorithms(True) and
+                # blocked A2 at its first epoch). A depthwise strided conv
+                # (k3/s2/p1, groups=C, bias=False) preserves the /2
+                # downsampling and 3x3x3 receptive field with only 27*C extra
+                # parameters and is deterministic-safe. Recorded as a
+                # versioned challenger amendment (pool->depthwise-downsample).
+                nn.Conv3d(
+                    self.in_channels,
+                    self.in_channels,
+                    kernel_size=3,
+                    stride=2,
+                    padding=1,
+                    groups=self.in_channels,
+                    bias=False,
+                ),
             )
             widths = tuple(int(base_channels * (2**index)) for index in range(4))
             self.stages = nn.Sequential(
