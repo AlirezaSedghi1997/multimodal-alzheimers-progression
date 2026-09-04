@@ -1,5 +1,12 @@
 # نمایه‌ی حافظه‌ی پروژه
 
+## زنده‌ترین — ۲۰۲۶-۰۹-۰۴ عصر (تست resume FAIL-closed؛ master `be75` در برابر `d7e0`؛ بدون corruption)
+
+0. **نتیجه تست resumability (به درخواست اپراتور):** اجرای آزمایشی بلافاصله `BLOCKED:RUN_CONTRACT_MISMATCH:MASTER` شد؛ هیچ epoch شروع نشد، GPU خالی، lock نیست، چک‌پوینت‌ها دست‌نخورده. این fail-closed درست است — retry بیهوده نکنید.
+1. **ریشه:** master ذخیره‌شده `be75...` با ورودی‌های قفل فعلی بازتولید نمی‌شود (`d7e0...`؛ با باندل قدیمی هم `7cb9...`). migration `654f` آن را frozen-chain حفظ کرده بود؛ launcher آن را strict چک می‌کند. Preflight `READY` فقط global است.
+2. **قدم بعدی:** migration حسابرسی‌شده master (`be75->d7e0`) با re-verify و provenance، سپس تست مجدد resume. تا آن زمان فرمان تولیدی را اجرا نکنید.
+3. **وضعیت:** commit `c9945a2` (C2/C3 + docs) پوش نشده؛ آموزش متوقف؛ verifier 0/50؛ claim سقف `POST_HOC_INTERNAL_EXPLORATORY`.
+
 ## زنده‌ترین — ۲۰۲۶-۰۹-۰۴ (C1/C2/C3 رفع شد؛ preflight READY 654f؛ winner به master relabel؛ verifier 0/50)
 
 0. **سه مانع resume رفع شد (بدون تغییر علمی):** C2 wrapper `_winner_target_digest` (تست 12/12 سبز)؛ C3 relabel `winner_A0_outer_0` از global `654f...` به master `be75...` با re-verify inner-IBS (`lr1e4_wd1e3`) و `read_verified` PASS؛ C1 wiring `binding_core` حفظ شد. Preflight `READY` با digest `654f8ce59934...` حتی با فایل‌های dirty. Verifier نهایی FAIL 0/50 (درست).
