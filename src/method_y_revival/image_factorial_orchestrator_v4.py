@@ -9,6 +9,7 @@ import pandas as pd
 
 from .atomic_io import atomic_write_json, read_json
 from .contracts import sha256_mapping
+from .software_contract_v4 import binding_core
 from .image_factorial_v4 import FACTORIAL_ARMS, build_factorial_image_model
 from .image_training_orchestrator_v3 import (
     PUBLIC_OUTER_METRIC_KEYS,
@@ -91,7 +92,9 @@ def build_factorial_cell_contract(
         "augmentation": config.get("augmentation", {}),
         "seed": int(config.get("seed", 0)),
         "runtime": config.get("runtime", {}),
-        "software_runtime_contract": config.get("software_runtime_contract", {}),
+        "software_runtime_contract": binding_core(
+            config.get("software_runtime_contract", {})
+        ),
         "training_source_sha256": config.get("training_source_sha256"),
     }
     return sha256_mapping(payload)
@@ -159,7 +162,9 @@ class ImageFactorialOrchestratorV4:
                 "model": self.config.get("model", {}),
                 "factorial_arms": self.config.get("factorial_arms", {}),
                 "runtime": self.config.get("runtime", {}),
-                "software_runtime_contract": self.config.get("software_runtime_contract", {}),
+                "software_runtime_contract": binding_core(
+                    self.config.get("software_runtime_contract", {})
+                ),
             }
         )
 

@@ -1,5 +1,14 @@
 # Agent session ledger — 2026-08-15 (Method Y defect repair)
 
+> **Append 2026-09-04 — v4 C1/C2/C3 resume-blockers fixed, preflight READY 654f, winner relabeled to master.**
+> - **Verification (files-only, 2 independent agents):** 5 arms A0-A4 matched, PET_SAFE_V1 1°/0.5vox train-only, GroupNorm R10/R18 w=0.25, QC primary PASS (Pearson p5 0.99194, Dice p5 0.99199; upper FAIL), device-mismatch fix portable-CPU, 35 .pt (A0/A1 amyloid outer_0), no writer/GPU, tests exist. Live digest `654f8ce59934...` (handover `ec968b9b...` stale; migration `ec968b9b->654f8ce5` COMMITTED 2026-09-03T10:25Z).
+> - **C1 (CRITICAL):** committed `7628305` left per-cell/master hashing full contract incl. `git_provenance`; worktree wiring `binding_core()` in `image_factorial_orchestrator_v4.py` + `software_contract_v4.py` + `migrate_..._v4_contract.py` (uncommitted) makes global stable but per-cell unstable. Fix kept (not reverted); migration parity preserved.
+> - **C2 (CRITICAL):** `test_winner_target_is_branch_master_digest` RED (`_winner_target_digest` missing). Fixed with minimal wrapper (fail-closed on unknown branch); now 12/12 binding + 42/42 factorial green.
+> - **C3 (CRITICAL):** `winner_A0_outer_0.json` stored global `654f...`, reader expects master `be7589d8...` → `RUN_CONTRACT_MISMATCH:winner` on resume. Repaired global->master with `_reverify_winner_selection` PASS (winner `lr1e4_wd1e3`), self-hash refreshed, `read_verified_winner_record` PASS. Provenance `results/.../provenance/winner_global_to_master_relabel_654f8ce5.json` + mirror `governance/method_y_v4_winner_global_to_master_relabel_654f8ce5.json`. Repair path in migrate tool now handles this idempotently.
+> - **Preflight:** `READY`, digest `654f8ce59934...`, amyloid 560/110, tau 306/75, GPU RTX 4060, claim `POST_HOC_INTERNAL_EXPLORATORY`. Verifier final still FAIL 0/50 (only 1/50 winners, 0/50 outer) — correct, no claim.
+> - **Runtime (telemetry, not guess):** A1 ~9.4s/epoch, A0 ~13-14s/epoch (first 19-28s); full 5×2×5 programme ≈18-30h. Remaining: 49 winners, 50 outer cells, reports, privacy, final verifier.
+> - **Remaining for next:** scoped commit (no push), resume same `run_method_y_image_factorial_v4.ps1` (single writer), then 50-cell verifier + paired reports + privacy/claim gates.
+
 > **Append 2026-09-03 — v4 contract second-recurrence fix complete (fully HEAD/dirty-independent).**
 > Covers commits `7628305` (+ prior `bebad7b` foundation) and the applied migration chain.
 > - **Recurrence root cause:** the first HEAD-independence fix removed git_commit from

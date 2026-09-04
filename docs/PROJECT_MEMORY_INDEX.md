@@ -1,5 +1,12 @@
 # نمایه‌ی حافظه‌ی پروژه
 
+## زنده‌ترین — ۲۰۲۶-۰۹-۰۴ (C1/C2/C3 رفع شد؛ preflight READY 654f؛ winner به master relabel؛ verifier 0/50)
+
+0. **سه مانع resume رفع شد (بدون تغییر علمی):** C2 wrapper `_winner_target_digest` (تست 12/12 سبز)؛ C3 relabel `winner_A0_outer_0` از global `654f...` به master `be75...` با re-verify inner-IBS (`lr1e4_wd1e3`) و `read_verified` PASS؛ C1 wiring `binding_core` حفظ شد. Preflight `READY` با digest `654f8ce59934...` حتی با فایل‌های dirty. Verifier نهایی FAIL 0/50 (درست).
+1. **وضعیت اجرا:** بدون writer/GPU فعال؛ `orchestration_state` stale `TRAINING_RUNNING`؛ نقطه resume = آخرین epoch اتمیک (A1 outer_0). تله‌متری: ~9.4s/epoch (A1) و ~13-14s (A0) → کل ≈۱۸-۳۰h. فرمان ادامه همان `run_method_y_image_factorial_v4.ps1` (تک‌نویسنده).
+2. **ناهماهنگی سندی:** handover/memory قبلی digest `ec968b...` را زنده می‌دانست؛ زنده `654f...` است (migration `ec968->654f`). Provenance relabel در `governance/method_y_v4_winner_global_to_master_relabel_654f8ce5.json`.
+3. **باقی‌مانده:** ۴۹ winner، ۵۰ outer exactly-once، گزارش‌های paired، privacy/claim gates، verifier 50/50. N واقعی amyloid 560/110 و tau 306/75؛ augmentation سوژه نمی‌سازد؛ claim سقف `POST_HOC_INTERNAL_EXPLORATORY`.
+
 ## زنده‌ترین — ۲۰۲۶-۰۹-۰۳ (قرارداد v4 کاملاً مستقل از HEAD/dirty؛ آموزش متوقف)
 
 0. **دومین عود `RUN_CONTRACT_MISMATCH` ریشه‌یابی و رفع نهایی شد (`7628305`):**

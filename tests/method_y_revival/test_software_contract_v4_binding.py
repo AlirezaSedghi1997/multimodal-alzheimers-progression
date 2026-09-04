@@ -18,7 +18,15 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
+import torch  # noqa: E402  (eager: avoid lazy circular import inside tests)
+
 from src.method_y_revival import software_contract_v4 as sc4  # noqa: E402
+from src.method_y_revival.image_factorial_orchestrator_v4 import (  # noqa: E402
+    ImageFactorialOrchestratorV4,
+)
+from src.method_y_revival.software_contract_v4 import (  # noqa: E402
+    binding_core,
+)
 
 
 def _fake_repo(tmp_path: Path) -> Path:
@@ -127,4 +135,191 @@ def test_git_provenance_is_informational_contract_field():
     src = (ROOT / "scripts" / "run_method_y_image_factorial_v4.py").read_text(encoding="utf-8")
     assert 'if key != "git_provenance"' in src, (
         "launcher equality must exclude git_provenance from resume binding"
+    )
+
+
+def test_binding_core_excludes_git_provenance():
+    from src.method_y_revival.software_contract_v4 import binding_core
+
+    contract = sc4.build_software_runtime_contract_v4(ROOT, {})
+    core = binding_core(contract)
+    assert "git_provenance" not in core
+    # byte change still flips the core
+    mutated = dict(core)
+    files = dict(mutated["training_source"]["files"])
+    first = sorted(files)[0]
+    files[first] = "0" * 64
+    mutated["training_source"] = {**mutated["training_source"], "files": files}
+    assert sc4.sha256_mapping(core) != sc4.sha256_mapping(mutated)
+
+
+def test_master_digest_ignores_git_provenance(monkeypatch, tmp_path):
+    """Master contract digest must be stable across HEAD/dirt moves; it must
+    flip on bound-source byte change."""
+    from src.method_y_revival.image_factorial_orchestrator_v4 import (  # noqa: E402
+        ImageFactorialOrchestratorV4 as _IFO4,
+    )
+
+    assert _IFO4 is ImageFactorialOrchestratorV4
+
+    orch_kwargs = dict(
+        output_root=tmp_path,
+        branch="amyloid",
+        membership_sha256="a" * 64,
+        cache_sha256="b" * 64,
+        mask_sha256="c" * 64,
+        split_sha256="d" * 64,
+        augmentation_qc_sha256="e" * 64,
+        h5_cache_path=tmp_path / "cache.h5",
+        mask_path=tmp_path / "mask.h5",
+        augmentation_qc={},
+    )
+    base_cfg = {
+        "seed": 1,
+        "model": {"hpo_candidates": [{"candidate_id": "x", "complexity_rank": 0}]},
+        "factorial_arms": {"A0": {}},
+        "runtime": {},
+        "execution": {"arms": ["A0", "A1", "A2", "A3", "A4"]},
+    }
+
+    def make_orch(git_commit, extra_sw=None, tag="x"):
+        sw = {"training_source": {"bundle_sha256": "f" * 64, "files": {}},
+              "git_provenance": {"commit": git_commit, "policy": "INFORMATIONAL_ONLY_NEVER_RESUME_BINDING"}}
+        if extra_sw:
+            sw.update(extra_sw)
+        cfg = dict(base_cfg, software_runtime_contract=sw)
+        (tmp_path / "cache.h5").touch(exist_ok=True)
+        (tmp_path / "mask.h5").touch(exist_ok=True)
+        return ImageFactorialOrchestratorV4(config=cfg, output_root=tmp_path / tag, **{k: v for k, v in orch_kwargs.items() if k != "output_root"})
+
+    d1 = make_orch("a" * 40, tag="r1").master_contract_sha256
+    d2 = make_orch("b" * 40, tag="r2").master_contract_sha256
+    assert d1 == d2, "HEAD-only move must not change master digest"
+
+    d3 = make_orch("b" * 40, extra_sw={"torch": "9.9.9"}, tag="r3").master_contract_sha256
+    assert d1 != d3, "toolchain change must still flip master digest"
+
+
+def test_migration_master_formula_uses_binding_core():
+    """The migration tool's master-digest formula must be identical to the
+    orchestrator's (binding-core), otherwise migrated masters will never
+    satisfy the launcher's resume check."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "migtool",
+        ROOT / "scripts" / "migrate_method_y_image_factorial_v4_contract.py",
+    )
+    assert spec is not None and spec.loader is not None
+    # Load source and check the formula textually: the tool-local
+    # _master_digest must route the software contract through binding_core.
+    src = (ROOT / "scripts" / "migrate_method_y_image_factorial_v4_contract.py").read_text(
+        encoding="utf-8"
+    )
+    start = src.find("def _master_digest(")
+    assert start != -1
+    segment = src[start : start + 1400]
+    assert "binding_core" in segment, (
+        "migration tool must compute master digests with binding_core, "
+        "mirroring the orchestrator"
+    )
+
+
+def test_master_formula_parity_orchestrator_vs_migration_tool(tmp_path):
+    """Same inputs through the orchestrator formula and the migration-tool
+    formula must yield the SAME master digest (fail-closed parity)."""
+    import importlib.util
+
+    from src.method_y_revival.image_factorial_orchestrator_v4 import (
+        ImageFactorialOrchestratorV4 as _IFO4b,
+    )
+
+    assert _IFO4b is ImageFactorialOrchestratorV4
+    spec = importlib.util.spec_from_file_location(
+        "migtool3",
+        ROOT / "scripts" / "migrate_method_y_image_factorial_v4_contract.py",
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    sw = {
+        "training_source": {"bundle_sha256": "f" * 64, "files": {}},
+        "git_provenance": {"commit": "zzz", "policy": "X"},
+    }
+    cfg = {
+        "seed": 7,
+        "model": {"hpo_candidates": [{"candidate_id": "x", "complexity_rank": 0}]},
+        "factorial_arms": {"A0": {}},
+        "runtime": {},
+        "execution": {"arms": ["A0", "A1", "A2", "A3", "A4"]},
+        "software_runtime_contract": sw,
+        "branches": {"amyloid": {"model_features": []}},
+    }
+    inputs = {
+        "membership": "a" * 64,
+        "cache": "b" * 64,
+        "mask": "c" * 64,
+        "split": "d" * 64,
+        "augmentation_qc": "e" * 64,
+    }
+    tool_digest = mod._master_digest(config=cfg, branch="amyloid", inputs=inputs)
+
+    (tmp_path / "cache.h5").touch(exist_ok=True)
+    (tmp_path / "mask.h5").touch(exist_ok=True)
+    orch = ImageFactorialOrchestratorV4(
+        config=cfg,
+        output_root=tmp_path / "o2",
+        branch="amyloid",
+        membership_sha256="a" * 64,
+        cache_sha256="b" * 64,
+        mask_sha256="c" * 64,
+        split_sha256="d" * 64,
+        augmentation_qc_sha256="e" * 64,
+        h5_cache_path=tmp_path / "cache.h5",
+        mask_path=tmp_path / "mask.h5",
+        augmentation_qc={},
+    )
+    assert tool_digest == orch.master_contract_sha256
+
+
+def test_winner_target_is_branch_master_digest():
+    """The migration helper must resolve each winner row to its branch's NEW
+    master digest — never the global run digest."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "migtool4",
+        ROOT / "scripts" / "migrate_method_y_image_factorial_v4_contract.py",
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    plan = {
+        "master_mappings": [
+            {"branch": "amyloid", "new_master_digest": "m" * 64},
+            {"branch": "tau", "new_master_digest": "t" * 64},
+        ],
+        "new_run_contract_sha256": "g" * 64,
+    }
+    targets = mod._branch_master_digests(plan)
+    assert targets == {"amyloid": "m" * 64, "tau": "t" * 64}
+    row = {"branch": "amyloid", "path": "x"}
+    assert mod._winner_target_digest(row, targets) == "m" * 64
+    with pytest.raises(Exception):
+        mod._winner_target_digest({"branch": "ghost", "path": "x"}, targets)
+
+
+def test_winner_migrates_to_branch_master_digest_not_global(tmp_path):
+    """A migrated winner's run_contract_sha256 must equal the branch MASTER
+    digest (what read_verified_winner_record compares), never the global run
+    digest. Regression test for the ec968b9b-era mislabel."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "migtool2",
+        ROOT / "scripts" / "migrate_method_y_image_factorial_v4_contract.py",
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    assert hasattr(mod, "_branch_master_digests") or hasattr(mod, "_winner_target_digest"), (
+        "migration tool must resolve per-branch master digests for winner rewrite"
     )

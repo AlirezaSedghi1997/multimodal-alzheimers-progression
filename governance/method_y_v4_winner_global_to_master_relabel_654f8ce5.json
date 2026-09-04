@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "relocation_id": "WINNER_GLOBAL_TO_MASTER_RELABEL_654f8ce5",
+  "recorded_utc": "2026-09-04T05:11:53.043437+00:00",
+  "output_root": "H:\\\\New project\\\\results\\\\method_y_revival_v4_image_factorial_v1",
+  "branch": "amyloid",
+  "winner_path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\orchestration\\amyloid\\winner_A0_outer_0.json",
+  "master_path": "H:\\New project\\results\\method_y_revival_v4_image_factorial_v1\\orchestration\\amyloid\\master_contract.json",
+  "old_winner_run_contract_sha256": "654f8ce59934586f0a125225aa3cbb4a00bfbc11f755bb706c080fbd7cb8392c",
+  "new_winner_run_contract_sha256": "be7589d844ccf98bca91792244adce1fcb0e8f9182cf9576d1065c5d75147be5",
+  "expected_master_contract_sha256": "be7589d844ccf98bca91792244adce1fcb0e8f9182cf9576d1065c5d75147be5",
+  "winner_candidate": "lr1e4_wd1e3",
+  "contract_migration_id": "WINNER_GLOBAL_TO_MASTER_RELABEL_654f8ce5",
+  "winner_record_sha256": "acd8f43a137d45d462a332b5290b1b035387a89ce86f8dd4a303eaae76f524d4",
+  "winner_sha256": "22c3ab702784441e4148b3b839e3e33cebedc9aad4b9573657a3712c2bb3e10a",
+  "reverification": "_reverify_winner_selection PASS (one-SE + complexity-rank from inner records)",
+  "outer_test_exposure": {
+    "accessed": false,
+    "journals": 0
+  },
+  "preservation": {
+    "model_values_changed": false,
+    "inner_records_changed": false,
+    "only_label_and_self_hash": true
+  }
+}

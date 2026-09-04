@@ -41,6 +41,7 @@ from src.method_y_revival.contracts import sha256_mapping  # noqa: E402
 from src.method_y_revival.image_factorial_orchestrator_v4 import (  # noqa: E402
     build_factorial_cell_contract,
 )
+from src.method_y_revival.software_contract_v4 import binding_core  # noqa: E402
 from src.method_y_revival.image_factorial_v4 import FACTORIAL_ARMS  # noqa: E402
 from src.method_y_revival.image_training_runtime_v3 import (  # noqa: E402
     FoldTabularTransformer,
@@ -373,6 +374,9 @@ def _contract_inputs(
 def _master_digest(
     *, config: dict[str, Any], branch: str, inputs: dict[str, str]
 ) -> str:
+    # MUST mirror ImageFactorialOrchestratorV4._master_contract_digest exactly,
+    # including binding_core(): a migrated master that the launcher recomputes
+    # differently would fail resume. See the binding suite regression tests.
     return sha256_mapping(
         {
             "schema_version": "4.0",
@@ -388,9 +392,36 @@ def _master_digest(
             "model": config.get("model", {}),
             "factorial_arms": config.get("factorial_arms", {}),
             "runtime": config.get("runtime", {}),
-            "software_runtime_contract": config.get("software_runtime_contract", {}),
+            "software_runtime_contract": binding_core(
+                config.get("software_runtime_contract", {})
+            ),
         }
     )
+
+
+def _branch_master_digests(plan: dict[str, Any]) -> dict[str, str]:
+    """Map each migrated branch to its NEW master digest.
+
+    Winner records bind to the branch MASTER digest (that is what
+    read_verified_winner_record compares against), never to the global run
+    digest. Centralizing the lookup keeps every winner path consistent.
+    """
+    out: dict[str, str] = {}
+    for row in plan.get("master_mappings", []):
+        out[str(row.get("branch"))] = str(row.get("new_master_digest", ""))
+    return out
+
+
+def _winner_target_digest(row: dict[str, Any], targets: dict[str, str]) -> str:
+    """Resolve a winner row to its branch NEW master digest.
+
+    Never returns the global run digest. Raises on unknown branch
+    (fail-closed, no silent global fallback).
+    """
+    branch = str(row.get("branch", ""))
+    if branch not in targets or len(str(targets[branch])) != 64:
+        raise MigrationError(f"WINNER_TARGET_MASTER_MISSING:{row.get('path', branch)}")
+    return str(targets[branch])
 
 
 def _checkpoint_files(root: Path) -> list[Path]:
@@ -459,20 +490,47 @@ def _validate_and_plan(
     if old_digest == new_digest:
         # Contract already current: the only remaining legal action is a
         # self-consistency repair of selection artifacts (idempotent, audited)
-        # from a PREVIOUS apply that may have left a stale winner self-hash.
+        # from a PREVIOUS apply that may have left a stale winner self-hash
+        # or a global-vs-master mislabel (ec968b9b-era bug: winner stored
+        # global run digest, but read_verified_winner_record expects branch
+        # MASTER digest). Repair is fail-closed via _reverify_winner_selection.
         from src.method_y_revival.contracts import sha256_mapping as _sm
 
         repaired = []
+        relabeled = []
         for branch in ("amyloid", "tau"):
             orch_dir = output_root / "orchestration" / branch
             if not orch_dir.is_dir():
                 continue
+            master_path = orch_dir / "master_contract.json"
+            expected_master = ""
+            if master_path.is_file():
+                try:
+                    expected_master = str(read_json(master_path).get("master_contract_sha256", ""))
+                except Exception:
+                    expected_master = ""
             for winner_path in sorted(orch_dir.glob("winner_*.json")):
                 record = read_json(winner_path)
-                if record.get("run_contract_sha256") != new_digest:
+                current = record.get("run_contract_sha256")
+                if current != new_digest and current != expected_master:
                     raise MigrationError(
                         f"WINNER_NOT_ON_CURRENT_CONTRACT:{winner_path}"
                     )
+                # One-time mislabel repair: global -> branch MASTER (re-verified).
+                if current == new_digest and expected_master and expected_master != new_digest:
+                    _reverify_winner_selection(record)
+                    record["run_contract_sha256"] = expected_master
+                    record["contract_migration_id"] = "WINNER_GLOBAL_TO_MASTER_RELABEL_654f8ce5"
+                    vbody = {
+                        key: value
+                        for key, value in record.items()
+                        if key != "winner_record_sha256"
+                    }
+                    record["winner_record_sha256"] = _sm(vbody)
+                    atomic_write_json(winner_path, record)
+                    relabeled.append(str(winner_path))
+                    # Re-read for self-hash check below.
+                    record = read_json(winner_path)
                 vbody = {
                     key: value
                     for key, value in record.items()
@@ -489,6 +547,7 @@ def _validate_and_plan(
             "output_root": str(output_root),
             "run_contract_sha256": new_digest,
             "repaired_winner_self_hashes": repaired,
+            "relabeled_winner_global_to_master": relabeled,
             "outer_test_exposure": {
                 "access_journal_count": 0,
                 "result_count": 0,
@@ -674,9 +733,21 @@ def _validate_and_plan(
                     "kind": "json",
                     "old_sha256": _sha256_file(winner_path),
                     "new_sha256": None,
+                    # Winners bind to the branch MASTER digest (that is what
+                    # read_verified_winner_record compares), never to the
+                    # global run digest. Record it explicitly per branch.
+                    "target_master_digest": {
+                        row["branch"]: row["new_master_digest"]
+                        for row in master_rows
+                    }.get(branch, ""),
                     "semantic_fingerprint": _json_digest_without(
                         {k: v for k, v in record.items()
-                         if k not in ("run_contract_sha256", "contract_migration_id")},
+                         if k
+                         not in (
+                             "run_contract_sha256",
+                             "contract_migration_id",
+                             "winner_record_sha256",
+                         )},
                         "run_contract_sha256",
                     ),
                     "preserves": "winner_identity_and_inner_ibs_records_verbatim",
@@ -901,7 +972,7 @@ def _verify_committed(plan: dict[str, Any]) -> None:
         if not path.is_file() or _sha256_file(path) != row.get("new_sha256"):
             raise MigrationError(f"COMMITTED_WINNER_MISMATCH:{path}")
         record = read_json(path)
-        if record.get("run_contract_sha256") != plan["new_run_contract_sha256"]:
+        if record.get("run_contract_sha256") != row.get("target_master_digest", ""):
             raise MigrationError(f"COMMITTED_WINNER_DIGEST_MISMATCH:{path}")
     if Path(plan["state_path"]).is_file():
         state = read_json(plan["state_path"])
@@ -958,9 +1029,12 @@ def apply_plan(plan: dict[str, Any], provenance_path: Path) -> dict[str, Any]:
             path = Path(row["path"])
             if not path.is_file():
                 raise MigrationError(f"WINNER_FILE_MISSING:{path}")
+            target_master = str(row.get("target_master_digest", ""))
+            if len(target_master) != 64:
+                raise MigrationError(f"WINNER_TARGET_MASTER_MISSING:{path}")
             record = read_json(path)
             current = record.get("run_contract_sha256")
-            if current == plan["new_run_contract_sha256"]:
+            if current == target_master:
                 # Idempotent re-entry: still repair the record self-hash if a
                 # previous apply wrote the new digest without refreshing it.
                 from src.method_y_revival.contracts import sha256_mapping as _sm
@@ -987,11 +1061,16 @@ def apply_plan(plan: dict[str, Any], provenance_path: Path) -> dict[str, Any]:
                     ) from exc
             if _json_digest_without(
                 {k: v for k, v in record.items()
-                 if k not in ("run_contract_sha256", "contract_migration_id")},
+                 if k
+                 not in (
+                     "run_contract_sha256",
+                     "contract_migration_id",
+                     "winner_record_sha256",
+                 )},
                 "run_contract_sha256",
             ) != row.get("semantic_fingerprint"):
                 raise MigrationError(f"WINNER_SEMANTIC_DRIFT:{path}")
-            record["run_contract_sha256"] = plan["new_run_contract_sha256"]
+            record["run_contract_sha256"] = target_master
             record["contract_migration_id"] = plan["migration_id"]
             # Refresh the record's own self-hash so consumers
             # (WINNER_RECORD_HASH_MISMATCH check) accept the migrated label.
@@ -1005,7 +1084,7 @@ def apply_plan(plan: dict[str, Any], provenance_path: Path) -> dict[str, Any]:
             record["winner_record_sha256"] = _sm(body)
             atomic_write_json(path, record)
             verified = read_json(path)
-            if verified.get("run_contract_sha256") != plan["new_run_contract_sha256"]:
+            if verified.get("run_contract_sha256") != target_master:
                 raise MigrationError(f"WINNER_VERIFY_FAILED:{path}")
             vbody = {
                 key: value
@@ -1016,7 +1095,12 @@ def apply_plan(plan: dict[str, Any], provenance_path: Path) -> dict[str, Any]:
                 raise MigrationError(f"WINNER_SELF_HASH_VERIFY_FAILED:{path}")
             if _json_digest_without(
                 {k: v for k, v in verified.items()
-                 if k not in ("run_contract_sha256", "contract_migration_id")},
+                 if k
+                 not in (
+                     "run_contract_sha256",
+                     "contract_migration_id",
+                     "winner_record_sha256",
+                 )},
                 "run_contract_sha256",
             ) != row.get("semantic_fingerprint"):
                 raise MigrationError(f"WINNER_POST_WRITE_DRIFT:{path}")
@@ -1070,6 +1154,9 @@ def main(argv: list[str] | None = None) -> int:
                 "run_contract_sha256": plan.get("run_contract_sha256"),
                 "repaired_winner_self_hashes": plan.get(
                     "repaired_winner_self_hashes", []
+                ),
+                "relabeled_winner_global_to_master": plan.get(
+                    "relabeled_winner_global_to_master", []
                 ),
                 "output_root": plan.get("output_root"),
             }

@@ -158,6 +158,19 @@ def _cuda_hardware_contract() -> dict[str, Any]:
         return {"available": False, "reason": type(exc).__name__}
 
 
+def binding_core(contract: dict[str, Any] | None) -> dict[str, Any]:
+    """Digest-bound core of a software contract: everything resume-critical
+    EXCEPT the git_provenance metadata block (commit, dirty status), which is
+    informational provenance and must never flip a resume-binding digest.
+
+    Byte changes in any bound source, toolchain version drift, or locked
+    policy changes still alter this core (fail-closed preserved).
+    """
+    contract = dict(contract or {})
+    core = {key: value for key, value in contract.items() if key != "git_provenance"}
+    return core
+
+
 def bind_software_runtime_contract_v4(
     config: dict[str, Any], project_root: str | Path
 ) -> dict[str, Any]:
