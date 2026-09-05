@@ -1,5 +1,24 @@
 # نمایه‌ی حافظه‌ی پروژه
 
+## زنده‌ترین — ۲۰۲۶-۰۹-۰۴ (Method X-3: زنجیره BLOCKED کامل نقشه شد؛ نیازمند re-release نسخه‌دار)
+
+0. **یافته نهایی:** بعد از رفع `GIT_DRIFT` (بازسازی manifest، ۱۶/۱۶) و بازسازی کاندید (`acceptance` PASS)، ریشه عمیق‌تر است: مانیفست full-test بایت‌های `.gitattributes` (۶۰۲) را می‌خواهد که هیچ‌جا نیست (HEAD=۵۹۶، worktree=۶۱۰)؛ traceability/readiness هم از همان می‌شکنند. بازسازی full نیازمند V7 در HEAD زنده است ولی sealer آن one-shot است. پس `full` بدون یک re-release هماهنگ (کارت جدا، GPU خالی، ساعتها) باز نمی‌شود — عمداً hotfix نکردم تا pins بدتر نشود.
+1. **وضعیت سالم تحویل شد:** preflight/acceptance/status/compat همه PASS؛ closure دقیق؛ کد باند دست‌نخورده؛ Method Y متوقف‌شده توسط کاربر (GPU خالی، دست نزدم).
+2. **هشدار مهم:** هیچ `git commit` نزن — HEAD را می‌برد و manifestهای تازه را باطل می‌کند. دو راه: (الف) کارت re-release در HEAD فریز شده؛ (ب) ادامه Method Y با دستور زیر و BrainIAC بعداً.
+
+## زنده‌ترین — ۲۰۲۶-۰۹-۰۴ (Method X-2: manifest بازسازی شد؛ اجرای سریال الزامی)
+
+0. **خطای `ACCEPTANCE_TEST_MANIFEST_GIT_DRIFT` ریشه‌یابی و رفع شد:** manifest به HEAD قدیمی `43d3a28` قفل بود و HEAD به `f5d0acd` رفته بود. با builder رسمی بازسازی شد (۱۶/۱۶ چک واقعی PASS) در HEAD فعلی + closure زنده؛ manifest قدیمی آرشیو شد. هیچ گیتی تضعیف نشد.
+1. **BLOCKED فعلی درست است نه باگ:** با Method Y زنده روی GPU، preflight با `FOREIGN_CUDA_COMPUTE_PROCESS` می‌ایستد (fail-closed). توجه: Method Y هنوز زنده است (PIDs 3888/17872) — با وجود تصور توقف، kill نکردم.
+2. **قدم بعدی دقیق:** توقف Method Y (تأیید مرگ PIDها + خالی بودن nvidia-smi) → `--mode acceptance` باید PASS شود → `--mode full`. اجرای هم‌زمان ممنوع (ریسک OOM).
+
+## زنده‌ترین — ۲۰۲۶-۰۹-۰۴ (Method X: گیت BrainIAC باز شد؛ Method Y دست‌نخورده زنده)
+
+0. **خطای `BRAINIAC_PRIMARY_STARTED_BEFORE_V4_COMPATIBILITY` رفع شد بدون توقف Method Y:** علت ۲۴ رسید معتبر (همه bindings زنده) از اجرای نصفه ۹/۰۱ بود + گیت blanket. چون هر تغییر کد pin نهایی را می‌شکست، کد دست‌نخورده ماند؛ ۲۴ رسید (۹۶ فایل، با تأیید بایت) به `superseded/primary_24_valid_pre_baseline_restore_20260904/` منتقل شد (بدون delete، قابل‌بازگشت). اکنون: closure دقیق `9c2cca27`، گیت compat PASS، preflight PASS، status صفر/۱۶۶۹.
+1. **ممیزی codex:** هر ۸ نقص علمی P2 در کد فعلی FIXED با تست؛ ادعای import نامرتبط REFUTED؛ کالیبراسیون ۳۲/۳۲؛ lock زنده صفر؛ digestها سالم.
+2. **موازی‌سازی:** patch هم‌زیستی نوشته+تست شد (۶/۶ سبز، preflight با Method Y زنده به‌عنوان co-tenant) ولی برای حفظ pins برگردانده شد؛ در `advisor-plans/BRAINIAC_COTENANCY_*` برای کارت جداگانه (نیازمند GPU خالی). تا آن زمان: اجرای `full` فقط وقتی Method Y بیکار است (preflight در غیر این صورت fail-closed می‌کند).
+3. **Method Y:** در تمام مدت زنده (PIDs 15748/21344 روی GPU)؛ فقط probe خواندنی؛ هیچ full شروع نشد. فایل‌ها عمداً unstaged؛ push نشد.
+
 ## زنده‌ترین — ۲۰۲۶-۰۹-۰۴ شب (رزنت deterministic شد؛ A2 در حال آموزش؛ resume دو بار اثبات شد؛ آماده تولید)
 
 0. **مانع رزنت رفع شد:** استم `MaxPool3d` (و بعد `AvgPool3d`) backward deterministic در CUDA ندارند → جایگزینی با depthwise strided conv (`k3/s2/p1`)؛ همان downsampling و RF، deterministic-safe. تست جدید ۲/۲ سبز؛ کل suite متمرکز سبز.
@@ -207,3 +226,12 @@ Digest 9b0f90a5... and battery 40a4a009... preserved
 - Claim ceiling: `POST_HOC_INTERNAL_TECHNICAL_EVIDENCE`.
 - Runtime counts must be read from `prepare_brainiac_raw_t1_v2.py --mode status`; no PID/count in this section is treated as timeless.
 <!-- BRAINIAC_PREPROCESSING_PLAN018_LIVE_END -->
+## نشست 2026-09-05 — کارت MX-03 (شاخه method-x/mx03-audit-fix)
+
+1. باتری ۵ مدلی TERMINAL تأیید شد (۵/۵ fold، outer معتبر، OOF FINALIZED با ۱۳۳۶ ردیف)؛ هیچ بازآموزی انجام نشد.
+2. ممیزی مستقل سه‌لایه (کد/علم/Colab) + راستی‌آزمایی مستقیم هر P0؛ یک ادعا (OOF-unfinalizable) با مدرک رد شد.
+3. فیکس‌ها: اعتبارسنج پنج‌مدلی، فلگ‌های loader، معنای ablation (drop/tabular_only)، factory قطعی resnet34/50، سطح classifier، device-gate، فرم scoped برای split-digest، ناظر اجرا، scaffold سنتتیک (end-to-end با EXIT صفر روی CPU).
+4. Colab رسمی: NOT-VIABLE برای دستور قفل‌شده؛ طرح مشروط + ران‌بوک + پک ۳۶ فایل (sha256 ‏dc1ea80c…‎) آماده. smoke سنتتیک مجاز، ۹ بازوی رسمی قفل G1–G5.
+5. کد اخلاق IR.MODARES.REC.1404.039 ثبت شد (docs/ethics/ + رسید registry)؛ پوشش ابری ندارد — DUA/اطلاع کمیته باقی است.
+6. بازوهای GPU در صف پس از Method Y (دستور resumable آماده، retry خودکار بازوهای BLOCKED).
+7. رسیدها: results/method_x_registry/MX03_*_20260905.json (+ETHICS_* ،MX03_PRECOLAB_HASH_SNAPSHOT)؛ تصمیم‌ها در runs/decisions.jsonl.
