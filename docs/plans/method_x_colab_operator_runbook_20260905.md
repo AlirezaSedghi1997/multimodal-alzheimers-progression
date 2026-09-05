@@ -24,7 +24,8 @@ A ready-made pack has been built and verified from branch
 machine-computed — 36 code/text files, 345,472 bytes, zero data files):
 
 - Path: `C:\Users\USER\AppData\Local\Temp\opencode\mx03_colab_pack.zip`
-- SHA-256: `86af72bed0b05b938c48fc588ad0ad0c07f95ef507cc21bc0475e6a7f79744ae`
+- SHA-256: `dc1ea80c052b2f91747d3e9899a123f9cd0a95ec1b781af7aaad6a30e8c90f43`
+  (byte-identical to branch blobs; verified per-file, zero drift, zero non-code)
 - Verify before upload: recompute the hash; any mismatch = rebuild, never
   hand-edit the zip.
 
