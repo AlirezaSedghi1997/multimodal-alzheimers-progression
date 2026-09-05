@@ -19,6 +19,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from scripts.train_baseline import average_precision, brier, roc_auc
 from scripts.train_pet_method_y import resolve_training_device
+from src.utils.dataloader_config import resolve_dataloader_kwargs
 from src.training.method_x_resume import (
     assert_resume_contract,
     build_run_contract,
@@ -300,6 +301,7 @@ class H5MethodXDataset:
         sanity_random_noise_images: bool = False,
         return_phenotype_features: bool = False,
         input_mode: str = "mri_plus_tabular",
+        drop_tabular_feature: str = "none",
         seed: int = 13,
     ) -> None:
         self.cache_path = cache_path
@@ -310,6 +312,10 @@ class H5MethodXDataset:
         self.input_mode = str(input_mode).lower().strip()
         if self.input_mode not in ALLOWED_METHOD_X_INPUT_MODES:
             raise ValueError(f"Unsupported Method X input_mode: {input_mode}")
+        drop = str(drop_tabular_feature or "none").lower().strip()
+        if drop != "none" and drop not in METHOD_X_PHENOTYPE_FEATURES:
+            raise ValueError(f"Unsupported Method X drop_tabular_feature: {drop_tabular_feature}")
+        self.drop_tabular_index = -1 if drop == "none" else list(METHOD_X_PHENOTYPE_FEATURES).index(drop)
         self.seed = int(seed)
         if sanity_random_labels:
             rng = random.Random(seed + len(indices))
@@ -341,6 +347,16 @@ class H5MethodXDataset:
         if self.input_mode == "mri_only":
             tabular = torch.zeros_like(tabular)
             tab_presence = torch.tensor(0.0, dtype=torch.float32)
+        if self.input_mode == "tabular_only":
+            # Mirror of mri_only: the image is a constant zero volume, so all
+            # learnable signal must come from the tabular branch.
+            image = torch.zeros_like(image)
+        if self.drop_tabular_index >= 0:
+            # Feature-drop ablation: remove one canonical tabular column fully
+            # (before phenotype derivation), leaving a constant that carries
+            # no information. Normalization stats stay fold-local and full.
+            tabular = tabular.clone()
+            tabular[..., self.drop_tabular_index] = 0.0
         label = torch.tensor(float(self.labels[item]), dtype=torch.float32)
         if self.return_phenotype_features:
             phenotype = phenotype_features_from_tabular(tabular).to(torch.float32)
@@ -1554,6 +1570,7 @@ def build_aggregate(
         "trainable_parameter_count": getattr(args, "_trainable_parameter_count", None),
         "total_parameter_count": getattr(args, "_total_parameter_count", None),
         "input_mode": args.input_mode,
+        "drop_tabular_feature": getattr(args, "drop_tabular_feature", "none"),
         "latent_alignment_lambda": args.latent_alignment_lambda,
         "phenotypic_contrastive_alignment": bool(getattr(args, "phenotypic_contrastive_alignment", False)),
         "phenotypic_contrastive_lambda": float(getattr(args, "phenotypic_contrastive_lambda", 0.0)),
@@ -1631,6 +1648,7 @@ def build_aggregate(
         "epoch_target": epochs,
         "epoch_target_met_all_completed_folds": all(int(m.get("epochs_run") or 0) >= epochs for m in fold_metrics) if fold_metrics else False,
         "folds": folds,
+        "completed_folds": len(fold_metrics),
         "batch_size": args.batch_size,
         "val_fraction": args.val_fraction,
         "early_stopping_patience": args.early_stopping_patience,
@@ -2013,6 +2031,7 @@ def requested_model_signature(args) -> dict[str, object]:
         "causal_adjustment": getattr(args, "causal_adjustment", "none"),
         "q2_channel_gate": getattr(args, "q2_channel_gate", "none"),
         "input_mode": getattr(args, "input_mode", "mri_plus_tabular"),
+        "drop_tabular_feature": getattr(args, "drop_tabular_feature", "none"),
         "latent_dim": int(args.latent_dim),
         "tab_hidden_dim": int(args.tab_hidden_dim),
         "dropout": float(args.dropout),
@@ -2057,6 +2076,7 @@ def payload_model_signature(payload: dict) -> dict[str, object] | None:
             "causal_adjustment": payload.get("causal_adjustment", "none"),
             "q2_channel_gate": payload.get("q2_channel_gate", "none"),
             "input_mode": payload["input_mode"],
+            "drop_tabular_feature": payload.get("drop_tabular_feature", "none"),
             "latent_dim": int(payload["latent_dim"]),
             "tab_hidden_dim": int(payload["tab_hidden_dim"]),
             "dropout": float(payload["dropout"]),
@@ -2161,7 +2181,7 @@ def evaluate_saved_fold(
         H5MethodXDataset(cache_path, test_idx, test_y, input_mode=getattr(args, "input_mode", "mri_plus_tabular")),
         batch_size=args.batch_size,
         shuffle=False,
-        num_workers=args.num_workers,
+        **dataloader_throughput_kwargs(args),
     )
     pos_weight = parse_pos_weight(getattr(args, "pos_weight", "auto"), fit_y, device)
     y_true, y_prob = predict(
@@ -2244,6 +2264,21 @@ def evaluate_saved_fold(
     return metrics, y_true, y_prob
 
 
+def dataloader_throughput_kwargs(args) -> dict:
+    """Throughput-only DataLoader knobs shared by every Method X loader.
+
+    Single call-site for the canonical, unit-tested resolver: sample order,
+    augmentation, seeds, and fold membership are never affected. Raises
+    fail-closed on invalid knob combinations.
+    """
+    return resolve_dataloader_kwargs(
+        num_workers=int(getattr(args, "num_workers", 0) or 0),
+        pin_memory=bool(getattr(args, "pin_memory", False)),
+        persistent_workers=bool(getattr(args, "persistent_workers", False)),
+        prefetch_factor=int(getattr(args, "prefetch_factor", 2) or 0),
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache", default="data/cached/t1_volume_cache_128.h5")
@@ -2320,6 +2355,9 @@ def main() -> int:
     ap.add_argument("--synib_lambda", type=float, default=0.0)
     ap.add_argument("--modality_dropout", type=float, default=0.5)
     ap.add_argument("--input_mode", default="mri_plus_tabular", choices=ALLOWED_METHOD_X_INPUT_MODES)
+    ap.add_argument("--drop_tabular_feature", default="none",
+                    choices=("none",) + tuple(METHOD_X_PHENOTYPE_FEATURES),
+                    help="Feature-drop ablation: zero one canonical tabular column (fully removed before phenotype derivation).")
     ap.add_argument("--device", default="auto")
     ap.add_argument(
         "--require_gpu",
@@ -2343,6 +2381,16 @@ def main() -> int:
     )
     ap.add_argument("--limit", type=int, default=0, help="Optional per-split cap for CPU smoke.")
     ap.add_argument("--num_workers", type=int, default=0)
+    ap.add_argument("--pin_memory", dest="pin_memory", action="store_true", default=False,
+                    help="Throughput-only: page-locked host staging for device transfer.")
+    ap.add_argument("--no-pin_memory", dest="pin_memory", action="store_false",
+                    help="Throughput-only: disable page-locked host staging.")
+    ap.add_argument("--persistent_workers", dest="persistent_workers", action="store_true", default=False,
+                    help="Throughput-only: keep DataLoader workers alive across epochs (effective only with num_workers>0).")
+    ap.add_argument("--no-persistent_workers", dest="persistent_workers", action="store_false",
+                    help="Throughput-only: recycle DataLoader workers every epoch.")
+    ap.add_argument("--prefetch_factor", type=int, default=2,
+                    help="Throughput-only: batches prefetched per worker (effective only with num_workers>0).")
     ap.add_argument("--amp", action="store_true")
     ap.add_argument("--grad_accum", type=int, default=1, help="Gradient accumulation steps for larger effective batch size.")
     ap.add_argument("--warmup_epochs", type=int, default=5, help="Linear LR warmup epochs before cosine annealing.")
@@ -2554,6 +2602,8 @@ def main() -> int:
         "num_workers": int(getattr(args, "num_workers", 0)),
         "batch_size": int(args.batch_size),
         "pin_memory": bool(getattr(args, "pin_memory", False)),
+        "persistent_workers": bool(getattr(args, "persistent_workers", False)),
+        "prefetch_factor": int(getattr(args, "prefetch_factor", 2) or 0),
     }
     parameters_contract = requested_model_signature(args)
     run_contract = build_run_contract(
@@ -2966,6 +3016,7 @@ def main() -> int:
                         or float(args.phenotypic_contrastive_lambda) > 0.0
                     ),
                     input_mode=args.input_mode,
+                    drop_tabular_feature=getattr(args, "drop_tabular_feature", "none"),
                     seed=args.seed + fold,
                 ),
                 enabled=args.monai_augment,
@@ -2974,7 +3025,7 @@ def main() -> int:
             ),
             batch_size=args.batch_size,
             shuffle=True,
-            num_workers=args.num_workers,
+            **dataloader_throughput_kwargs(args),
         )
         val_loader = DataLoader(
             H5MethodXDataset(
@@ -2984,11 +3035,12 @@ def main() -> int:
                 sanity_random_labels=False,
                 sanity_random_noise_images=args.sanity_random_noise_images,
                 input_mode=args.input_mode,
+                drop_tabular_feature=getattr(args, "drop_tabular_feature", "none"),
                 seed=args.seed + fold + 1000,
             ),
             batch_size=args.batch_size,
             shuffle=False,
-            num_workers=args.num_workers,
+            **dataloader_throughput_kwargs(args),
         )
         test_loader = DataLoader(
             H5MethodXDataset(
@@ -2998,11 +3050,12 @@ def main() -> int:
                 sanity_random_labels=False,
                 sanity_random_noise_images=args.sanity_random_noise_images,
                 input_mode=args.input_mode,
+                drop_tabular_feature=getattr(args, "drop_tabular_feature", "none"),
                 seed=args.seed + fold + 2000,
             ),
             batch_size=args.batch_size,
             shuffle=False,
-            num_workers=args.num_workers,
+            **dataloader_throughput_kwargs(args),
         )
 
         model = MethodX3DClassifier(

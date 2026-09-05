@@ -36,6 +36,20 @@ def build_3d_backbone(name: str, in_channels: int = 1, out_dim: int = 128, pretr
             raise ImportError("MONAI is required for resnet18_3d. Install monai or use --backbone tiny.") from exc
         return resnet18(spatial_dims=3, n_input_channels=in_channels, num_classes=out_dim)
 
+    if name == "resnet34_3d":
+        try:
+            from monai.networks.nets import resnet34
+        except Exception as exc:
+            raise ImportError("MONAI is required for resnet34_3d. Install monai or use --backbone tiny.") from exc
+        return resnet34(spatial_dims=3, n_input_channels=in_channels, num_classes=out_dim)
+
+    if name == "resnet50_3d":
+        try:
+            from monai.networks.nets import resnet50
+        except Exception as exc:
+            raise ImportError("MONAI is required for resnet50_3d. Install monai or use --backbone tiny.") from exc
+        return resnet50(spatial_dims=3, n_input_channels=in_channels, num_classes=out_dim)
+
     if name == "densenet121_3d":
         try:
             from monai.networks.nets import DenseNet121
