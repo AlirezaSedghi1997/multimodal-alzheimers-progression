@@ -55,15 +55,62 @@ class MethodX3DClassifier(nn.Module):
         align_dim: int | None = None,
         bottleneck_dim: int = 32,
         fusion_hidden_dim: int | None = None,
+        gradient_checkpointing: bool = False,
+        pretrained_checkpoint: str | None = None,
+        attention: str = "none",
+        alignment_head: str = "linear",
+        alignment_head_mode: str = "linear",
+        tab_encoder: str = "linear",
+        causal_adjustment: str = "none",
+        n_experts: int = 4,
+        fusion_num_heads: int = 2,
+        moe_load_balance_lambda: float = 0.0,
+        channel_gate: str = "none",
     ) -> None:
         if torch is None:
             raise RuntimeError("PyTorch is required for MethodX3DClassifier")
+        # Fail-closed surface: this constructor implements exactly the locked
+        # default configuration. Any non-default research flag is rejected
+        # instead of being silently ignored, so a contract can never drift
+        # from the executed architecture.
+        _defaults = {
+            "attention": "none",
+            "alignment_head": "linear",
+            "alignment_head_mode": "linear",
+            "tab_encoder": "linear",
+            "causal_adjustment": "none",
+            "channel_gate": "none",
+            "n_experts": 4,
+            "fusion_num_heads": 2,
+            "moe_load_balance_lambda": 0.0,
+        }
+        _given = {
+            "attention": str(attention or "none").lower(),
+            "alignment_head": str(alignment_head or "linear").lower(),
+            "alignment_head_mode": str(alignment_head_mode or "linear").lower(),
+            "tab_encoder": str(tab_encoder or "linear").lower(),
+            "causal_adjustment": str(causal_adjustment or "none").lower(),
+            "channel_gate": str(channel_gate or "none").lower(),
+            "n_experts": int(n_experts),
+            "fusion_num_heads": int(fusion_num_heads),
+            "moe_load_balance_lambda": float(moe_load_balance_lambda),
+        }
+        _violations = sorted(key for key in _defaults if _given[key] != _defaults[key])
+        if _violations:
+            raise ValueError(
+                "MethodX3DClassifier non-default research flags are not implemented: "
+                + ", ".join(f"{key}={_given[key]!r}" for key in _violations)
+            )
+        if pretrained_checkpoint:
+            raise ValueError("MethodX3DClassifier pretrained loading is not implemented in this surface.")
         super().__init__()
+        self.gradient_checkpointing = bool(gradient_checkpointing)
+        self.pretrained_load_report: dict | None = None
         self.fusion = fusion.lower().strip()
         self.latent_dim = int(latent_dim)
         self.tab_hidden_dim = int(tab_hidden_dim)
         self.backbone_name = backbone.lower().strip()
-        hidden = int(fusion_hidden_dim if fusion_hidden_dim is not None else latent_dim)
+        hidden = int(latent_dim if not fusion_hidden_dim else fusion_hidden_dim)
         concat_align = int(align_dim if align_dim is not None else max(latent_dim // 2, tab_hidden_dim))
 
         if self.backbone_name == "tiny":
@@ -111,7 +158,12 @@ class MethodX3DClassifier(nn.Module):
             raise ValueError(f"Unsupported fusion mode: {fusion}")
 
     def encode(self, image, tabular):
-        mri_latent = self.encoder(image)
+        if self.gradient_checkpointing:
+            import torch.utils.checkpoint as torch_checkpoint
+
+            mri_latent = torch_checkpoint.checkpoint(self.encoder, image, use_reentrant=False)
+        else:
+            mri_latent = self.encoder(image)
         if mri_latent.ndim > 2:
             mri_latent = mri_latent.view(mri_latent.size(0), -1)
         tab_latent = self.tab_encoder(tabular)

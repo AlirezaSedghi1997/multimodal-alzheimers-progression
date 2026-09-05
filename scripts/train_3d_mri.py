@@ -220,13 +220,35 @@ def validate_method_x_input_policy(args, cache_path: Path) -> dict[str, object]:
     }
 
 
-def method_x_split_contract_digest(split_dir: Path) -> str:
-    """Hash-bound digest of the locked outer split CSVs (order-stable)."""
+def method_x_split_contract_digest(split_dir: Path, folds: int | None = None, selection_only: bool = False) -> str:
+    """Hash-bound digest of the locked outer split CSVs (order-stable).
+
+    Legacy form ``(split_dir)`` digests every top-level ``*.csv`` and is
+    byte-identical to all historical run contracts — it must never change.
+    The scoped form selects ``fold_{i}_{train,test}.csv`` for
+    ``i in range(folds)`` (``selection_only=True`` keeps train files only)
+    for HPO-selection and comparison contexts.
+    """
 
     import hashlib
 
     digest = hashlib.sha256()
-    for path in sorted(Path(split_dir).glob("*.csv")):
+    base = Path(split_dir)
+    if folds is None and not selection_only:
+        paths = sorted(base.glob("*.csv"))
+    else:
+        if folds is None or int(folds) < 1:
+            raise ValueError("method_x_split_contract_digest requires folds>=1 for scoped digests")
+        names = [
+            f"fold_{fold}_{part}.csv"
+            for fold in range(int(folds))
+            for part in (("train",) if selection_only else ("train", "test"))
+        ]
+        paths = [base / name for name in sorted(names)]
+        missing = [path.name for path in paths if not path.is_file()]
+        if missing:
+            raise RuntimeError(f"SPLIT_CONTRACT_SCOPED_FILES_MISSING:{','.join(missing)}")
+    for path in paths:
         digest.update(path.name.encode("utf-8"))
         digest.update(b"\0")
         digest.update(path.read_bytes())
@@ -2655,7 +2677,7 @@ def main() -> int:
         print(json.dumps(report, indent=2))
         return 1
 
-    device = resolve_training_device(args.device, require_gpu=args.require_gpu)
+    device = resolve_method_x_training_device(args.device, require_gpu=args.require_gpu)
     mode, epoch_cap, fold_cap, default_limit = resolve_mode(
         device, args.phase, args.limit, require_gpu=args.require_gpu
     )

@@ -41,14 +41,24 @@ def build_3d_backbone(name: str, in_channels: int = 1, out_dim: int = 128, pretr
             from monai.networks.nets import resnet34
         except Exception as exc:
             raise ImportError("MONAI is required for resnet34_3d. Install monai or use --backbone tiny.") from exc
-        return resnet34(spatial_dims=3, n_input_channels=in_channels, num_classes=out_dim)
+        from src.models.backbones.deterministic_pool import replace_native_maxpool3d
+
+        model = resnet34(spatial_dims=3, n_input_channels=in_channels, num_classes=out_dim)
+        if replace_native_maxpool3d(model) < 1:
+            raise RuntimeError("resnet34_3d builder found no native MaxPool3d to determinize.")
+        return model
 
     if name == "resnet50_3d":
         try:
             from monai.networks.nets import resnet50
         except Exception as exc:
             raise ImportError("MONAI is required for resnet50_3d. Install monai or use --backbone tiny.") from exc
-        return resnet50(spatial_dims=3, n_input_channels=in_channels, num_classes=out_dim)
+        from src.models.backbones.deterministic_pool import replace_native_maxpool3d
+
+        model = resnet50(spatial_dims=3, n_input_channels=in_channels, num_classes=out_dim)
+        if replace_native_maxpool3d(model) < 1:
+            raise RuntimeError("resnet50_3d builder found no native MaxPool3d to determinize.")
+        return model
 
     if name == "densenet121_3d":
         try:
