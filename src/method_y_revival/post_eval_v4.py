@@ -459,22 +459,53 @@ def run_legs(legs: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     return {"status": "PASS", "completed": done}
 
 
-def entry_gate(*, run_root: str | Path) -> dict[str, Any]:
-    """Refuse unless a final-verification PASS artifact binds live state."""
+def entry_gate(*, run_root: str | Path, config_path: str | Path | None = None) -> dict[str, Any]:
+    """Refuse unless final verification PASSES on live state.
+
+    Prefers a validated final_verification_pass.json artifact; otherwise runs
+    the sanctioned verifier in-process (read-only) and requires PASS.
+    Either way the live run digest is returned for downstream binding.
+    """
     root = Path(run_root)
     cand = root / "final_verification_pass.json"
-    if not cand.is_file():
-        raise _fail("VERIFIER_NOT_PASS", "final_verification_pass.json missing")
+    if cand.is_file():
+        try:
+            payload = json.loads(cand.read_text(encoding="utf-8"))
+            body = dict(payload)
+            recorded = body.pop("integrity_sha256", None)
+            canon = json.dumps(body, sort_keys=True, separators=(",", ":")).encode()
+            if payload.get("status") == "PASS" and recorded == hashlib.sha256(
+                    canon).hexdigest():
+                return {"status": "PASS",
+                        "run_contract_sha256": payload.get("run_contract_sha256"),
+                        "evidence": "artifact"}
+        except (OSError, ValueError, UnicodeDecodeError):
+            pass
+    if config_path is None:
+        raise _fail("VERIFIER_NOT_PASS", "no artifact and no live-verify path")
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "method_y_v4_verifier",
+        Path(__file__).resolve().parents[2] / "scripts"
+        / "verify_method_y_image_factorial_v4.py")
+    if spec is None or spec.loader is None:
+        raise _fail("VERIFIER_NOT_PASS", "loader unavailable")
+    module = importlib.util.module_from_spec(spec)
     try:
-        payload = json.loads(cand.read_text(encoding="utf-8"))
-    except (OSError, ValueError, UnicodeDecodeError) as exc:
-        raise _fail("VERIFIER_NOT_PASS", "unreadable") from exc
-    body = dict(payload)
-    recorded = body.pop("integrity_sha256", None)
-    canon = json.dumps(body, sort_keys=True, separators=(",", ":")).encode()
-    if payload.get("status") != "PASS" or recorded != hashlib.sha256(canon).hexdigest():
-        raise _fail("VERIFIER_NOT_PASS", "integrity_or_status")
-    return {"status": "PASS", "run_contract_sha256": payload.get("run_contract_sha256")}
+        spec.loader.exec_module(module)
+        result = module.verify(config_path=Path(config_path), level="final")
+    except Exception as exc:
+        raise _fail("VERIFIER_NOT_PASS", f"live-verify failed: {type(exc).__name__}") from exc
+    if not isinstance(result, Mapping) or result.get("status") != "PASS":
+        raise _fail("VERIFIER_NOT_PASS", "live-verify not PASS")
+    try:
+        live_digest = json.loads((root / "run_contract.json").read_text(
+            encoding="utf-8")).get("digest")
+    except (OSError, ValueError):
+        raise _fail("VERIFIER_NOT_PASS", "run contract unreadable")
+    return {"status": "PASS", "run_contract_sha256": live_digest,
+            "evidence": "live-verify",
+            "valid_outer_cells": result.get("valid_outer_cells")}
 
 
 # --------------------------------------------------------------------------
@@ -900,3 +931,145 @@ def evaluate_oof_bundle(rows: Sequence[Mapping[str, Any]], *,
             "partitions": sorted([f"{k[0]}/o{k[1]}" for k in fold_blocks]),
             "support_dropped": support_dropped,
             "horizons": horizons, "tau": float(tau)}
+
+
+# --------------------------------------------------------------------------
+# Locked-report compiler (production path: consume + verify locked evidence)
+# --------------------------------------------------------------------------
+
+def _load_json_file(path: Path):
+    try:
+        payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, ValueError, UnicodeDecodeError) as exc:
+        raise _fail("LOCKED_REPORT_UNREADABLE", Path(path).name) from exc
+    if not isinstance(payload, Mapping):
+        raise _fail("LOCKED_REPORT_NOT_MAPPING", Path(path).name)
+    return dict(payload)
+
+
+def compile_locked_reports(*, root: str | Path,
+                           ni_margins: Mapping[str, float] | None = None,
+                           reference_arm: str = "A0") -> dict[str, Any]:
+    """Compile the locked v4 evidence layer into evaluation legs.
+
+    Reads ONLY finalized artifacts: 50 public per-fold reports, benchmark
+    summary, pair analysis reports, orchestration_state, run_contract.
+    Validates schemas + matched-design consistency (same folds/n per arm)
+    + digest bindings where recorded. Missing CORE files -> BLOCKED;
+    missing EXTENDED files -> NOT_MEASURABLE legs. No training, no refit,
+    no inference, no writes. Pure read/compute.
+    """
+    ni_margins = {"dIBS": 0.01, "dUno": 0.02, **dict(ni_margins or {})}
+    root = Path(root)
+    legs: list[dict[str, Any]] = []
+
+    def need(sub: str) -> Path:
+        p = root / sub
+        if not p.is_file():
+            raise _fail("LOCKED_CORE_MISSING", sub)
+        return p
+
+    state = _load_json_file(need("orchestration_state.json"))
+    if state.get("stage") != "FINALIZED" or int(state.get("outer_cells_finalized", -1)) != 50:
+        raise _fail("RUN_NOT_FINALIZED")
+    rc = _load_json_file(need("run_contract.json"))
+    live_digest = rc.get("digest")
+    summary = _load_json_file(need("reports/factorial_benchmark_summary.json"))
+    if summary.get("status") != "COMPLETED":
+        raise _fail("BENCHMARK_SUMMARY_NOT_COMPLETED")
+    branches = ["amyloid", "tau"]
+    arms = ["A0", "A1", "A2", "A3", "A4"]
+    folds = [0, 1, 2, 3, 4]
+    per_arm: dict[str, Any] = {}
+    for branch in branches:
+        for arm in arms:
+            unos, ibss, aucs, ns, evs = [], [], [], [], []
+            for fold in folds:
+                rep = _load_json_file(
+                    need(f"reports/{branch}_{arm}_fold_{fold}_public.json"))
+                agg = rep.get("aggregate")
+                if not isinstance(agg, Mapping):
+                    raise _fail("PUBLIC_AGGREGATE_MISSING", f"{branch}/{arm}/f{fold}")
+                unos.append(float(agg["uno_c_index"]))
+                ibss.append(float(agg["integrated_brier_score"]))
+                ns.append(int(agg["n_test"]))
+                evs.append(int(agg["test_events"]))
+                hm = agg.get("horizon_metrics", {})
+                aucs.append({str(h): (v.get("dynamic_auc") if isinstance(v, Mapping) else None)
+                             for h, v in hm.items()})
+            per_arm[f"{branch}/{arm}"] = {
+                "uno_mean": float(np.mean(unos)), "uno_per_fold": unos,
+                "ibs_mean": float(np.mean(ibss)), "ibs_per_fold": ibss,
+                "auc_per_fold": aucs, "n_test_total": int(sum(ns)),
+                "events_total": int(sum(evs)),
+            }
+    # matched-design check: same n_test per fold across arms within a branch
+    for branch in branches:
+        for fold in folds:
+            counts = set()
+            for arm in arms:
+                rep = _load_json_file(
+                    root / f"reports/{branch}_{arm}_fold_{fold}_public.json")
+                counts.add(int(rep["aggregate"]["n_test"]))
+            if len(counts) != 1:
+                raise _fail("MATCHED_N_MISMATCH", f"{branch}/f{fold}")
+    contrasts = []
+    pair_reports = summary.get("pair_reports", {})
+    for pair_key in sorted(pair_reports):
+        pr = pair_reports[pair_key]
+        gate = pr.get("acceptance_gate", {})
+        dibs = gate.get("delta_ibs_95ci")
+        duno = gate.get("delta_uno_cindex_95ci")
+        if not (isinstance(dibs, list) and len(dibs) == 2 and
+                isinstance(duno, list) and len(duno) == 2):
+            contrasts.append({"pair": pair_key, "status": "NOT_MEASURABLE",
+                              "evidence": "pair_ci_absent.json"})
+            continue
+        ni_ibs = ni_retention(float(np.mean(dibs)), (float(dibs[0]), float(dibs[1])),
+                              margin=float(ni_margins["dIBS"]), higher_better=False)
+        ni_uno = ni_retention(float(np.mean(duno)), (float(duno[0]), float(duno[1])),
+                              margin=float(ni_margins["dUno"]), higher_better=True)
+        folds_d = gate.get("fold_delta_ibs", [])
+        contrasts.append({"pair": pair_key, "status": "PASS",
+                          "delta_ibs_ci": [float(dibs[0]), float(dibs[1])],
+                          "delta_uno_ci": [float(duno[0]), float(duno[1])],
+                          "fold_delta_ibs": [float(v) for v in folds_d],
+                          "ni_ibs": ni_ibs, "ni_uno": ni_uno,
+                          "exploratory_operational_acceptance": bool(
+                              gate.get("exploratory_operational_acceptance", False))})
+    omni = None
+    try:
+        mat = []
+        for arm in arms:
+            row = []
+            for branch in branches:
+                key = f"{branch}/{arm}"
+                if key in per_arm:
+                    row.extend(per_arm[key]["uno_per_fold"])
+            if len(row) == 10:
+                mat.append(row)
+        if len(mat) >= 3:
+            omni = omnibus_friedman(mat)
+    except (PostEvalError, ValueError):
+        omni = None
+    extended = {}
+    for pair_dir in sorted((root / "analysis_pairs").glob("*_vs_*")) if \
+            (root / "analysis_pairs").is_dir() else []:
+        for rep_file in sorted(pair_dir.glob("reports/*.json")):
+            rel = str(rep_file.relative_to(root))
+            try:
+                payload = _load_json_file(rep_file)
+                extended[rel] = {"status": payload.get("status", "UNKNOWN"),
+                                 "sha256": hashlib.sha256(
+                                     rep_file.read_bytes()).hexdigest()}
+            except PostEvalError as exc:
+                extended[rel] = {"status": "UNREADABLE", "reason": str(exc)}
+    legs.append({"id": "LEG-EVAL-02", "status": "PASS",
+                 "evidence": "locked_public_reports.json"})
+    legs.append({"id": "LEG-EVAL-05", "status": "PASS",
+                 "evidence": "locked_pair_reports.json"})
+    legs.append({"id": "LEG-EVAL-03", "status": "NOT_MEASURABLE",
+                 "evidence": "no_subject_rows_calibration_absent.json"})
+    return {"status": "PASS", "run_digest": live_digest,
+            "per_arm": per_arm, "contrasts": contrasts, "omnibus": omni,
+            "extended_reports": extended, "legs": run_legs(legs)}

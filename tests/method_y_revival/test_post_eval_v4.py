@@ -205,6 +205,55 @@ def test_entry_gate_requires_verifier(tmp_path):
         entry_gate(run_root=tmp_path / "nope")
 
 
+def _locked_tree(root, digest="d" * 64):
+    import json as _js
+    (root / "orchestration_state.json").write_text(_js.dumps(
+        {"stage": "FINALIZED", "outer_cells_finalized": 50}), encoding="utf-8")
+    (root / "run_contract.json").write_text(
+        _js.dumps({"digest": digest}), encoding="utf-8")
+    pairs = {}
+    for branch in ("amyloid", "tau"):
+        for arm in ("A0", "A1", "A2", "A3", "A4"):
+            for fold in range(5):
+                rep = {"schema_version": 1, "status": "COMPLETED",
+                       "run_contract_sha256": digest,
+                       "aggregate": {
+                           "uno_c_index": 0.68, "integrated_brier_score": 0.09,
+                           "n_test": 100, "test_events": 20, "n_train": 400,
+                           "horizon_metrics": {
+                               "1095.75": {"dynamic_auc": 0.70,
+                                           "status": "ESTIMABLE"}}}}
+                p = root / "reports" / f"{branch}_{arm}_fold_{fold}_public.json"
+                p.parent.mkdir(parents=True, exist_ok=True)
+                p.write_text(_js.dumps(rep), encoding="utf-8")
+    for pair in ("amyloid:A0_vs_A1", "tau:A0_vs_A1"):
+        pairs[pair] = {"acceptance_gate": {
+            "delta_ibs_95ci": [-0.002, 0.001],
+            "delta_uno_cindex_95ci": [-0.01, 0.02],
+            "fold_delta_ibs": [0.001] * 5,
+            "exploratory_operational_acceptance": False}}
+    (root / "reports").mkdir(parents=True, exist_ok=True)
+    (root / "reports" / "factorial_benchmark_summary.json").write_text(_js.dumps(
+        {"status": "COMPLETED", "pair_reports": pairs}), encoding="utf-8")
+
+
+def test_compile_locked_reports_end_to_end(tmp_path):
+    from src.method_y_revival.post_eval_v4 import compile_locked_reports
+    _locked_tree(tmp_path)
+    out = compile_locked_reports(root=tmp_path)
+    assert out["status"] == "PASS"
+    assert len(out["per_arm"]) == 10
+    assert out["contrasts"][0]["ni_ibs"]["decision"] == "RETAIN_NEGATIVE"
+    assert out["legs"]["status"] == "PASS"
+    assert out["omnibus"] is not None
+
+
+def test_compile_locked_reports_missing_core(tmp_path):
+    from src.method_y_revival.post_eval_v4 import compile_locked_reports
+    with pytest.raises(RuntimeError, match="BLOCKED"):
+        compile_locked_reports(root=tmp_path)
+
+
 def test_support_truncate_tail_leg():
     from src.method_y_revival.post_eval_v4 import support_truncate
     rows = [{"time_days": float(t)} for t in (100.0, 500.0, 900.0)]

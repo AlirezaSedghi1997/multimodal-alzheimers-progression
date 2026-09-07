@@ -45,7 +45,7 @@ def cmd_preflight(args) -> int:
     v4_root = ROOT / cfg["v4_output_root"]
     out: dict = {"mode": "preflight", "status": "BLOCKED", "checks": {}}
     try:
-        gate = pe.entry_gate(run_root=v4_root)
+        gate = pe.entry_gate(run_root=v4_root, config_path=Path(args.config))
         out["checks"]["verifier"] = "PASS"
         digest = gate["run_contract_sha256"]
     except Exception as exc:
