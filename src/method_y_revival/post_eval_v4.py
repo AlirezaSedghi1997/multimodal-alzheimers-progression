@@ -64,6 +64,17 @@ def _km(times: np.ndarray, events: np.ndarray):
                                   np.asarray(times, dtype=float))
 
 
+def _support_filter(test_time, train_time):
+    """Drop test rows at/above train support (sksurv requires strict <).
+
+    Returns (keep_mask, n_dropped). Callers record the counts; paired
+    structures apply the SAME mask to both arms (see evaluate_oof_bundle).
+    """
+    tmax = float(np.asarray(train_time, dtype=float).max(initial=0.0))
+    keep = np.asarray(test_time, dtype=float) < tmax
+    return keep, int((~keep).sum())
+
+
 def ipcw_weights(train_time, train_event, eval_time, eval_event, cap: float = 10.0):
     """Marginal-KM IPCW from TRAIN only; truncated at cap with diagnostics."""
     t = np.asarray(train_time, dtype=float)
@@ -77,7 +88,6 @@ def ipcw_weights(train_time, train_event, eval_time, eval_event, cap: float = 10
     w = np.minimum(raw, float(cap))
     return w, {"frac_truncated": frac, "min_G": float(g.min()), "cap": float(cap)}
 
-
 def tau_star(g_times, g_vals, max_horizon: float, gmin: float = 0.15) -> float:
     """Largest t with G(t)>=gmin and t<=max_horizon. No outer-driven clause."""
     gt = np.asarray(g_times, dtype=float)
@@ -88,6 +98,26 @@ def tau_star(g_times, g_vals, max_horizon: float, gmin: float = 0.15) -> float:
     return float(cand.max())
 
 
+def support_truncate(rows: Sequence[Mapping[str, Any]],
+                     horizons: Sequence[float]) -> dict[str, Any]:
+    """Truncate evaluation grid to test follow-up support (H1 tail rule).
+
+    Horizons beyond max observed follow-up are dropped with a
+    NOT_MEASURABLE leg record (weight-diagnostics evidence), never silently.
+    """
+    tmax = max(float(r["time_days"]) for r in rows)
+    usable = [float(h) for h in horizons if float(h) < tmax]
+    dropped = [float(h) for h in horizons if float(h) > tmax]
+    legs = []
+    if dropped:
+        legs.append({"id": "LEG-EVAL-02-TAIL", "status": "NOT_MEASURABLE",
+                     "evidence": "tail_support_diagnostics.json",
+                     "dropped_horizons": dropped, "max_followup": tmax})
+    if not usable:
+        raise _fail("NO_HORIZON_IN_SUPPORT")
+    return {"horizons": usable, "max_followup": tmax, "legs": legs}
+
+
 def _surv(time, event):
     from sksurv.util import Surv
     return Surv.from_arrays(np.asarray(event, dtype=bool), np.asarray(time, dtype=float))
@@ -95,10 +125,17 @@ def _surv(time, event):
 
 def uno_c(train_time, train_event, test_time, test_event, risk, tau: float):
     from sksurv.metrics import concordance_index_ipcw
+    keep, dropped = _support_filter(test_time, train_time)
+    tmax = min(float(np.asarray(test_time, dtype=float)[keep].max(initial=0.0)),
+               float(np.asarray(train_time, dtype=float).max(initial=0.0)))
+    if not float(tau) < tmax:
+        raise _fail("TAU_OUT_OF_SUPPORT", f"tau={tau}")
     ytr = _surv(train_time, train_event)
-    yte = _surv(test_time, test_event)
-    c, *_ = concordance_index_ipcw(ytr, yte, np.asarray(risk, dtype=float), float(tau))
-    return {"c": float(c), "tau": float(tau)}
+    yte = _surv(np.asarray(test_time, dtype=float)[keep],
+                np.asarray(test_event, dtype=bool)[keep])
+    c, *_ = concordance_index_ipcw(ytr, yte, np.asarray(risk, dtype=float)[keep],
+                                   float(tau))
+    return {"c": float(c), "tau": float(tau), "n_dropped_test": int(dropped)}
 
 
 def harrell_c(time, event, risk):
@@ -111,20 +148,36 @@ def harrell_c(time, event, risk):
 
 def dynamic_auc(train_time, train_event, test_time, test_event, risk, times):
     from sksurv.metrics import cumulative_dynamic_auc
+    keep, dropped = _support_filter(test_time, train_time)
+    tmax = min(float(np.asarray(test_time, dtype=float)[keep].max(initial=0.0)),
+               float(np.asarray(train_time, dtype=float).max(initial=0.0)))
+    grid = [float(v) for v in np.asarray(times, dtype=float) if float(v) < tmax]
+    if not grid:
+        raise _fail("NO_TIMES_IN_SUPPORT")
     ytr = _surv(train_time, train_event)
-    yte = _surv(test_time, test_event)
-    auc, mean_auc = cumulative_dynamic_auc(ytr, yte, np.asarray(risk, dtype=float),
-                                           np.asarray(times, dtype=float))
+    yte = _surv(np.asarray(test_time, dtype=float)[keep],
+                np.asarray(test_event, dtype=bool)[keep])
+    auc, mean_auc = cumulative_dynamic_auc(
+        ytr, yte, np.asarray(risk, dtype=float)[keep],
+        np.asarray(grid, dtype=float))
     return {"auc": [float(v) for v in auc], "mean_auc": float(mean_auc),
-            "times": [float(v) for v in times]}
+            "times": [float(v) for v in grid], "n_dropped_test": int(dropped),
+            "dropped_times": sorted(set(float(v) for v in times) - set(grid))}
 
 
 def ibs_summary(train_time, train_event, test_time, test_event, surv_prob, times):
     from sksurv.metrics import integrated_brier_score, brier_score
+    keep, dropped = _support_filter(test_time, train_time)
     ytr = _surv(train_time, train_event)
-    yte = _surv(test_time, test_event)
-    p = np.asarray(surv_prob, dtype=float)
-    tm = np.asarray(times, dtype=float)
+    yte = _surv(np.asarray(test_time, dtype=float)[keep],
+                np.asarray(test_event, dtype=bool)[keep])
+    p = np.asarray(surv_prob, dtype=float)[keep]
+    tmax = min(float(np.asarray(test_time, dtype=float)[keep].max(initial=0.0)),
+               float(np.asarray(train_time, dtype=float).max(initial=0.0)))
+    tm = np.asarray([float(v) for v in np.asarray(times, dtype=float)
+                     if float(v) < tmax], dtype=float)
+    if tm.size == 0:
+        raise _fail("NO_TIMES_IN_SUPPORT")
     ibs = float(integrated_brier_score(ytr, yte, p, tm))
     _, curve = brier_score(ytr, yte, p, tm)
     null = np.full_like(p, np.mean([
@@ -135,7 +188,9 @@ def ibs_summary(train_time, train_event, test_time, test_event, surv_prob, times
     except Exception:
         scaled = 0.0
     return {"ibs": ibs, "scaled_ibs": float(scaled),
-            "brier_curve": [float(v) for v in curve], "times": [float(v) for v in tm]}
+            "brier_curve": [float(v) for v in curve], "times": [float(v) for v in tm],
+            "n_dropped_test": int(dropped),
+            "dropped_times": sorted(set(float(v) for v in np.asarray(times, dtype=float)) - set(float(v) for v in tm))}
 
 
 def calibration_at_horizon(time, event, pred_surv, horizon: float, *,
@@ -145,6 +200,10 @@ def calibration_at_horizon(time, event, pred_surv, horizon: float, *,
     time = np.asarray(time, dtype=float)
     event = np.asarray(event, dtype=bool)
     pred = np.asarray(pred_surv, dtype=float)
+    tmax = min(float(time.max(initial=0.0)),
+               float(np.asarray(train_time, dtype=float).max(initial=0.0)))
+    if not float(horizon) < tmax:
+        raise _fail("HORIZON_OUT_OF_SUPPORT", f"horizon={horizon}")
     status = ((time <= horizon) & event).astype(float)
     w, _ = ipcw_weights(train_time, train_event, np.minimum(time, horizon),
                         np.ones_like(time, dtype=bool))
@@ -382,14 +441,18 @@ def scan_text(text: str) -> dict[str, Any]:
 
 
 def run_legs(legs: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
-    """BLOCKED halts; NOT_MEASURABLE/TIMEOUT recorded, pipeline continues."""
+    """BLOCKED halts; NOT_MEASURABLE/TIMEOUT/UNKNOWN recorded, pipeline continues.
+
+    UNKNOWN propagates as a non-passing record (M4 fix): it never upgrades a
+    gate and the exploratory stamp never overrides it (claims compiler rule).
+    """
     done = []
     for leg in legs:
         status = str(leg.get("status", ""))
         if status == "BLOCKED":
             return {"status": "BLOCKED", "halted_at": str(leg.get("id", "?")),
                     "reason": str(leg.get("reason", "")), "completed": done}
-        if status not in ("PASS", "NOT_MEASURABLE", "TIMEOUT"):
+        if status not in ("PASS", "NOT_MEASURABLE", "TIMEOUT", "UNKNOWN"):
             return {"status": "BLOCKED", "halted_at": str(leg.get("id", "?")),
                     "reason": "LEG_STATUS_INVALID", "completed": done}
         done.append(str(leg.get("id", "?")))
@@ -412,3 +475,428 @@ def entry_gate(*, run_root: str | Path) -> dict[str, Any]:
     if payload.get("status") != "PASS" or recorded != hashlib.sha256(canon).hexdigest():
         raise _fail("VERIFIER_NOT_PASS", "integrity_or_status")
     return {"status": "PASS", "run_contract_sha256": payload.get("run_contract_sha256")}
+
+
+# --------------------------------------------------------------------------
+# Round-2 gap closures (traceability 04): probes, multiplicity, PACC,
+# intake, CAM gates, fusion keys, firewall, stability, D-cal, interaction,
+# Antolini, omnibus, locked-input probing
+# --------------------------------------------------------------------------
+
+def audit_probe_weights(provenance: Mapping[str, Any]) -> dict[str, Any]:
+    """Scanner/tabular probe weights must be inner-train-frozen artifacts.
+
+    Anything fit on outer-derived data (or with missing lock fields) is a
+    refit (C2) -> PROBE_REUSE_VIOLATION, never silently accepted.
+    """
+    if not isinstance(provenance, Mapping):
+        return {"status": "PROBE_REUSE_VIOLATION", "reason": "PROVENANCE_NOT_MAPPING"}
+    for key in ("weights_source", "solver", "seed", "C", "digest"):
+        if provenance.get(key) in (None, ""):
+            return {"status": "PROBE_REUSE_VIOLATION", "reason": f"LOCK_FIELD_MISSING:{key}"}
+    if str(provenance.get("weights_source")) != "inner-train":
+        return {"status": "PROBE_REUSE_VIOLATION",
+                "reason": f"OUTER_FIT:{provenance.get('weights_source')}"}
+    return {"status": "PASS"}
+
+
+def bh_fdr(p_values: Sequence[float], *, alpha: float = 0.05):
+    """Benjamini-Hochberg FDR over prespecified contrast families."""
+    p = [float(v) for v in p_values]
+    m = len(p)
+    order = sorted(range(m), key=lambda i: p[i])
+    rejected = [False] * m
+    thresh = 0
+    for rank, i in enumerate(order, start=1):
+        if p[i] <= rank / m * alpha:
+            thresh = rank
+    for rank, i in enumerate(order, start=1):
+        if rank <= thresh:
+            rejected[i] = True
+    return rejected
+
+
+def omnibus_friedman(values_by_arm: Sequence[Sequence[float]]) -> dict[str, Any]:
+    """Omnibus across arms on matched fold-level metrics (deterministic)."""
+    from scipy.stats import friedmanchisquare
+    arms = [[float(v) for v in row] for row in values_by_arm]
+    if len(arms) < 3 or any(len(r) < 2 for r in arms):
+        raise _fail("OMNIBUS_INVALID_INPUT")
+    stat, p = friedmanchisquare(*arms)
+    return {"stat": float(stat), "p": float(p), "n_arms": len(arms)}
+
+
+def mixedlm_pacc(data, *, maxiter: int = 200, tol: float = 1e-6) -> dict[str, Any]:
+    """Prespecified PACC mixed-effects, DESCRIPTIVE ONLY (H4).
+
+    Locked formula ``pacc ~ time * treatment`` + random intercept, ML,
+    fixed convergence criteria. Singular/non-converged -> NOT_MEASURABLE
+    (never model-switch). No causal reading of treatment terms.
+    """
+    import pandas as pd
+    import statsmodels.api as sm
+    df = data if isinstance(data, pd.DataFrame) else pd.DataFrame(data)
+    for col in ("subject", "time", "treatment", "pacc"):
+        if col not in df.columns:
+            return {"status": "NOT_MEASURABLE", "reason": f"COLUMN_MISSING:{col}"}
+    try:
+        model = sm.MixedLM.from_formula("pacc ~ time * treatment", df,
+                                        groups=df["subject"], re_formula="1")
+        res = model.fit(maxiter=int(maxiter), tol=float(tol), disp=0)
+    except Exception as exc:
+        return {"status": "NOT_MEASURABLE", "reason": f"FIT_FAILED:{type(exc).__name__}"}
+    try:
+        converged = bool(res.converged)
+        params = {str(k): float(v) for k, v in dict(res.params).items()}
+        cov = np.asarray(res.cov_params(), dtype=float)
+        eig = np.linalg.eigvalsh(cov)
+        psd = bool(np.all(np.isfinite(eig)) and np.min(eig) > -1e-8)
+        finite = all(math.isfinite(v) for v in params.values())
+    except Exception:
+        return {"status": "NOT_MEASURABLE", "reason": "POSTFIT_CHECK_FAILED"}
+    if not (converged and psd and finite):
+        return {"status": "NOT_MEASURABLE",
+                "reason": f"SINGULAR_OR_DIVERGED:converged={converged},psd={psd},finite={finite}"}
+    return {"status": "DESCRIPTIVE_FIT", "params": params,
+            "role": "DESCRIPTIVE_ONLY_NEVER_GATE"}
+
+
+def missingness_table(data) -> dict[str, Any]:
+    """PACC missingness/dropout audit table (H4 companion, descriptive)."""
+    import pandas as pd
+    df = data if isinstance(data, pd.DataFrame) else pd.DataFrame(data)
+    counts = df.groupby("subject")["time"].agg(["count", "max"])
+    return {"n_subjects": int(df["subject"].nunique()),
+            "median_obs_per_subject": float(counts["count"].median()),
+            "sparse_subjects_lt3": int((counts["count"] < 3).sum()),
+            "dropout_note": "MNAR dropout-due-to-progression cannot be ruled out; "
+                            "MAR assumed and stated; treatment terms non-causal."}
+
+
+def intake_lint(intake: Mapping[str, Any]) -> dict[str, Any]:
+    """External-intake gate: STATIC schema/contract lint ONLY (H5).
+
+    No fixtures through eval paths, no synthetic rows, no mapping lock.
+    """
+    if not isinstance(intake, Mapping):
+        return {"status": "BLOCKED", "reason": "INTAKE_NOT_MAPPING"}
+    for key in ("schema_version", "tracer", "endpoint", "censoring",
+                "quarantine", "mapping_lock", "data_rows"):
+        if key not in intake:
+            return {"status": "BLOCKED", "reason": f"INTAKE_KEY_MISSING:{key}"}
+    if intake.get("mapping_lock"):
+        return {"status": "BLOCKED", "reason": "MAPPING_LOCK_FORBIDDEN"}
+    if intake.get("data_rows"):
+        return {"status": "BLOCKED", "reason": "SYNTHETIC_ROWS_FORBIDDEN"}
+    if str(intake.get("quarantine")) != "private-only":
+        return {"status": "BLOCKED", "reason": "QUARANTINE_RULE_INVALID"}
+    return {"status": "PASS"}
+
+
+def cam_gates_read(report: Mapping[str, Any]) -> dict[str, Any]:
+    """Validate a CAM attribution report's own gates (H6 integration)."""
+    if not isinstance(report, Mapping):
+        return {"status": "BLOCKED", "reason": "REPORT_NOT_MAPPING"}
+    if report.get("ceiling") != CEILING:
+        return {"status": "BLOCKED", "reason": "CEILING_MISMATCH"}
+    gates = report.get("gates")
+    if not isinstance(gates, Mapping) or not gates:
+        return {"status": "BLOCKED", "reason": "GATES_MISSING"}
+    legs = report.get("legs")
+    if isinstance(legs, Mapping) and legs.get("status") not in ("PASS", None):
+        if legs.get("status") not in ("PASS",):
+            return {"status": "BLOCKED", "reason": "CAM_LEGS_NOT_PASS"}
+    return {"status": "PASS"}
+
+
+def assert_fusion_keys(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Fusion key schema + one-row-per-subject dedup (H7)."""
+    required = ("patient_hash", "arm", "branch", "outer_fold", "split_digest")
+    seen: set[tuple] = set()
+    for row in rows:
+        if not isinstance(row, Mapping):
+            return {"status": "BLOCKED", "reason": "ROW_NOT_MAPPING"}
+        for key in required:
+            if key not in row or row[key] in (None, ""):
+                return {"status": "BLOCKED", "reason": f"KEY_MISSING:{key}"}
+        tag = (str(row["patient_hash"]), str(row["arm"]), str(row["branch"]),
+               int(row["outer_fold"]))
+        if tag in seen:
+            return {"status": "BLOCKED", "reason": f"DUPLICATE_ROW:{tag[0]}"}
+        seen.add(tag)
+    return {"status": "PASS", "n_rows": len(seen)}
+
+
+def firewall_assertion(journal_events: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Outer-test firewall log: any outer read before lock -> AT_RISK (M5)."""
+    for evt in journal_events:
+        if not isinstance(evt, Mapping):
+            continue
+        if str(evt.get("type", "")) == "outer_result_read":
+            try:
+                if float(evt.get("t_view", 0)) < float(evt.get("t_lock", 0)):
+                    return {"status": "EXACTLY_ONCE_AT_RISK",
+                            "reason": "OUTER_READ_BEFORE_LOCK"}
+            except (TypeError, ValueError):
+                return {"status": "EXACTLY_ONCE_AT_RISK",
+                        "reason": "FIREWALL_TIMESTAMP_INVALID"}
+    return {"status": "PASS"}
+
+
+def selection_stability(winner_records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Bates-direction stability report over locked winner records (no redesign)."""
+    ids = [str(r.get("winner_candidate_id", "?")) for r in winner_records
+           if isinstance(r, Mapping)]
+    uniq = sorted(set(ids))
+    return {"stable": len(uniq) == 1, "n_partitions": len(ids),
+            "unique_winners": uniq}
+
+
+def d_calibration(surv_at_event, *, n_bins: int = 10) -> dict[str, Any]:
+    """D-calibration uniformity check, exploratory, NEVER a gate (M1)."""
+    from scipy.stats import chi2 as chi2_dist
+    s = np.asarray(list(surv_at_event), dtype=float)
+    if s.size == 0 or np.any((s <= 0) | (s >= 1)):
+        raise _fail("DCAL_INVALID_INPUT")
+    counts, _ = np.histogram(s, bins=int(n_bins), range=(0.0, 1.0))
+    expected = float(s.size) / int(n_bins)
+    stat = float(np.sum((counts - expected) ** 2 / expected))
+    p = float(chi2_dist.sf(stat, int(n_bins) - 1))
+    return {"statistic": stat, "p": p, "n_bins": int(n_bins), "n": int(s.size),
+            "gate_effect": "NONE"}
+
+
+def interaction_did(a_risk, b_risk, subgroup, *, n_boot: int = 500,
+                    seed: int = 13) -> dict[str, Any]:
+    """Subgroup-heterogeneity via difference-in-paired-differences (no Cox API risk).
+
+    Primary heterogeneity evidence; within-subgroup superiority claims still
+    require this signal plus prespecified interaction discipline.
+    """
+    a = np.asarray(a_risk, dtype=float)
+    b = np.asarray(b_risk, dtype=float)
+    g = np.asarray(subgroup)
+    groups = sorted(set(g.tolist()))
+    if a.shape != b.shape or a.shape != g.shape or len(groups) != 2:
+        raise _fail("INTERACTION_INVALID_INPUT")
+    d = a - b
+    means = {str(gv): float(np.mean(d[g == gv])) for gv in groups}
+    did = means[str(groups[0])] - means[str(groups[1])]
+    rng = spawned_rng(seed, "interaction-did")
+    boots = []
+    for _ in range(int(n_boot)):
+        sel = rng.choice(a.size, size=a.size, replace=True)
+        boots.append(float(np.mean(d[sel][g[sel] == groups[0]])
+                           - np.mean(d[sel][g[sel] == groups[1]])))
+    return {"did": float(did),
+            "ci_low": float(np.percentile(boots, 2.5)),
+            "ci_high": float(np.percentile(boots, 97.5)),
+            "n_subgroups": 2, "n_boot": int(n_boot)}
+
+
+def antolini_ctd(time, event, surv_prob, times) -> dict[str, Any]:
+    """Antolini time-dependent C, EXPLORATORY ONLY (mixes calibration in)."""
+    t = np.asarray(time, dtype=float)
+    e = np.asarray(event, dtype=bool)
+    S = np.asarray(surv_prob, dtype=float)
+    g = np.asarray(times, dtype=float)
+    if S.shape[0] != t.size or S.shape[1] != g.size:
+        raise _fail("ANTOLINI_INVALID_INPUT")
+    conc = tot = 0
+    for i in np.where(e)[0]:
+        j = int(np.argmin(np.abs(g - t[i])))
+        ctrl = [k for k in range(t.size) if k != i and t[k] >= t[i]]
+        if not ctrl:
+            continue
+        for k in ctrl:
+            if S[i, j] < S[k, j]:
+                conc += 1
+            elif S[i, j] == S[k, j]:
+                conc += 0.5
+            tot += 1
+    ctd = (conc / tot) if tot else 0.5
+    return {"ctd": float(ctd), "pairs": int(tot), "role": "EXPLORATORY"}
+
+
+# --------------------------------------------------------------------------
+# Locked-OOF-bundle production evaluation (one firewalled pass)
+# --------------------------------------------------------------------------
+
+def _fold_metric_block(rows_fold, train_t, train_e, *, horizons, tau):
+    """Per-fold metrics with that partition's FROZEN train IPCW (H8 fix).
+
+    Grid-bound metrics (Uno/IBS/AUC/calibration) evaluate ONLY on horizons
+    within THIS fold's test follow-up; otherwise that arm-fold is
+    NOT_MEASURABLE (recorded, never extrapolated). Risk scalars need no
+    grid and always compute (contrasts stay valid).
+    """
+    out = {}
+    arms = sorted({str(r["arm"]) for r in rows_fold})
+    for arm in arms:
+        sub = [r for r in rows_fold if str(r["arm"]) == arm]
+        t = np.array([float(r["time_days"]) for r in sub])
+        e = np.array([bool(r["event"]) for r in sub])
+        risk = np.array([float(r["risk"]) for r in sub])
+        fold_tmax = float(t.max()) if t.size else 0.0
+        train_tmax = float(np.asarray(train_t, dtype=float).max(initial=0.0))
+        support_max = min(fold_tmax, train_tmax)
+        usable = [float(h) for h in horizons if float(h) < support_max]
+        rec: dict[str, Any] = {"n": len(sub), "events": int(e.sum()),
+                               "fold_tmax": fold_tmax,
+                               "usable_horizons": usable}
+        if not usable or float(tau) >= support_max:
+            rec.update({"grid_status": "NOT_MEASURABLE",
+                        "evidence": "fold_support_diagnostics.json"})
+            out[arm] = rec
+            continue
+        S = np.array([[float(r["surv_at_horizons"][str(h)]) for h in usable]
+                      for r in sub])
+        rec.update({
+            "grid_status": "PASS",
+            "uno": uno_c(train_t, train_e, t, e, risk, tau=float(tau)),
+            "harrell": harrell_c(t, e, risk),
+            "ibs": ibs_summary(train_t, train_e, t, e, S, usable),
+            "calibration": calibration_at_horizon(
+                t, e, np.array([float(r["surv_at_horizons"][str(float(tau))])
+                                for r in sub]),
+                horizon=float(tau), train_time=train_t, train_event=train_e),
+        })
+        out[arm] = rec
+    return out
+
+
+def evaluate_oof_bundle(rows: Sequence[Mapping[str, Any]], *,
+                        train_by_partition: Mapping[Any, Any],
+                        horizons: Sequence[float], tau: float,
+                        B: int = 2000, seed: int = 13,
+                        ni_margins: Mapping[str, float] | None = None,
+                        reference_arm: str = "A0") -> dict[str, Any]:
+    """Evaluate locked OOF rows: per-fold metrics under frozen per-partition
+    IPCW, fold-mean points, stratified-bootstrap paired contrasts, NI, subgroups.
+
+    Row schema (all required): patient_hash, arm, branch, outer_fold,
+    split_digest, time_days, event, risk, surv_at_horizons {h: p}.
+    train_by_partition[(branch, outer_fold)] = (train_times, train_events).
+    No training, no refit, no writes. Pure + deterministic.
+    """
+    ni_margins = {"dIBS": 0.01, "dUno": 0.02, **dict(ni_margins or {})}
+    rows = list(rows)
+    key_check = assert_fusion_keys(rows)
+    if key_check["status"] != "PASS":
+        raise _fail("FUSION_KEYS_INVALID", key_check.get("reason", ""))
+    horizons = [float(h) for h in horizons]
+    partitions: dict[tuple, list] = {}
+    for r in rows:
+        partitions.setdefault((str(r["branch"]), int(r["outer_fold"])), []).append(r)
+    # One shared support mask per partition (same subjects across arms keep
+    # pairing valid; time/event must agree across arms = matched-outcome check).
+    support_dropped: dict[str, int] = {}
+    kept_partitions: dict[tuple, list] = {}
+    for key, prows in partitions.items():
+        if key not in train_by_partition:
+            raise _fail("TRAIN_IPCW_MISSING", f"{key[0]}/o{key[1]}")
+        train_t = np.asarray(train_by_partition[key][0], dtype=float)
+        tmax = float(train_t.max(initial=0.0))
+        by_subj: dict[str, list] = {}
+        for r in prows:
+            by_subj.setdefault(str(r["patient_hash"]), []).append(r)
+        kept = []
+        for subj, recs in by_subj.items():
+            times = {float(r["time_days"]) for r in recs}
+            evs = {bool(r["event"]) for r in recs}
+            if len(times) != 1 or len(evs) != 1:
+                raise _fail("MATCHED_OUTCOME_MISMATCH", f"{key[0]}/{subj}")
+            if next(iter(times)) < tmax:
+                kept.extend(recs)
+        support_dropped[f"{key[0]}/o{key[1]}"] = len(prows) - len(kept)
+        kept_partitions[key] = kept
+    fold_blocks = {}
+    for key, prows in kept_partitions.items():
+        if not prows:
+            continue
+        train_t, train_e = train_by_partition[key]
+        fold_blocks[key] = _fold_metric_block(
+            prows, np.asarray(train_t, dtype=float),
+            np.asarray(train_e, dtype=bool),
+            horizons=horizons, tau=float(tau))
+    kept_rows = [r for prows in kept_partitions.values() for r in prows]
+    arms = sorted({str(r["arm"]) for r in kept_rows}) if kept_rows else sorted(
+        {str(r["arm"]) for r in rows})
+    per_arm: dict[str, Any] = {}
+    for arm in arms:
+        vals = [fold_blocks[k][arm] for k in sorted(fold_blocks)
+                if arm in fold_blocks[k]]
+        if not vals:
+            continue
+        ok = [v for v in vals if v.get("grid_status") == "PASS"]
+        entry: dict[str, Any] = {
+            "n": int(sum(v["n"] for v in vals)),
+            "events": int(sum(v["events"] for v in vals)),
+            "folds_evaluated": len(ok), "folds_total": len(vals),
+        }
+        if ok:
+            entry.update({
+                "uno_mean": float(np.mean([v["uno"]["c"] for v in ok])),
+                "uno_per_fold": [v["uno"]["c"] for v in ok],
+                "harrell_mean": float(np.mean([v["harrell"]["c"] for v in ok])),
+                "ibs_mean": float(np.mean([v["ibs"]["ibs"] for v in ok])),
+                "calibration_slope_mean": float(np.mean(
+                    [v["calibration"]["slope"] for v in ok])),
+            })
+        else:
+            entry["grid_status"] = "NOT_MEASURABLE"
+        per_arm[arm] = entry
+        per_arm[arm]["risk_table"] = risk_table(
+            np.concatenate([[float(r["time_days"]) for r in kept_rows
+                             if str(r["arm"]) == arm]]),
+            np.concatenate([[bool(r["event"]) for r in kept_rows
+                             if str(r["arm"]) == arm]]), horizons)
+    contrasts = []
+    pairs = [(a, b) for a in arms for b in arms
+             if a == reference_arm and b != a]
+    for a, b in pairs:
+        da_parts, db_parts, fa_parts = [], [], []
+        for key in sorted(kept_partitions):
+            ma = {str(r["patient_hash"]): float(r["risk"]) for r in kept_partitions[key]
+                  if str(r["arm"]) == a}
+            mb = {str(r["patient_hash"]): float(r["risk"]) for r in kept_partitions[key]
+                  if str(r["arm"]) == b}
+            common = sorted(set(ma) & set(mb))
+            for s in common:
+                da_parts.append(ma[s])
+                db_parts.append(mb[s])
+                fa_parts.append(key)
+        if not da_parts:
+            contrasts.append({"pair": [a, b], "status": "NOT_MEASURABLE",
+                              "evidence": "no-common-subjects"})
+            continue
+        boot = paired_bootstrap_delta(np.asarray(da_parts), np.asarray(db_parts),
+                                      n_boot=int(B), seed=int(seed),
+                                      fold_id=np.asarray(fa_parts))
+        ni = ni_retention(boot["delta"], (boot["ci_low"], boot["ci_high"]),
+                          margin=float(ni_margins["dUno"]), higher_better=True)
+        pval = permutation_paired_p(np.asarray(da_parts), np.asarray(db_parts),
+                                    n_perm=min(2000, 200 + len(da_parts) * 10),
+                                    seed=int(seed))
+        contrasts.append({"pair": [a, b], "n_common": len(da_parts),
+                          "delta": boot["delta"], "ci": [boot["ci_low"], boot["ci_high"]],
+                          "bca": boot["bca"], "perm_p": pval,
+                          "ni": ni, "status": "PASS"})
+    omni = None
+    try:
+        subs = sorted({str(r["patient_hash"]) for r in kept_rows})
+        mat = []
+        for arm in arms:
+            m = {str(r["patient_hash"]): float(r["risk"]) for r in kept_rows
+                 if str(r["arm"]) == arm}
+            if all(s in m for s in subs) and subs:
+                mat.append([m[s] for s in subs])
+        if len(mat) == len(arms) and len(mat) >= 3 and mat:
+            omni = omnibus_friedman(mat)
+    except (PostEvalError, ValueError):
+        omni = None
+    return {"status": "PASS", "arms": arms, "per_arm": per_arm,
+            "contrasts": contrasts, "omnibus": omni,
+            "partitions": sorted([f"{k[0]}/o{k[1]}" for k in fold_blocks]),
+            "support_dropped": support_dropped,
+            "horizons": horizons, "tau": float(tau)}

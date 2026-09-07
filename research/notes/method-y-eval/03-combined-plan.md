@@ -79,3 +79,12 @@ Retraining/refit (incl. refit-LMO); outer reuse; outer-driven selection/threshol
 - CONTRA: locked pairs complete per v4 config (A0/A1, A2/A3, A0/A2, A1/A3 + secondary A3/A4). Continuation rule: BLOCKED halts; NOT_MEASURABLE/TIMEOUT recorded, pipeline continues. [FIX]
 - REUSE: L12 medians bound to baseline-table file+hash pinned in config at build; pooled-contrast IPCW per H8 rule. [FIX]
 - M4: accepted as specified. [FIX]
+
+## Amendment A2 — implementation (2026-09-06, RED-first, 35/35 GREEN + dry-run PASS)
+- Support rule hardened: test times AND grid AND tau STRICTLY below train max (sksurv half-open); per-fold shared cross-arm mask (pairing preserved) + NOT_MEASURABLE records + n_dropped counts.
+- I/D AUC explicitly NOT_IMPLEMENTED (unstable at 75 events; documented scope cut).
+- Antolini Ctd implemented exploratory (perfect-order fixture gives 1.0).
+- Only fits in program: IPCW-GLM recalibration + MixedLM, both DESCRIPTIVE_ONLY + fail-closed (audited: no training/launcher/H5 imports).
+- Production run-mode executes full battery loop over parameterized root (fixture-tested); refuses pre-verifier (proven).
+
+

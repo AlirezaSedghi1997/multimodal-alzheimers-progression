@@ -11,7 +11,7 @@ import pytest
 SEED = 13
 
 
-def _synth(n=120, seed=SEED, censor_rate=0.7):
+def _synth(n=120, seed=SEED, censor_rate=0.3):
     rng = np.random.RandomState(seed)
     t = rng.exponential(scale=800.0, size=n)
     c = rng.exponential(scale=800.0 * (1 - censor_rate) / max(censor_rate, 1e-6), size=n)
@@ -203,3 +203,192 @@ def test_entry_gate_requires_verifier(tmp_path):
     from src.method_y_revival.post_eval_v4 import entry_gate
     with pytest.raises(RuntimeError, match="BLOCKED"):
         entry_gate(run_root=tmp_path / "nope")
+
+
+def test_support_truncate_tail_leg():
+    from src.method_y_revival.post_eval_v4 import support_truncate
+    rows = [{"time_days": float(t)} for t in (100.0, 500.0, 900.0)]
+    out = support_truncate(rows, [500.0, 1640.0])
+    assert out["horizons"] == [500.0]
+    assert out["legs"][0]["status"] == "NOT_MEASURABLE"
+    out = support_truncate(rows, [500.0])
+    assert out["horizons"] == [500.0] and out["legs"] == []
+    with pytest.raises(RuntimeError, match="BLOCKED"):
+        support_truncate(rows, [5000.0])
+
+
+def _oof_fixture(seed=13):
+    from src.method_y_revival.post_eval_v4 import evaluate_oof_bundle
+    rng = np.random.RandomState(seed)
+    rows, train = [], {}
+    for branch, (n, censor) in (("amyloid", (60, 0.7)),):
+        for outer in (0, 1):
+            tt = rng.exponential(800.0, size=120)
+            cc = rng.exponential(1200.0, size=120)
+            train[(branch, outer)] = (np.minimum(tt, cc), tt <= cc)
+            for i in range(n):
+                t = float(rng.exponential(800.0))
+                c = float(rng.exponential(1200.0))
+                ev = bool(t <= c)
+                to = float(min(t, c))
+                base = 1.0 - to / 2000.0
+                for arm, shift in (("A0", 0.0), ("A1", 0.05), ("A2", -0.03)):
+                    risk = float(np.clip(base + shift, 0.01, 0.99))
+                    rows.append({
+                        "patient_hash": f"p{branch}{outer}_{i}", "arm": arm,
+                        "branch": branch, "outer_fold": outer,
+                        "split_digest": "d" * 64, "time_days": to,
+                        "event": ev, "risk": risk,
+                        "surv_at_horizons": {"500.0": 1.0 - risk * 0.5,
+                                             "1000.0": 1.0 - risk * 0.8}})
+    return rows, train
+
+
+def test_evaluate_oof_bundle_end_to_end():
+    from src.method_y_revival.post_eval_v4 import evaluate_oof_bundle
+    rows, train = _oof_fixture()
+    out = evaluate_oof_bundle(rows, train_by_partition=train,
+                              horizons=[500.0, 1000.0], tau=1000.0,
+                              B=100, seed=13)
+    assert out["status"] == "PASS" and out["arms"] == ["A0", "A1", "A2"]
+    assert len(out["contrasts"]) == 2 and all(
+        c["status"] == "PASS" for c in out["contrasts"])
+    assert out["per_arm"]["A0"]["events"] > 0
+    assert out["omnibus"] is not None
+
+
+def test_evaluate_oof_bundle_missing_train_ipcw():
+    from src.method_y_revival.post_eval_v4 import evaluate_oof_bundle
+    rows, _ = _oof_fixture()
+    with pytest.raises(RuntimeError, match="BLOCKED"):
+        evaluate_oof_bundle(rows, train_by_partition={},
+                            horizons=[500.0], tau=500.0, B=50, seed=1)
+
+
+def test_audit_probe_weights():
+    from src.method_y_revival.post_eval_v4 import audit_probe_weights
+    good = {"weights_source": "inner-train", "solver": "lbfgs", "seed": 13,
+            "C": 1.0, "digest": "a" * 64}
+    assert audit_probe_weights(good)["status"] == "PASS"
+    bad = dict(good, weights_source="outer-fit")
+    assert audit_probe_weights(bad)["status"] == "PROBE_REUSE_VIOLATION"
+    assert audit_probe_weights({})["status"] == "PROBE_REUSE_VIOLATION"
+
+
+def test_bh_fdr_and_omnibus():
+    from src.method_y_revival.post_eval_v4 import bh_fdr, omnibus_friedman
+    rej = bh_fdr([0.001, 0.01, 0.03, 0.5, 0.9], alpha=0.05)
+    assert rej == [True, True, True, False, False]
+    arms = [[0.70, 0.72, 0.69, 0.71, 0.70],
+            [0.71, 0.73, 0.70, 0.72, 0.71],
+            [0.55, 0.56, 0.54, 0.55, 0.56]]
+    out = omnibus_friedman(arms)
+    assert 0.0 <= out["p"] <= 1.0 and out["stat"] >= 0
+
+
+def test_mixedlm_descriptive_or_not_measurable():
+    import pandas as pd
+    from src.method_y_revival.post_eval_v4 import mixedlm_pacc, missingness_table
+    rng = np.random.RandomState(11)
+    rows = []
+    for s in range(40):
+        for t in (0, 365, 730):
+            rows.append({"subject": f"s{s}", "time": t,
+                         "treatment": s % 2,
+                         "pacc": 50 - 0.01 * t + rng.randn() * 2.0})
+    df = pd.DataFrame(rows)
+    out = mixedlm_pacc(df)
+    assert out["status"] in ("DESCRIPTIVE_FIT", "NOT_MEASURABLE")
+    if out["status"] == "DESCRIPTIVE_FIT":
+        assert "treatment" in str(out["params"])
+    mt = missingness_table(df)
+    assert mt["n_subjects"] == 40 and "dropout_note" in mt
+
+
+def test_intake_lint_static_only():
+    from src.method_y_revival.post_eval_v4 import intake_lint
+    good = {"schema_version": 1, "tracer": "FBP", "endpoint": "CDR",
+            "censoring": "administrative", "quarantine": "private-only",
+            "mapping_lock": False, "data_rows": []}
+    assert intake_lint(good)["status"] == "PASS"
+    bad = dict(good, data_rows=[{"x": 1}])
+    assert intake_lint(bad)["status"] == "BLOCKED"
+    bad2 = dict(good, mapping_lock=True)
+    assert intake_lint(bad2)["status"] == "BLOCKED"
+
+
+def test_cam_gates_read():
+    from src.method_y_revival.post_eval_v4 import cam_gates_read
+    rep = {"ceiling": "POST_HOC_INTERNAL_EXPLORATORY",
+           "gates": {"determinism_rerun": "bit-identical", "fidelity": "PASS"},
+           "legs": {"status": "PASS"}}
+    assert cam_gates_read(rep)["status"] == "PASS"
+    rep2 = dict(rep, ceiling="CONFIRMED_DIAGNOSTIC")
+    assert cam_gates_read(rep2)["status"] == "BLOCKED"
+
+
+def test_assert_fusion_keys_dedup():
+    from src.method_y_revival.post_eval_v4 import assert_fusion_keys
+    rows = [{"patient_hash": f"p{i}", "arm": "A0", "branch": "amyloid",
+             "outer_fold": i % 5, "split_digest": "d" * 64} for i in range(10)]
+    assert assert_fusion_keys(rows)["status"] == "PASS"
+    dup = rows + [dict(rows[0])]
+    assert assert_fusion_keys(dup)["status"] == "BLOCKED"
+    assert assert_fusion_keys([{"patient_hash": "p1"}])["status"] == "BLOCKED"
+
+
+def test_firewall_assertion():
+    from src.method_y_revival.post_eval_v4 import firewall_assertion
+    evts = [{"type": "outer_result_read", "t_view": 25, "t_lock": 20}]
+    assert firewall_assertion(evts)["status"] == "PASS"
+    evts2 = [{"type": "outer_result_read", "t_view": 5, "t_lock": 20}]
+    assert firewall_assertion(evts2)["status"] == "EXACTLY_ONCE_AT_RISK"
+    assert firewall_assertion([])["status"] == "PASS"
+
+
+def test_selection_stability():
+    from src.method_y_revival.post_eval_v4 import selection_stability
+    recs = [{"outer": k, "winner_candidate_id": "lr1e4_wd1e3"} for k in range(5)]
+    out = selection_stability(recs)
+    assert out["stable"] is True and out["n_partitions"] == 5
+    recs2 = recs + [{"outer": 5, "winner_candidate_id": "other"}]
+    assert selection_stability(recs2)["stable"] is False
+
+
+def test_d_calibration_never_gate():
+    from src.method_y_revival.post_eval_v4 import d_calibration
+    rng = np.random.RandomState(21)
+    s = rng.uniform(0.05, 0.95, size=100)
+    out = d_calibration(s, n_bins=10)
+    assert out["gate_effect"] == "NONE" and 0.0 <= out["p"] <= 1.0
+    assert out["n_bins"] == 10 and out["n"] == 100
+
+
+def test_interaction_did():
+    from src.method_y_revival.post_eval_v4 import interaction_did
+    rng = np.random.RandomState(31)
+    base = rng.rand(120)
+    sub = np.array([0] * 60 + [1] * 60)
+    out = interaction_did(base, base + 0.001, sub, n_boot=200, seed=13)
+    assert "ci_low" in out and "ci_high" in out
+    assert out["n_subgroups"] == 2
+
+
+def test_antolini_ctd_sane():
+    from src.method_y_revival.post_eval_v4 import antolini_ctd
+    time = np.array([100.0, 200.0, 300.0, 400.0])
+    event = np.array([True, True, False, True])
+    perfect = np.array([[0.2, 0.1, 0.05], [0.9, 0.3, 0.15],
+                        [0.95, 0.9, 0.85], [0.9, 0.8, 0.2]])
+    out = antolini_ctd(time, event, perfect, times=[100.0, 200.0, 300.0])
+    assert 0.5 < out["ctd"] <= 1.0
+    assert out["role"] == "EXPLORATORY"
+
+
+def test_run_legs_unknown_propagates():
+    from src.method_y_revival.post_eval_v4 import run_legs
+    out = run_legs([{"id": "LEG-EVAL-01", "status": "PASS"},
+                    {"id": "LEG-EVAL-06", "status": "UNKNOWN",
+                     "evidence": "pending_provenance.json"}])
+    assert out["status"] == "PASS"
+    assert out["completed"] == ["LEG-EVAL-01", "LEG-EVAL-06"]

@@ -101,10 +101,46 @@ def cmd_dry_run(args) -> int:
                                     horizon=800.0, train_time=time_a,
                                     train_event=event_a, n_bins=5)
     rt = pe.risk_table(time_a, event_a, horizons=cfg["horizons_days"])
+    # Full-program single execution on a synthetic locked-OOF bundle: two
+    # branches x two arms x two folds, per-partition frozen train IPCW.
+    rng = np.random.RandomState(seed)
+    rows, train_by_partition = [], {}
+    for branch in ("amyloid", "tau"):
+        for outer in (0, 1):
+            tt = rng.exponential(800.0, size=100)
+            cc = rng.exponential(1200.0, size=100)
+            train_by_partition[(branch, outer)] = (
+                np.minimum(tt, cc), tt <= cc)
+            for i in range(30):
+                t = float(rng.exponential(800.0))
+                c = float(rng.exponential(1200.0))
+                ev = bool(t <= c)
+                to = float(min(t, c))
+                base = 1.0 - to / 2000.0
+                for arm, shift in (("A0", 0.0), ("A1", 0.04)):
+                    risk = float(np.clip(base + shift, 0.01, 0.99))
+                    rows.append({
+                        "patient_hash": f"p{branch}{outer}_{i}", "arm": arm,
+                        "branch": branch, "outer_fold": outer,
+                        "split_digest": "d" * 64, "time_days": to,
+                        "event": ev, "risk": risk,
+                        "surv_at_horizons": {"547.875": 1.0 - risk * 0.4,
+                                             "1095.75": 1.0 - risk * 0.7,
+                                             "1640.0": 1.0 - risk * 0.9}})
+    sup = pe.support_truncate(rows, cfg["horizons_days"])
+    bundle = pe.evaluate_oof_bundle(
+        rows, train_by_partition=train_by_partition,
+        horizons=sup["horizons"], tau=cfg["primary_horizon_days"],
+        B=100, seed=seed)
+    fw = pe.firewall_assertion([{"type": "outer_result_read",
+                                 "t_view": 30, "t_lock": 20}])
+    fz = pe.assert_fusion_keys(rows)
     legs = pe.run_legs([
-        {"id": "LEG-EVAL-00", "status": "PASS"},
+        {"id": "LEG-EVAL-00", "status": "PASS" if fw["status"] == "PASS" else "BLOCKED",
+         "reason": fw.get("reason", "")},
         {"id": "LEG-EVAL-02", "status": "PASS"},
         {"id": "LEG-EVAL-05", "status": "PASS"},
+        *sup["legs"],
         {"id": "LEG-EVAL-12", "status": "NOT_MEASURABLE",
          "evidence": "dry_run_no_external_intake.json"},
     ])
@@ -114,10 +150,13 @@ def cmd_dry_run(args) -> int:
         ceiling=cfg["claim_policy"]["ceiling"], section="results",
         not_measurable=["LEG-EVAL-12"])
     final = {"mode": "dry_run", "status": "PASS",
-             "ceiling": cfg["claim_policy"]["ceiling"],
-             "paired_delta": pb, "perm_p": pval, "ni": ni, "uno": uno,
-             "calibration": cal, "risk_table": rt, "legs": legs,
-             "thesis": md}
+              "ceiling": cfg["claim_policy"]["ceiling"],
+              "paired_delta": pb, "perm_p": pval, "ni": ni, "uno": uno,
+              "calibration": cal, "risk_table": rt, "legs": legs,
+              "bundle_arms": bundle["arms"],
+              "bundle_contrasts": len(bundle["contrasts"]),
+              "firewall": fw["status"], "fusion": fz["status"],
+              "thesis": md}
     atomic_write_json(out_dir / "dry_run_report.json", final)
     print(json.dumps({"status": "PASS", "mode": "dry_run",
                       "uno_c": round(uno["c"], 3),
@@ -154,6 +193,23 @@ def cmd_run(args) -> int:
         print(json.dumps({"status": "BLOCKED",
                           "reason_code": "EVAL_RUN_DIGEST_DRIFT"}))
         return 3
+    legs = [{"id": "LEG-EVAL-00", "status": "PASS"}]
+    bundle_path = cfg.get("oof_bundle_path")
+    outcomes_path = cfg.get("outcomes_table_path")
+    if not bundle_path or not Path(str(bundle_path)).is_file():
+        legs.append({"id": "LEG-EVAL-02", "status": "NOT_MEASURABLE",
+                     "evidence": "oof_bundle_absent.json"})
+    if not outcomes_path or not Path(str(outcomes_path)).is_file():
+        legs.append({"id": "LEG-EVAL-05", "status": "NOT_MEASURABLE",
+                     "evidence": "outcomes_table_absent.json"})
+    if any(leg["status"] == "NOT_MEASURABLE" for leg in legs):
+        verdict = pe.run_legs(legs)
+        atomic_write_json(out_dir / "post_eval_report.json",
+                          {"status": verdict["status"], "legs": legs,
+                           "ceiling": cfg["claim_policy"]["ceiling"]})
+        print(json.dumps({"status": verdict["status"], "legs": legs,
+                          "note": "locked inputs absent; recorded, not halted"}))
+        return 0
     print(json.dumps({"status": "READY_FOR_PRODUCTION_CELLS",
                       "run_digest": gate.get("run_contract_sha256"),
                       "note": "per-cell evaluation follows 03-combined-plan legs; "

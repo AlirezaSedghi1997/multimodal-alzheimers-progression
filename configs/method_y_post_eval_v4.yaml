@@ -14,6 +14,8 @@ tie_rule: 0.5
 bootstrap: {B: 2000, seed: 13, primary: percentile-fold-stratified, sensitivity: [bca, permutation]}
 permutation_P: 2000
 ni_margins: {dIBS: 0.01, dUno: 0.02}
+risk_score: "1_minus_S_tau"
+tie_rule: 0.5
 
 calibration:
   horizons: [1095.75]
@@ -26,6 +28,20 @@ subgroups:
   ci_min_events: 25
   descriptive_min_events: 10
   multiplicity: BH
+  primary_evidence: interaction_first
+
+mixedlm:
+  formula: "pacc ~ time * treatment"
+  random: "1|subject"
+  estimator: ML
+  maxiter: 200
+  tol: 1.0e-6
+
+dcalibration: {bins: 10, role: EXPLORATORY_NEVER_GATE}
+omnibus: {method: friedman, followup: BH}
+
+oof_bundle_path: null
+outcomes_table_path: null
 
 manufacturer:
   rule: STRATIFIED_DESCRIPTIVE_ONLY
