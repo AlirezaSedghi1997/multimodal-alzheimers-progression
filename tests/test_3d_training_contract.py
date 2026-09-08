@@ -58,6 +58,49 @@ def test_method_x_3d_latent_alignment_contract():
     assert mri_latent.shape == tab_latent.shape == (2, 16)
 
 
+def test_method_x_trainer_kwargs_match_locked_resnet18_state_dict():
+    torch = pytest.importorskip("torch")
+    from src.models.backbones.lightweight_3d import MethodX3DClassifier
+
+    checkpoint_path = Path(
+        "results/final_results/method_x_model_battery_v3_depth_and_diversity_20260729/"
+        "models/resnet18_3d/method_x_3d_fold_0_locked.pt"
+    )
+    if not checkpoint_path.is_file():
+        pytest.skip("locked ResNet18 fold-0 checkpoint is not present")
+    # Architecture kwargs only. Provenance keys bound by the run contract
+    # (pretrained_manifest/sha256/min_coverage/provenance, hybrid_* selectors)
+    # never enter the constructor, so they cannot be part of an architecture
+    # identity assertion; hybrid_variant="baseline" means no hybrid blocks.
+    # The strict state-dict comparison below is unchanged.
+    model = MethodX3DClassifier(
+        fusion="cross_attention",
+        backbone="resnet18_3d",
+        latent_dim=128,
+        tab_hidden_dim=32,
+        dropout=0.2,
+        bottleneck_dim=32,
+        fusion_hidden_dim=None,
+        gradient_checkpointing=True,
+        pretrained_checkpoint="",
+        attention="none",
+        alignment_head="linear",
+        alignment_head_mode=None,
+        tab_encoder="linear",
+        causal_adjustment="none",
+        n_experts=4,
+        fusion_num_heads=2,
+        moe_load_balance_lambda=0.0,
+        channel_gate="none",
+    )
+    payload = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+    state = payload["model_state_dict"]
+    assert set(model.state_dict()) == set(state)
+    model.load_state_dict(state, strict=True)
+    assert model.gradient_checkpointing is True
+    assert model.alignment_projection.bias is None
+
+
 def test_method_x_3d_synib_loss_smoke():
     torch = pytest.importorskip("torch")
     from src.models.backbones.lightweight_3d import MethodX3DClassifier

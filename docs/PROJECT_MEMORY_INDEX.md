@@ -1,5 +1,12 @@
 # نمایه‌ی حافظه‌ی پروژه
 
+## زنده‌ترین — ۲۰۲۶-۰۹-۰۸ (Method X MX-03: قرنطینه RUN_CONTRACT_MISMATCH + ترمیم ۵ از ۶ تست؛ ران زنده)
+
+0. **قرنطینه یتیم پیش‌آموزشی (turn قبل):** `mx03_runs/random_labels/run_contract.json` قدیمی (۲۵ پارامتر + `source_digest` legacy، دایجست داخلی ناسازگار `5201e342` در برابر `34b9e486`) در برابر قرارداد فعلی (`567e7409...`، ~۷۰ پارامتر) علمی-متفاوت بود → fail-closed درست BLOCK کرد. چون هیچ `.pt`/متریک/outer/state نبود، فقط همین فایل به `_quarantine_20260908_RUN_CONTRACT_MISMATCH/` منتقل + رسید integrity‌دار شد (بدون `--no_resume`، بدون دست‌کاری باتری TERMINAL). پریفلیت بعد: `CREATE_REQUIRED`؛ آدیت: `PLANNED ×۹`. ران سنگین بعداً توسط اپراتور شروع شد و هم‌اکنون fold 0 در `TRAINING` با همان دایجست است — به دایرکتوری لایو دست نزنید.
+1. **ترمیم ۶ تست قرمز (فقط `tests/`، صفر تغییر سورس):** هر ۶ شکست drift تست-در-برابر-پروتکل-قفل بود (روی HEAD هم می‌شکنند): ۴ تست validity از بک‌بون‌های مستثنی‌شده (`efficientnet/resnet50`، مدل‌های `a/b`) و `resamples<1000` استفاده می‌کردند → بازنویسی با EFFECTIVE_FIVE + متادیتا + `resamples=1000`؛ ۱ تست state-machine رشته `target="FINALIZED"` را در trainer می‌خواست در حالی که FINALIZED مال reconciler است → زنجیره trainer-owned + assert معنایی روی `FOLD_STAGES`؛ ۱ تست kwargs سازنده را از کلیدهای provenance پاک کرد. نتیجه: **۱۰۳/۱۰۴** در زیرمجموعه ۸فایلی.
+2. **۱ قرمز عمدی (BLOCKED مستند، نه PASS جعلی):** `alignment_projection.bias` در مدل تازه هست ولی در چک‌پوینت قفل resnet18 نیست (تک‌کلید، HEAD==worktree) → drift معماری واقعی؛ فیکس مدل وسط ران زنده = تغییر source_digest و شکست resume، و شل‌کردن assert = پنهان‌کردن سیگنال. نیازمند ران نسخه‌دار جدا. ران زنده MX-03 بی‌اثر است (from-scratch، reuse باتری قفل نمی‌کند).
+3. **سوپروایزر (ساب‌ایجنت infra کنسل شد → گیت‌های قطعی):** S1 صفر write در scripts/src/configs از 08:35Z؛ S2/S3 شمارش دقیق؛ S4 دایجست لایو پایدار + رسید سالم. کامیت scoped همین ۳ تست + همین ایندکس، بدون push (قانون P0).
+
 ## زنده‌ترین — ۲۰۲۶-۰۹-۰۸ (تولید attribution روی فاینال‌های قفل: PASS اکتشافی با ۴ حادثه ریشه‌یابی‌شده)
 
 0. **تولید کامل شد (۵۰ سلول، ۴۳۳۰ نقشه، report ‏PASS اکتشافی):** ارتقای نسخه‌دار به FINAL؛ اجرا CPU تک‌فرآینده (لانچر مسیر device ندارد؛ GPU خالی ولی استفاده نشد). چهار حادثه: ‏DIGEST_MISMATCH ← binding ‏frozen-chain؛ cohort اشتباه ← اشتراک development-role (‏۱۰۹/۵۶۰/۳۰۶ دقیق)؛ کرش tabular ← ‏transformer قفل؛ ‏OOM ← سقف ۲۰ سطری. توافق ناموفق (rho ‏۰.۰۹) و ‏fidelity ‏۱۵/۳۰ و ‏share شرطی‌سلولی — همه با disclaimer در تز. ‏BLOCKER حریم خصوصی (لیست پایلوت) با re-tier رفع شد. ‏۳۲/۳۲ سبز. کامیت scoped بدون push.
