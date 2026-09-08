@@ -698,23 +698,44 @@ EXPECTED_OUTERS = (0, 1, 2, 3, 4)
 
 
 def enumerate_attribution_cells(*, dev_root: str | Path, orch_root: str | Path,
-                                splits: Mapping[str, Mapping[str, Any]]) -> list[dict[str, Any]]:
+                                splits: Mapping[str, Mapping[str, Any]],
+                                membership_paths: Mapping[str, str | Path]) -> list[dict[str, Any]]:
     """Enumerate (branch, arm, outer) cells strictly from locked files.
 
     Requires per cell: winner_<ARM>_outer_<K>.json with self-hash intact AND
     development/<branch>/<ARM>/outer_<K>/final/locked_checkpoint.pt present.
-    Firewall cohort = locked test_subjects of that outer fold, verbatim.
+    Firewall cohort mirrors the locked v4 program verbatim
+    (run_method_y_image_factorial_v4.py:691 + :796-798): the image-development
+    membership (``role == "development"``) intersected with that outer fold's
+    ``test_subjects``, in membership-file order (NOT the raw v2 splits list,
+    which names source-regional subjects without images — 2026-09-08 fix).
     Anything missing/ambiguous -> BLOCKED (never guessed, never partial).
     `splits` maps branch -> {"outer_folds": [{"fold": k, "test_subjects": [...]}]}.
+    `membership_paths` maps branch -> locked membership parquet path.
     """
+    import pandas as pd
+
     cells: list[dict[str, Any]] = []
     missing: list[str] = []
     for branch in ("amyloid", "tau"):
+        try:
+            membership = pd.read_parquet(str(membership_paths[branch]))
+        except (KeyError, TypeError, ValueError, OSError) as exc:
+            raise _fail("MEMBERSHIP_UNREADABLE", f"{branch}") from exc
+        if "role" not in membership.columns or "patient_hash" not in membership.columns:
+            raise _fail("MEMBERSHIP_COLUMNS_MISSING", f"{branch}")
+        development = membership[membership["role"] == "development"]
         branch_splits = splits.get(branch, {})
         outer_tests: dict[int, list[str]] = {}
+        outer_trains: dict[int, list[str]] = {}
         for fold_row in branch_splits.get("outer_folds", []):
             try:
-                outer_tests[int(fold_row["fold"])] = [str(s) for s in fold_row["test_subjects"]]
+                keys = {str(s) for s in fold_row["test_subjects"]}
+                frame = development[development["patient_hash"].astype(str).isin(keys)]
+                outer_tests[int(fold_row["fold"])] = frame["patient_hash"].astype(str).tolist()
+                train_keys = {str(s) for s in fold_row.get("train_subjects", [])}
+                train_frame = development[development["patient_hash"].astype(str).isin(train_keys)]
+                outer_trains[int(fold_row["fold"])] = train_frame["patient_hash"].astype(str).tolist()
             except (KeyError, TypeError, ValueError) as exc:
                 raise _fail("SPLITS_UNREADABLE", f"{branch}") from exc
         for arm in EXPECTED_ARMS:
@@ -738,10 +759,13 @@ def enumerate_attribution_cells(*, dev_root: str | Path, orch_root: str | Path,
                     continue
                 if outer not in outer_tests or not outer_tests[outer]:
                     raise _fail("FIREWALL_COHORT_UNRESOLVABLE", tag)
+                if outer not in outer_trains or not outer_trains[outer]:
+                    raise _fail("TRAIN_COHORT_UNRESOLVABLE", tag)
                 cells.append({"branch": branch, "arm": arm, "outer": outer,
                               "winner_path": str(wpath),
                               "final_checkpoint": str(fpath),
-                              "firewall_subjects": outer_tests[outer]})
+                              "firewall_subjects": outer_tests[outer],
+                              "train_subjects": outer_trains[outer]})
     if missing:
         raise _fail("INCOMPLETE_FINALS", ";".join(sorted(missing)[:5]))
     if len(cells) != 50:
@@ -766,6 +790,11 @@ def verify_final_digest(path: str | Path, *, expected_digest: str) -> dict[str, 
 
     Reads (never writes) the torch payload and compares its embedded
     `run_contract_digest`. Any mismatch/absence -> BLOCKED.
+
+    NOTE: versioned contract migrations preserve weights by design, so finals
+    locked under an older generation embed that generation's digest, not the
+    live one. For production cells prefer verify_final_provenance(), which
+    binds through the self-hashed FINALIZED outer state (frozen-chain).
     """
     import io
     p = Path(path)
@@ -779,6 +808,52 @@ def verify_final_digest(path: str | Path, *, expected_digest: str) -> dict[str, 
     if not isinstance(payload, Mapping) or payload.get("run_contract_digest") != expected_digest:
         raise _fail("FINAL_DIGEST_MISMATCH", p.name)
     return {"status": "PASS", "path": str(p)}
+
+
+def verify_final_provenance(path: str | Path, *, v4_root: str | Path,
+                            branch: str, arm: str, outer: int) -> dict[str, Any]:
+    """Frozen-chain binding of a production cell's final checkpoint (2026-09-08).
+
+    Versioned migrations (e.g. 654f->969e) preserve weights by design, so a
+    locked final embeds its OWN generation digest, never the live global one:
+    strict equality against live can never hold. Instead bind the exact bytes
+    that generated the locked outer metrics, through the self-hashed FINALIZED
+    outer state at
+    ``private/outer_evaluation/{branch}/{arm}/fold_{outer}/state.json``:
+    file-sha == state's checkpoint_sha256 AND payload digest == state's
+    run_contract_sha256 AND state == FINALIZED with a valid self-hash.
+    Anything else -> BLOCKED (never guessed, never partial).
+    """
+    import io
+    p = Path(path)
+    state_path = (Path(v4_root) / "private" / "outer_evaluation" / str(branch)
+                  / str(arm) / f"fold_{int(outer)}" / "state.json")
+    try:
+        record = json.loads(state_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, UnicodeDecodeError) as exc:
+        raise _fail("OUTER_STATE_UNREADABLE", state_path.name) from exc
+    body = dict(record)
+    claimed = body.pop("state_sha256", None)
+    canon = json.dumps(body, sort_keys=True, separators=(",", ":")).encode()
+    if claimed != hashlib.sha256(canon).hexdigest():
+        raise _fail("OUTER_STATE_SELF_HASH_MISMATCH", f"{branch}/{arm}/fold_{outer}")
+    if record.get("state") != "FINALIZED":
+        raise _fail("OUTER_STATE_NOT_FINALIZED", f"{branch}/{arm}/fold_{outer}")
+    raw = p.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != record.get("checkpoint_sha256"):
+        raise _fail("FINAL_FILE_NOT_LOCKED_OUTER_FILE", p.name)
+    try:
+        payload = torch.load(io.BytesIO(raw), map_location="cpu", weights_only=True)
+    except Exception as exc:
+        raise _fail("FINAL_CHECKPOINT_UNREADABLE", p.name) from exc
+    if not isinstance(payload, Mapping) or payload.get("run_contract_digest") != record.get("run_contract_sha256"):
+        raise _fail("FINAL_GENERATION_DIGEST_MISMATCH", p.name)
+    if hashlib.sha256(p.read_bytes()).hexdigest() != record.get("checkpoint_sha256"):
+        raise _fail("CHECKPOINT_MUTATED_DURING_LOAD", p.name)
+    return {"status": "PASS", "path": str(p),
+            "checkpoint_sha256": record.get("checkpoint_sha256"),
+            "generation_digest": record.get("run_contract_sha256"),
+            "outer_state": str(state_path)}
 
 
 def run_with_deadline(fn, *, deadline_monotonic: float, leg_id: str = "LEG-02"):

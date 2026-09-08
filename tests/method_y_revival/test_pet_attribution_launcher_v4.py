@@ -141,3 +141,40 @@ def test_arch_dims_branch_shapes():
                                "tabular.0.weight": torch.zeros(32, 11)}}
     assert mod._infer_bins_from_payload(payload) == 5
     assert mod._infer_bins_from_payload({"model_state": {}}) == 5
+
+
+def test_blocked_log_never_dumps_firewall_subjects():
+    """Privacy: BLOCKED cell log must not dump the cell dict (subject lists)."""
+    assert '{"status": "BLOCKED", "cell": cell' not in LAUNCHER_SRC
+    assert '"cell": key' in LAUNCHER_SRC
+    assert '"n_subjects"' in LAUNCHER_SRC
+
+
+def test_verify_final_provenance_frozen_chain(tmp_path):
+    """Frozen-chain binding: bytes locked by FINALIZED outer state PASS."""
+    import hashlib as _hl
+    import json as _js
+
+    import torch
+
+    from src.method_y_revival.pet_attribution_v4 import verify_final_provenance
+
+    v4 = tmp_path / "v4"
+    state_dir = v4 / "private" / "outer_evaluation" / "amyloid" / "A0" / "fold_0"
+    state_dir.mkdir(parents=True)
+    ckpt = tmp_path / "locked_checkpoint.pt"
+    torch.save({"model_state": {"w": torch.zeros(2, 2)},
+                "run_contract_digest": "a" * 64}, ckpt)
+    file_sha = _hl.sha256(ckpt.read_bytes()).hexdigest()
+    body = {"schema_version": "test", "state": "FINALIZED", "fold": 0,
+            "checkpoint_sha256": file_sha, "run_contract_sha256": "a" * 64,
+            "result_record_sha256": "b" * 64}
+    body["state_sha256"] = _hl.sha256(
+        _js.dumps(body, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    (state_dir / "state.json").write_text(_js.dumps(body), encoding="utf-8")
+    out = verify_final_provenance(ckpt, v4_root=v4, branch="amyloid", arm="A0", outer=0)
+    assert out["status"] == "PASS" and out["generation_digest"] == "a" * 64
+    with ckpt.open("ab") as fh:
+        fh.write(b"\x00")
+    with pytest.raises(RuntimeError, match="BLOCKED"):
+        verify_final_provenance(ckpt, v4_root=v4, branch="amyloid", arm="A0", outer=0)

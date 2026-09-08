@@ -309,11 +309,26 @@ def test_enumerate_firewall_cells_synthetic(tmp_path):
     from src.method_y_revival.pet_attribution_v4 import enumerate_attribution_cells
     import pytest as _pt
 
+    import pandas as pd
+
     dev, orch = tmp_path / "development", tmp_path / "orchestration"
     splits = {}
+    membership_paths = {}
     for branch in ("amyloid", "tau"):
         (orch / branch).mkdir(parents=True)
-        folds = [{"fold": k, "test_subjects": [f"s{k}_{i}" for i in range(3)]}
+        # membership: 3 development + 1 internal_transport + splits name 1 ghost
+        hashes = [f"s{k}_{i}" for k in range(5) for i in range(3)]
+        frame = pd.DataFrame({
+            "patient_hash": hashes + ["held_out_transport"],
+            "role": ["development"] * len(hashes) + ["internal_transport"],
+        })
+        mpath = tmp_path / f"{branch}_membership.parquet"
+        frame.to_parquet(mpath)
+        membership_paths[branch] = str(mpath)
+        folds = [{"fold": k, "test_subjects": [f"s{k}_{i}" for i in range(3)]
+                  + ["ghost_no_image", "held_out_transport"],
+                  "train_subjects": [f"s{j}_{i}" for j in range(5) if j != k
+                                     for i in range(3)]}
                  for k in range(5)]
         splits[branch] = {"outer_folds": folds}
         for arm in ("A0", "A1", "A2", "A3", "A4"):
@@ -323,13 +338,18 @@ def test_enumerate_firewall_cells_synthetic(tmp_path):
                 final = dev / branch / arm / f"outer_{k}" / "final"
                 final.mkdir(parents=True)
                 (final / "locked_checkpoint.pt").write_bytes(b"fake")
-    cells = enumerate_attribution_cells(dev_root=dev, orch_root=orch, splits=splits)
+    cells = enumerate_attribution_cells(dev_root=dev, orch_root=orch, splits=splits,
+                                        membership_paths=membership_paths)
     assert len(cells) == 50
+    # firewall = development-role ∩ splits, membership order, ghosts excluded
     assert cells[0]["firewall_subjects"] == ["s0_0", "s0_1", "s0_2"]
+    assert cells[0]["train_subjects"] == [f"s{j}_{i}" for j in range(1, 5)
+                                          for i in range(3)]
     # missing final -> BLOCKED incomplete
     (dev / "tau" / "A4" / "outer_4" / "final" / "locked_checkpoint.pt").unlink()
     with _pt.raises(RuntimeError, match="BLOCKED"):
-        enumerate_attribution_cells(dev_root=dev, orch_root=orch, splits=splits)
+        enumerate_attribution_cells(dev_root=dev, orch_root=orch, splits=splits,
+                                    membership_paths=membership_paths)
 
 
 def test_verify_final_digest_and_deadline(tmp_path):

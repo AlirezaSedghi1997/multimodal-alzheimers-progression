@@ -1,7 +1,10 @@
 # Locked parameters for post-training PET attribution (FINAL plan 04-pet-plan.md).
 # Production run is REFUSED unless the v4 final verifier PASS artifact exists.
 schema_version: "4.0"
-status: POST_HOC_INTERNAL_EXPLORATORY_DRAFT_PARAMS
+# Promoted 2026-09-08 by explicit operator order ("full GPU production"):
+# versioned FINAL for one production run on locked finals (digest 969ebd0f…).
+# Scope stays POST_HOC_INTERNAL_EXPLORATORY; aggregate-only; ban+privacy gated.
+status: POST_HOC_INTERNAL_EXPLORATORY_FINAL
 # Resolved relative to the repo ROOT at runtime (C-fix 2026-09-08: the previous
 # absolute "H:/New project" baked host drive layout into a versioned file).
 project_root: "."

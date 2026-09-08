@@ -182,7 +182,7 @@ def cmd_preflight(args) -> int:
                 "determinism": ledger,
                 "config_sha256": _sha256_file(Path(args.config)),
                 "config_status": cfg.get("status"),
-                "production_gate": "BLOCKED_UNTIL_CONFIG_FINAL",
+                "production_gate": "RUN_GATE_ENFORCES_FINAL_STATUS",
                 "privacy_note": "cell_progress.json (run phase) is private-tier scratch: "
                                 "per-subject rows never enter the final report, which is "
                                 "aggregate-only and ban+privacy scanned."})
@@ -262,12 +262,16 @@ def cmd_dry_run(args) -> int:
 def _load_cell_batch(cell, *, run_contract, model_cfg, model_features):
     """Load (image, tabular) batch for a cell's firewall subjects (read-only).
 
-    Strict probes only: H5 group keyed by EXACT subject hash; tabular columns
-    exactly the locked model_features from the membership parquet. Anything
-    unresolvable -> BLOCKED with precise reason (never guessed).
+    Mirrors the locked v4 program verbatim: the development membership
+    (role == "development"), the FoldTabularTransformer fitted on THIS cell's
+    outer-train frame, raw dtypes coerced per-column exactly like training
+    (C-fix 2026-09-08: raw torch.tensor on object-dtype columns crashed).
+    Strict probes only: anything unresolvable -> BLOCKED (never guessed).
     """
     import h5py
     import pandas as pd
+
+    from src.method_y_revival.image_training_runtime_v3 import FoldTabularTransformer
 
     branch = cell["branch"]
     cache_path = run_contract["input_fingerprints"][f"{branch}_pattern_cache"]["path"]
@@ -287,7 +291,20 @@ def _load_cell_batch(cell, *, run_contract, model_cfg, model_features):
                 break
     if key_col is None:
         raise RuntimeError("BLOCKED_TABULAR_KEY_COLUMN_UNKNOWN")
-    table = table.set_index(key_col)
+    if "role" not in table.columns:
+        raise RuntimeError("BLOCKED_TABULAR_ROLE_COLUMN_MISSING")
+    development = table[table["role"] == "development"].copy()
+    train_keys = {str(s) for s in cell.get("train_subjects", [])}
+    if not train_keys:
+        raise RuntimeError(f"BLOCKED_TRAIN_COHORT_MISSING:{cell['branch']}")
+    train_frame = development[development[key_col].astype(str).isin(train_keys)]
+    if train_frame.empty:
+        raise RuntimeError(f"BLOCKED_TRAIN_FRAME_EMPTY:{cell['branch']}")
+    try:
+        transformer = FoldTabularTransformer.fit(train_frame, list(model_features))
+    except Exception as exc:
+        raise RuntimeError(f"BLOCKED_TABULAR_TRANSFORMER_FIT:{branch}:{exc}")
+    development = development.set_index(key_col)
     batch = []
     # h5py handle is scope-bound: every BLOCKED raise below must release it
     # (C-fix 2026-09-08: previous version leaked the handle on exception paths,
@@ -296,11 +313,15 @@ def _load_cell_batch(cell, *, run_contract, model_cfg, model_features):
         for subj in cell["firewall_subjects"]:
             if subj not in h5:
                 raise RuntimeError(f"BLOCKED_H5_GROUP_MISSING:{cell['branch']}:{subj}")
-            if subj not in table.index:
+            if subj not in development.index:
                 raise RuntimeError(f"BLOCKED_TABULAR_ROW_MISSING:{cell['branch']}:{subj}")
             img = torch.from_numpy(h5[subj]["image"][...]).float()
-            tab = torch.tensor(table.loc[subj, model_features].to_numpy(),
-                               dtype=torch.float32)
+            try:
+                tab_arr = transformer.transform(
+                    development.loc[[subj], list(model_features)])
+            except Exception as exc:
+                raise RuntimeError(f"BLOCKED_TABULAR_TRANSFORM:{cell['branch']}:{subj}:{exc}")
+            tab = torch.from_numpy(tab_arr.reshape(-1)).float()
             batch.append((subj, img, tab))
     if not batch:
         raise RuntimeError(f"BLOCKED_EMPTY_FIREWALL_COHORT:{cell['branch']}")
@@ -358,9 +379,14 @@ def cmd_run(args) -> int:
         for branch in ("amyloid", "tau"):
             spath = rc["input_fingerprints"][f"{branch}_splits"]["path"]
             splits[branch] = json.loads(Path(spath).read_text(encoding="utf-8"))
+        membership_paths = {
+            branch: rc["input_fingerprints"][f"{branch}_membership"]["path"]
+            for branch in ("amyloid", "tau")
+        }
         cells = pa.enumerate_attribution_cells(
             dev_root=v4_root / "development",
-            orch_root=v4_root / "orchestration", splits=splits)
+            orch_root=v4_root / "orchestration", splits=splits,
+            membership_paths=membership_paths)
     except Exception as exc:
         print(json.dumps({"status": "BLOCKED", "reason_code": str(exc)}))
         return 3
@@ -410,7 +436,12 @@ def cmd_run(args) -> int:
         key = _cell_key(cell)
         done = progress.get(key, {})
         try:
-            pa.verify_final_digest(cell["final_checkpoint"], expected_digest=live_digest)
+            # Frozen-chain binding (2026-09-08): finals embed their own generation
+            # digest (migrations preserve weights by design), so bind the exact
+            # bytes that generated the locked outer metrics via the FINALIZED state.
+            prov = pa.verify_final_provenance(
+                cell["final_checkpoint"], v4_root=v4_root,
+                branch=cell["branch"], arm=cell["arm"], outer=cell["outer"])
             feats = factor_cfg["branches"][cell["branch"]]["model_features"]
             tab_dim = len(feats)
             _payload_probe = pa.read_only_load_checkpoint(
@@ -471,13 +502,18 @@ def cmd_run(args) -> int:
                              "layer": layer, "shallow": shallow,
                              "risk_primary": risk_primary,
                              "tabular_dim": tab_dim, "hazard_bins": bins,
+                             "provenance": {"checkpoint_sha256": prov["checkpoint_sha256"],
+                                            "generation_digest": prov["generation_digest"]},
                              "final_sha256": hashlib.sha256(
                                  Path(cell["final_checkpoint"]).read_bytes()).hexdigest(),
                              "rows": rows,
                              "privacy_tier": "PRIVATE_SCRATCH_SUBJECT_ROWS"}
             _save_progress()
         except Exception as exc:
-            print(json.dumps({"status": "BLOCKED", "cell": cell,
+            # Privacy hygiene: never dump firewall subject lists into logs.
+            print(json.dumps({"status": "BLOCKED", "cell": key,
+                              "n_subjects": len(cell.get("firewall_subjects", [])),
+                              "checkpoint": Path(cell["final_checkpoint"]).name,
                               "reason_code": f"{type(exc).__name__}:{exc}"}))
             return 3
     # Pilot phase (locked subsets): Score-CAM maps + LayerCAM full maps for
@@ -508,7 +544,9 @@ def cmd_run(args) -> int:
             branch, arm, outer = key.split("/")
             cell = next(c for c in cells
                         if f"{c['branch']}/{c['arm']}/o{c['outer']}" == key)
-            pa.verify_final_digest(cell["final_checkpoint"], expected_digest=live_digest)
+            pa.verify_final_provenance(
+                cell["final_checkpoint"], v4_root=v4_root,
+                branch=cell["branch"], arm=cell["arm"], outer=cell["outer"])
             feats = factor_cfg["branches"][cell["branch"]]["model_features"]
             tab_dim = len(feats)
             probe = pa.read_only_load_checkpoint(
@@ -577,14 +615,26 @@ def cmd_run(args) -> int:
         print(json.dumps({"status": "BLOCKED", "phase": "score_pilot",
                           "reason_code": "PILOT_MAPS_EMPTY"}))
         return 3
+    # Memory guard (2026-09-08): pilot_rows multiplies subjects × cells (a pilot
+    # subject recurs in every cell), so stacking ALL mapped 128³ maps OOMs
+    # (observed 1.72 GiB float64 throw). Cap agreement inputs at the locked
+    # pilot budget (scorecam.pilot_volumes, default 20), deterministically the
+    # first rows in cell order; float32 stack (gate upcasts internally).
+    agree_n = int(cfg.get("scorecam", {}).get("pilot_volumes", 20))
+    agree_rows = mapped_rows[:max(1, agree_n)]
     per_vol = (sum(score_times) / len(score_times)) if score_times else 0.0
     projected_h = per_vol * len(all_maps) / 3600.0 if all_maps else 0.0
-    # Agreement (LayerCAM vs Score-CAM) on same-cell pilot full maps.
-    agree = pa.agreement_gate(
-        np.stack([np.asarray(layer_maps[(r["cell"], r["subject"])].detach().cpu(),
-                             dtype=float).ravel() for r in mapped_rows]),
-        np.stack([np.asarray(score_maps[(r["cell"], r["subject"])].detach().cpu(),
-                             dtype=float).ravel() for r in mapped_rows]))
+    try:
+        # Agreement (LayerCAM vs Score-CAM) on same-cell pilot full maps.
+        agree = pa.agreement_gate(
+            np.stack([np.asarray(layer_maps[(r["cell"], r["subject"])].detach().cpu(),
+                                 dtype=np.float32).ravel() for r in agree_rows]),
+            np.stack([np.asarray(score_maps[(r["cell"], r["subject"])].detach().cpu(),
+                                 dtype=np.float32).ravel() for r in agree_rows]))
+    except Exception as exc:
+        print(json.dumps({"status": "BLOCKED", "phase": "agreement",
+                          "reason_code": f"{type(exc).__name__}:{exc}"}))
+        return 3
     share_records = [{"cell": k, "image_share": g["share"]["image_share"],
                       "stamp": g["share"]["stamp"]} for k, g in sorted(group_gates.items())]
     legs, evidence_extra = build_production_legs(
@@ -599,6 +649,7 @@ def cmd_run(args) -> int:
                        "n_maps": len(all_maps), "config_sha256": cfg_sha})
     atomic_write_json(out_dir / "scorecam_pilot_20.json",
                       {"pilot_subjects": pilot_keys, "n_mapped_rows": len(mapped_rows),
+                       "agreement_rows": len(agree_rows),
                        "pilot_seconds_per_volume": round(per_vol, 2),
                        "projected_hours": round(projected_h, 1),
                        "deadline_hours": score_timeout_h,
