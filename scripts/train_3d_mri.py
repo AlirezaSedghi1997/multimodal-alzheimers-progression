@@ -4,14 +4,16 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import os
 import random
+import signal
 import shutil
 import sys
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
@@ -22,8 +24,26 @@ from scripts.train_pet_method_y import resolve_training_device
 from src.utils.dataloader_config import resolve_dataloader_kwargs
 from src.training.method_x_resume import (
     assert_resume_contract,
+    build_runtime_resume_contract,
     build_run_contract,
+    build_locked_outer_result,
+    outer_evaluation_resume_action,
+    read_fold_state,
+    reuse_committed_outer_result,
+    sha256_path,
+    legacy_source_metadata_normalization,
+    scientific_contract_digest,
     source_contract_migration_allowed,
+    storage_policy_digest,
+    transition_fold_state,
+    validate_locked_outer_result,
+)
+from src.training.checkpoint_staging import (
+    RESUMABLE_EXIT_CODE,
+    CheckpointStager,
+    add_staging_arguments,
+    build_stager_from_args,
+    rng_state_digest,
 )
 from src.data.volume_augmentation import build_augmentation_policy, maybe_wrap_train_dataset
 from src.evaluation.calibration import (
@@ -52,7 +72,15 @@ from src.utils.final_claim_policy import (
     spm_progress,
     validate_claim,
 )
-from src.utils.reproducibility import seed_everything, split_membership_digest
+from src.utils.reproducibility import (
+    canonical_digest,
+    capture_rng_state,
+    restore_rng_state,
+    seed_everything,
+    seed_worker,
+    seeded_torch_generator,
+    split_membership_digest,
+)
 from src.utils.io_helpers import atomic_write_json, atomic_write_text
 from src.utils.run_manifest import write_run_manifest
 from src.data.combined_mri_cache import (
@@ -68,6 +96,382 @@ from src.data.combined_mri_cache import (
     validate_phenotype_feature_names,
 )
 from src.utils.reproducibility import source_tree_digest, runtime_version_contract
+
+
+# Runtime-only knobs are deliberately kept out of the scientific training
+# contract.  The distinction is important for the live battery: moving a
+# checkpoint between the H authority and the C staging volume must not make an
+# otherwise identical experiment look scientifically different.  Keep this as
+# a public, immutable tuple so audit tools can inspect it without importing the
+# argument parser.
+_NON_TRAINING_CONTRACT_ARGS = frozenset(
+    {
+        "checkpoint_staging_root",
+        "checkpoint_full_cadence",
+        "checkpoint_h_mirror",
+        "resume_replay_policy",
+        "allow_tf32",
+        "torch_compile",
+        "storage_policy",
+    }
+)
+
+# The first Method X battery was issued by a trainer revision that bound the
+# complete argparse scientific surface (not only the compact model signature)
+# into ``parameters``.  Keeping this allow-list explicit is important: using
+# ``vars(args)`` would accidentally bind output paths, resume controls, or the
+# C staging location, while using ``requested_model_signature`` would strand
+# the already-issued folds.  These names are the stable scientific/runtime
+# provenance fields present in the v3 battery contract.
+_METHOD_X_CONTRACT_PARAMETER_KEYS = (
+    "alignment_head",
+    "alignment_head_mode",
+    "amp",
+    "attention",
+    "auc_loss_weight",
+    "auc_margin",
+    "aug_prob_scale",
+    "augmentation_exposures_per_real",
+    "backbone",
+    "bottleneck_dim",
+    "causal_adjustment",
+    "causal_intervention_enabled",
+    "checkpoint",
+    "contrastive_alignment",
+    "contrastive_temperature",
+    "device",
+    "discriminative_lr",
+    "drop_tabular_feature",
+    "dropout",
+    "early_stopping_patience",
+    "ema_decay",
+    "epochs",
+    "finetune_lr",
+    "focal_alpha",
+    "focal_gamma",
+    "folds",
+    "freeze_encoder",
+    "freeze_until",
+    "fusion",
+    "fusion_hidden_dim",
+    "fusion_num_heads",
+    "grad_accum",
+    "gradual_unfreeze",
+    "hpo_selection_only",
+    "hybrid_attention_heads",
+    "hybrid_attention_window_size",
+    "hybrid_variant",
+    "include_global_supplementary_train",
+    "input_mode",
+    "label_smoothing",
+    "latent_alignment_lambda",
+    "latent_dim",
+    "layerwise_lr_decay",
+    "limit",
+    "lr",
+    "modality_dropout",
+    "moe_load_balance_lambda",
+    "monai_augment",
+    "n_experts",
+    "no_supplementary_train",
+    "phase",
+    "phenotypic_contrastive_alignment",
+    "phenotypic_contrastive_lambda",
+    "phenotypic_temperature",
+    "pos_weight",
+    "pretrained_checkpoint",
+    "pretrained_fold_manifest",
+    "pretrained_manifest",
+    "pretrained_min_coverage",
+    "pretrained_sha256",
+    "q2_channel_gate",
+    "require_gpu",
+    "require_pretrained_provenance",
+    "resolution",
+    "restore_best_at_end",
+    "sanity_random_labels",
+    "sanity_random_noise_images",
+    "scheduler",
+    "seed",
+    "step_gamma",
+    "step_size",
+    "supervised_contrastive_alignment",
+    "swa",
+    "swa_start_fraction",
+    "synib_lambda",
+    "tab_encoder",
+    "tab_hidden_dim",
+    "task_loss",
+    "tta",
+    "tta_augmentations",
+    "tta_mode",
+    "unfreeze_epoch",
+    "unfreeze_schedule",
+    "val_fraction",
+    "warmup_epochs",
+    "wd_exclude_bias_norm",
+)
+
+
+def build_method_x_contract_parameters(
+    args: Any,
+    *,
+    source_contract_digest: str,
+    runtime_versions: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Build the complete, path-free v3 training contract parameter map.
+
+    Missing fields are filled with the values used by the issued v3 battery.
+    This makes the builder compatible with older parser revisions while still
+    rejecting scientific changes through the normal contract digest gate.
+    ``source_contract_digest`` and ``runtime_versions`` are provenance fields;
+    they are intentionally retained in the body so an audited source hop can
+    be represented without mutating the scientific projection.
+    """
+
+    values = vars(args) if hasattr(args, "__dict__") else {}
+    defaults: dict[str, Any] = {
+        "alignment_head": "linear",
+        # The issued v3 contract used null for the default linear mode.  The
+        # model still receives the normalized ``linear`` parser value; this is
+        # only a compatibility representation in the contract.
+        "alignment_head_mode": None,
+        "amp": False,
+        "attention": "none",
+        "auc_loss_weight": 1.0,
+        "auc_margin": 1.0,
+        "aug_prob_scale": 0.2,
+        "augmentation_exposures_per_real": 4,
+        "backbone": "resnet18_3d",
+        "bottleneck_dim": 32,
+        "causal_adjustment": "none",
+        "causal_intervention_enabled": False,
+        "checkpoint": False,
+        "contrastive_alignment": False,
+        "contrastive_temperature": 0.07,
+        "device": "auto",
+        "discriminative_lr": False,
+        "drop_tabular_feature": "none",
+        "dropout": 0.1,
+        "early_stopping_patience": 5,
+        "ema_decay": 0.0,
+        "epochs": 100,
+        "finetune_lr": 5e-5,
+        "focal_alpha": -1.0,
+        "focal_gamma": 2.0,
+        "folds": 4,
+        "freeze_encoder": False,
+        "freeze_until": "",
+        "fusion": "cross_attention",
+        "fusion_hidden_dim": None,
+        "fusion_num_heads": 2,
+        "grad_accum": 1,
+        "gradual_unfreeze": False,
+        "hpo_selection_only": False,
+        "hybrid_attention_heads": 2,
+        "hybrid_attention_window_size": 4,
+        "hybrid_variant": "baseline",
+        "include_global_supplementary_train": False,
+        "input_mode": "mri_plus_tabular",
+        "label_smoothing": 0.0,
+        "latent_alignment_lambda": 0.0,
+        "latent_dim": 128,
+        "layerwise_lr_decay": 1.0,
+        "limit": 0,
+        "lr": 1e-4,
+        "modality_dropout": 0.5,
+        "moe_load_balance_lambda": 0.0,
+        "monai_augment": False,
+        "n_experts": 4,
+        "no_supplementary_train": False,
+        "phase": "dev",
+        "phenotypic_contrastive_alignment": False,
+        "phenotypic_contrastive_lambda": 0.0,
+        "phenotypic_temperature": 0.1,
+        "pos_weight": "auto",
+        "pretrained_checkpoint": "",
+        "pretrained_fold_manifest": "",
+        "pretrained_manifest": "",
+        "pretrained_min_coverage": 0.95,
+        "pretrained_sha256": "",
+        "q2_channel_gate": "none",
+        "require_gpu": False,
+        "require_pretrained_provenance": False,
+        "resolution": 128,
+        "restore_best_at_end": False,
+        "sanity_random_labels": False,
+        "sanity_random_noise_images": False,
+        "scheduler": "cosine",
+        "seed": 13,
+        "step_gamma": 0.5,
+        "step_size": 10,
+        "supervised_contrastive_alignment": False,
+        "swa": False,
+        "swa_start_fraction": 0.8,
+        "synib_lambda": 0.0,
+        "tab_encoder": "linear",
+        "tab_hidden_dim": 32,
+        "task_loss": "bce",
+        "tta": False,
+        "tta_augmentations": 5,
+        "tta_mode": "basic",
+        "unfreeze_epoch": 8,
+        "unfreeze_schedule": "none",
+        "val_fraction": 0.15,
+        "warmup_epochs": 5,
+        "wd_exclude_bias_norm": True,
+    }
+    result: dict[str, Any] = {}
+    for key in _METHOD_X_CONTRACT_PARAMETER_KEYS:
+        value = values.get(key, defaults[key])
+        # ``alignment_head_mode=linear`` is the normalized parser default; the
+        # issued contract encoded that same behavior as null.  Preserve
+        # explicit nonlinear mode, which is scientifically distinct.
+        if key == "alignment_head_mode" and value == "linear":
+            value = None
+        result[key] = value
+    result["source_contract_digest"] = str(source_contract_digest)
+    result["runtime_versions"] = dict(runtime_versions)
+    return result
+
+
+class SafeOptimizerBoundaryStop(RuntimeError):
+    """Controlled stop raised only after a committed optimizer boundary."""
+
+
+def _handle_training_signal(
+    signum: int,
+    frame: Any,
+    training_stop_request: dict[str, Any],
+) -> None:
+    """Record a stop request without doing I/O from an async signal handler."""
+
+    del frame
+    training_stop_request["requested"] = True
+    training_stop_request["signal"] = int(signum)
+
+
+def _install_training_signal_handlers(
+    training_stop_request: dict[str, Any],
+) -> tuple[Any, Any]:
+    """Install deferred SIGINT/SIGTERM handlers and return prior handlers."""
+
+    previous_sigint_handler = signal.getsignal(signal.SIGINT)
+    previous_sigterm_handler = signal.getsignal(signal.SIGTERM)
+    signal.signal(signal.SIGINT, lambda signum, frame: _handle_training_signal(signum, frame, training_stop_request))
+    signal.signal(signal.SIGTERM, lambda signum, frame: _handle_training_signal(signum, frame, training_stop_request))
+    return previous_sigint_handler, previous_sigterm_handler
+
+
+def reject_method_x_nondeterministic_acceleration(args: Any) -> None:
+    """Fail closed on opt-in accelerators that can change the bitwise path.
+
+    TF32 and ``torch.compile`` can be useful for exploratory profiling, but
+    they are not part of the locked Method X reproducibility protocol.  They
+    therefore require a separate, versioned experiment rather than silently
+    changing an existing run.
+    """
+
+    if bool(getattr(args, "allow_tf32", False)):
+        raise SystemExit(79)
+    if bool(getattr(args, "torch_compile", False)):
+        raise SystemExit(79)
+
+
+def training_contract_parameters(args: Any) -> dict[str, Any]:
+    """Return deterministic scientific parameters while dropping runtime flags."""
+
+    values = vars(args) if hasattr(args, "__dict__") else {}
+    return {
+        str(key): value
+        for key, value in sorted(values.items(), key=lambda item: str(item[0]))
+        if str(key) not in _NON_TRAINING_CONTRACT_ARGS
+        and not str(key).startswith("_")
+    }
+
+
+def verify_loaded_staged_recovery(
+    staged_recovery_plan: Any,
+    progress: Mapping[str, Any] | None,
+) -> bool:
+    """Verify a staged payload after its model/runtime state is restored.
+
+    A cold start has no replay evidence and returns ``False``.  For a staged
+    payload the journal's accumulator and RNG digest are checked through the
+    backend's fail-closed verifier.  The helper is intentionally small so it
+    can be exercised independently by acceptance tests.
+    """
+
+    if staged_recovery_plan is None or getattr(staged_recovery_plan, "payload_path", None) is None:
+        return False
+    payload = progress or {}
+    staged_recovery_plan.verify_replay(
+        rng_digest=rng_state_digest(),
+        loss_sum=float(payload.get("epoch_loss_sum", payload.get("loss_sum", 0.0))),
+        loss_count=int(payload.get("epoch_loss_count", payload.get("loss_count", 0))),
+    )
+    return True
+
+
+def seed_offloaded_best_state_sidecar(
+    checkpoint_stager: CheckpointStager | None,
+    *,
+    best_model_state: Mapping[str, Any] | None,
+    best_averaged_state: Mapping[str, Any] | None,
+    best_averaged_source: str | None,
+    best_epoch: int | None,
+    best_val: float,
+) -> dict[str, Any] | None:
+    """Persist the validation-best weights on H exactly once per improvement."""
+
+    if checkpoint_stager is None or best_model_state is None:
+        return None
+    import math
+
+    if best_epoch is None or not math.isfinite(float(best_val)):
+        return None
+    state: dict[str, Any] = {
+        "best_model_state_dict": dict(best_model_state),
+        "best_averaged_state_dict": (
+            dict(best_averaged_state) if best_averaged_state is not None else None
+        ),
+        "best_averaged_source": best_averaged_source,
+        "best_epoch": int(best_epoch),
+        "best_val": float(best_val),
+    }
+    return checkpoint_stager.record_best_state(state, metric=float(best_val))
+
+
+def persist_resume_boundary(
+    *,
+    checkpoint_stager: CheckpointStager | None,
+    payload_factory: Any,
+    progress_path: Path,
+    optimizer_step: int,
+    epoch: int,
+    epoch_batch_cursor: int,
+    sampler_cursor: int,
+    loss_sum: float,
+    loss_count: int,
+    reason: str,
+) -> dict[str, Any]:
+    """Commit a complete boundary through staging, or atomically on H legacy."""
+
+    if checkpoint_stager is not None:
+        result = checkpoint_stager.commit_boundary(
+            payload_factory=payload_factory,
+            optimizer_step=int(optimizer_step),
+            epoch=int(epoch),
+            epoch_batch_cursor=int(epoch_batch_cursor),
+            sampler_cursor=int(sampler_cursor),
+            loss_sum=float(loss_sum),
+            loss_count=int(loss_count),
+            rng_digest=rng_state_digest(),
+            reason=str(reason),
+        )
+        return result
+    atomic_torch_save(payload_factory(), progress_path)
+    return {"status": "LEGACY_H_PROGRESS_COMMITTED", "path": str(progress_path)}
 
 
 def method_x_training_source_paths() -> list[Path]:
@@ -596,6 +1000,14 @@ def inspect_exact_run_contract(
         try:
             assert_resume_contract(existing_contract, run_contract)
         except RuntimeError:
+            legacy = legacy_source_metadata_normalization(existing_contract, run_contract)
+            if legacy is not None:
+                return {
+                    "status": "LEGACY_SOURCE_METADATA_NORMALIZATION_REQUIRED",
+                    "previous_digest": existing_contract.get("run_contract_digest"),
+                    "new_digest": run_contract["digest"],
+                    "source_digest": legacy.get("source_digest_metadata"),
+                }
             if not source_contract_migration_allowed(existing_contract, run_contract):
                 raise
             return {
@@ -639,6 +1051,74 @@ def ensure_exact_run_contract(
             "status": "SOURCE_ONLY_MIGRATED",
             "previous_digest": decision["previous_digest"],
             "new_digest": decision["new_digest"],
+        }
+    if decision["status"] == "LEGACY_SOURCE_METADATA_NORMALIZATION_REQUIRED":
+        existing_path = out_dir / "run_contract.json"
+        existing_contract = json.loads(existing_path.read_text(encoding="utf-8"))
+        # This repair is safe only before any training or evaluation bytes are
+        # present.  A partially trained run must remain blocked and receive a
+        # separately audited migration, never an in-place normalization.
+        forbidden = []
+        for candidate in out_dir.rglob("*"):
+            if not candidate.is_file() or candidate == existing_path:
+                continue
+            name = candidate.name.lower()
+            if (
+                candidate.suffix.lower() in {".pt", ".pth", ".ckpt"}
+                or name in {"three_d_metrics.json", "progress.json", "training.lock"}
+                or "outer_eval" in name
+                or "checkpoint" in name
+                or "progress" in name
+                or "metrics" in name
+                or "lock" in name
+            ):
+                forbidden.append(candidate)
+        if forbidden:
+            raise RuntimeError("LEGACY_CONTRACT_NORMALIZATION_AFTER_TRAINING_FORBIDDEN")
+        normalized = legacy_source_metadata_normalization(existing_contract, run_contract)
+        if normalized is None:
+            raise RuntimeError("LEGACY_SOURCE_METADATA_NORMALIZATION_INVALID")
+        migration_dir = out_dir / "source_contract_migrations"
+        migration_dir.mkdir(parents=True, exist_ok=True)
+        old_file_sha = sha256_path(existing_path)
+        archive = migration_dir / f"legacy_source_metadata_{old_file_sha}.json"
+        if not archive.exists():
+            shutil.copy2(existing_path, archive)
+        receipt = {
+            "schema_version": 1,
+            "artifact": "method_x_legacy_source_metadata_normalization_receipt",
+            "append_only": True,
+            "old_file_sha256": old_file_sha,
+            "new_file_sha256": None,
+            "old_run_contract_digest": existing_contract.get("run_contract_digest"),
+            "new_run_contract_digest": run_contract.get("digest"),
+            "source_digest": normalized.get("source_digest_metadata"),
+            "archived_path": archive.name,
+            "training_artifact_present": False,
+            "outer_test_touched": False,
+            "created_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        }
+        receipt_path = migration_dir / f"legacy_source_metadata_{old_file_sha}.receipt.json"
+        # Preserve the source metadata outside the nested, digested body.
+        atomic_write_json(
+            existing_path,
+            {
+                "run_contract": normalized["run_contract"],
+                "run_contract_digest": normalized["run_contract_digest"],
+                "source_digest_metadata": normalized.get("source_digest_metadata"),
+            },
+        )
+        receipt["new_file_sha256"] = sha256_path(existing_path)
+        receipt["integrity_sha256"] = canonical_digest(
+            {key: value for key, value in receipt.items() if key != "integrity_sha256"}
+        )
+        if not receipt_path.exists():
+            atomic_write_json(receipt_path, receipt)
+        return {
+            "status": "LEGACY_SOURCE_METADATA_NORMALIZED",
+            "previous_digest": decision["previous_digest"],
+            "new_digest": decision["new_digest"],
+            "receipt": str(receipt_path),
         }
     if decision["status"] == "CREATE_REQUIRED":
         atomic_write_json(
@@ -947,16 +1427,35 @@ def run_epoch(
     auc_loss_weight: float = 1.0,
     ema_state: dict | None = None,
     ema_decay: float = 0.0,
+    optimizer_step_commit_callback=None,
+    start_batch_cursor: int = 0,
+    initial_loss_sum: float = 0.0,
+    initial_loss_count: int = 0,
+    optimizer_step_offset: int = 0,
+    epoch_index: int = 0,
 ) -> float:
     import torch
 
+    if int(start_batch_cursor) < 0:
+        raise ValueError("start_batch_cursor must be non-negative")
+    if int(initial_loss_count) < 0:
+        raise ValueError("initial_loss_count must be non-negative")
+    if int(optimizer_step_offset) < 0:
+        raise ValueError("optimizer_step_offset must be non-negative")
     model.train()
     losses: list[float] = []
     loss_part_sums: dict[str, float] = {}
-    loss_part_count = 0
+    loss_part_count = int(initial_loss_count)
+    loss_sum = float(initial_loss_sum)
+    local_optimizer_steps = 0
     amp_enabled = use_amp and device.type == "cuda"
     optimizer.zero_grad(set_to_none=True)
     for step, batch in enumerate(loader):
+        # A staged checkpoint can represent a safe optimizer boundary in the
+        # middle of an epoch.  The already-committed batches are deterministic
+        # replay history and must not be optimized a second time.
+        if step < int(start_batch_cursor):
+            continue
         image, tabular, label, tab_presence, phenotype_features = unpack_batch(batch)
         image = image.to(device)
         tabular = normalize_tabular(tabular.to(device), tab_mean, tab_std)
@@ -997,6 +1496,8 @@ def run_epoch(
             if isinstance(value, (int, float)):
                 loss_part_sums[key] = loss_part_sums.get(key, 0.0) + float(value)
         loss_part_count += 1
+        raw_loss_value = float(loss.detach().cpu()) * float(grad_accum_steps)
+        loss_sum += raw_loss_value
         if scaler is not None and amp_enabled:
             scaler.scale(loss).backward()
         else:
@@ -1016,12 +1517,29 @@ def run_epoch(
             if scheduler is not None and scheduler_step_per_batch:
                 scheduler.step()
             optimizer.zero_grad(set_to_none=True)
-        losses.append(float(loss.detach().cpu()) * grad_accum_steps)
+            local_optimizer_steps += 1
+            if optimizer_step_commit_callback is not None:
+                # The callback is invoked only after optimizer/scheduler state
+                # is coherent.  It may persist a checkpoint and then request a
+                # safe boundary stop; it must never run from the signal handler.
+                optimizer_step_commit_callback(
+                    local_optimizer_steps=int(local_optimizer_steps),
+                    optimizer_step=int(optimizer_step_offset) + int(local_optimizer_steps),
+                    global_optimizer_step=int(optimizer_step_offset) + int(local_optimizer_steps),
+                    batch_cursor=int(step + 1),
+                    sampler_cursor=int(step + 1),
+                    epoch=int(epoch_index),
+                    loss_sum=float(loss_sum),
+                    loss_count=int(loss_part_count),
+                    epoch_loss_sum=float(loss_sum),
+                    epoch_loss_count=int(loss_part_count),
+                )
+        losses.append(raw_loss_value)
     model._last_epoch_loss_parts = {
         key: value / max(loss_part_count, 1)
         for key, value in loss_part_sums.items()
     }
-    return float(sum(losses) / max(len(losses), 1))
+    return float(loss_sum / max(loss_part_count, 1))
 
 
 def predict(
@@ -1575,6 +2093,16 @@ def build_aggregate(
         "model": "MethodX3DClassifier",
         "mode": mode,
         "phase": args.phase,
+        "evaluation_scope": (
+            "inner_validation_only"
+            if bool(getattr(args, "validity_inner_only", False))
+            else "locked_outer_test_reporting_only"
+        ),
+        "validity_inner_only": bool(getattr(args, "validity_inner_only", False)),
+        "outer_test_access_count": 0
+        if bool(getattr(args, "validity_inner_only", False))
+        else len(fold_metrics),
+        "outer_test_used_for_selection": False,
         "fusion": args.fusion,
         "backbone": args.backbone,
         "attention": getattr(args, "attention", "none"),
@@ -1729,8 +2257,14 @@ def build_aggregate(
                 else "disabled"
             ),
         },
+        "sanity_random_labels": bool(getattr(args, "sanity_random_labels", False)),
+        "sanity_random_noise_images": bool(getattr(args, "sanity_random_noise_images", False)),
         "evaluation_loss_policy": {
-            "source": "locked_fold_test_split",
+            "source": (
+                "not_accessed_validity_inner_only"
+                if bool(getattr(args, "validity_inner_only", False))
+                else "locked_fold_test_split"
+            ),
             "reporting_only": True,
             "used_for_early_stopping": False,
             "used_for_hyperparameter_selection": False,
@@ -1916,6 +2450,56 @@ def atomic_torch_save(payload: dict, path: Path) -> None:
             tmp_path.unlink()
 
 
+def atomic_torch_save_immutable(payload: dict, path: Path) -> None:
+    """Write a terminal/locked checkpoint without silently replacing evidence.
+
+    A fold can be resumed after a process dies between the lock and the outer
+    evaluation.  In that situation the lock file is already authoritative; a
+    second invocation must either prove that its contract and checkpoint
+    identity are the same or fail closed.  It must never overwrite the first
+    locked bytes with a newly initialised model.
+    """
+
+    import torch
+
+    path = Path(path)
+    if path.is_file():
+        try:
+            existing = torch.load(path, map_location="cpu", weights_only=True)
+        except Exception as exc:
+            raise RuntimeError("LOCKED_CHECKPOINT_UNREADABLE") from exc
+        for key in (
+            "run_contract_digest",
+            "fold",
+            "backbone",
+            "checkpoint_kind",
+            "split_membership_digest",
+        ):
+            if existing.get(key) != payload.get(key):
+                raise RuntimeError(f"LOCKED_CHECKPOINT_IDENTITY_MISMATCH:{key}")
+        # The model state is the scientific payload.  Compare tensor shapes and
+        # bytes rather than trusting a mutable timestamp or a self-reported
+        # marker.  This check is only reached on recovery, not every epoch.
+        expected_state = payload.get("model_state_dict")
+        found_state = existing.get("model_state_dict")
+        if not isinstance(expected_state, Mapping) or not isinstance(found_state, Mapping):
+            raise RuntimeError("LOCKED_CHECKPOINT_MODEL_STATE_MISSING")
+        if set(expected_state) != set(found_state):
+            raise RuntimeError("LOCKED_CHECKPOINT_MODEL_STATE_KEYS_MISMATCH")
+        for name in expected_state:
+            left = expected_state[name]
+            right = found_state[name]
+            if hasattr(left, "detach") and hasattr(right, "detach"):
+                if tuple(left.shape) != tuple(right.shape) or not bool(
+                    torch.equal(left.detach().cpu(), right.detach().cpu())
+                ):
+                    raise RuntimeError("LOCKED_CHECKPOINT_MODEL_STATE_MISMATCH")
+            elif left != right:
+                raise RuntimeError("LOCKED_CHECKPOINT_MODEL_STATE_MISMATCH")
+        return
+    atomic_torch_save(payload, path)
+
+
 def preserve_precontinuation_checkpoint(path: Path, completed_epochs: int) -> Path:
     preserved = path.with_name(f"{path.stem}_precontinuation_epoch{completed_epochs}{path.suffix}")
     if preserved.exists():
@@ -1931,7 +2515,12 @@ def load_resume_payload(path: Path, device):
     import torch
 
     try:
-        return torch.load(path, map_location=device, weights_only=True)
+        # Resume metadata (especially RNG and DataLoader generator states) must
+        # remain CPU tensors while it is validated.  Mapping the whole payload
+        # to CUDA here can move byte-state tensors onto the device and makes a
+        # subsequent exact replay depend on allocator/device timing.  Model
+        # weights are moved explicitly by ``load_state_dict`` at restore time.
+        return torch.load(path, map_location="cpu", weights_only=True)
     except Exception as exc:
         raise RuntimeError(
             f"Cannot resume from {path}. The progress file may be from an interrupted non-atomic save. "
@@ -1967,8 +2556,52 @@ def progress_payload(
     ema_state: dict | None = None,
     swa_state: dict | None = None,
     swa_count: int = 0,
+    # The fields below are intentionally optional.  Keeping defaults preserves
+    # the legacy H-only checkpoint format while allowing the C staging backend
+    # to bind every recovery cursor and digest explicitly.
+    omit_best_state: bool = False,
+    best_averaged_state: dict | None = None,
+    best_averaged_source: str | None = None,
+    optimizer_step_count: int = 0,
+    checkpoint_generation: int = 0,
+    epoch_batch_cursor: int = 0,
+    sampler_cursor: int | None = None,
+    runtime_resume_contract: Mapping[str, Any] | None = None,
+    storage_policy_digest_value: str | None = None,
+    fold_membership_digest: str | None = None,
+    rng_state: Mapping[str, Any] | None = None,
+    loader_generator_state: Any | None = None,
+    train_generator: Any | None = None,
+    sampler_epoch_generator_state: Any | None = None,
+    fold_terminal: bool = False,
+    epoch_loss_sum: float = 0.0,
+    epoch_loss_count: int = 0,
+    run_contract: Mapping[str, Any] | None = None,
 ) -> dict:
-    return {
+    # A negative cursor is never meaningful and, if serialized, can make a
+    # resumed sampler silently skip or repeat data.  Reject it at the payload
+    # boundary rather than relying on the staging layer to notice later.
+    counters = {
+        "optimizer_step_count": optimizer_step_count,
+        "checkpoint_generation": checkpoint_generation,
+        "epoch_batch_cursor": epoch_batch_cursor,
+        "sampler_cursor": epoch_batch_cursor if sampler_cursor is None else sampler_cursor,
+        "epoch_loss_count": epoch_loss_count,
+    }
+    for name, value in counters.items():
+        if int(value) < 0:
+            raise ValueError(f"{name} must be non-negative")
+    effective_sampler_cursor = int(counters["sampler_cursor"])
+    contract_mapping = run_contract if isinstance(run_contract, Mapping) else None
+    scientific_digest = (
+        scientific_contract_digest(contract_mapping) if contract_mapping is not None else None
+    )
+    runtime_digest = (
+        runtime_resume_contract.get("digest")
+        if isinstance(runtime_resume_contract, Mapping)
+        else None
+    )
+    payload = {
         "model_state_dict": model.state_dict(),
         "optimizer_state_dict": optimizer.state_dict(),
         "scheduler_state_dict": scheduler.state_dict() if scheduler is not None else None,
@@ -1985,6 +2618,8 @@ def progress_payload(
         "causal_adjustment": getattr(args, "causal_adjustment", "none"),
         "q2_channel_gate": getattr(args, "q2_channel_gate", "none"),
         "input_mode": getattr(args, "input_mode", "mri_plus_tabular"),
+        "drop_tabular_feature": str(getattr(args, "drop_tabular_feature", "none")),
+        "validity_inner_only": bool(getattr(args, "validity_inner_only", False)),
         "latent_dim": args.latent_dim,
         "tab_hidden_dim": args.tab_hidden_dim,
         "dropout": args.dropout,
@@ -2006,7 +2641,10 @@ def progress_payload(
         "resume_from_epoch": epoch,
         "best_val": best_val,
         "best_epoch": best_epoch,
-        "best_model_state_dict": best_model_state if bool(getattr(args, "restore_best_at_end", False)) else None,
+        # Staged payloads must not contain a second copy of the model.  The
+        # validation-best state is written to the H sidecar by the caller.
+        "best_state_offloaded": bool(omit_best_state),
+        "best_averaged_source": best_averaged_source,
         "patience": patience,
         "train_curve": train_curve,
         "val_curve": val_curve,
@@ -2024,7 +2662,42 @@ def progress_payload(
         "estimated_remaining_seconds": estimated_remaining_seconds,
         "updated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "training_continuation": training_continuation,
+        # Runtime/recovery metadata is deliberately outside ``run_contract``;
+        # adding it here must not change the scientific contract digest.
+        "run_contract": dict(contract_mapping) if contract_mapping is not None else None,
+        "run_contract_digest": run_contract["digest"] if isinstance(run_contract, Mapping) and "digest" in run_contract else None,
+        "scientific_contract_digest": scientific_digest,
+        "runtime_resume_contract": (
+            dict(runtime_resume_contract)
+            if isinstance(runtime_resume_contract, Mapping)
+            else None
+        ),
+        "runtime_resume_digest": runtime_digest,
+        "storage_policy_digest": storage_policy_digest_value,
+        "checkpoint_generation": int(checkpoint_generation),
+        "last_committed_optimizer_step": int(optimizer_step_count),
+        "optimizer_step_count": int(optimizer_step_count),
+        "epoch_batch_cursor": int(epoch_batch_cursor),
+        "sampler_cursor": effective_sampler_cursor,
+        "split_membership_digest": fold_membership_digest,
+        "rng_state": capture_rng_state() if rng_state is None else rng_state,
+        "loader_generator_state": train_generator.get_state() if train_generator is not None else loader_generator_state,
+        "sampler_epoch_generator_state": sampler_epoch_generator_state,
+        "fold_terminal": bool(fold_terminal),
+        "epoch_loss_sum": float(epoch_loss_sum),
+        "epoch_loss_count": int(epoch_loss_count),
     }
+    if omit_best_state:
+        # Remove the keys entirely (None is not sufficient: the stager rejects
+        # key presence to prevent accidental multi-hundred-MB duplication).
+        payload.pop("best_model_state_dict", None)
+        payload.pop("best_averaged_state_dict", None)
+        payload.pop("best_model_state", None)
+        payload.pop("best_averaged_state", None)
+    else:
+        payload["best_model_state_dict"] = best_model_state
+        payload["best_averaged_state_dict"] = best_averaged_state
+    return payload
 
 
 def estimate_remaining_seconds(
@@ -2044,7 +2717,7 @@ def estimate_remaining_seconds(
 
 
 def requested_model_signature(args) -> dict[str, object]:
-    return {
+    signature = {
         "fusion": args.fusion,
         "backbone": args.backbone,
         "attention": getattr(args, "attention", "none"),
@@ -2071,6 +2744,12 @@ def requested_model_signature(args) -> dict[str, object]:
         "swa": bool(getattr(args, "swa", False)),
         "swa_start_fraction": float(getattr(args, "swa_start_fraction", 0.8)),
     }
+    # MX-03 validity arms are a distinct, inner-validation-only execution
+    # contract.  Keep the key absent for the historical battery so existing
+    # finalized model contracts remain byte-compatible.
+    if bool(getattr(args, "validity_inner_only", False)):
+        signature["validity_inner_only"] = True
+    return signature
 
 
 def payload_model_signature(payload: dict) -> dict[str, object] | None:
@@ -2115,6 +2794,11 @@ def payload_model_signature(payload: dict) -> dict[str, object] | None:
             "ema_decay": float(payload.get("ema_decay", 0.0)),
             "swa": bool(payload.get("swa", False)),
             "swa_start_fraction": float(payload.get("swa_start_fraction", 0.8)),
+            # Historical payloads predate these keys; the defaults preserve
+            # byte-compatibility with the finalized battery (validity off,
+            # no feature dropped).
+            "validity_inner_only": bool(payload.get("validity_inner_only", False)),
+            "drop_tabular_feature": str(payload.get("drop_tabular_feature", "none")),
         }
     except (TypeError, ValueError):
         return None
@@ -2125,7 +2809,14 @@ def checkpoint_payload_compatible(payload: dict, args) -> tuple[bool, str, dict[
     expected = requested_model_signature(args)
     if found is None:
         return False, "missing_model_signature_metadata", None
-    mismatches = {key: {"expected": expected[key], "found": found[key]} for key in expected if expected[key] != found[key]}
+    # A key absent from a saved payload is a mismatch verdict, never an
+    # exception: historical payloads predate newer signature keys (e.g. the
+    # MX-03 validity flag) and must SKIP cleanly, not crash the run.
+    mismatches = {
+        key: {"expected": expected[key], "found": found.get(key)}
+        for key in expected
+        if expected[key] != found.get(key)
+    }
     if mismatches:
         return False, "model_signature_mismatch:" + json.dumps(mismatches, sort_keys=True), found
     return True, "model_signature_match", found
@@ -2307,6 +2998,14 @@ def main() -> int:
     ap.add_argument("--splits", default="splits")
     ap.add_argument("--out_dir", default="results/final_results/three_d")
     ap.add_argument("--phase", choices=["dev", "final"], default="dev")
+    ap.add_argument(
+        "--validity_inner_only",
+        action="store_true",
+        help=(
+            "MX-03 validity task mode: use inner validation only and never "
+            "construct or evaluate the outer/test loader."
+        ),
+    )
     ap.add_argument("--resolution", type=int, default=128)
     ap.add_argument("--folds", type=int, default=4)
     ap.add_argument("--epochs", type=int, default=100)
@@ -2555,7 +3254,29 @@ def main() -> int:
         action="store_true",
         help="Read-only run-contract decision; never migrates, trains, or writes artifacts.",
     )
+    # Resume/storage controls are runtime policy, not scientific knobs.  They
+    # are registered in one shared helper so the runner and direct trainer
+    # invocations cannot silently disagree about the allowlist.
+    add_staging_arguments(ap)
+    ap.add_argument(
+        "--storage_policy",
+        default="configs/policy/method_x_storage_locality_v1.yaml",
+        help="Storage-locality policy used only when checkpoint staging is enabled.",
+    )
+    ap.add_argument(
+        "--allow_tf32",
+        action="store_true",
+        help="Rejected for the locked Method X protocol; use a new exploratory run.",
+    )
+    ap.add_argument(
+        "--torch_compile",
+        action="store_true",
+        help="Rejected for the locked Method X protocol; use a new exploratory run.",
+    )
     args = ap.parse_args()
+    reject_method_x_nondeterministic_acceleration(args)
+    if bool(args.validity_inner_only) and args.phase != "dev":
+        raise SystemExit("--validity_inner_only is restricted to --phase dev")
     apply_hparam_manifest(args)
     if not 0.0 <= float(args.ema_decay) < 1.0:
         raise SystemExit("--ema_decay must be in [0, 1). Use 0 to disable EMA.")
@@ -2626,8 +3347,18 @@ def main() -> int:
         "pin_memory": bool(getattr(args, "pin_memory", False)),
         "persistent_workers": bool(getattr(args, "persistent_workers", False)),
         "prefetch_factor": int(getattr(args, "prefetch_factor", 2) or 0),
+        # These fields were part of the issued v3 contract.  They describe
+        # deterministic loader plumbing and are retained for exact resume
+        # compatibility; they are not user-controlled data or paths.
+        "non_blocking_transfer": True,
+        "train_generator": "explicit_per_fold_torch_generator",
+        "worker_init_fn": "src.utils.reproducibility.seed_worker",
     }
-    parameters_contract = requested_model_signature(args)
+    parameters_contract = build_method_x_contract_parameters(
+        args,
+        source_contract_digest=source_digest_value,
+        runtime_versions=runtime_versions,
+    )
     run_contract = build_run_contract(
         cache_sha256=str(args.cache_sha256 or ""),
         split_digest=split_digest,
@@ -2638,8 +3369,9 @@ def main() -> int:
         loader=loader_contract,
         spm_snapshot_sha256=str(args.spm_snapshot_sha256 or "") or None,
     )
-    if not run_contract.get("source_digest"):
-        run_contract["source_digest"] = source_digest_value
+    # Source/runtime provenance is included *before* the digest is computed.
+    # ``scientific_contract_digest`` projects these fields out, so a source-only
+    # repair remains auditable without weakening scientific drift checks.
     out_dir = PROJECT_ROOT / args.out_dir
     if bool(args.contract_preflight_only):
         decision = inspect_exact_run_contract(
@@ -2663,6 +3395,27 @@ def main() -> int:
         out_dir,
         run_contract=run_contract,
         require_exact_resume_contract=bool(args.require_exact_resume_contract),
+    )
+    # Runtime resume policy is bound separately from the scientific contract.
+    # This lets the official runner use the fast C staging path without
+    # invalidating the already-issued Method X experiment digest.
+    staging_enabled = bool(str(getattr(args, "checkpoint_staging_root", "") or "").strip())
+    runtime_resume_contract = build_runtime_resume_contract(
+        staging_root_class=(
+            "C_ALLOWLISTED_CHECKPOINT_STAGING" if staging_enabled else "H_ONLY"
+        ),
+        full_cadence=(
+            int(getattr(args, "checkpoint_full_cadence", 1)) if staging_enabled else 1
+        ),
+        h_mirror_policy=str(getattr(args, "checkpoint_h_mirror", "epoch")),
+        journal_enabled=staging_enabled,
+        replay_policy=str(getattr(args, "resume_replay_policy", "deterministic")),
+    )
+    storage_policy_path = Path(str(getattr(args, "storage_policy", "")))
+    if not storage_policy_path.is_absolute():
+        storage_policy_path = PROJECT_ROOT / storage_policy_path
+    storage_policy_digest_value = (
+        storage_policy_digest(storage_policy_path) if staging_enabled else None
     )
     # ---------------- end exact-resume contract gate ----------------
 
@@ -2767,6 +3520,10 @@ def main() -> int:
 
     run_started = time.monotonic()
     max_runtime_seconds = args.max_runtime_minutes * 60.0 if args.max_runtime_minutes > 0 else None
+    # Keep the alias explicit: a fold's target is immutable for the lifetime of
+    # a run and source-level tests/receipts use this name to distinguish it from
+    # a partially completed epoch.
+    epochs_per_fold = int(epochs)
 
     def relative_or_str(path: Path) -> str:
         try:
@@ -2841,13 +3598,20 @@ def main() -> int:
     for fold in range(folds):
         ckpt_path = out_dir / f"method_x_3d_fold_{fold}.pt"
         progress_path = out_dir / f"method_x_3d_fold_{fold}_progress.pt"
+        fold_state_path = out_dir / f"method_x_3d_fold_{fold}_state.json"
+        locked_outer_path = out_dir / f"method_x_3d_fold_{fold}_outer_eval.json"
+        locked_checkpoint_path = out_dir / f"method_x_3d_fold_{fold}_locked.pt"
         progress = None
         completed_payload = None
         completed_epochs = 0
+        fold_state = read_fold_state(fold_state_path)
         if ckpt_path.exists() and not args.no_resume:
             import torch
 
-            completed_payload = torch.load(ckpt_path, map_location=device, weights_only=True)
+            # Keep resume metadata (including RNG byte tensors) on CPU.  Model
+            # tensors are moved by ``load_state_dict`` only when a fold truly
+            # needs continuation.
+            completed_payload = torch.load(ckpt_path, map_location="cpu", weights_only=True)
             compatible, reason, found_signature = checkpoint_payload_compatible(completed_payload, args)
             if not compatible:
                 print(
@@ -2867,21 +3631,47 @@ def main() -> int:
                 completed_epochs = 0
             else:
                 completed_epochs = int(completed_payload.get("epochs_run") or 0)
-            if completed_epochs >= epochs:
-                metrics, y_true, y_prob = evaluate_saved_fold(
-                    ckpt_path,
-                    fold=fold,
-                    cache_path=cache_path,
-                    split_dir=split_dir,
-                    sample_to_idx=sample_to_idx,
-                    ok=ok,
-                    per_split_limit=per_split_limit,
-                    device=device,
-                    args=args,
-                    epochs=epochs,
-                    include_supplementary=include_supplementary,
-                    include_global_supplementary=args.include_global_supplementary_train,
-                )
+            # A terminal fold must never reopen the outer loader.  Prefer the
+            # immutable embedded result and validate/reuse it; only legacy
+            # checkpoints with no committed outer payload may use the old
+            # evaluator, and only when the fold state proves that outer access
+            # has not already happened.
+            if completed_epochs >= epochs_per_fold or (
+                fold_state is not None and fold_state.get("stage") == "FINALIZED"
+            ):
+                reused_outer = None
+                embedded_outer = completed_payload.get("locked_outer_test_evaluation")
+                if isinstance(embedded_outer, Mapping):
+                    reused_outer = reuse_committed_outer_result(
+                        completed_payload,
+                        embedded_outer,
+                        expected_fold=fold,
+                        expected_contract_digest=run_contract["digest"],
+                    )
+                elif fold_state is not None and fold_state.get("stage") in {
+                    "FINALIZED",
+                    "OUTER_EVAL_DONE",
+                }:
+                    raise RuntimeError("COMMITTED_OUTER_EVALUATION_MISSING_FOR_TERMINAL_FOLD")
+                if reused_outer is not None:
+                    metrics = dict(reused_outer["metrics"])
+                    y_true = list(reused_outer["y_true"])
+                    y_prob = list(reused_outer["y_prob"])
+                else:
+                    metrics, y_true, y_prob = evaluate_saved_fold(
+                        ckpt_path,
+                        fold=fold,
+                        cache_path=cache_path,
+                        split_dir=split_dir,
+                        sample_to_idx=sample_to_idx,
+                        ok=ok,
+                        per_split_limit=per_split_limit,
+                        device=device,
+                        args=args,
+                        epochs=epochs,
+                        include_supplementary=include_supplementary,
+                        include_global_supplementary=args.include_global_supplementary_train,
+                    )
                 fold_metrics.append(metrics)
                 all_y.extend(y_true)
                 all_p.extend(y_prob)
@@ -2907,7 +3697,67 @@ def main() -> int:
                 write_metrics_payload(out_dir, partial_aggregate, fold_metrics, status="IN_PROGRESS")
                 continue
 
-        if progress_path.exists() and not args.no_resume:
+        # The C staging source is authoritative for an interrupted fold.  It
+        # must be inspected before the legacy H progress file; otherwise a
+        # stale H copy can rewind the optimizer and create a divergent branch.
+        checkpoint_stager = None
+        staged_recovery_plan = None
+        if staging_enabled:
+            checkpoint_stager = build_stager_from_args(
+                args,
+                run_id=str(run_contract["digest"])[:16],
+                backbone=str(args.backbone),
+                fold=fold,
+                h_output_dir=out_dir,
+                policy_path=storage_policy_path,
+            )
+            checkpoint_stager.require_preflight()
+            if not args.no_resume:
+                staged_recovery_plan = checkpoint_stager.plan_recovery()
+                if staged_recovery_plan.payload_path is not None:
+                    staged_payload = load_resume_payload(
+                        staged_recovery_plan.payload_path, device
+                    )
+                    if staged_recovery_plan.replay_steps != 0:
+                        # The official runner currently authorizes cadence=1;
+                        # silently ignoring a non-zero replay window would make
+                        # the result scientifically non-reproducible.
+                        raise RuntimeError(
+                            "STAGED_RECOVERY_REPLAY_NOT_ZERO:"
+                            f"{staged_recovery_plan.replay_steps}"
+                        )
+                    compatible, reason, found_signature = checkpoint_payload_compatible(
+                        staged_payload, args
+                    )
+                    if not compatible:
+                        raise RuntimeError(
+                            "STAGED_RECOVERY_MODEL_SIGNATURE_MISMATCH:"
+                            + str(reason)
+                        )
+                    try:
+                        assert_resume_contract(staged_payload, run_contract)
+                    except RuntimeError as exc:
+                        # A source-only hop may leave the C payload carrying an
+                        # older contract.  It is admissible only when the
+                        # scientific projection is identical; no broad mismatch
+                        # waiver is permitted here.
+                        if not source_contract_migration_allowed(
+                            staged_payload, run_contract
+                        ):
+                            raise
+                    progress = staged_payload
+                    progress["_staged_recovery_source"] = str(
+                        staged_recovery_plan.source
+                    )
+                    progress["_staged_recovery_verified"] = False
+
+        # If a valid C-staging payload was found above it is authoritative.  A
+        # legacy H progress file may be older (or may reflect a different
+        # generation after a source-only hop); loading it unconditionally would
+        # silently rewind an exact-resume run.  Only consult H when no staged
+        # candidate exists, and reject a contradictory H payload rather than
+        # choosing one heuristically.
+        if progress is None and progress_path.exists() and not args.no_resume:
             candidate_progress = load_resume_payload(progress_path, device)
             compatible, reason, found_signature = checkpoint_payload_compatible(candidate_progress, args)
             if not compatible:
@@ -3000,8 +3850,21 @@ def main() -> int:
             include_global_supplementary=args.include_global_supplementary_train,
             limit=per_split_limit,
         )
-        test_idx, test_y = split_indices(split_dir / f"fold_{fold}_test.csv", sample_to_idx, ok, limit=max(per_split_limit // 4, 8) if per_split_limit else 0)
-        if len(train_idx) < 8 or len(test_idx) < 4:
+        validity_inner_only = bool(getattr(args, "validity_inner_only", False))
+        if validity_inner_only:
+            # MX-03 task arms are development-only negative controls and
+            # ablations.  Reading even the outer CSV labels here would violate
+            # the pre-specified exactly-once outer policy, so represent the
+            # unused split explicitly as empty.
+            test_idx, test_y = (), ()
+        else:
+            test_idx, test_y = split_indices(
+                split_dir / f"fold_{fold}_test.csv",
+                sample_to_idx,
+                ok,
+                limit=max(per_split_limit // 4, 8) if per_split_limit else 0,
+            )
+        if len(train_idx) < 8 or (not validity_inner_only and len(test_idx) < 4):
             continue
 
         if progress and all(k in progress for k in ("fit_idx", "fit_y", "val_idx", "val_y", "test_idx", "test_y")):
@@ -3024,7 +3887,37 @@ def main() -> int:
             )
             val_n = len(val_idx)
 
+        fold_membership_digest = split_membership_digest(
+            fit=fit_idx,
+            validation=val_idx,
+            outer_test=test_idx,
+        )
+        if fold_state is None:
+            fold_state = transition_fold_state(
+                fold_state_path,
+                fold=fold,
+                target="TRAINING",
+                contract_digest=run_contract["digest"],
+                details={"training_started": True},
+            )
+        elif fold_state.get("stage") not in {"TRAINING"}:
+            # A fold that already crossed the checkpoint/outer boundary must
+            # be handled by the terminal/reuse path above; never rewind it to
+            # TRAINING just because a stale progress file is present.
+            if fold_state.get("stage") in {"CHECKPOINT_LOCKED", "OUTER_EVAL_IN_PROGRESS"}:
+                outer_action = outer_evaluation_resume_action(
+                    str(fold_state.get("stage")),
+                    locked_result_exists=locked_outer_path.is_file(),
+                )
+                if outer_action.startswith("REUSE"):
+                    raise RuntimeError("OUTER_EVALUATION_REQUIRES_COMMITTED_RESULT_REUSE")
         tab_mean, tab_std = tabular_stats(cache_path, fit_idx)
+        # Keep the sampler stream explicit.  The generator state is stored in
+        # every resume payload; worker seeding is likewise deterministic, so a
+        # restarted fold cannot silently receive a different sample order.
+        train_generator = seeded_torch_generator(int(args.seed) + int(fold))
+        val_generator = seeded_torch_generator(int(args.seed) + int(fold) + 1000)
+        test_generator = seeded_torch_generator(int(args.seed) + int(fold) + 2000)
         train_loader = DataLoader(
             maybe_wrap_train_dataset(
                 H5MethodXDataset(
@@ -3047,6 +3940,8 @@ def main() -> int:
             ),
             batch_size=args.batch_size,
             shuffle=True,
+            generator=train_generator,
+            worker_init_fn=seed_worker,
             **dataloader_throughput_kwargs(args),
         )
         val_loader = DataLoader(
@@ -3062,23 +3957,15 @@ def main() -> int:
             ),
             batch_size=args.batch_size,
             shuffle=False,
+            generator=val_generator,
+            worker_init_fn=seed_worker,
             **dataloader_throughput_kwargs(args),
         )
-        test_loader = DataLoader(
-            H5MethodXDataset(
-                cache_path,
-                test_idx,
-                test_y,
-                sanity_random_labels=False,
-                sanity_random_noise_images=args.sanity_random_noise_images,
-                input_mode=args.input_mode,
-                drop_tabular_feature=getattr(args, "drop_tabular_feature", "none"),
-                seed=args.seed + fold + 2000,
-            ),
-            batch_size=args.batch_size,
-            shuffle=False,
-            **dataloader_throughput_kwargs(args),
-        )
+        # The outer/test loader is deliberately deferred until after the fold
+        # checkpoint is locked.  Constructing it here (or evaluating its loss
+        # every epoch) would consume the outer test split during training and
+        # violate the exactly-once policy.
+        test_loader = None
 
         model = MethodX3DClassifier(
             fusion=args.fusion,
@@ -3135,6 +4022,10 @@ def main() -> int:
                 )
             if progress.get("optimizer_state_dict"):
                 optimizer.load_state_dict(progress["optimizer_state_dict"])
+            if progress.get("rng_state"):
+                restore_rng_state(progress["rng_state"])
+            if progress.get("loader_generator_state") is not None:
+                train_generator.set_state(progress["loader_generator_state"])
             if scheduler is not None and progress.get("scheduler_state_dict"):
                 scheduler.load_state_dict(progress["scheduler_state_dict"])
             if scaler is not None and progress.get("scaler_state_dict"):
@@ -3142,6 +4033,10 @@ def main() -> int:
             best_val = float(progress.get("best_val", best_val))
             best_epoch = progress.get("best_epoch") or best_epoch_from_curve(list(progress.get("val_curve", [])))
             best_model_state = progress.get("best_model_state_dict")
+            if best_model_state is None and checkpoint_stager is not None:
+                best_sidecar = checkpoint_stager.load_best_state()
+                if isinstance(best_sidecar, Mapping):
+                    best_model_state = best_sidecar.get("best_model_state_dict")
             patience = int(progress.get("patience", 0))
             train_curve = list(progress.get("train_curve", []))
             val_curve = list(progress.get("val_curve", []))
@@ -3157,9 +4052,146 @@ def main() -> int:
         swa_count = int(progress.get("swa_count", 0)) if progress is not None else 0
         swa_start_epoch = max(1, int(epochs * float(args.swa_start_fraction))) if args.swa else None
 
+        # Recovery cursors are kept separately from the completed-epoch count.
+        # A staged payload may represent a safe optimizer boundary in the
+        # middle of an epoch; restoring only ``epoch`` would repeat or skip
+        # batches.
+        optimizer_step_count = int(progress.get("optimizer_step_count", 0)) if progress is not None else 0
+        resume_batch_cursor = int(progress.get("epoch_batch_cursor", 0)) if progress is not None else 0
+        resume_sampler_cursor = int(progress.get("sampler_cursor", resume_batch_cursor)) if progress is not None else 0
+        resume_epoch_loss_sum = float(progress.get("epoch_loss_sum", 0.0)) if progress is not None else 0.0
+        resume_epoch_loss_count = int(progress.get("epoch_loss_count", 0)) if progress is not None else 0
+        fold_terminal = bool(progress.get("fold_terminal", False)) if progress is not None else False
+        # The state saved at the start of an epoch is used to recreate the
+        # same RandomSampler permutation before skipping committed batches.
+        sampler_epoch_generator_state = (
+            progress.get("sampler_epoch_generator_state") if progress is not None else None
+        )
+        if (
+            progress is not None
+            and resume_batch_cursor > 0
+            and sampler_epoch_generator_state is not None
+        ):
+            train_generator.set_state(sampler_epoch_generator_state)
+
+        best_averaged_state_at_best = None
+        best_averaged_source_at_best = None
+        current_epoch_for_payload = int(start_epoch)
+        current_batch_cursor = int(resume_batch_cursor)
+        current_sampler_cursor = int(resume_sampler_cursor)
+        current_epoch_loss_sum = float(resume_epoch_loss_sum)
+        current_epoch_loss_count = int(resume_epoch_loss_count)
+        training_stop_request: dict[str, Any] = {"requested": False, "signal": None}
+        # The signal handler only records intent.  All I/O and the exception
+        # boundary happen after an optimizer step has been committed below.
+        safe_stop_requested = training_stop_request
+        previous_sigint_handler, previous_sigterm_handler = (
+            _install_training_signal_handlers(training_stop_request)
+        )
+
+        def resume_payload_factory() -> dict[str, Any]:
+            return progress_payload(
+                model=model,
+                optimizer=optimizer,
+                scheduler=scheduler,
+                scaler=scaler,
+                args=args,
+                epoch=int(current_epoch_for_payload),
+                best_val=best_val,
+                best_epoch=best_epoch,
+                best_model_state=best_model_state,
+                best_averaged_state=best_averaged_state_at_best,
+                best_averaged_source=best_averaged_source_at_best,
+                patience=patience,
+                train_curve=train_curve,
+                val_curve=val_curve,
+                evaluation_curve=evaluation_curve,
+                fold=fold,
+                fit_idx=fit_idx,
+                fit_y=fit_y,
+                val_idx=val_idx,
+                val_y=val_y,
+                test_idx=test_idx,
+                test_y=test_y,
+                epoch_seconds=fold_epoch_seconds,
+                estimated_remaining_seconds=estimate_remaining_seconds(
+                    fold=fold,
+                    completed_epoch_in_fold=int(current_epoch_for_payload),
+                    folds=folds,
+                    epochs=epochs_per_fold,
+                    epoch_seconds=fold_epoch_seconds,
+                ),
+                training_continuation=training_continuation,
+                ema_state=ema_state,
+                swa_state=swa_state,
+                swa_count=swa_count,
+                omit_best_state=checkpoint_stager is not None,
+                optimizer_step_count=optimizer_step_count,
+                checkpoint_generation=(
+                    checkpoint_stager.generation if checkpoint_stager is not None else 0
+                ),
+                epoch_batch_cursor=current_batch_cursor,
+                sampler_cursor=current_sampler_cursor,
+                runtime_resume_contract=runtime_resume_contract,
+                storage_policy_digest_value=storage_policy_digest_value,
+                fold_membership_digest=fold_membership_digest,
+                rng_state=capture_rng_state(),
+                train_generator=train_generator,
+                sampler_epoch_generator_state=sampler_epoch_generator_state,
+                fold_terminal=fold_terminal,
+                epoch_loss_sum=current_epoch_loss_sum,
+                epoch_loss_count=current_epoch_loss_count,
+                run_contract=run_contract,
+            )
+
+        def optimizer_step_commit_callback(**event: Any) -> None:
+            nonlocal optimizer_step_count
+            nonlocal current_batch_cursor, current_sampler_cursor
+            nonlocal current_epoch_loss_sum, current_epoch_loss_count
+            optimizer_step_count = int(event["optimizer_step"])
+            current_batch_cursor = int(event["batch_cursor"])
+            current_sampler_cursor = int(event["sampler_cursor"])
+            current_epoch_loss_sum = float(event["epoch_loss_sum"])
+            current_epoch_loss_count = int(event["epoch_loss_count"])
+            if checkpoint_stager is not None:
+                state_for_digest = capture_rng_state()
+                state_for_digest["loader_generator_state"] = train_generator.get_state()
+                checkpoint_stager.record_step(
+                    payload_factory=resume_payload_factory,
+                    optimizer_step=optimizer_step_count,
+                    epoch=int(event["epoch"]),
+                    epoch_batch_cursor=current_batch_cursor,
+                    sampler_cursor=current_sampler_cursor,
+                    loss_sum=current_epoch_loss_sum,
+                    loss_count=current_epoch_loss_count,
+                    rng_digest=rng_state_digest(state_for_digest),
+                    force_full=bool(safe_stop_requested["requested"]),
+                )
+            if safe_stop_requested["requested"]:
+                # This raise is reachable only after the callback has recorded
+                # the optimizer boundary and (when staged) its journal entry.
+                raise SafeOptimizerBoundaryStop
+
         last_completed_epoch = start_epoch
         try:
-            for epoch in range(start_epoch, epochs):
+            for epoch in range(start_epoch, epochs_per_fold):
+                if fold_terminal:
+                    break
+                current_epoch_for_payload = int(epoch)
+                if epoch == start_epoch and resume_batch_cursor > 0:
+                    # ``sampler_epoch_generator_state`` was captured before the
+                    # original iterator was created; recreating that iterator
+                    # gives the same permutation before committed batches are
+                    # skipped by run_epoch.
+                    if sampler_epoch_generator_state is not None:
+                        train_generator.set_state(sampler_epoch_generator_state)
+                else:
+                    current_batch_cursor = 0
+                    current_sampler_cursor = 0
+                    current_epoch_loss_sum = 0.0
+                    current_epoch_loss_count = 0
+                    sampler_epoch_generator_state = train_generator.get_state()
+                epoch_optimizer_step_offset = int(optimizer_step_count)
                 epoch_started = time.monotonic()
                 newly_unfrozen = gradual_unfreeze_step(
                     model,
@@ -3203,7 +4235,25 @@ def main() -> int:
                     auc_loss_weight=args.auc_loss_weight,
                     ema_state=ema_state,
                     ema_decay=args.ema_decay,
+                    optimizer_step_commit_callback=optimizer_step_commit_callback,
+                    start_batch_cursor=(
+                        resume_batch_cursor if epoch == start_epoch else 0
+                    ),
+                    initial_loss_sum=(
+                        resume_epoch_loss_sum if epoch == start_epoch else 0.0
+                    ),
+                    initial_loss_count=(
+                        resume_epoch_loss_count if epoch == start_epoch else 0
+                    ),
+                    optimizer_step_offset=epoch_optimizer_step_offset,
+                    epoch_index=epoch,
                 )
+                # Once the resumed epoch has consumed its remaining batches,
+                # subsequent epochs start from a fresh sampler cursor.
+                resume_batch_cursor = 0
+                resume_sampler_cursor = 0
+                resume_epoch_loss_sum = 0.0
+                resume_epoch_loss_count = 0
                 val_loss = eval_loss(
                     model,
                     val_loader,
@@ -3217,19 +4267,10 @@ def main() -> int:
                     auc_margin=args.auc_margin,
                     auc_loss_weight=args.auc_loss_weight,
                 )
-                evaluation_loss = eval_loss(
-                    model,
-                    test_loader,
-                    device,
-                    pos_weight,
-                    tab_mean=tab_mean,
-                    tab_std=tab_std,
-                    task_loss_name=args.task_loss,
-                    focal_gamma=args.focal_gamma,
-                    focal_alpha=args.focal_alpha,
-                    auc_margin=args.auc_margin,
-                    auc_loss_weight=args.auc_loss_weight,
-                )
+                evaluation_loss = None
+                # Outer/test loss is reporting-only and is computed once after
+                # the checkpoint lock below; it is never part of early
+                # stopping, scheduler decisions, or model selection.
                 if scheduler is not None and args.scheduler != "onecycle":
                     scheduler.step()
 
@@ -3242,11 +4283,26 @@ def main() -> int:
                 if val_loss < best_val:
                     best_val = val_loss
                     best_epoch = completed_epoch
-                    if args.restore_best_at_end:
+                    if args.restore_best_at_end or checkpoint_stager is not None:
                         best_model_state = {
                             key: value.detach().cpu().clone()
                             for key, value in model.state_dict().items()
                         }
+                    if checkpoint_stager is not None:
+                        if ema_state is not None:
+                            best_averaged_state_at_best = clone_state_dict(ema_state)
+                            best_averaged_source_at_best = "ema_at_best_validation"
+                        elif swa_state is not None:
+                            best_averaged_state_at_best = clone_state_dict(swa_state)
+                            best_averaged_source_at_best = "swa_at_best_validation"
+                        seed_offloaded_best_state_sidecar(
+                            checkpoint_stager,
+                            best_model_state=best_model_state,
+                            best_averaged_state=best_averaged_state_at_best,
+                            best_averaged_source=best_averaged_source_at_best,
+                            best_epoch=best_epoch,
+                            best_val=best_val,
+                        )
                     patience = 0
                 else:
                     patience += 1
@@ -3260,36 +4316,28 @@ def main() -> int:
                     epochs=epochs,
                     epoch_seconds=fold_epoch_seconds,
                 )
-                atomic_torch_save(
-                    progress_payload(
-                        model=model,
-                        optimizer=optimizer,
-                        scheduler=scheduler,
-                        scaler=scaler,
-                        args=args,
-                        epoch=completed_epoch,
-                        best_val=best_val,
-                        best_epoch=best_epoch,
-                        best_model_state=best_model_state,
-                        patience=patience,
-                        train_curve=train_curve,
-                        val_curve=val_curve,
-                        evaluation_curve=evaluation_curve,
-                        fold=fold,
-                        fit_idx=fit_idx,
-                        fit_y=fit_y,
-                        val_idx=val_idx,
-                        val_y=val_y,
-                        test_idx=test_idx,
-                        test_y=test_y,
-                        epoch_seconds=fold_epoch_seconds,
-                        estimated_remaining_seconds=estimated_remaining,
-                        training_continuation=training_continuation,
-                        ema_state=ema_state,
-                        swa_state=swa_state,
-                        swa_count=swa_count,
-                    ),
-                    progress_path,
+                early_stop = patience >= args.early_stopping_patience
+                # Epoch completion is a safe boundary.  A terminal early-stop
+                # marker prevents a later invocation from running one extra
+                # epoch, while the explicit reason remains ``EARLY_STOPPING``
+                # in the progress/traceability record.
+                fold_terminal = bool(early_stop)
+                current_epoch_for_payload = int(completed_epoch)
+                current_batch_cursor = 0
+                current_sampler_cursor = 0
+                current_epoch_loss_sum = 0.0
+                current_epoch_loss_count = 0
+                persist_resume_boundary(
+                    checkpoint_stager=checkpoint_stager,
+                    payload_factory=resume_payload_factory,
+                    progress_path=progress_path,
+                    optimizer_step=optimizer_step_count,
+                    epoch=completed_epoch,
+                    epoch_batch_cursor=0,
+                    sampler_cursor=0,
+                    loss_sum=0.0,
+                    loss_count=0,
+                    reason=("TERMINAL" if early_stop else "EPOCH_END"),
                 )
                 print(
                     json.dumps(
@@ -3298,10 +4346,15 @@ def main() -> int:
                             "fold": fold,
                             "epoch": completed_epoch,
                             "epochs": epochs,
+                            "boundary_reason": "EARLY_STOPPING" if early_stop else "EPOCH_END",
                             "train_loss": train_loss,
                             "val_loss": val_loss,
                             "evaluation_loss": evaluation_loss,
-                            "evaluation_loss_source": "locked_fold_test_split_reporting_only",
+                            "evaluation_loss_source": (
+                                "not_accessed_validity_inner_only"
+                                if validity_inner_only
+                                else "locked_fold_test_split_reporting_only"
+                            ),
                             "progress_path": relative_or_str(progress_path),
                             "estimated_remaining_seconds": estimated_remaining,
                             "newly_unfrozen_layers": newly_unfrozen,
@@ -3311,7 +4364,7 @@ def main() -> int:
                     flush=True,
                 )
 
-                if patience >= args.early_stopping_patience:
+                if early_stop:
                     break
                 if max_runtime_seconds is not None and time.monotonic() - run_started >= max_runtime_seconds:
                     write_pause_marker(
@@ -3322,26 +4375,38 @@ def main() -> int:
                         progress_path=progress_path,
                         estimated_remaining=estimated_remaining,
                     )
-                    return 0
-        except KeyboardInterrupt:
+                    return RESUMABLE_EXIT_CODE
+        except (KeyboardInterrupt, SafeOptimizerBoundaryStop):
             estimated_remaining = estimate_remaining_seconds(
                 fold=fold,
                 completed_epoch_in_fold=last_completed_epoch,
                 folds=folds,
-                epochs=epochs,
+                epochs=epochs_per_fold,
                 epoch_seconds=fold_epoch_seconds,
             )
+            if checkpoint_stager is not None:
+                checkpoint_stager.finalize_clean_stop(reason="CONTROLLED_SIGNAL")
             write_pause_marker(
                 status="INTERRUPTED_RESUMABLE",
-                reason="KEYBOARD_INTERRUPT",
+                reason=(
+                    "CONTROLLED_SIGNAL"
+                    if safe_stop_requested["requested"]
+                    else "KEYBOARD_INTERRUPT"
+                ),
                 current_fold=fold,
                 resume_from_epoch=last_completed_epoch,
                 progress_path=progress_path,
                 estimated_remaining=estimated_remaining,
             )
-            return 130
+            signal.signal(signal.SIGINT, previous_sigint_handler)
+            signal.signal(signal.SIGTERM, previous_sigterm_handler)
+            return 75
 
-        restored_best_at_end = False
+        # Keep the selected terminal state explicit.  The assignment is also
+        # the single source of truth used by the checkpoint-lock transaction
+        # below; no state may be changed after the outer loader is opened.
+        selected_state = model.state_dict()
+        selected_state, restored_best_at_end = selected_state, False
         if args.restore_best_at_end and best_model_state is not None:
             model.load_state_dict(best_model_state)
             restored_best_at_end = True
@@ -3356,6 +4421,14 @@ def main() -> int:
             averaged_state_applied = True
             averaged_state_source = "swa_shadow_state"
 
+        # The state that is about to be evaluated is now immutable.  Capture a
+        # CPU copy before opening the outer loader so a later device operation
+        # cannot silently change the bytes represented by the lock checkpoint.
+        selected_state = {
+            key: value.detach().cpu().clone() if hasattr(value, "detach") else value
+            for key, value in model.state_dict().items()
+        }
+
         val_true, val_prob, val_logits = predict(
             model,
             val_loader,
@@ -3367,29 +4440,208 @@ def main() -> int:
             tta_mode=args.tta_mode,
             return_logits=True,
         )
-        y_true, y_prob, test_logits = predict(
-            model,
-            test_loader,
-            device,
-            tab_mean,
-            tab_std,
-            use_tta=args.tta,
-            tta_augmentations=args.tta_augmentations,
-            tta_mode=args.tta_mode,
-            return_logits=True,
+
+        # ---- checkpoint lock / exactly-once outer-evaluation transaction ----
+        # No outer/test DataLoader may be constructed before this boundary.
+        # The lock payload is immutable evidence of the selected model state;
+        # the raw prediction artifact is written only after the in-progress
+        # state transition and is then embedded in the final checkpoint.
+        locked_outer_for_checkpoint: dict[str, Any] | None = None
+        locked_outer_result: dict[str, Any] | None = None
+        outer_test_access_count = 0
+        lock_payload = resume_payload_factory()
+        lock_payload["model_state_dict"] = selected_state
+        lock_payload["checkpoint_kind"] = "CHECKPOINT_LOCKED"
+        lock_payload["outer_test_access_count"] = 0
+        lock_payload["locked_at_utc"] = time.strftime(
+            "%Y-%m-%dT%H:%M:%SZ", time.gmtime()
         )
-        temperature_report, calibrated_prob = temperature_scaling_report(
-            validation_y=val_true,
-            validation_logits=val_logits,
-            test_y=y_true,
-            test_logits=test_logits,
-        )
-        threshold_eval = evaluate_with_train_selected_threshold(
-            validation_y=val_true,
-            validation_prob=val_prob,
-            test_y=y_true,
-            test_prob=y_prob,
-        )
+        lock_payload["fold_terminal"] = True
+        atomic_torch_save_immutable(lock_payload, locked_checkpoint_path)
+        locked_checkpoint_sha256 = sha256_path(locked_checkpoint_path)
+
+        current_stage = str(fold_state.get("stage")) if fold_state else None
+        if current_stage in {None, "TRAINING"}:
+            fold_state = transition_fold_state(
+                fold_state_path,
+                fold=fold,
+                target="CHECKPOINT_LOCKED",
+                contract_digest=run_contract["digest"],
+                details={
+                    "locked_checkpoint": str(
+                        locked_checkpoint_path.relative_to(PROJECT_ROOT)
+                    ),
+                    "locked_checkpoint_sha256": locked_checkpoint_sha256,
+                    "split_membership_digest": fold_membership_digest,
+                    "outer_test_access_count": 0,
+                },
+            )
+            current_stage = "CHECKPOINT_LOCKED"
+        elif current_stage not in {
+            "CHECKPOINT_LOCKED",
+            "OUTER_EVAL_IN_PROGRESS",
+            "OUTER_EVAL_DONE",
+        }:
+            raise RuntimeError(f"OUTER_EVALUATION_STATE_INCONSISTENT:{current_stage}")
+
+        if validity_inner_only:
+            # The task metric is descriptive inner-validation performance.
+            # Calibration and threshold estimation would reuse the same rows
+            # and are therefore explicitly not run.
+            y_true, y_prob, test_logits = val_true, val_prob, val_logits
+            temperature_report = {
+                "status": "NOT_RUN",
+                "reason": "inner_validation_only_task_has_no_independent_calibration_or_outer_split",
+                "fit_scope": "not_applicable",
+                "test_labels_used_for_calibration": False,
+                "outer_test_access_count": 0,
+            }
+            calibrated_prob = []
+            threshold_eval = {
+                "status": "NOT_RUN",
+                "reason": "inner_validation_only_task_threshold_not_estimable_without_reuse",
+                "test_labels_used_for_threshold_selection": False,
+                "outer_test_access_count": 0,
+            }
+        else:
+            if current_stage == "OUTER_EVAL_IN_PROGRESS":
+                # A result already present is the only admissible recovery
+                # path.  Reopening the loader would violate exactly-once.
+                if not locked_outer_path.is_file():
+                    raise RuntimeError("AMBIGUOUS_OUTER_EVALUATION_STATE")
+                locked_outer_result = json.loads(
+                    locked_outer_path.read_text(encoding="utf-8")
+                )
+                validated_outer = validate_locked_outer_result(
+                    locked_outer_result,
+                    expected_fold=fold,
+                    expected_contract_digest=run_contract["digest"],
+                    expected_split_membership_digest=fold_membership_digest,
+                    expected_count=len(test_idx),
+                )
+                y_true = list(validated_outer["y_true"])
+                y_prob = list(validated_outer["y_prob"])
+                test_logits = list(validated_outer["test_logits"])
+                outer_test_access_count = 1
+            elif current_stage == "OUTER_EVAL_DONE":
+                if not locked_outer_path.is_file():
+                    raise RuntimeError("COMMITTED_OUTER_EVALUATION_MISSING")
+                locked_outer_result = json.loads(
+                    locked_outer_path.read_text(encoding="utf-8")
+                )
+                validated_outer = validate_locked_outer_result(
+                    locked_outer_result,
+                    expected_fold=fold,
+                    expected_contract_digest=run_contract["digest"],
+                    expected_split_membership_digest=fold_membership_digest,
+                    expected_count=len(test_idx),
+                )
+                y_true = list(validated_outer["y_true"])
+                y_prob = list(validated_outer["y_prob"])
+                test_logits = list(validated_outer["test_logits"])
+                outer_test_access_count = 1
+            else:
+                fold_state = transition_fold_state(
+                    fold_state_path,
+                    fold=fold,
+                    target="OUTER_EVAL_IN_PROGRESS",
+                    contract_digest=run_contract["digest"],
+                    details={
+                        "locked_checkpoint": str(
+                            locked_checkpoint_path.relative_to(PROJECT_ROOT)
+                        ),
+                        "locked_checkpoint_sha256": locked_checkpoint_sha256,
+                        "outer_test_access_count": 0,
+                        "split_membership_digest": fold_membership_digest,
+                    },
+                )
+                current_stage = "OUTER_EVAL_IN_PROGRESS"
+                # This is the first and only construction of the outer loader.
+                test_loader = DataLoader(
+                    H5MethodXDataset(
+                        cache_path,
+                        test_idx,
+                        test_y,
+                        sanity_random_labels=False,
+                        sanity_random_noise_images=False,
+                        input_mode=args.input_mode,
+                        drop_tabular_feature=getattr(
+                            args, "drop_tabular_feature", "none"
+                        ),
+                        seed=args.seed + fold + 2000,
+                    ),
+                    batch_size=args.batch_size,
+                    shuffle=False,
+                    generator=test_generator,
+                    worker_init_fn=seed_worker,
+                    **dataloader_throughput_kwargs(args),
+                )
+                y_true, y_prob, test_logits = predict(
+                    model,
+                    test_loader,
+                    device,
+                    tab_mean,
+                    tab_std,
+                    use_tta=args.tta,
+                    tta_augmentations=args.tta_augmentations,
+                    tta_mode=args.tta_mode,
+                    return_logits=True,
+                )
+                locked_outer_result = build_locked_outer_result(
+                    fold=fold,
+                    run_contract_digest=run_contract["digest"],
+                    split_membership_digest=fold_membership_digest,
+                    y_true=list(y_true),
+                    y_prob=list(y_prob),
+                    test_logits=list(test_logits),
+                )
+                atomic_write_json(locked_outer_path, locked_outer_result)
+                locked_outer_result = json.loads(
+                    locked_outer_path.read_text(encoding="utf-8")
+                )
+                validated_outer = validate_locked_outer_result(
+                    locked_outer_result,
+                    expected_fold=fold,
+                    expected_contract_digest=run_contract["digest"],
+                    expected_split_membership_digest=fold_membership_digest,
+                    expected_count=len(test_idx),
+                )
+                y_true = list(validated_outer["y_true"])
+                y_prob = list(validated_outer["y_prob"])
+                test_logits = list(validated_outer["test_logits"])
+                outer_test_access_count = 1
+            temperature_report, calibrated_prob = temperature_scaling_report(
+                validation_y=val_true,
+                validation_logits=val_logits,
+                test_y=y_true,
+                test_logits=test_logits,
+            )
+            threshold_eval = evaluate_with_train_selected_threshold(
+                validation_y=val_true,
+                validation_prob=val_prob,
+                test_y=y_true,
+                test_prob=y_prob,
+            )
+            if current_stage == "OUTER_EVAL_IN_PROGRESS":
+                fold_state = transition_fold_state(
+                    fold_state_path,
+                    fold=fold,
+                    target="OUTER_EVAL_DONE",
+                    contract_digest=run_contract["digest"],
+                    details={
+                        "locked_result": str(
+                            locked_outer_path.relative_to(PROJECT_ROOT)
+                        ),
+                        "outer_result_digest": locked_outer_result.get(
+                            "result_digest"
+                        )
+                        if isinstance(locked_outer_result, Mapping)
+                        else None,
+                        "outer_test_access_count": 1,
+                        "split_membership_digest": fold_membership_digest,
+                    },
+                )
+                current_stage = "OUTER_EVAL_DONE"
         cohort_probe_report = {"status": "NOT_RUN", "reason": "cohort_labels_unavailable_or_single_class"}
         try:
             cohort_y = cohort_labels_for_indices(split_dir / f"fold_{fold}_train.csv", sample_to_idx, val_idx)
@@ -3415,7 +4667,8 @@ def main() -> int:
             "fold": fold,
             "epoch_target": epochs,
             "n": len(y_true),
-            "test_n": len(y_true),
+            "test_n": 0 if validity_inner_only else len(y_true),
+            "inner_validation_evaluation_n": len(y_true) if validity_inner_only else None,
             "train_n": len(fit_idx),
             "val_n": len(val_idx),
             "roc_auc": roc_auc(y_true, y_prob),
@@ -3434,7 +4687,16 @@ def main() -> int:
             "evaluation_loss_curve": evaluation_curve,
             "evaluation_loss_last": last_numeric(evaluation_curve),
             "best_evaluation_loss": min_numeric(evaluation_curve),
-            "evaluation_loss_source": "locked_fold_test_split_reporting_only",
+            "evaluation_scope": (
+                "inner_validation_only" if validity_inner_only else "locked_outer_test_reporting_only"
+            ),
+            "outer_test_access_count": 0 if validity_inner_only else 1,
+            "outer_test_used_for_selection": False,
+            "evaluation_loss_source": (
+                "not_accessed_validity_inner_only"
+                if validity_inner_only
+                else "locked_fold_test_split_reporting_only"
+            ),
             "evaluation_loss_used_for_early_stopping": False,
             "evaluation_loss_used_for_hyperparameter_selection": False,
             "evaluation_loss_used_for_threshold_selection": False,
@@ -3550,7 +4812,18 @@ def main() -> int:
                 "evaluation_loss_curve": evaluation_curve,
                 "evaluation_loss_last": last_numeric(evaluation_curve),
                 "best_evaluation_loss": min_numeric(evaluation_curve),
-                "evaluation_loss_source": "locked_fold_test_split_reporting_only",
+                "evaluation_scope": (
+                    "inner_validation_only"
+                    if validity_inner_only
+                    else "locked_outer_test_reporting_only"
+                ),
+                "outer_test_access_count": 0 if validity_inner_only else 1,
+                "outer_test_used_for_selection": False,
+                "evaluation_loss_source": (
+                    "not_accessed_validity_inner_only"
+                    if validity_inner_only
+                    else "locked_fold_test_split_reporting_only"
+                ),
                 "evaluation_loss_reporting_only": True,
                 "final_train_loss": train_curve[-1] if train_curve else None,
                 "train_loss_curve": train_curve,
@@ -3622,9 +4895,15 @@ def main() -> int:
     else:
         aggregate["temperature_scaling"] = {
             "status": "NOT_RUN",
-            "reason": "no_completed_fold_temperature_scaling",
+            "reason": (
+                "inner_validation_only_task_has_no_independent_calibration_or_outer_split"
+                if bool(getattr(args, "validity_inner_only", False))
+                else "no_completed_fold_temperature_scaling"
+            ),
             "folds": temperature_rows,
-            "fit_scope_required": "inner_validation_only",
+            "fit_scope_required": "not_applicable"
+            if bool(getattr(args, "validity_inner_only", False))
+            else "inner_validation_only",
             "test_labels_used_for_calibration": False,
             "subject_level_logits_or_predictions_exported": False,
         }

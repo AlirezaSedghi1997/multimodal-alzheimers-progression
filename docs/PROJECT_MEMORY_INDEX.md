@@ -1,5 +1,14 @@
 # نمایه‌ی حافظه‌ی پروژه
 
+## زنده‌ترین — ۲۰۲۶-۰۹-۰۸ (MX-03: کرش transient کش + باگ KeyError resume؛ فیکس سورس ۳بخشی + migration + relaunch زنده)
+
+0. **حکم نهایی ران:** تمام نشد — اپک ۱ تا ۴ `EPOCH_SAVED` (loss نزولی ۰.۴۸۷←۰.۴۵۴) بعد کرش ورکر DataLoader در اپک ۵: `OSError: Can't synchronously read data (filter failure)` روی `h5["image"][idx]`.
+1. **Transient اثبات شد (نه corruption):** sha کش == قفل (`ccd0d312...`)، mtime کش ۱۲ ژوئیه (دست‌نخورده از قبل باتری)، دیسک ۴۵۴GB خالی، اسکن کامل ۶۲۱۳ ردیف (float16/gzip، بدون fletcher32) صفر چانک خراب و همه finite. باتری روی همین بایت‌ها کامل شده بود.
+2. **باگ واقعی resume (deterministic):** `requested_model_signature` کلید `validity_inner_only` دارد ولی writer/reader payload ندارند → `found[key]` در `checkpoint_payload_compatible` می‌ترکید (`KeyError`)؛ یعنی resume همه بازوهای MX-03 همیشه می‌مرد. فیکس فقط-سورس در `scripts/train_3d_mri.py`: (الف) `.get()` → verdict به‌جای کرش، (ب) reader دو کلید با default سازگار-باتری، (ج) writer هر دو کلید را ذخیره می‌کند. یونیت‌تست V1/V2/V3 سبز (mismatch تمیز / سازگاری باتری / تقارن آینده). گارد cross-scope (باتری در برابر validity) intact.
+3. **Migration طراحی‌شده:** پریفلیت `SOURCE_ONLY_MIGRATION_REQUIRED` (`567e7409`→`9009ea0c`، فقط source، بدون تغییر علمی)؛ progress قدیمی clean-`SKIP` شد و fold 0 از صفر با همان قرارداد restart کرد (۴ اپک قربانی صحت). GPU صددرصد فعال، بدون traceback. لاگ: `logs/mx03_random_labels_resume_20260908_161525.log`.
+4. **هشدارهای غیربلاکر (بدون اقدام — تغییر سورس ممنوع):** `torch.cuda.amp.*` deprecated + `Memory Efficient attention non-deterministic` (warn-only by design).
+5. ثبت: کامیت scoped همین فایل + `scripts/train_3d_mri.py`، بدون push (P0). ارکستر لایو است — به `mx03_runs/random_labels` دست نزنید و ارکستر دوم اجرا نکنید (process_lock نگهبان است).
+
 ## زنده‌ترین — ۲۰۲۶-۰۹-۰۸ (Method X MX-03: قرنطینه RUN_CONTRACT_MISMATCH + ترمیم ۵ از ۶ تست؛ ران زنده)
 
 0. **قرنطینه یتیم پیش‌آموزشی (turn قبل):** `mx03_runs/random_labels/run_contract.json` قدیمی (۲۵ پارامتر + `source_digest` legacy، دایجست داخلی ناسازگار `5201e342` در برابر `34b9e486`) در برابر قرارداد فعلی (`567e7409...`، ~۷۰ پارامتر) علمی-متفاوت بود → fail-closed درست BLOCK کرد. چون هیچ `.pt`/متریک/outer/state نبود، فقط همین فایل به `_quarantine_20260908_RUN_CONTRACT_MISMATCH/` منتقل + رسید integrity‌دار شد (بدون `--no_resume`، بدون دست‌کاری باتری TERMINAL). پریفلیت بعد: `CREATE_REQUIRED`؛ آدیت: `PLANNED ×۹`. ران سنگین بعداً توسط اپراتور شروع شد و هم‌اکنون fold 0 در `TRAINING` با همان دایجست است — به دایرکتوری لایو دست نزنید.
