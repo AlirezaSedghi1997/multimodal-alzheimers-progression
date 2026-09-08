@@ -1,0 +1,87 @@
+# Locked parameters for post-training PET attribution (FINAL plan 04-pet-plan.md).
+# Production run is REFUSED unless the v4 final verifier PASS artifact exists.
+schema_version: "4.0"
+status: POST_HOC_INTERNAL_EXPLORATORY_DRAFT_PARAMS
+# Resolved relative to the repo ROOT at runtime (C-fix 2026-09-08: the previous
+# absolute "H:/New project" baked host drive layout into a versioned file).
+project_root: "."
+v4_output_root: "results/method_y_revival_v4_image_factorial_v1"
+
+risk:
+  primary_scalar: logit_sum
+  sensitivity_scalar: mortality_last
+  horizon_days: 1095.75
+
+targets:
+  GROUPNORM_RESIDUAL_TINY_3D: ["encoder.3"]
+  RESNET10_3D_GROUPNORM: ["encoder.stages.3"]
+  RESNET18_3D_GROUPNORM: ["encoder.stages.3"]
+  shallow_fusion:
+    GROUPNORM_RESIDUAL_TINY_3D: "stem"
+    RESNET10_3D_GROUPNORM: "encoder.stem"
+    RESNET18_3D_GROUPNORM: "encoder.stem"
+
+maps:
+  upsample_mode: trilinear
+  align_corners: false
+  blur_sigma_vox: 2.0
+  percentile_threshold: 95
+
+determinism:
+  torch_deterministic_algorithms: true
+  cudnn_deterministic: true
+  cudnn_benchmark: false
+  allow_tf32: false
+  cublas_workspace_config: ":4096:8"
+  python_hash_seed: "20260714"
+
+statistics:
+  bootstrap_B: 2000
+  bootstrap_seed: 13
+  agreement_spearman_margin: 0.7
+  agreement_dice_margin: 0.6
+  holm_alpha: 0.05
+
+sanity:
+  fidelity_n_volumes: 30
+  fidelity_n_masks: 8
+  tabular_perm_n: 8
+  tabular_perm_seed: 13
+  image_share_floor: 0.5
+
+scorecam:
+  pilot_volumes: 20
+  full_cohort_timeout_hours: 24
+
+legs:
+  - {id: LEG-01, kind: layercam_maps}
+  - {id: LEG-02, kind: scorecam_pilot}
+  - {id: LEG-03, kind: gradcam_sanity}
+  - {id: LEG-04, kind: sanity_gates}
+  - {id: LEG-05, kind: aggregates}
+  - {id: LEG-06, kind: tabular_share}
+  - {id: LEG-07, kind: pet_quant_consistency, default: NOT_MEASURABLE}
+  - {id: LEG-08, kind: report_privacy}
+
+forbidden_vocabulary:
+  - alzheimer
+  - alzheimer's
+  - disease-involved
+  - disease involved
+  - causal
+  - causality
+  - biomarker-quantified
+  - biomarker quantified
+  - centiloid
+  - centaur
+  - external validation
+  - external-validation
+  - diagnosis
+  - diagnostic
+  - triage
+  - patient-specific
+  - amyloid marker
+  - amyloid markers
+  - tau marker
+  - tau markers
+  - glenn

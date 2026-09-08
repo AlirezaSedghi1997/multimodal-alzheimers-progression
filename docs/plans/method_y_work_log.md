@@ -200,3 +200,21 @@ Commit 4ef3495 (+ this audit commit). Report:
   `31981b33...` 895/895, tau `4095fcbc...` 306/306, both COMPLETED, H-only,
   float16 with finite_fraction=1.0; quantitative_scale_claim_allowed=false
   preserved. No outer-test, no v1/v2/raw mutation.
+
+## 2026-09-08 - Method Y v4 thesis reporting (read-only, no retrain)
+
+- Verdict: training FINALIZED 50/50, verifier --level final PASS + readiness PASS (live re-run, CPU). No rerun. Terminal-snippet privacy FAIL = absolute H:\ paths in 10 scanned_root fields, remediated append-only via sanitized twin + transaction (original preserved). Per-pair privacy 10/10 PASS. Science blockers by-design (quantitative/scanner/external + post-hoc exposure).
+- Analysis: inner amyloid A4 / tau A1 (locked, outer not consulted); outer paired NI (dIBS 0.01/dUno 0.02, bootstrap 2000): IBS RETAIN_NEGATIVE 9/10 (tau A3vsA4 +0.016 [0.0059,0.0262] INCONCLUSIVE_UNDERPOWERED, outer-mean 0.11576->0.13118); Uno RETAIN 3/10 rest INCONCLUSIVE_UNDERPOWERED; omnibus p=0.101; scanner probe macro AUC 0.43-0.58 (supervisor-corrected) vs null, LMO NOT_ESTIMABLE; calibration 1640d NOT_ESTIMABLE; subgroups descriptive-only. Ceiling POST_HOC_INTERNAL_EXPLORATORY.
+- Thesis (append-only, 3 new files + governance mirror, no finalized bytes mutated): docs/thesis_traceability/method_y_v4_results_20260908.md, docs/thesis_traceability/method_y_v4_discussion_limitations_20260908.md, results/method_y_revival_v4_image_factorial_v1/post_eval/THESIS_EXPANDED_20260908.md; mirror governance/method_y_v4_thesis_report_20260908.json. Skills: tdd/statistical-analysis/scientific-writing + strict supervisor Stages 1-2 PASS (Stage-2 corrected scanner range). R2 all-10-IBS-retained line superseded by locked JSON on tau A3vsA4 (reported honestly). Final Stage-3 audit pending. No push (P0).
+
+## 2026-09-08 - Stage-3 FINAL supervisor audit: PASS sign_off=true, no violations
+
+- Checks 21/21 PASS (completion, verifier, err, privacy path-only+sanitized, by-design blockers, inner A4/A1, IBS 9/10 + tau depth +0.016 inconclusive, Uno 3/10, omnibus p=0.101, stability, scanner 0.43-0.58 LMO NOT_ESTIMABLE, calibration 1640 NOT_ESTIMABLE, subgroups descriptive, ceiling 4+3, no fabrication, no positive/external claim, NOT_MEASURABLE honored, no finalized edit, no push/training, R2 discrepancy disclosed, scanner corrected).
+- Residual risks (accepted, documented): no timestamped verifier rerun artifact; R2 note lives in mirror+log not prose; THESIS_EXPANDED under git-ignored results/; pre-existing dirty MX files unrelated; tau underpowered Uno misread risk with explicit warnings.
+
+## 2026-09-08 - Attribution repair session (screenshot edit completed + hardened)
+
+- Found: 4-file attribution stack UNTRACKED + mid-edit; launcher pilot crashed deterministically; legs table un-PASSable; evidence cited-not-written; tau dim mismatch; determinism theater; DRAFT ungated.
+- Audits: A-code 12 findings, B-science 7, C-provenance 14 (all BLOCKED); post-fix verifier 8 new issues (HIGH run-determinism effective-flags + 3 MEDIUM evidence/NaN/ledger) — all repaired, re-proven.
+- Repairs: per-cell reload + (cell,subject) keys; pure build_production_legs; 4 evidence files written (+projection/DAG/sensitivity/dry-run variants); dims 11/12 + bins inference + dropout 0.25; resume guards; deadline TIMEOUT; CONFIG_NOT_FINAL gate (DRAFT kept, production BLOCKED by design); BAN parity; 5-arm preflight + determinism assert; h5py context; weights_only; tamper BLOCK; privacy allowlist/POSIX-UNC; project_root relative.
+- Proof: 30/30 tests GREEN; dry-run PASS (4 files); preflight PASS (verifier/layers/determinism/ban, digest 969ebd0f); run BLOCKED exit 3 (designed). Provenance: results/.../provenance/attribution_repair_session_20260908.json. Thesis: docs/thesis_traceability/method_y_v4_attribution_status_20260908.md. No checkpoint mutated; no push (P0).

@@ -1,5 +1,11 @@
 # نمایه‌ی حافظه‌ی پروژه
 
+## زنده‌ترین — ۲۰۲۶-۰۹-۰۸ (Method Y: گزارش تز v4 + تعمیر attribution؛ تولید attribution مسدود by-design)
+
+0. **تز v4 ثبت شد:** آموزش FINALIZED ۵۰/۵۰ (verifier دوباره PASS، بدون rerun)؛ ۱۰ کنتراست (IBS ‏9/10 RETAIN، عمق تاو ‏+0.016 inconclusive؛ Uno ‏3/10؛ omnibus ‏p=0.101)؛ ۴ فایل تز + آینه governance (append-only)؛ ناظران Stage-1/2/3 هر سه PASS.
+1. **Attribution ناتمام پیدا و تعمیر شد:** استک ۴فایلی untracked + وسط ادیت اسکرین‌شات؛ ۳ ناظر مستقل (۱۲+۷+۱۴ یافته، هر سه BLOCKED)؛ تعمیرات (pilot، legs، evidence، dims ‏11/12، determinism، گیت‌ها) + ۹ تست رگرسیون؛ **۳۰/۳۰ سبز**؛ dry-run و preflight هر دو PASS؛ run مسدود `CONFIG_NOT_FINAL` (عمدی، exit 3).
+2. ممیزی پس‌از‌رفع ۸ مورد جدید یافت (۱ HIGH) — هر ۸ تعمیر و دوباره اثبات شد. هیچ چک‌پوینتی دست نخورد؛ کامیت scoped بدون push (قانون P0).
+
 ## زنده‌ترین — ۲۰۲۶-۰۹-۰۷ (Method Y: آموزش FINALIZED؛ ارزیابی تولید روی درخت زنده PASS)
 
 0. **آموزش تمام شد (اپراتور):** orchestration_state FINALIZED، ۵۰/۵۰ سلول، ۵۰ winner؛ verifier نهایی PASS (claims بسته). هیچ writer زنده نیست.
