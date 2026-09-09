@@ -25,6 +25,7 @@ if str(ROOT) not in sys.path:
 
 from src.method_y_revival import post_eval_v4 as pe  # noqa: E402
 from src.method_y_revival.atomic_io import atomic_write_json  # noqa: E402
+from src.method_y_revival.strict_yaml import load_unique_yaml  # noqa: E402
 
 
 def _sha256_file(path: Path) -> str:
@@ -36,8 +37,10 @@ def _sha256_file(path: Path) -> str:
 
 
 def _load_config(path: Path) -> dict:
-    import yaml
-    return yaml.safe_load(path.read_text(encoding="utf-8"))
+    value = load_unique_yaml(path)
+    if not isinstance(value, dict):
+        raise ValueError("POST_EVAL_CONFIG_MUST_BE_MAPPING")
+    return value
 
 
 def cmd_preflight(args) -> int:
@@ -45,7 +48,8 @@ def cmd_preflight(args) -> int:
     v4_root = ROOT / cfg["v4_output_root"]
     out: dict = {"mode": "preflight", "status": "BLOCKED", "checks": {}}
     try:
-        gate = pe.entry_gate(run_root=v4_root, config_path=Path(args.config))
+        gate = pe.entry_gate(run_root=v4_root,
+                             config_path=ROOT / "configs" / "method_y_image_factorial_v4.yaml")
         out["checks"]["verifier"] = "PASS"
         digest = gate["run_contract_sha256"]
     except Exception as exc:
@@ -185,7 +189,8 @@ def cmd_run(args) -> int:
                           "reason_code": "EVAL_PREFLIGHT_STALE"}))
         return 3
     try:
-        gate = pe.entry_gate(run_root=ROOT / cfg["v4_output_root"])
+        gate = pe.entry_gate(run_root=ROOT / cfg["v4_output_root"],
+                             config_path=ROOT / "configs" / "method_y_image_factorial_v4.yaml")
     except Exception as exc:
         print(json.dumps({"status": "BLOCKED", "reason_code": str(exc)}))
         return 3
@@ -193,35 +198,120 @@ def cmd_run(args) -> int:
         print(json.dumps({"status": "BLOCKED",
                           "reason_code": "EVAL_RUN_DIGEST_DRIFT"}))
         return 3
-    legs = [{"id": "LEG-EVAL-00", "status": "PASS"}]
-    bundle_path = cfg.get("oof_bundle_path")
-    outcomes_path = cfg.get("outcomes_table_path")
-    if not bundle_path or not Path(str(bundle_path)).is_file():
-        legs.append({"id": "LEG-EVAL-02", "status": "NOT_MEASURABLE",
-                     "evidence": "oof_bundle_absent.json"})
-    if not outcomes_path or not Path(str(outcomes_path)).is_file():
-        legs.append({"id": "LEG-EVAL-05", "status": "NOT_MEASURABLE",
-                     "evidence": "outcomes_table_absent.json"})
-    if any(leg["status"] == "NOT_MEASURABLE" for leg in legs):
-        verdict = pe.run_legs(legs)
-        atomic_write_json(out_dir / "post_eval_report.json",
-                          {"status": verdict["status"], "legs": legs,
-                           "ceiling": cfg["claim_policy"]["ceiling"]})
-        print(json.dumps({"status": verdict["status"], "legs": legs,
-                          "note": "locked inputs absent; recorded, not halted"}))
-        return 0
-    print(json.dumps({"status": "READY_FOR_PRODUCTION_CELLS",
-                      "run_digest": gate.get("run_contract_sha256"),
-                      "note": "per-cell evaluation follows 03-combined-plan legs; "
-                              "no training/refit; aggregate-only"}))
-    return 0
+    v4_root = ROOT / cfg["v4_output_root"]
+    legs = []
+    try:
+        counts = _read_access_counts(v4_root)
+        fw = pe.assert_single_access(counts)
+        legs.append({"id": "LEG-EVAL-00", "status": "PASS",
+                     "evidence": f"firewall_{fw['cells']}_cells_single_access.json"})
+    except Exception as exc:
+        legs.append({"id": "LEG-EVAL-00", "status": "BLOCKED",
+                     "reason": f"{type(exc).__name__}:{exc}"})
+    try:
+        compiled = pe.compile_locked_reports(root=v4_root)
+        legs.append({"id": "LEG-EVAL-02", "status": "PASS",
+                     "evidence": "locked_public_reports.json"})
+        legs.append({"id": "LEG-EVAL-05", "status": "PASS",
+                     "evidence": "locked_pair_reports.json"})
+    except Exception as exc:
+        legs.append({"id": "LEG-EVAL-02", "status": "BLOCKED",
+                     "reason": f"{type(exc).__name__}:{exc}"})
+        compiled = None
+    legs.append({"id": "LEG-EVAL-03", "status": "NOT_MEASURABLE",
+                 "evidence": "no_subject_rows_calibration_absent.json"})
+    legs.append({"id": "LEG-EVAL-12", "status": "NOT_MEASURABLE",
+                 "evidence": "no_external_intake_registry.json"})
+    verdict = pe.run_legs(legs)
+    if compiled is not None:
+        thesis_recs = _thesis_records_from_compiled(compiled)
+    else:
+        thesis_recs = []
+    md = pe.thesis_write(
+        thesis_recs, ceiling=cfg["claim_policy"]["ceiling"], section="results",
+        not_measurable=[leg["id"] for leg in legs if leg["status"] == "NOT_MEASURABLE"])
+    body_lines = [md.get("markdown", "")] if md.get("markdown") else []
+    body_text = "\n".join(body_lines)
+    priv = pe.scan_text(body_text) if body_text else {"status": "PASS", "hits": []}
+    vocab = pe.ban_check(body_text) if body_text else {"status": "PASS", "hits": []}
+    if priv["status"] != "PASS" or vocab["status"] != "PASS":
+        priv = {"status": "BLOCKED",
+                "hits": list(priv.get("hits", [])) + list(vocab.get("hits", []))}
+    # ``run_legs`` is intentionally execution-oriented and permits deferred
+    # legs.  Compile a separate claim gate so a technical PASS cannot be read
+    # as proof that calibration or external validation was completed.
+    science = pe.science_gate_from_legs(legs, external_pending=True)
+    bundle_files = ["reports/factorial_benchmark_summary.sanitized.json"]
+    report = {"mode": "run", "status": verdict["status"],
+              "artifact_status": "COMPLETED" if verdict["status"] == "PASS" else "FAILED",
+              "science_gate_status": science["science_gate_status"],
+              "claim_status": science["claim_status"],
+              "claim_blockers": science["blockers"],
+              "positive_claim_allowed": science["positive_claim_allowed"],
+              "external_claim_allowed": science["external_claim_allowed"],
+              "ceiling": cfg["claim_policy"]["ceiling"],
+              "run_digest": gate.get("run_contract_sha256"),
+              "legs": legs, "compiled": compiled is not None,
+              "contrasts": compiled["contrasts"] if compiled else [],
+              "omnibus": compiled.get("omnibus") if compiled else None,
+              "thesis": md, "privacy": priv, "bundle_files": bundle_files}
+    atomic_write_json(out_dir / "post_eval_report.json", report)
+    atomic_write_json(out_dir / "thesis_results.md",
+                      {"markdown": md.get("markdown", ""),
+                       "pointers": md.get("pointers", []),
+                       "status": md.get("status", "BLOCKED"),
+                       "ceiling": cfg["claim_policy"]["ceiling"]})
+    print(json.dumps({"status": report["status"], "legs": legs,
+                      "thesis": md["status"], "privacy": priv["status"]}))
+    return 0 if verdict["status"] == "PASS" and md["status"] == "PASS" else 3
+
+
+def _read_access_counts(v4_root: Path) -> dict[str, int]:
+    counts = {}
+    base = v4_root / "private" / "outer_evaluation"
+    rows = sorted(base.rglob("outer_access_journal.json"))
+    if not rows:
+        raise RuntimeError("BLOCKED:NO_ACCESS_JOURNALS_FOUND")
+    for journal in rows:
+        try:
+            payload = json.loads(journal.read_text(encoding="utf-8"))
+            counts[str(journal.parent.parent.parent.name) + "/" + str(
+                journal.parent.parent.name) + "/" + str(
+                journal.parent.name)] = int(payload.get("access_count", -1))
+        except (OSError, ValueError, TypeError) as exc:
+            raise RuntimeError(f"BLOCKED:JOURNAL_UNREADABLE:{journal.name}") from exc
+    pe.assert_single_access(counts)
+    return counts
+
+
+def _thesis_records_from_compiled(compiled: dict) -> list[dict]:
+    recs = []
+    for c in compiled.get("contrasts", []):
+        pair = str(c.get("pair", "?")).replace(":", " ").replace("_vs_", " ").replace("_", " ")
+        dci = c.get("delta_ibs_ci", [0.0, 0.0])
+        ni = (c.get("ni_ibs") or {}).get("decision", "INCONCLUSIVE_UNDERPOWERED")
+        recs.append({
+            "pointer": f"$.contrasts[{c.get('pair', '?')}]",
+            "text": (f"pair {pair} mean paired dibs {float(sum(dci)) / 2:.4f} "
+                     f"internal exploratory {ni}"),
+            "tokens": ["internal", "exploratory"],
+        })
+    omni = compiled.get("omnibus") or {}
+    if omni.get("p") is not None:
+        recs.append({
+            "pointer": "$.omnibus",
+            "text": (f"omnibus arms internal exploratory "
+                     f"p {float(omni['p']):.3f}"),
+            "tokens": ["internal", "exploratory"],
+        })
+    return recs
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--mode", choices=("preflight", "dry-run", "run"), required=True)
     ap.add_argument("--config", default=str(
-        ROOT / "configs" / "method_y_post_eval_v4.yaml"))
+        ROOT / "configs" / "method_y_post_eval_v4_1.yaml"))
     ap.add_argument("--output", default=str(
         ROOT / "results" / "method_y_revival_v4_image_factorial_v1" / "post_eval"))
     args = ap.parse_args(argv)
