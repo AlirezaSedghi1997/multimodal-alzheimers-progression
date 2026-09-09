@@ -1,0 +1,69 @@
+# Duplicate-free successor to method_y_post_eval_v4.yaml.
+# The original v4 file is preserved as historical evidence; use this file for
+# any new post-evaluation invocation.  No semantic value was changed.
+schema_version: "4.1"
+status: POST_HOC_INTERNAL_EXPLORATORY_DRAFT_PARAMS
+project_root: "H:/New project"
+v4_output_root: "results/method_y_revival_v4_image_factorial_v1"
+
+horizons_days: [547.875, 1095.75, 1640.0]
+primary_horizon_days: 1095.75
+tau_star_rule: {gmin: 0.15, cap_ipcw: 10.0}
+risk_score: "1_minus_S_tau"
+tie_rule: 0.5
+
+bootstrap: {B: 2000, seed: 13, primary: percentile-fold-stratified, sensitivity: [bca, permutation]}
+permutation_P: 2000
+ni_margins: {dIBS: 0.01, dUno: 0.02}
+
+calibration:
+  horizons: [1095.75]
+  link: logit
+  bins: 5
+  descriptive_only: true
+
+subgroups:
+  list: [sex, age_median_split, treatment, cognition_median_split, qc_pass, cohort]
+  ci_min_events: 25
+  descriptive_min_events: 10
+  multiplicity: BH
+  primary_evidence: interaction_first
+
+mixedlm:
+  formula: "pacc ~ time * treatment"
+  random: "1|subject"
+  estimator: ML
+  maxiter: 200
+  tol: 1.0e-6
+
+dcalibration: {bins: 10, role: EXPLORATORY_NEVER_GATE}
+omnibus: {method: friedman, followup: BH}
+
+oof_bundle_path: null
+outcomes_table_path: null
+
+manufacturer:
+  rule: STRATIFIED_DESCRIPTIVE_ONLY
+  min_events: 25
+
+pacc_mixedlm:
+  formula: "pacc ~ time*treatment"
+  random: "1|subject"
+  estimator: ML
+  maxiter: 200
+  tol: 1.0e-6
+  role: DESCRIPTIVE_ONLY
+
+privacy:
+  min_subjects: 10
+  min_events: 10
+
+claim_policy:
+  positive_claim_allowed: false
+  external_claim_allowed: false
+  ceiling: POST_HOC_INTERNAL_EXPLORATORY
+
+thesis:
+  out_dir: "docs/thesis_traceability/method_y_post_training"
+  ceiling: POST_HOC_INTERNAL_EXPLORATORY
+  sections: [results, methods, discussion, limitations]

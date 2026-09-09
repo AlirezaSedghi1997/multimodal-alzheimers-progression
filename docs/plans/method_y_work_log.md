@@ -230,3 +230,19 @@ Commit 4ef3495 (+ this audit commit). Report:
 - Versioned promotion DRAFT->FINAL (operator order); GPU verified idle (0%, no compute tenant) but launcher has no device path so execution was CPU-single-process (~1h45; deterministic, effective flags true). Fresh preflight PASS on FINAL (5 arms, ban parity, digest 969ebd0f).
 - Incidents (all root-caused + fixed, tests added): FINAL_DIGEST_MISMATCH -> frozen-chain provenance binding (exact bytes + self-hashed FINALIZED outer state; embedded 20c7.. generation digest recorded); wrong-cohort v2-splits enumeration -> development-role cap intersection (fold_0 109 == locked n_test, coverage 560/306); raw-tabular object crash -> locked FoldTabularTransformer per cell; pilot OOM 1.72GiB -> agreement capped at 20 rows float32; one transient preflight stall (rerun PASS, no hang).
 - Output: 50 cells COMPLETE, 4330 maps, report PASS (exploratory). Agreement RED_FLAG (rho 0.085, dice 0.145) -> LEG-04 NOT_MEASURABLE; fidelity 15/30 over 45 cells; share mean 0.875 (4 below floor named; 5 tau/o0 unevaluated); sensitivity PASS; LEG-07 NOT_MEASURABLE. Supervisor F audited (1 BLOCKER privacy pilot-list remediated by re-tier to count+sha; 2 HIGHs as disclaimers). Thesis: docs/thesis_traceability/method_y_v4_attribution_results_20260908.md. 32/32 tests GREEN. No checkpoint mutated; results/ ignored; no push.
+
+## 2026-09-09 - Canonical post-training reconciliation (read-only source audit)
+
+- The historical table-valid attribution PASS is superseded by the canonical
+  reconciled report: `status=BLOCKED`, `science_gate_status=FAIL`,
+  `claim_status=NO_CLAIM` (agreement, fidelity coverage/non-pass and PET
+  quantitative provenance remain unresolved).
+- Built `public_bundle/` from an explicit aggregate allow-list; 126 files,
+  recursive privacy scan PASS, no row-level outcomes, identifiers, embeddings,
+  images or source locations. A failed first staging attempt is retained as
+  evidence and is not used for release.
+- Post-training audit records technical verifier PASS (50/50) separately from
+  the blocked scientific claim gate. Positive and external claims remain false.
+- Focused release/audit tests pass; the complete Method Y non-CUDA suite and
+  the seven GPU-specific tests are verified with GPU availability recorded
+  separately.
