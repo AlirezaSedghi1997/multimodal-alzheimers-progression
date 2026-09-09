@@ -9,6 +9,9 @@
 - claim status: `INTERNAL_ONLY`
 - ادعای مثبت و ادعای خارجی: `false`
 - privacy findings در bundle: `0`
+- آزمودنی/رویداد outer در arm انتخابی amyloid: `560/110`
+- آزمودنی/رویداد outer در arm انتخابی tau: `306/75`
+- تعداد contrastهای post-eval: `10`
 
 ## تفسیر
 

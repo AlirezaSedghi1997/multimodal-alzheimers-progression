@@ -111,6 +111,53 @@ def _run_verifier(config_path: Path) -> dict[str, Any]:
     return parsed
 
 
+def _selected_arm_summary(root: Path, selected: dict[str, Any]) -> dict[str, Any]:
+    summary: dict[str, Any] = {}
+    for branch in ("amyloid", "tau"):
+        arm = str(selected.get(branch, ""))
+        rows = []
+        for fold in range(5):
+            path = root / "reports" / f"{branch}_{arm}_fold_{fold}_public.json"
+            payload = _read(path, {})
+            aggregate = payload.get("aggregate", {}) if isinstance(payload, dict) else {}
+            if isinstance(aggregate, dict):
+                rows.append(aggregate)
+        if len(rows) != 5:
+            summary[branch] = {"arm": arm, "status": "INCOMPLETE", "folds": len(rows)}
+            continue
+        def mean(key: str) -> float | None:
+            values = [float(row[key]) for row in rows if isinstance(row.get(key), (int, float))]
+            return sum(values) / len(values) if len(values) == 5 else None
+        summary[branch] = {
+            "arm": arm,
+            "folds": 5,
+            "n_test": sum(int(row.get("n_test", 0)) for row in rows),
+            "test_events": sum(int(row.get("test_events", 0)) for row in rows),
+            "mean_integrated_brier_score": mean("integrated_brier_score"),
+            "mean_uno_c_index": mean("uno_c_index"),
+            "status": "COMPLETE",
+        }
+    return summary
+
+
+def _scanner_summary(root: Path) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for branch in ("amyloid", "tau"):
+        path = root / "analysis_pairs" / "A3_vs_A4" / "reports" / f"{branch}_scanner_comparison.json"
+        payload = _read(path, {})
+        reference = payload.get("reference", {}) if isinstance(payload, dict) else {}
+        eligibility = reference.get("leave_manufacturer_out_eligibility", {}) if isinstance(reference, dict) else {}
+        lmo = reference.get("leave_manufacturer_out_performance", {}) if isinstance(reference, dict) else {}
+        result[branch] = {
+            "status": payload.get("status"),
+            "scanner_probe_not_worse": payload.get("scanner_probe_not_worse"),
+            "leave_manufacturer_out_status": lmo.get("status") if isinstance(lmo, dict) else None,
+            "eligible_manufacturers": eligibility.get("eligible_manufacturers", []) if isinstance(eligibility, dict) else [],
+            "not_estimable_manufacturers": eligibility.get("not_estimable", []) if isinstance(eligibility, dict) else [],
+        }
+    return result
+
+
 def audit(root: Path, config_path: Path) -> dict[str, Any]:
     state_path = root / "orchestration_state.json"
     contract_path = root / "run_contract.json"
@@ -133,6 +180,8 @@ def audit(root: Path, config_path: Path) -> dict[str, Any]:
             valid_outer_hashes += 1
 
     selected = state.get("inner_only_selected_arms", {})
+    selected_summary = _selected_arm_summary(root, selected)
+    scanner_summary = _scanner_summary(root)
     technical_complete = verifier.get("status") == "PASS" and not active
     science_status = xai.get("science_gate_status", "NOT_EVALUATED")
     post_science = post_eval.get("science_gate_status", "NOT_EVALUATED")
@@ -181,6 +230,28 @@ def audit(root: Path, config_path: Path) -> dict[str, Any]:
         "selection": {
             "inner_only_selected_arms": selected,
             "selection_is_not_outer_test_selection": True,
+            "selected_arm_outer_summary": selected_summary,
+        },
+        "diagnostics": {
+            "scanner": scanner_summary,
+            "xai_agreement": (
+                xai.get("details", {}).get("agreement", {})
+                if isinstance(xai.get("details"), dict)
+                else {}
+            ),
+            "xai_fidelity": (
+                xai.get("details", {}).get("fidelity", {})
+                if isinstance(xai.get("details"), dict)
+                else {}
+            ),
+            "post_eval_omnibus_p": (
+                post_eval.get("omnibus", {}).get("p")
+                if isinstance(post_eval.get("omnibus"), dict)
+                else None
+            ),
+            "post_eval_contrast_count": len(post_eval.get("contrasts", []))
+            if isinstance(post_eval.get("contrasts"), list)
+            else 0,
         },
         "privacy": {
             "public_bundle_present": bundle.is_dir(),
@@ -207,6 +278,8 @@ def _markdown(payload: dict[str, Any]) -> str:
     execution = payload["technical_execution"]
     science = payload["scientific_gates"]
     privacy = payload["privacy"]
+    selected = payload["selection"]["selected_arm_outer_summary"]
+    diagnostics = payload["diagnostics"]
     lines = [
         "# Method Y image v4 post-training audit (2026-09-09)",
         "",
@@ -219,6 +292,9 @@ def _markdown(payload: dict[str, Any]) -> str:
         f"- claim status: `{science['claim_status']}`",
         "- ادعای مثبت و ادعای خارجی: `false`",
         f"- privacy findings در bundle: `{privacy['finding_count']}`",
+        f"- آزمودنی/رویداد outer در arm انتخابی amyloid: `{selected.get('amyloid', {}).get('n_test')}/{selected.get('amyloid', {}).get('test_events')}`",
+        f"- آزمودنی/رویداد outer در arm انتخابی tau: `{selected.get('tau', {}).get('n_test')}/{selected.get('tau', {}).get('test_events')}`",
+        f"- تعداد contrastهای post-eval: `{diagnostics.get('post_eval_contrast_count')}`",
         "",
         "## تفسیر",
         "",
