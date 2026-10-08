@@ -1,0 +1,1318 @@
+{
+  "source_id": "1198a790e8613d1e",
+  "source_sha256": "00f763a701ebf4372c3bce7100dad923919600b50d5a8128ddaee8daa6efb8cd",
+  "scientific_role": "posthoc_sensitivity",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 1,
+  "aggregate": {
+    "all_patient_count": 1336,
+    "bootstrap_seed": 20260927,
+    "execution_preregistration_sha256": "5be0edf69400fc32941803508c728b504341740d3ec8886ba7e428dc0e1ddd68",
+    "external_validation": false,
+    "internal_outer_historically_inspected": true,
+    "multiple_secondary_comparisons_confirmatory": false,
+    "outer_lock_sha256": "b718c99adc1abe170d542758f593a1ad6deb79d28cbd3da839b1608dbeab6944",
+    "patient_unit": "patient_hash",
+    "pseudo_holdout_used": false,
+    "resamples_requested": 2000,
+    "schema_version": 1,
+    "seed_repetitions_independent": false,
+    "status": "COMPLETED_INTERNAL_EXPLORATORY",
+    "strong_disease_or_region_claim_allowed": false,
+    "subsets": {
+      "180": {
+        "arm_metrics": {
+          "hybrid_baseline": {
+            "metrics": {
+              "auprc": 0.9524942471266074,
+              "auroc": 0.7437316752603377,
+              "brier": 0.20855716802417934,
+              "calibration_intercept": 2.016050592300234,
+              "calibration_slope": 1.012559650548294
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "hybrid_dense": {
+            "metrics": {
+              "auprc": 0.9538991198410457,
+              "auroc": 0.75010110201193,
+              "brier": 0.2052044874784326,
+              "calibration_intercept": 2.0105331535761177,
+              "calibration_slope": 0.969094194360113
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "hybrid_selected": {
+            "metrics": {
+              "auprc": 0.9534864474202841,
+              "auroc": 0.7500505510059651,
+              "brier": 0.20658347298367075,
+              "calibration_intercept": 2.0065751554247266,
+              "calibration_slope": 0.9657040968802423
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "mri_only": {
+            "metrics": {
+              "auprc": 0.875091367536302,
+              "auroc": 0.5003033060357901,
+              "brier": 0.2584131188944893,
+              "calibration_intercept": 2.0147722492853415,
+              "calibration_slope": 0.07317986686207774
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "prevalence": {
+            "metrics": {
+              "auprc": 0.8920801394173271,
+              "auroc": 0.5266277423920736,
+              "brier": 0.14320785870798938,
+              "calibration_intercept": -2.969138657288907,
+              "calibration_slope": 6.47811013352446
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "random_label": {
+            "metrics": {
+              "auprc": 0.8851275645926656,
+              "auroc": 0.5241886563542615,
+              "brier": 0.25932602151260864,
+              "calibration_intercept": 2.0865418859365246,
+              "calibration_slope": 1.4402381739320655
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "tabular_only": {
+            "metrics": {
+              "auprc": 0.9653545892137738,
+              "auroc": 0.7910221413406128,
+              "brier": 0.12333287447699139,
+              "calibration_intercept": 1.0864591826497454,
+              "calibration_slope": 1.330260662805878
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          }
+        },
+        "comparisons": {
+          "hybrid_selected_minus_mri_only": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  0.043102096991704364,
+                  0.11800529666830568
+                ],
+                "selected_minus_comparator": 0.08145836516926364,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  0.15062410123031586,
+                  0.3524832151800868
+                ],
+                "selected_minus_comparator": 0.2544737640279042,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  -0.05655679824955327,
+                  -0.014930054696055907
+                ],
+                "selected_minus_comparator": -0.036616008080432916,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  -0.09426134674192727,
+                  0.395911437344111
+                ],
+                "selected_minus_comparator": 0.12608930027648135,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -3.057723834104239,
+                  4.786807850194203
+                ],
+                "selected_minus_comparator": 0.8909326450739419,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "hybrid_selected_minus_prevalence": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  0.0266497572188716,
+                  0.09493460032297353
+                ],
+                "selected_minus_comparator": 0.06140630800295699,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  0.10604976006963333,
+                  0.3313990527580126
+                ],
+                "selected_minus_comparator": 0.22342280861389152,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  0.0400262218660849,
+                  0.08652555369192338
+                ],
+                "selected_minus_comparator": 0.06337561427568136,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  -5.7405908169716255,
+                  17.263503340385377
+                ],
+                "selected_minus_comparator": 4.975713812713634,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -21.485729746799276,
+                  8.570330228070807
+                ],
+                "selected_minus_comparator": -5.512406036644218,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "hybrid_selected_minus_random_label": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  0.03945364175900451,
+                  0.10389459657517465
+                ],
+                "selected_minus_comparator": 0.07142216811290003,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  0.13227235905232154,
+                  0.33260849642993756
+                ],
+                "selected_minus_comparator": 0.23058841370943284,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  -0.05752778686299031,
+                  -0.01631470584943522
+                ],
+                "selected_minus_comparator": -0.03752891069855224,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  -0.2401270323278871,
+                  0.307232270520697
+                ],
+                "selected_minus_comparator": 0.054319663625298276,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -5.372507302112061,
+                  3.86481200472011
+                ],
+                "selected_minus_comparator": -0.4761256619960459,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "hybrid_selected_minus_tabular_only": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  -0.022120999535628936,
+                  -0.003305885544542635
+                ],
+                "selected_minus_comparator": -0.011868141793489717,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  -0.07327960600321154,
+                  -0.012789676088087471
+                ],
+                "selected_minus_comparator": -0.0409715903346477,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  0.07069118552282658,
+                  0.09590779490061473
+                ],
+                "selected_minus_comparator": 0.08325059850667936,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  0.6665029651450763,
+                  1.2450224781371695
+                ],
+                "selected_minus_comparator": 0.9201159727749813,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -0.5717199928664214,
+                  -0.1916313323954766
+                ],
+                "selected_minus_comparator": -0.3645565659256357,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          }
+        },
+        "fold_counts": {
+          "0": 74,
+          "1": 70,
+          "2": 70,
+          "3": 71,
+          "4": 71
+        },
+        "n": 356,
+        "negative_n": 42,
+        "positive_n": 314,
+        "status": "DESCRIPTIVE_POST_HOC_INTERNAL"
+      },
+      "365": {
+        "arm_metrics": {
+          "hybrid_baseline": {
+            "metrics": {
+              "auprc": 0.942110183216843,
+              "auroc": 0.7326509539842873,
+              "brier": 0.2135058888313748,
+              "calibration_intercept": 1.8272549727770429,
+              "calibration_slope": 0.9732233932653859
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "hybrid_dense": {
+            "metrics": {
+              "auprc": 0.9443921092121438,
+              "auroc": 0.7409382716049383,
+              "brier": 0.21109409847715865,
+              "calibration_intercept": 1.8269166411368536,
+              "calibration_slope": 0.9252141063651561
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "hybrid_selected": {
+            "metrics": {
+              "auprc": 0.9448177795033352,
+              "auroc": 0.7433625140291807,
+              "brier": 0.21319469029219648,
+              "calibration_intercept": 1.8407524151023142,
+              "calibration_slope": 0.940417588485952
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "mri_only": {
+            "metrics": {
+              "auprc": 0.8709477842091019,
+              "auroc": 0.5141414141414141,
+              "brier": 0.25820617539075297,
+              "calibration_intercept": 1.8325090174029222,
+              "calibration_slope": 0.4095383331075814
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "prevalence": {
+            "metrics": {
+              "auprc": 0.8584057699329849,
+              "auroc": 0.48845566778900107,
+              "brier": 0.15144070631460335,
+              "calibration_intercept": 3.3048183502028756,
+              "calibration_slope": -1.864542752300313
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "random_label": {
+            "metrics": {
+              "auprc": 0.8745554252704423,
+              "auroc": 0.5433939393939394,
+              "brier": 0.25905429380467654,
+              "calibration_intercept": 1.940710754187466,
+              "calibration_slope": 2.2326040149270012
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "tabular_only": {
+            "metrics": {
+              "auprc": 0.9527610495070408,
+              "auroc": 0.765499438832772,
+              "brier": 0.1342255434648664,
+              "calibration_intercept": 0.9708339720257522,
+              "calibration_slope": 1.189917462832395
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          }
+        },
+        "comparisons": {
+          "hybrid_selected_minus_mri_only": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  0.054579668644134556,
+                  0.10391927677009148
+                ],
+                "selected_minus_comparator": 0.07915125543490664,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  0.17902211734589618,
+                  0.3024390929224853
+                ],
+                "selected_minus_comparator": 0.24324579124579127,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  -0.04762761168314262,
+                  -0.018267023068402145
+                ],
+                "selected_minus_comparator": -0.032951864843456996,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  -0.003809935823275933,
+                  0.2986382896374317
+                ],
+                "selected_minus_comparator": 0.13962946476810578,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -1.7740747059398425,
+                  2.766034912743814
+                ],
+                "selected_minus_comparator": 0.5674982659770831,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "hybrid_selected_minus_prevalence": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  0.06171487219836727,
+                  0.1113857834307832
+                ],
+                "selected_minus_comparator": 0.08641200957035033,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  0.18678229244273242,
+                  0.32175835771399747
+                ],
+                "selected_minus_comparator": 0.2549068462401797,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  0.0457963313797818,
+                  0.07808871976695018
+                ],
+                "selected_minus_comparator": 0.06175398397759313,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  -8.232209628572328,
+                  5.4992744598701195
+                ],
+                "selected_minus_comparator": -1.4640659351005614,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -6.242678302479969,
+                  11.635670942280708
+                ],
+                "selected_minus_comparator": 2.8049603407862653,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "hybrid_selected_minus_random_label": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  0.052581859356750624,
+                  0.10047107836540224
+                ],
+                "selected_minus_comparator": 0.07554361437356627,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  0.1502955182622702,
+                  0.27658632522083
+                ],
+                "selected_minus_comparator": 0.21399326599326596,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  -0.04815256506034146,
+                  -0.019736627516942426
+                ],
+                "selected_minus_comparator": -0.03379998325738057,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  -0.16058435406469682,
+                  0.214131508937278
+                ],
+                "selected_minus_comparator": 0.03142772798356197,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -4.1654845125337445,
+                  1.4846575539773172
+                ],
+                "selected_minus_comparator": -1.2555674158423367,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "hybrid_selected_minus_tabular_only": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  -0.014084751027485205,
+                  -0.0019999523924471023
+                ],
+                "selected_minus_comparator": -0.007943270003705538,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  -0.04029295953061008,
+                  -0.0051524880832374215
+                ],
+                "selected_minus_comparator": -0.022136924803591307,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  0.06991593481401406,
+                  0.08762553030340632
+                ],
+                "selected_minus_comparator": 0.07896914682733008,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  0.7010440409472937,
+                  1.0636507982265468
+                ],
+                "selected_minus_comparator": 0.8699184430765621,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -0.3604163361622861,
+                  -0.15043077318634399
+                ],
+                "selected_minus_comparator": -0.24949987434644294,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          }
+        },
+        "fold_counts": {
+          "0": 167,
+          "1": 156,
+          "2": 144,
+          "3": 157,
+          "4": 161
+        },
+        "n": 785,
+        "negative_n": 110,
+        "positive_n": 675,
+        "status": "DESCRIPTIVE_POST_HOC_INTERNAL"
+      },
+      "90": {
+        "arm_metrics": {
+          "hybrid_baseline": {
+            "metrics": {
+              "auprc": 0.9497797262547438,
+              "auroc": 0.7460826210826211,
+              "brier": 0.20679769722593352,
+              "calibration_intercept": 1.951989485789432,
+              "calibration_slope": 1.039138131471048
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "hybrid_dense": {
+            "metrics": {
+              "auprc": 0.9508926849530303,
+              "auroc": 0.7571225071225071,
+              "brier": 0.20361630269463057,
+              "calibration_intercept": 1.9532240216722194,
+              "calibration_slope": 0.9825434656361872
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "hybrid_selected": {
+            "metrics": {
+              "auprc": 0.9504364299107418,
+              "auroc": 0.7544159544159544,
+              "brier": 0.20498379089824206,
+              "calibration_intercept": 1.9487087910419263,
+              "calibration_slope": 0.9733974685215866
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "mri_only": {
+            "metrics": {
+              "auprc": 0.8737702537040257,
+              "auroc": 0.5224358974358975,
+              "brier": 0.2578822214672482,
+              "calibration_intercept": 1.9761324498886623,
+              "calibration_slope": 0.9429033035210843
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "prevalence": {
+            "metrics": {
+              "auprc": 0.879594201277539,
+              "auroc": 0.503454415954416,
+              "brier": 0.146347983858798,
+              "calibration_intercept": 0.3043225169568425,
+              "calibration_slope": 2.167168813964881
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "random_label": {
+            "metrics": {
+              "auprc": 0.9008036092555048,
+              "auroc": 0.5668803418803419,
+              "brier": 0.25775574920487176,
+              "calibration_intercept": 2.0948500660633784,
+              "calibration_slope": 3.135359288478356
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "tabular_only": {
+            "metrics": {
+              "auprc": 0.959644688696005,
+              "auroc": 0.7804131054131055,
+              "brier": 0.12692804755017018,
+              "calibration_intercept": 1.033825522891932,
+              "calibration_slope": 1.275939101096463
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          }
+        },
+        "comparisons": {
+          "hybrid_selected_minus_mri_only": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  0.03443280952178865,
+                  0.13555730405250743
+                ],
+                "selected_minus_comparator": 0.08289821010339937,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  0.1258380977130977,
+                  0.3710597826086956
+                ],
+                "selected_minus_comparator": 0.2450854700854701,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  -0.0672031706066896,
+                  -0.013949217644939792
+                ],
+                "selected_minus_comparator": -0.04091151055246117,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  -0.1409160103220538,
+                  0.4737870305535514
+                ],
+                "selected_minus_comparator": 0.11720859343073875,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -4.7249452614480765,
+                  4.899008670035466
+                ],
+                "selected_minus_comparator": 0.06493982131268394,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "hybrid_selected_minus_prevalence": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  0.02112530352553142,
+                  0.11886173731900455
+                ],
+                "selected_minus_comparator": 0.07084222863320289,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  0.08029478117368738,
+                  0.3962627929010769
+                ],
+                "selected_minus_comparator": 0.25096153846153846,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  0.028120679204862553,
+                  0.08960355218723395
+                ],
+                "selected_minus_comparator": 0.05863580703944407,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  -12.03260132479828,
+                  17.197501445983765
+                ],
+                "selected_minus_comparator": 1.6443862740850839,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -21.817301612360477,
+                  16.97508252083386
+                ],
+                "selected_minus_comparator": -1.1937713454432943,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "hybrid_selected_minus_random_label": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  0.02281848783189453,
+                  0.0950822265783915
+                ],
+                "selected_minus_comparator": 0.05586485455192025,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  0.08565937519399094,
+                  0.31065340909090877
+                ],
+                "selected_minus_comparator": 0.2006410256410257,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  -0.06699895399548973,
+                  -0.014375271708533864
+                ],
+                "selected_minus_comparator": -0.04078503829008473,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  -0.3982572891455892,
+                  0.3463951401672995
+                ],
+                "selected_minus_comparator": -0.0015090227439773507,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -8.548659411136164,
+                  3.022154748803209
+                ],
+                "selected_minus_comparator": -2.1275161636445876,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "hybrid_selected_minus_tabular_only": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  -0.02142082313228011,
+                  0.0013912777746762
+                ],
+                "selected_minus_comparator": -0.009208258785263213,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  -0.06352459402972183,
+                  0.010067256022177009
+                ],
+                "selected_minus_comparator": -0.025997150997151053,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  0.061357211940096225,
+                  0.09425493635607253
+                ],
+                "selected_minus_comparator": 0.07805574334807189,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  0.576194362201381,
+                  1.3691146606322777
+                ],
+                "selected_minus_comparator": 0.9148832681499943,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -0.5354556750116112,
+                  -0.10084072281167869
+                ],
+                "selected_minus_comparator": -0.3025416325748763,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          }
+        },
+        "fold_counts": {
+          "0": 42,
+          "1": 45,
+          "2": 41,
+          "3": 42,
+          "4": 36
+        },
+        "n": 206,
+        "negative_n": 26,
+        "positive_n": 180,
+        "status": "DESCRIPTIVE_POST_HOC_INTERNAL"
+      },
+      "all": {
+        "arm_metrics": {
+          "hybrid_baseline": {
+            "metrics": {
+              "auprc": 0.8226408683047541,
+              "auroc": 0.7036501907047921,
+              "brier": 0.2183393737212103,
+              "calibration_intercept": 0.744696135589356,
+              "calibration_slope": 0.8207285043123708
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "hybrid_dense": {
+            "metrics": {
+              "auprc": 0.8258908931866066,
+              "auroc": 0.7094580773124736,
+              "brier": 0.21725832098914208,
+              "calibration_intercept": 0.7347675306757745,
+              "calibration_slope": 0.7780503557733104
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "hybrid_selected": {
+            "metrics": {
+              "auprc": 0.8296671988120532,
+              "auroc": 0.7162490494969346,
+              "brier": 0.2168879213185082,
+              "calibration_intercept": 0.7500470357504488,
+              "calibration_slope": 0.811926781434393
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "mri_only": {
+            "metrics": {
+              "auprc": 0.6955926894793562,
+              "auroc": 0.5183001509584437,
+              "brier": 0.2540871453095616,
+              "calibration_intercept": 0.7890468172932044,
+              "calibration_slope": 0.4571738240735637
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "prevalence": {
+            "metrics": {
+              "auprc": 0.6829706124944922,
+              "auroc": 0.49895218095679517,
+              "brier": 0.21640713203444376,
+              "calibration_intercept": 0.9259861546245783,
+              "calibration_slope": -0.19690622945007197
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "random_label": {
+            "metrics": {
+              "auprc": 0.7074478963079524,
+              "auroc": 0.532614015054415,
+              "brier": 0.2541049016788734,
+              "calibration_intercept": 0.8479136651006361,
+              "calibration_slope": 1.509742632966017
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "tabular_only": {
+            "metrics": {
+              "auprc": 0.8447149272877382,
+              "auroc": 0.725020865754011,
+              "brier": 0.18735794793063254,
+              "calibration_intercept": 0.011091770362517664,
+              "calibration_slope": 0.984332948522686
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          }
+        },
+        "comparisons": {
+          "hybrid_selected_minus_mri_only": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  0.11117665974926369,
+                  0.16867094746428826
+                ],
+                "selected_minus_comparator": 0.1397453223496068,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  0.163693968409591,
+                  0.24203967399701878
+                ],
+                "selected_minus_comparator": 0.20268566205505445,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  -0.041440532844981594,
+                  -0.019909970383732444
+                ],
+                "selected_minus_comparator": -0.030884850704765238,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  -0.024187235059975803,
+                  0.13157500026673993
+                ],
+                "selected_minus_comparator": 0.05038227049791333,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -0.9880251706047687,
+                  1.7230293381459405
+                ],
+                "selected_minus_comparator": 0.33947119782745266,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "hybrid_selected_minus_prevalence": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  0.11835281367158182,
+                  0.17600650971621465
+                ],
+                "selected_minus_comparator": 0.146696586317561,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  0.17727361857795226,
+                  0.2566403611116423
+                ],
+                "selected_minus_comparator": 0.2172968685401394,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  -0.013032091885085324,
+                  0.013487507490358751
+                ],
+                "selected_minus_comparator": 0.0004807892840644479,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  -4.008093620369138,
+                  3.6915705521718998
+                ],
+                "selected_minus_comparator": -0.1759391188741295,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -4.000110150424672,
+                  5.981286742235204
+                ],
+                "selected_minus_comparator": 1.008833010884465,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          },
+          "hybrid_selected_minus_random_label": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  0.09761814737302635,
+                  0.15846840171840676
+                ],
+                "selected_minus_comparator": 0.1278901155210106,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  0.14826977733648433,
+                  0.226492668257605
+                ],
+                "selected_minus_comparator": 0.1883717979590832,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  -0.041304063348792906,
+                  -0.020243472090926664
+                ],
+                "selected_minus_comparator": -0.03090260707407702,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  -0.0945809372126481,
+                  0.07947669193000359
+                ],
+                "selected_minus_comparator": -0.00848457730951846,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -2.1520898318086004,
+                  0.7073319532731699
+                ],
+                "selected_minus_comparator": -0.7130976110650007,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13
+            ]
+          },
+          "hybrid_selected_minus_tabular_only": {
+            "metrics": {
+              "auprc": {
+                "patient_bootstrap_ci95": [
+                  -0.025371384466318703,
+                  -0.005223201134295831
+                ],
+                "selected_minus_comparator": -0.01504772847568503,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "patient_bootstrap_ci95": [
+                  -0.018979608476602922,
+                  0.000938013922177627
+                ],
+                "selected_minus_comparator": -0.008771816257076459,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "patient_bootstrap_ci95": [
+                  0.021563386871240615,
+                  0.037624694018910776
+                ],
+                "selected_minus_comparator": 0.029529973387875663,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_intercept": {
+                "patient_bootstrap_ci95": [
+                  0.6268912916943811,
+                  0.8558787384941832
+                ],
+                "selected_minus_comparator": 0.7389552653879312,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              },
+              "calibration_slope": {
+                "patient_bootstrap_ci95": [
+                  -0.23174602154698642,
+                  -0.11668771483329198
+                ],
+                "selected_minus_comparator": -0.17240616708829304,
+                "status": "ESTIMATED",
+                "valid_resamples": 2000
+              }
+            },
+            "seed_set": [
+              13,
+              29,
+              47
+            ]
+          }
+        },
+        "fold_counts": {
+          "0": 268,
+          "1": 269,
+          "2": 267,
+          "3": 266,
+          "4": 266
+        },
+        "n": 1336,
+        "negative_n": 423,
+        "positive_n": 913,
+        "status": "DESCRIPTIVE_POST_HOC_INTERNAL"
+      }
+    }
+  }
+}

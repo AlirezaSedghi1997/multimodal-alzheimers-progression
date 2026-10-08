@@ -1,0 +1,181 @@
+{
+  "tool": "pip-audit",
+  "scope": "PINNED_DIRECT_REQUIREMENTS_NO_TRANSITIVE_OR_NEW_INSTALL_AUDIT",
+  "raw_report_sha256": "6a89319a61d7a372d695f04deaba70843d6013bbe56e583893370f997880bcfc",
+  "advisories": [
+    {
+      "package": "pillow",
+      "installed_version": "12.2.0",
+      "advisory_id": "PYSEC-2026-2253",
+      "reported_fix_versions": [
+        "12.3.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "pillow",
+      "installed_version": "12.2.0",
+      "advisory_id": "PYSEC-2026-2255",
+      "reported_fix_versions": [
+        "12.3.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "pillow",
+      "installed_version": "12.2.0",
+      "advisory_id": "PYSEC-2026-2257",
+      "reported_fix_versions": [
+        "12.3.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "pillow",
+      "installed_version": "12.2.0",
+      "advisory_id": "PYSEC-2026-2256",
+      "reported_fix_versions": [
+        "12.3.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "pillow",
+      "installed_version": "12.2.0",
+      "advisory_id": "PYSEC-2026-2254",
+      "reported_fix_versions": [
+        "12.3.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "pillow",
+      "installed_version": "12.2.0",
+      "advisory_id": "PYSEC-2026-3453",
+      "reported_fix_versions": [
+        "12.3.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "pillow",
+      "installed_version": "12.2.0",
+      "advisory_id": "PYSEC-2026-3451",
+      "reported_fix_versions": [
+        "12.3.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "pillow",
+      "installed_version": "12.2.0",
+      "advisory_id": "PYSEC-2026-3452",
+      "reported_fix_versions": [
+        "12.3.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "pillow",
+      "installed_version": "12.2.0",
+      "advisory_id": "PYSEC-2026-3493",
+      "reported_fix_versions": [
+        "12.3.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "pillow",
+      "installed_version": "12.2.0",
+      "advisory_id": "PYSEC-2026-3454",
+      "reported_fix_versions": [
+        "12.3.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "pillow",
+      "installed_version": "12.2.0",
+      "advisory_id": "PYSEC-2026-3494",
+      "reported_fix_versions": [
+        "12.3.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "pillow",
+      "installed_version": "12.2.0",
+      "advisory_id": "PYSEC-2026-3495",
+      "reported_fix_versions": [
+        "12.3.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "pillow",
+      "installed_version": "12.2.0",
+      "advisory_id": "PYSEC-2026-3496",
+      "reported_fix_versions": [
+        "12.3.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "monai",
+      "installed_version": "1.5.2",
+      "advisory_id": "PYSEC-2026-4020",
+      "reported_fix_versions": [
+        "1.6.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "monai",
+      "installed_version": "1.5.2",
+      "advisory_id": "PYSEC-2026-4017",
+      "reported_fix_versions": [
+        "1.6.1rc0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "monai",
+      "installed_version": "1.5.2",
+      "advisory_id": "PYSEC-2026-4015",
+      "reported_fix_versions": [
+        "1.6.1rc0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "monai",
+      "installed_version": "1.5.2",
+      "advisory_id": "PYSEC-2026-4019",
+      "reported_fix_versions": [
+        "1.6.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "monai",
+      "installed_version": "1.5.2",
+      "advisory_id": "PYSEC-2026-4018",
+      "reported_fix_versions": [
+        "1.6.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    },
+    {
+      "package": "monai",
+      "installed_version": "1.5.2",
+      "advisory_id": "GHSA-89gg-p5r5-q6r4",
+      "reported_fix_versions": [
+        "1.6.0"
+      ],
+      "reachable_runtime_not_fully_assessed": true
+    }
+  ],
+  "duplicate_advisory_rows_collapsed": true,
+  "environment_changed": false,
+  "security_clearance": false
+}

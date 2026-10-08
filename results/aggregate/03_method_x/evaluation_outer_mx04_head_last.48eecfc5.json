@@ -1,0 +1,111 @@
+{
+  "source_id": "48eecfc5a18b273f",
+  "source_sha256": "02c5b7c9b6b998e9f970d366a16f3a6080aead35b47b64db45417302870b0df1",
+  "scientific_role": "primary_technical",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "canonical_fold_for_pseudo": null,
+    "causal_amyloid_claim_allowed": false,
+    "comparison_role": "exploratory_paired_mx04_supervised_pretraining_inner_validation_exposure",
+    "external_validation": false,
+    "fine_tuning_inner_validation_valid_for_selection": false,
+    "folds_evaluated": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "lock_sha256": "0de7a8a1ea4c403e8e54572a02c0c1d74b84137682b49d85d119526fb66984d4",
+    "model_task": "mx04_head_last",
+    "pet_mri_direction_counts": {
+      "PET_AFTER_MRI": 807,
+      "PET_BEFORE_MRI": 526,
+      "SAME_DAY": 3
+    },
+    "schema_version": 1,
+    "scope": "internal_fold_outer",
+    "site_scanner_sensitivity": "UNKNOWN_NO_SITE_SCANNER_FIELD_IN_PROVIDED_SPLITS",
+    "status": "COMPLETED",
+    "subject_level_vectors_exported": false,
+    "subsets": {
+      "cohort_A4": {
+        "auc": null,
+        "n": 913,
+        "negative": 0,
+        "positive": 913,
+        "status": "NOT_MEASURABLE_ONE_CLASS"
+      },
+      "cohort_LEARN": {
+        "auc": null,
+        "n": 423,
+        "negative": 423,
+        "positive": 0,
+        "status": "NOT_MEASURABLE_ONE_CLASS"
+      },
+      "gap_le_180_days": {
+        "average_precision": 0.9463078261705498,
+        "bootstrap_valid_draws": 1000,
+        "brier": 0.24540556827533944,
+        "mean_predicted_probability": 0.5123144207375773,
+        "n": 356,
+        "negative": 42,
+        "positive": 314,
+        "roc_auc": 0.6731119199272065,
+        "roc_auc_ci95": [
+          0.598916585851368,
+          0.7399826610319798
+        ],
+        "status": "ESTIMATED"
+      },
+      "gap_le_365_days": {
+        "average_precision": 0.9418026381499779,
+        "bootstrap_valid_draws": 1000,
+        "brier": 0.23629256869839554,
+        "mean_predicted_probability": 0.510981888490118,
+        "n": 785,
+        "negative": 110,
+        "positive": 675,
+        "roc_auc": 0.7221683501683502,
+        "roc_auc_ci95": [
+          0.6752353421675248,
+          0.7676958503873058
+        ],
+        "status": "ESTIMATED"
+      },
+      "gap_le_90_days": {
+        "average_precision": 0.9412259463039176,
+        "bootstrap_valid_draws": 1000,
+        "brier": 0.2488903143751528,
+        "mean_predicted_probability": 0.5052906867225193,
+        "n": 206,
+        "negative": 26,
+        "positive": 180,
+        "roc_auc": 0.6726495726495727,
+        "roc_auc_ci95": [
+          0.5756949706255798,
+          0.7680975274725275
+        ],
+        "status": "ESTIMATED"
+      },
+      "overall": {
+        "average_precision": 0.8108608340234434,
+        "bootstrap_valid_draws": 1000,
+        "brier": 0.23426165472181795,
+        "mean_predicted_probability": 0.49319611461888885,
+        "n": 1336,
+        "negative": 423,
+        "positive": 913,
+        "roc_auc": 0.6771392468649582,
+        "roc_auc_ci95": [
+          0.6459544209563657,
+          0.7063565606176391
+        ],
+        "status": "ESTIMATED"
+      }
+    },
+    "transient_identifier_free_resume_vectors": "REMOVED_AFTER_AGGREGATE_COMMIT"
+  }
+}

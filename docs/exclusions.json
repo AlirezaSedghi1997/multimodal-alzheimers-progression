@@ -1,0 +1,23 @@
+{
+  "results/xyz_fusion_postall_v1": "SUPERSEDED_POSTFUSION_ANALYSIS_USE_POSTALL_V2",
+  "results/xyz_fusion_postall_v1_maps": "SUPERSEDED_MAPS",
+  "results/xyz_fusion_postall_v2_review": "DIAGNOSTIC_NOT_PRODUCTION",
+  "results/xyz_mri_baseline_fast_v1": "PREDICTIVE_RESULTS_SUPERSEDED_CACHE_REMAINS_REQUIRED",
+  "results/xyz_mri_resnet18_challenger_v1": "PREDICTIVE_RESULTS_SUPERSEDED_BY_FUSION_V2",
+  "results/method_y_revival_v3_image_v1": "INVALIDATED_SELECTION_AND_CONTRACT",
+  "results/method_y_execution": "SAME_PET_DERIVED_TARGET_TECHNICAL_HISTORY_ONLY",
+  "results/final_results/baseline_blood": "INVALIDATED_TARGET_FEATURE_TAUTOLOGY",
+  "results/final_results/baseline_blood_flair": "INVALIDATED_TARGET_FEATURE_TAUTOLOGY",
+  "results/final_results/bio_cog_method_z": "HISTORICAL_CLASSIFIER_NOT_CURRENT_PROGNOSTIC_Z",
+  "results/xyz_pet_manufacturer_audit_v1": "PREFLIGHT_ONLY_RAM_ROOT_IS_PRODUCTION",
+  "results/xyz_postfusion_final_v1": "PREFLIGHT_ONLY_RAM_ROOT_IS_PRODUCTION",
+  "BrainIAC": "RETIRED_NOT_CURRENT_METHOD",
+  "results/xyz_fp32_spatial_sensitivity_v1": "RUNNING_PENDING_REVIEW_NO_PARTIAL_EXPORT",
+  ".git": "PRIVATE_HISTORY_NOT_SHARED",
+  ".runtime": "INSTALLED_RUNTIME_NOT_DISTRIBUTED",
+  ".venv": "INSTALLED_ENVIRONMENT_NOT_DISTRIBUTED",
+  "advisor-plans": "ADMINISTRATIVE_HISTORY_LOCAL_ONLY",
+  "supervisor_synthesis_5agents": "DECISION_HISTORY_LOCAL_ONLY",
+  "research_outputs": "DISCOVERY_HISTORY_NOT_RESULT_AUTHORITY",
+  "tmp": "TEMPORARY_OR_UNKNOWN_NOT_DELETED"
+}

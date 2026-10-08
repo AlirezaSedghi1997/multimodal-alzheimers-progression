@@ -1,0 +1,14 @@
+{
+  "source_id": "52fc76574ffcb1c7",
+  "source_sha256": "e4045cd039b052f180d18b839e67e7fd91ab0c9dcdcb9a121fa07be06fc21b2c",
+  "scientific_role": "diagnostic_not_disease_localization",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "cases_completed": 30,
+    "cases_required": 30,
+    "review_receipt_sha256": "85cdc49be785a956f1f3bb8b1d38d9ce765d9c7951422ee7b1267778f1ec44cc",
+    "snapshot": "f62a79cc50f88765"
+  }
+}

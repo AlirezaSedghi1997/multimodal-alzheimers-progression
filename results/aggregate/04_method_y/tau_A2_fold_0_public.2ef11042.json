@@ -1,0 +1,47 @@
+{
+  "source_id": "2ef1104211e78bee",
+  "source_sha256": "c978a7aee7a50a4dbb1d7c4ba250553ad4aad6539df9865c2e7bfd0fddc302b5",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "aggregate": {
+      "administrative_censoring_cutoff_days": 1635.999998364,
+      "evaluation_grid_days": [
+        365.0,
+        730.0,
+        1095.0,
+        1460.0
+      ],
+      "evaluation_source": "LOCKED_V4_locked_model_WEIGHTS_UNAUGMENTED_OUTER_TEST",
+      "horizon_metrics": {
+        "1095.75": {
+          "at_risk": 43,
+          "dynamic_auc": 0.7499132456718857,
+          "status": "ESTIMABLE"
+        },
+        "1640.0": {
+          "at_risk": 0,
+          "reason": "OUTSIDE_COMMON_SUPPORT_OR_INSUFFICIENT_AT_RISK",
+          "status": "NOT_ESTIMABLE"
+        },
+        "547.875": {
+          "at_risk": 51,
+          "dynamic_auc": 0.6372549019607843,
+          "status": "ESTIMABLE"
+        }
+      },
+      "integrated_brier_score": 0.12490929422361727,
+      "n_test": 60,
+      "n_train": 246,
+      "outer_test_augmentation_applied": false,
+      "test_events": 14,
+      "train_events": 61,
+      "uno_c_index": 0.7043866135572844
+    },
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "run_contract_sha256": "a63c392c71379022255b6f56f6228f17a0b173425fe6808dd9f8f074579c9ab0",
+    "schema_version": "4.0"
+  }
+}

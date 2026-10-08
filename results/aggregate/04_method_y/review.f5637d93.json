@@ -1,0 +1,293 @@
+{
+  "source_id": "f5637d93cd042d88",
+  "source_sha256": "3ee484bd4520828f3a8788553ac4bd13820ca6fd5583f7d894433a69fa5d064e",
+  "scientific_role": "lmo_sensitivity",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 3,
+  "aggregate": {
+    "calibration_comparison": [
+      {
+        "arm": "A0",
+        "binned_error_change_v5_minus_v4": -7.457464395177471e-06,
+        "claim": "DESCRIPTIVE_NOT_CALIBRATION_PASS",
+        "fitted_bins": 5,
+        "intercept": -0.7630007266832161,
+        "intercept_change_v5_minus_v4": -7.973429431140655e-05,
+        "manufacturer": "GE",
+        "published_bins": 5,
+        "slope": 0.2983635622254208,
+        "slope_bootstrap_ci95": [
+          -0.218464497107082,
+          0.705216866024778
+        ],
+        "slope_change_v5_minus_v4": 7.144648241030893e-06,
+        "valid_bootstrap_draws": 1000
+      },
+      {
+        "arm": "A4",
+        "binned_error_change_v5_minus_v4": -3.0648898811519443e-06,
+        "claim": "DESCRIPTIVE_NOT_CALIBRATION_PASS",
+        "fitted_bins": 5,
+        "intercept": -0.5886542536143686,
+        "intercept_change_v5_minus_v4": -7.80963930513412e-05,
+        "manufacturer": "GE",
+        "published_bins": 5,
+        "slope": 0.46017967833176177,
+        "slope_bootstrap_ci95": [
+          -0.11930153605570243,
+          1.0002342764018073
+        ],
+        "slope_change_v5_minus_v4": 9.789636849721894e-06,
+        "valid_bootstrap_draws": 1000
+      },
+      {
+        "arm": "A0",
+        "binned_error_change_v5_minus_v4": 8.32617441284822e-07,
+        "claim": "DESCRIPTIVE_NOT_CALIBRATION_PASS",
+        "fitted_bins": 5,
+        "intercept": 0.13408684995556078,
+        "intercept_change_v5_minus_v4": -6.32956426854514e-05,
+        "manufacturer": "PHILIPS",
+        "published_bins": 3,
+        "slope": 1.2760712501509797,
+        "slope_bootstrap_ci95": [
+          0.5047789582561394,
+          2.376501776895459
+        ],
+        "slope_change_v5_minus_v4": 8.519239412585478e-06,
+        "valid_bootstrap_draws": 1000
+      },
+      {
+        "arm": "A4",
+        "binned_error_change_v5_minus_v4": -3.4577710468497447e-07,
+        "claim": "DESCRIPTIVE_NOT_CALIBRATION_PASS",
+        "fitted_bins": 5,
+        "intercept": 0.35984731330292197,
+        "intercept_change_v5_minus_v4": -7.080790445823659e-05,
+        "manufacturer": "PHILIPS",
+        "published_bins": 3,
+        "slope": 1.5391597848307743,
+        "slope_bootstrap_ci95": [
+          0.757817530554618,
+          2.9909969456870247
+        ],
+        "slope_change_v5_minus_v4": -3.772950903924155e-06,
+        "valid_bootstrap_draws": 999
+      },
+      {
+        "arm": "A0",
+        "binned_error_change_v5_minus_v4": 2.0037475151751805e-06,
+        "claim": "DESCRIPTIVE_NOT_CALIBRATION_PASS",
+        "fitted_bins": 5,
+        "intercept": 1.5396349201831139,
+        "intercept_change_v5_minus_v4": -6.36000998981423e-05,
+        "manufacturer": "SIEMENS",
+        "published_bins": 5,
+        "slope": 2.832005807011934,
+        "slope_bootstrap_ci95": [
+          1.8531759363933076,
+          4.0627529193651
+        ],
+        "slope_change_v5_minus_v4": 1.5861375107562026e-05,
+        "valid_bootstrap_draws": 1000
+      },
+      {
+        "arm": "A4",
+        "binned_error_change_v5_minus_v4": 3.3377641734111396e-06,
+        "claim": "DESCRIPTIVE_NOT_CALIBRATION_PASS",
+        "fitted_bins": 5,
+        "intercept": 4.52876486980627,
+        "intercept_change_v5_minus_v4": 3.322596271804201e-05,
+        "manufacturer": "SIEMENS",
+        "published_bins": 5,
+        "slope": 5.1409833928666835,
+        "slope_bootstrap_ci95": [
+          3.2961532829464266,
+          7.741167036671821
+        ],
+        "slope_change_v5_minus_v4": 9.796885117818732e-05,
+        "valid_bootstrap_draws": 1000
+      }
+    ],
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "external_status": "DEFERRED_NO_EXTERNAL_DATA",
+    "local_closure": "NOT_COMPLETE",
+    "method_z": {
+      "candidate_overlap_a4": {
+        "amyloid": {
+          "a4_events": 240,
+          "a4_subjects": 1106,
+          "assay_validated": false,
+          "blood_available_subjects": 1075,
+          "chronology_validated": false,
+          "fusion_training_eligible_count": null,
+          "mri_intersection_validated": false,
+          "ptau217_available_events": 232,
+          "ptau217_available_subjects": 1037,
+          "status": "CANDIDATE_AVAILABILITY_NOT_FUSION_ELIGIBILITY"
+        },
+        "paired_at": {
+          "a4_events": 91,
+          "a4_subjects": 369,
+          "assay_validated": false,
+          "blood_available_subjects": 359,
+          "chronology_validated": false,
+          "fusion_training_eligible_count": null,
+          "mri_intersection_validated": false,
+          "ptau217_available_events": 88,
+          "ptau217_available_subjects": 352,
+          "status": "CANDIDATE_AVAILABILITY_NOT_FUSION_ELIGIBILITY"
+        },
+        "tau": {
+          "a4_events": 91,
+          "a4_subjects": 369,
+          "assay_validated": false,
+          "blood_available_subjects": 359,
+          "chronology_validated": false,
+          "fusion_training_eligible_count": null,
+          "mri_intersection_validated": false,
+          "ptau217_available_events": 88,
+          "ptau217_available_subjects": 352,
+          "status": "CANDIDATE_AVAILABILITY_NOT_FUSION_ELIGIBILITY"
+        }
+      },
+      "catalog_rows": 3040,
+      "date_and_assay_lineage_missing_from_legacy_catalog": true,
+      "legacy_scores_allowed_for_prognostic_fusion": false,
+      "role": "BASELINE_BLOOD_PROGNOSTIC_ADAPTER_AFTER_CHRONOLOGY_ASSAY_AND_CROSSFIT_LOCK",
+      "source_metadata": {
+        "biomarker_AB_Test": {
+          "assay_or_unit_columns_present": [
+            "LBORRESU",
+            "LBMETHOD"
+          ],
+          "date_columns_nonmissing_counts": {},
+          "groups_with_multiple_rows": 70,
+          "interpretation": "REPEATS_REQUIRE_DATE_SAMPLE_ASSAY_RESOLUTION_NOT_LAST_ROW_WINS",
+          "subject_analyte_groups": 31410
+        },
+        "biomarker_Plasma_Roche_Results": {
+          "assay_or_unit_columns_present": [
+            "LBMETHOD",
+            "LABORESU"
+          ],
+          "date_columns_nonmissing_counts": {
+            "LABD_DAYS_CONSENT": 13418,
+            "LABD_DAYS_T0": 5449
+          },
+          "groups_with_multiple_rows": 0,
+          "interpretation": "REPEATS_REQUIRE_DATE_SAMPLE_ASSAY_RESOLUTION_NOT_LAST_ROW_WINS",
+          "subject_analyte_groups": 13418
+        },
+        "biomarker_pTau217": {
+          "assay_or_unit_columns_present": [
+            "ORRESU",
+            "METHOD"
+          ],
+          "date_columns_nonmissing_counts": {
+            "COLLECTION_DATE_DAYS_CONSENT": 4533,
+            "COLLECTION_DATE_DAYS_T0": 4532
+          },
+          "groups_with_multiple_rows": 1562,
+          "interpretation": "REPEATS_REQUIRE_DATE_SAMPLE_ASSAY_RESOLUTION_NOT_LAST_ROW_WINS",
+          "legacy_last_numeric_row_positive_t0_subjects": 1411,
+          "legacy_last_numeric_row_subjects": 1483,
+          "subject_analyte_groups": 1653,
+          "t0_interpretation": "POSITIVE_T0_IS_NOT_PROOF_OF_POST_PET_BUT_REQUIRES_ORIGIN_LINKAGE"
+        }
+      },
+      "unique_subjects": 3040
+    },
+    "new_training_or_inference": false,
+    "pacc_covariate_slope_sensitivity": {
+      "aic": 38744.46832224728,
+      "bic": 38859.17228078235,
+      "converged": true,
+      "fit_diagnostics": {
+        "boundary_or_singular_warning": false,
+        "optimizer": "lbfgs",
+        "random_effect_min_eigenvalue": 0.5059348842194797,
+        "warning_categories": []
+      },
+      "interaction_95ci": [
+        -0.29900892213531155,
+        -0.1942991114933655
+      ],
+      "interaction_estimate": -0.24665401681433852,
+      "interaction_p_value": 2.6127812115603456e-20,
+      "interaction_parameter": "time_years:pet_z",
+      "interaction_standard_error": 0.0267121772307766,
+      "log_likelihood": -19356.23416112364,
+      "n_observations": 9595,
+      "residual_diagnostics": {
+        "mean": -3.591591733649282e-17,
+        "quantiles_01_50_99": [
+          -3.3288488033720687,
+          0.04149003625976505,
+          2.8470422964620328
+        ],
+        "rmse": 1.2819232462874814,
+        "scope": "DESCRIPTIVE_NOT_A_MISSING_AT_RANDOM_TEST"
+      }
+    },
+    "pacc_interpretation": "ASSOCIATION_NOT_OUT_OF_SAMPLE_PREDICTIVE_VALIDATION_OR_MAR_PROOF",
+    "pacc_primary": {
+      "aic": 38761.33925537729,
+      "bic": 38854.53622168703,
+      "converged": true,
+      "fit_diagnostics": {
+        "boundary_or_singular_warning": false,
+        "optimizer": "lbfgs",
+        "random_effect_min_eigenvalue": 0.5208400208185693,
+        "warning_categories": []
+      },
+      "interaction_95ci": [
+        -0.3233665795431569,
+        -0.21996802204832527
+      ],
+      "interaction_estimate": -0.2716673007957411,
+      "interaction_p_value": 7.109379981085121e-25,
+      "interaction_parameter": "time_years:pet_z",
+      "interaction_standard_error": 0.026377667730230318,
+      "log_likelihood": -19367.669627688643,
+      "n_observations": 9595,
+      "residual_diagnostics": {
+        "mean": -5.27908444768089e-16,
+        "quantiles_01_50_99": [
+          -3.3301757882329066,
+          0.03765905783155965,
+          2.8526119850259346
+        ],
+        "rmse": 1.2815295585555195,
+        "scope": "DESCRIPTIVE_NOT_A_MISSING_AT_RANDOM_TEST"
+      }
+    },
+    "positive_claim_allowed": false,
+    "site_availability": {
+      "candidate_tables": [],
+      "clinical_csv_headers_scanned": 54,
+      "manufacturer_is_not_site": true,
+      "scope": "HEADER_LEVEL_SCREEN_ONLY_NOT_ALL_DICOM_SIDECARS_OR_SITE_CODE_DICTIONARIES",
+      "status": "NOT_ESTIMABLE_FROM_CURRENT_CLINICAL_TABLES"
+    },
+    "status": "POST_V5_REVIEW_COMPLETED_WITH_OPEN_LIMITATIONS",
+    "v5_verifier": {
+      "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+      "privacy": "PASS",
+      "scientific_closure": "NOT_COMPLETE",
+      "status": "LOCAL_REANALYSIS_COMMITTED_WITH_LIMITATIONS"
+    },
+    "verified_v5_jobs": 11,
+    "xai_receipt_audit": {
+      "anatomical_claim_allowed": false,
+      "cause": "NOT_IDENTIFIABLE_WITHOUT_SIGNED_ACTIVATIONS_AND_GRADIENTS",
+      "committed_receipts": 100,
+      "evidence_scope": "STORED_QC_RECEIPTS_NOT_NEW_INFERENCE_OR_MAP_REHASH",
+      "warning": "RELU_GRADCAM_ZERO_DOES_NOT_PROVE_NO_IMAGE_CONTRIBUTION",
+      "zero_inside_and_zero_original_total": 83,
+      "zero_inside_brain": 83,
+      "zero_inside_with_nonzero_original_total": 0
+    }
+  }
+}

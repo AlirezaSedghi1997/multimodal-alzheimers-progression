@@ -1,0 +1,22 @@
+{
+  "protocol_id": "MX_QUICK_VALIDATION_V1_20260929",
+  "output": "results/final_results/method_x_quick_validation_v1_20260929",
+  "seeds": [13, 29, 47],
+  "bootstrap_seed": 20260929,
+  "bootstrap_resamples": 2000,
+  "subgroup_min_per_class": 20,
+  "age_cut": 75,
+  "matching_age_caliper_years": 3,
+  "nonlinear": {"depths": [2, 3], "learning_rate": 0.05, "max_iter": 100, "min_samples_leaf": 20, "l2_regularization": 1.0, "early_stopping": false},
+  "stress_patients_per_fold": 40,
+  "stress_conditions": ["clean", "noise02", "noise05", "bias10", "blur05", "brain_only", "background_only"],
+  "stress_primary": "noise05_minus_clean_brier",
+  "comparison_primary": "hybrid_selected_minus_nonlinear_brier",
+  "mask_tpm": "D:/Matlab & Tolboxes/spm_25.01.02/spm/tpm/TPM.nii",
+  "mask_threshold": 0.5,
+  "mask_scope": "SPM_first_three_tissues_on_verified_model_grid_not_ROI_union",
+  "fingerprint_cosine_candidate_threshold": 0.9999,
+  "claims": "POST_HOC_INTERNAL_EXPLORATORY_ONLY",
+  "external_validation": false,
+  "cnn_retraining": false
+}

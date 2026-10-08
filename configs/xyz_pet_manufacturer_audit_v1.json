@@ -1,0 +1,19 @@
+{
+  "protocol": "PET_MANUFACTURER_TRANSPORT_SENSITIVITY_V1_20261007",
+  "parent_root": "results/xyz_fusion_v2",
+  "postall_root": "results/xyz_fusion_postall_v2",
+  "output_root": "results/xyz_pet_manufacturer_audit_v1_ram",
+  "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+  "training_seed": 13,
+  "components": 3,
+  "arms": ["clinical_mri_amyloid", "clinical_mri_amyloid_pet"],
+  "no_parent_checkpoint_reuse": true,
+  "scope": "ONE_FIXED_SEED_THREE_COMPONENT_PAIRED_FUSION_SENSITIVITY_NOT_FULL_NINE_COMPONENT_MODEL",
+  "all_supported_manufacturers_required": true,
+  "manufacturer_groups_may_not_be_merged": true,
+  "manual_long_execution_only": true,
+  "mri_ram_gib": 10,
+  "pet_ram_gib": 6,
+  "resource_revision": "RAM_CACHE_ONLY_IDENTICAL_PIXELS_NUMERICS_AND_TRAINING",
+  "bootstrap_resamples": 2000
+}

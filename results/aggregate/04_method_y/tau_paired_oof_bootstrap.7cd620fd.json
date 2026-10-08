@@ -1,0 +1,30 @@
+{
+  "source_id": "7cd620fddf557d37",
+  "source_sha256": "6c5dd6b07ba078ea414f0d11174f66038bfe58d49a74687b566bdda89ae40471",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "cache_status": "COMPUTED_AND_LOCKED",
+    "delta_cindex_95ci": [
+      -0.00931588664418794,
+      0.01716286352334338
+    ],
+    "delta_cindex_mean": 0.003881434570427938,
+    "delta_ibs_95ci": [
+      -0.004603930105497735,
+      0.002469817771032836
+    ],
+    "delta_ibs_mean": -0.001038073729056688,
+    "failed_attempt_reasons": {},
+    "failed_attempts": 0,
+    "input_evidence_sha256": "2cc1606f3bce94b0fbc1a3a5a28f874246aa7c28b00d5a4ab98d9bf7727f611e",
+    "method": "paired_subject_bootstrap_over_locked_oof_predictions",
+    "requested_iterations": 2000,
+    "seed": 20260714,
+    "status": "COMPLETED",
+    "subject_count": 306,
+    "successful_iterations": 2000
+  }
+}

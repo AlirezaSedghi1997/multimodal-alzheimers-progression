@@ -1,0 +1,34 @@
+{
+  "source_id": "9a45a3121fbb631b",
+  "source_sha256": "a41724e53c5311113403e242a3722f3c8f857d1c5020bbda7f67bf8e8e7c5cda",
+  "scientific_role": "lmo_sensitivity",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "branches": {
+      "amyloid": {
+        "manifest_rows": 5661,
+        "nonempty_site_key_counts": {},
+        "status_counts": {
+          "NO_SITE_FIELD": 5661
+        },
+        "unique_scan_paths": 5661
+      },
+      "tau": {
+        "manifest_rows": 1314,
+        "nonempty_site_key_counts": {},
+        "status_counts": {
+          "NO_SITE_FIELD": 1314
+        },
+        "unique_scan_paths": 1314
+      }
+    },
+    "leave_site_out_status": "NOT_ESTIMABLE_WITHOUT_VALIDATED_SITE_LINKAGE",
+    "manufacturer_or_station_used_as_site": false,
+    "positive_claim_allowed": false,
+    "scope": "LISTED_SCAN_INVENTORIES_NOT_FINAL_TRAINING_MEMBERSHIP_OR_ALL_RAW_DICOM",
+    "site_code_dictionary_validated": false,
+    "status": "EXACT_SIDECAR_METADATA_SCREEN_COMPLETED"
+  }
+}

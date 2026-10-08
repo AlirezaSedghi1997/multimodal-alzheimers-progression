@@ -1,0 +1,258 @@
+{
+  "source_id": "159d2c264fe82995",
+  "source_sha256": "6cff6ab9a1bbd3b6f1df36ee85cd1df99f71e03b180ea880ef0fc78521ee633c",
+  "scientific_role": "primary_technical",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "arms": {
+      "hybrid_baseline": {
+        "average_precision": 0.8116244772311014,
+        "bootstrap_valid_draws": 1000,
+        "brier": 0.22746481936902724,
+        "mean_predicted_probability": 0.5206142546843269,
+        "n": 1336,
+        "negative": 423,
+        "positive": 913,
+        "roc_auc": 0.678512891022504,
+        "roc_auc_ci95": [
+          0.6465782412744673,
+          0.7092990289697884
+        ],
+        "status": "ESTIMATED"
+      },
+      "hybrid_dense": {
+        "average_precision": 0.8348874428598371,
+        "bootstrap_valid_draws": 1000,
+        "brier": 0.220756387544027,
+        "mean_predicted_probability": 0.520716764434369,
+        "n": 1336,
+        "negative": 423,
+        "positive": 913,
+        "roc_auc": 0.7185285306279923,
+        "roc_auc_ci95": [
+          0.6878235457708841,
+          0.7463010083102134
+        ],
+        "status": "ESTIMATED"
+      }
+    },
+    "by_fold": [
+      {
+        "baseline": {
+          "average_precision": 0.8601733441161201,
+          "bootstrap_valid_draws": 1000,
+          "brier": 0.22169249536515975,
+          "mean_predicted_probability": 0.49052643181005523,
+          "n": 268,
+          "negative": 85,
+          "positive": 183,
+          "roc_auc": 0.7461266473802636,
+          "roc_auc_ci95": [
+            0.6831135338379565,
+            0.8074094991611802
+          ],
+          "status": "ESTIMATED"
+        },
+        "dense": {
+          "average_precision": 0.8470233423880311,
+          "bootstrap_valid_draws": 1000,
+          "brier": 0.2094994661368468,
+          "mean_predicted_probability": 0.5292760575774,
+          "n": 268,
+          "negative": 85,
+          "positive": 183,
+          "roc_auc": 0.7238187078109933,
+          "roc_auc_ci95": [
+            0.6557538712531069,
+            0.7872771526557449
+          ],
+          "status": "ESTIMATED"
+        },
+        "fold": 0,
+        "n": 268
+      },
+      {
+        "baseline": {
+          "average_precision": 0.8284250483806792,
+          "bootstrap_valid_draws": 1000,
+          "brier": 0.21189685106877226,
+          "mean_predicted_probability": 0.5495652462248466,
+          "n": 269,
+          "negative": 86,
+          "positive": 183,
+          "roc_auc": 0.7152751302579743,
+          "roc_auc_ci95": [
+            0.6495413767472591,
+            0.7813005804345361
+          ],
+          "status": "ESTIMATED"
+        },
+        "dense": {
+          "average_precision": 0.8291811298092637,
+          "bootstrap_valid_draws": 1000,
+          "brier": 0.21178446324378575,
+          "mean_predicted_probability": 0.5573233265748254,
+          "n": 269,
+          "negative": 86,
+          "positive": 183,
+          "roc_auc": 0.7150209683568434,
+          "roc_auc_ci95": [
+            0.6483008666689027,
+            0.7794760440190794
+          ],
+          "status": "ESTIMATED"
+        },
+        "fold": 1,
+        "n": 269
+      },
+      {
+        "baseline": {
+          "average_precision": 0.7921171177859895,
+          "bootstrap_valid_draws": 1000,
+          "brier": 0.23756735569217144,
+          "mean_predicted_probability": 0.5423547336447998,
+          "n": 267,
+          "negative": 84,
+          "positive": 183,
+          "roc_auc": 0.644808743169399,
+          "roc_auc_ci95": [
+            0.5713601658006338,
+            0.714264425254387
+          ],
+          "status": "ESTIMATED"
+        },
+        "dense": {
+          "average_precision": 0.8101365166767314,
+          "bootstrap_valid_draws": 1000,
+          "brier": 0.23354544713066852,
+          "mean_predicted_probability": 0.5542233980327064,
+          "n": 267,
+          "negative": 84,
+          "positive": 183,
+          "roc_auc": 0.6686833203226646,
+          "roc_auc_ci95": [
+            0.599893280632411,
+            0.7347967936487159
+          ],
+          "status": "ESTIMATED"
+        },
+        "fold": 2,
+        "n": 267
+      },
+      {
+        "baseline": {
+          "average_precision": 0.8599759683321342,
+          "bootstrap_valid_draws": 1000,
+          "brier": 0.2240974060750519,
+          "mean_predicted_probability": 0.49330588217292515,
+          "n": 266,
+          "negative": 83,
+          "positive": 183,
+          "roc_auc": 0.7427743761932978,
+          "roc_auc_ci95": [
+            0.6719395478901707,
+            0.8045651357622086
+          ],
+          "status": "ESTIMATED"
+        },
+        "dense": {
+          "average_precision": 0.8549343965150186,
+          "bootstrap_valid_draws": 1000,
+          "brier": 0.23481767430849337,
+          "mean_predicted_probability": 0.4761270194461471,
+          "n": 266,
+          "negative": 83,
+          "positive": 183,
+          "roc_auc": 0.721113964052933,
+          "roc_auc_ci95": [
+            0.6501461643239855,
+            0.7835409320305153
+          ],
+          "status": "ESTIMATED"
+        },
+        "fold": 3,
+        "n": 266
+      },
+      {
+        "baseline": {
+          "average_precision": 0.6869765983266116,
+          "bootstrap_valid_draws": 1000,
+          "brier": 0.2422509887063317,
+          "mean_predicted_probability": 0.5271369577350473,
+          "n": 266,
+          "negative": 85,
+          "positive": 181,
+          "roc_auc": 0.4332141696457588,
+          "roc_auc_ci95": [
+            0.36707082836045857,
+            0.5022275560091011
+          ],
+          "status": "ESTIMATED"
+        },
+        "dense": {
+          "average_precision": 0.8644960349284495,
+          "bootstrap_valid_draws": 1000,
+          "brier": 0.21427263335195113,
+          "mean_predicted_probability": 0.4860308442012708,
+          "n": 266,
+          "negative": 85,
+          "positive": 181,
+          "roc_auc": 0.773220669483263,
+          "roc_auc_ci95": [
+            0.7171598426378186,
+            0.826878688258452
+          ],
+          "status": "ESTIMATED"
+        },
+        "fold": 4,
+        "n": 266
+      }
+    ],
+    "external_validation": false,
+    "folds_evaluated": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "lock_sha256": "0de7a8a1ea4c403e8e54572a02c0c1d74b84137682b49d85d119526fb66984d4",
+    "n": 1336,
+    "paired_dense_minus_baseline": {
+      "average_precision": {
+        "dense_minus_baseline": 0.023262965628735643,
+        "patient_bootstrap_ci95": [
+          0.00748677325969499,
+          0.03919239260658276
+        ],
+        "valid_draws": 1000
+      },
+      "brier": {
+        "dense_minus_baseline": -0.0067084318250002495,
+        "patient_bootstrap_ci95": [
+          -0.012509545397290113,
+          -0.001101727858601611
+        ],
+        "valid_draws": 1000
+      },
+      "roc_auc": {
+        "dense_minus_baseline": 0.04001563960548826,
+        "patient_bootstrap_ci95": [
+          0.02165943497417556,
+          0.05873018069319645
+        ],
+        "valid_draws": 1000
+      }
+    },
+    "paired_effect_causal_or_confirmatory": false,
+    "schema_version": 2,
+    "scope": "historically_inspected_internal_outer_folds",
+    "status": "COMPLETED_EXPLORATORY_PAIRED",
+    "subject_level_predictions_exported": false,
+    "subject_level_predictions_written": true,
+    "test_used_for_model_selection": false,
+    "transient_identifier_free_resume_vectors": "REMOVED_AFTER_AGGREGATE_COMMIT"
+  }
+}

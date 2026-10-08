@@ -1,0 +1,77 @@
+{
+  "source_id": "98ebef9de341c9b3",
+  "source_sha256": "6af421735d0f32519568357ff208e1b6759c7cff2b6f8ba9c3a9552a85bd9419",
+  "scientific_role": "primary_technical",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 1,
+  "aggregate": {
+    "claim_scope": "INTERNAL_EXPLORATORY_TECHNICAL_ONLY",
+    "disease_region_confirmation": false,
+    "documents": {
+      "discussion": {
+        "relative_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/thesis_method_x_v22_discussion_FA.md",
+        "sha256": "2247b9963a1af0040db48103aa3fd520f9ab0b5a3290e8a2f22855871c78c775"
+      },
+      "methods": {
+        "relative_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/thesis_method_x_v22_methods_FA.md",
+        "sha256": "ec940039060515d1d2ec7d9e005d90b2e0f707805b76f9c1f032d59409ae8dbc"
+      },
+      "results": {
+        "relative_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/thesis_method_x_v22_results_FA.md",
+        "sha256": "147565dd2270262d37040c757f1e8d2887d2dd0fc5cbb3e088057c4592a33731"
+      }
+    },
+    "external_validation": false,
+    "hybrid_pair_sha256": "6cff6ab9a1bbd3b6f1df36ee85cd1df99f71e03b180ea880ef0fc78521ee633c",
+    "parent_freeze_sha256": "f1e99125f390188ef42a933f435d63da43dc95b6e5c9c8124766d9b5978f2df4",
+    "protocol_sha256": "a9c13de4b298af32c4b9b4ad9d14fcd76046605492773fec6f9f5b6d3abb1461",
+    "schema_version": 1,
+    "section_sources": {
+      "discussion": {
+        "external_validation_status": "NOT_DONE_NO_INDEPENDENT_COHORT_OR_REGIONAL_REFERENCE",
+        "parent_data_audit": {
+          "relative_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/data_semantics_audit.json",
+          "sha256": "3f6fc94e0a8011aeb4d7527ed691776691b9dce3962851baaeeb2d6419bdbcb4"
+        },
+        "parent_freeze_sha256": "f1e99125f390188ef42a933f435d63da43dc95b6e5c9c8124766d9b5978f2df4"
+      },
+      "methods": {
+        "parent_config": {
+          "relative_path": "configs/experiments/method_x_fasttrack_v2_20260927_mx05_gate_import.json",
+          "sha256": "a0b37e36ed74984a1c4a51a6870427a09396d8a2045918778b2977c4d43e57d6"
+        },
+        "parent_inner_lock": {
+          "relative_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/fasttrack_inner_lock.json",
+          "sha256": "0de7a8a1ea4c403e8e54572a02c0c1d74b84137682b49d85d119526fb66984d4"
+        },
+        "parent_preregistration": {
+          "relative_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/fasttrack_preregistration.json",
+          "sha256": "7e5c872199448e8c9217c212a8a384b1c5eec00745f165b0ba762fbd69057927"
+        },
+        "v22_protocol_sha256": "a9c13de4b298af32c4b9b4ad9d14fcd76046605492773fec6f9f5b6d3abb1461",
+        "v22_xai_context_sha256": "c363599a81b132aa29d43e96224c642ba2606fab1c86c23894a7586b538535bb"
+      },
+      "results": {
+        "parent_hybrid_pair": {
+          "relative_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/evaluation_outer_hybrid_pair.json",
+          "sha256": "6cff6ab9a1bbd3b6f1df36ee85cd1df99f71e03b180ea880ef0fc78521ee633c"
+        },
+        "parent_mx04_head": {
+          "relative_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/evaluation_outer_mx04_head_last.json",
+          "sha256": "02c5b7c9b6b998e9f970d366a16f3a6080aead35b47b64db45417302870b0df1"
+        },
+        "parent_mx04_scratch": {
+          "relative_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/evaluation_outer_mx04_scratch.json",
+          "sha256": "ed60409417f65d6f82490c24ffe574bc5a7ed58015cd4b74f0014d9010918cc5"
+        },
+        "v22_xai_summary_sha256": "48513afa69701abe418b3b4c28da4aa95b2b3c3ba5fdd79b9df7294b1412306f"
+      }
+    },
+    "status": "READY_SCOPED_THESIS_V22",
+    "supersedes_parent_paper_text_for_v22_reporting": true,
+    "v21_attestation_sha256": "17096af58f2608192c13f6a56a654a4fb3a8e351645de9c8d064b33f0765a154",
+    "xai_v22_gate_status": "BLOCKED_EXPLORATORY_GATE",
+    "xai_v22_summary_sha256": "48513afa69701abe418b3b4c28da4aa95b2b3c3ba5fdd79b9df7294b1412306f"
+  }
+}

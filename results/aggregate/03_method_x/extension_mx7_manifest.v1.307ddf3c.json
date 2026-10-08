@@ -1,0 +1,24 @@
+{
+  "source_id": "307ddf3c41438fef",
+  "source_sha256": "91da30cfa6588b6fc373ae1e54f0dda051393bf5400e207e965387d3b34985f1",
+  "scientific_role": "posthoc_sensitivity",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 1,
+  "aggregate": {
+    "clinical_use_claim_allowed": false,
+    "disease_region_confirmation": false,
+    "execution_preregistration_sha256": "5be0edf69400fc32941803508c728b504341740d3ec8886ba7e428dc0e1ddd68",
+    "fold_local_selection_sha256": "bdf319c3054fdb36ec2e458f0da0b128c2a5c9f6a91acbd0a8ad4c5b8ee26b36",
+    "independent_validation": false,
+    "negative_result_count": 4,
+    "outer_lock_sha256": "b718c99adc1abe170d542758f593a1ad6deb79d28cbd3da839b1608dbeab6944",
+    "paired_analysis_sha256": "00f763a701ebf4372c3bce7100dad923919600b50d5a8128ddaee8daa6efb8cd",
+    "parent_freeze_sha256": "f1e99125f390188ef42a933f435d63da43dc95b6e5c9c8124766d9b5978f2df4",
+    "parent_thesis_manifest_sha256": "6af421735d0f32519568357ff208e1b6759c7cff2b6f8ba9c3a9552a85bd9419",
+    "persian_results_limitations_sha256": "9d4a19f79144d5b86d52855a930c684794a5dcb67fcf5bb09c7661a8b4f31e95",
+    "schema_version": 1,
+    "status": "COMPLETED_POST_HOC_INTERNAL_EXPLORATORY",
+    "xai_receipt_audit_sha256": "9e8c1e7d006358bc6fc76838018466d2e3f01fa1dd8c80025c6acf33444010e2"
+  }
+}

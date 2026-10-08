@@ -1,0 +1,354 @@
+{
+  "source_id": "9edfdd7245f519bd",
+  "source_sha256": "f33e0d3dab7f3c9db90e7de53b1b56f8521eee94d2ed0d1df64b9beb423257e0",
+  "scientific_role": "corrected_nested_image_analysis",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "branch_results": {
+      "amyloid": {
+        "endpoint_parent_n": 1106,
+        "image_evaluable_n": 560,
+        "image_excluded_n": 546,
+        "leave_manufacturer_out_status": "NOT_EXECUTED",
+        "manufacturer_eligibility_count": 3,
+        "manufacturer_subject_event_support": {
+          "GE": {
+            "events": 33,
+            "subjects": 157
+          },
+          "PHILIPS": {
+            "events": 14,
+            "subjects": 58
+          },
+          "SIEMENS": {
+            "events": 57,
+            "subjects": 303
+          },
+          "TOSHIBA": {
+            "events": 0,
+            "subjects": 5
+          },
+          "UNKNOWN": {
+            "events": 6,
+            "subjects": 37
+          }
+        },
+        "positive_claim_allowed": false,
+        "scanner_probe_scope": "WITHIN_ONE_FOLD_MODEL_ONLY_DIAGNOSTIC",
+        "v3_ibs_estimand": "RESTRICTED_GRID_POST_HOC_SENSITIVITY_NOT_EQUIVALENT_TO_SOURCE_IBS",
+        "v3_image_increment_over_scalar": {
+          "delta_ibs": -0.0024047669110806606,
+          "delta_ibs_95ci": [
+            -0.01053311476952353,
+            0.005981794317956648
+          ],
+          "delta_uno": 0.01913952182295784,
+          "delta_uno_95ci": [
+            -0.034778456372346854,
+            0.07083019995367289
+          ],
+          "uncertainty_scope": "CONDITIONAL_FIXED_MODELS_POST_HOC_NOT_CONFIRMATORY"
+        },
+        "v4_fold_local_policy_arms": [
+          "A0",
+          "A0",
+          "A0",
+          "A2",
+          "A0"
+        ],
+        "v4_joint_pairwise_conditional": {
+          "evaluation_grid_days": [
+            730.0,
+            1095.0,
+            1460.0
+          ],
+          "ibs_estimand": "RESTRICTED_GRID_POST_HOC_SENSITIVITY_NOT_EQUIVALENT_TO_SOURCE_IBS",
+          "multiplicity_adjusted_claim": false,
+          "planned_contrasts": {
+            "A0_vs_A1": {
+              "delta_ibs": 2.343241307955768e-05,
+              "delta_ibs_95ci": [
+                -0.0030252466741099706,
+                0.0032023963451736953
+              ],
+              "delta_uno": -0.0019952507235047935,
+              "delta_uno_95ci": [
+                -0.019577480182532282,
+                0.015457746189513018
+              ]
+            },
+            "A0_vs_A2": {
+              "delta_ibs": 0.0022438298243688095,
+              "delta_ibs_95ci": [
+                -0.004296733656743235,
+                0.008926014138941552
+              ],
+              "delta_uno": 0.0006011154081798864,
+              "delta_uno_95ci": [
+                -0.03562480309702305,
+                0.03823526551284758
+              ]
+            },
+            "A1_vs_A3": {
+              "delta_ibs": 0.0011298292331943793,
+              "delta_ibs_95ci": [
+                -0.0043835725895750525,
+                0.007007169912100571
+              ],
+              "delta_uno": 0.0027999351513590563,
+              "delta_uno_95ci": [
+                -0.030218862820130102,
+                0.03795969213840352
+              ]
+            },
+            "A2_vs_A3": {
+              "delta_ibs": -0.0010905681780948723,
+              "delta_ibs_95ci": [
+                -0.00359345835362862,
+                0.0013232729842251945
+              ],
+              "delta_uno": 0.00020356901967437667,
+              "delta_uno_95ci": [
+                -0.016038014949738603,
+                0.015158126245913976
+              ]
+            },
+            "A3_vs_A4": {
+              "delta_ibs": 0.0022281682186495928,
+              "delta_ibs_95ci": [
+                -0.0031078858618371645,
+                0.007713084837937626
+              ],
+              "delta_uno": -0.02469290064126184,
+              "delta_uno_95ci": [
+                -0.056097505214147594,
+                0.007125156550513552
+              ]
+            }
+          },
+          "rejected_attempts": 0,
+          "status": "POST_HOC_CONDITIONAL_EXPLORATORY_ONLY",
+          "valid_resamples": 2000
+        },
+        "v4_policy_increment_over_a0": {
+          "delta_ibs": -0.0009975497236583615,
+          "delta_ibs_95ci": [
+            -0.0038567366788535853,
+            0.0017056181514521057
+          ],
+          "delta_uno": -0.005303932418675194,
+          "delta_uno_95ci": [
+            -0.02538436658937252,
+            0.015177338889408152
+          ],
+          "uncertainty_scope": "CONDITIONAL_FIXED_MODELS_POST_HOC_NOT_CONFIRMATORY"
+        }
+      },
+      "tau": {
+        "endpoint_parent_n": 369,
+        "image_evaluable_n": 306,
+        "image_excluded_n": 63,
+        "leave_manufacturer_out_status": "NOT_EXECUTED",
+        "manufacturer_eligibility_count": 1,
+        "manufacturer_subject_event_support": {
+          "GE": {
+            "events": 9,
+            "subjects": 42
+          },
+          "PHILIPS": {
+            "events": 9,
+            "subjects": 38
+          },
+          "SIEMENS": {
+            "events": 50,
+            "subjects": 180
+          },
+          "UNKNOWN": {
+            "events": 7,
+            "subjects": 46
+          }
+        },
+        "positive_claim_allowed": false,
+        "scanner_probe_scope": "WITHIN_ONE_FOLD_MODEL_ONLY_DIAGNOSTIC",
+        "v3_ibs_estimand": "SOURCE_GRID_REPRODUCED",
+        "v3_image_increment_over_scalar": {
+          "delta_ibs": -0.024317053607138865,
+          "delta_ibs_95ci": [
+            -0.03855514620562192,
+            -0.010241610182784994
+          ],
+          "delta_uno": 0.08972349993610504,
+          "delta_uno_95ci": [
+            0.01311503346761987,
+            0.16796860628177862
+          ],
+          "uncertainty_scope": "CONDITIONAL_FIXED_MODELS_POST_HOC_NOT_CONFIRMATORY"
+        },
+        "v4_fold_local_policy_arms": [
+          "A1",
+          "A0",
+          "A0",
+          "A0",
+          "A0"
+        ],
+        "v4_joint_pairwise_conditional": {
+          "evaluation_grid_days": [
+            365.0,
+            730.0,
+            1095.0,
+            1460.0
+          ],
+          "ibs_estimand": "SOURCE_GRID_REPRODUCED",
+          "multiplicity_adjusted_claim": false,
+          "planned_contrasts": {
+            "A0_vs_A1": {
+              "delta_ibs": 0.00048807604158395134,
+              "delta_ibs_95ci": [
+                -0.0028203158873047335,
+                0.003601409003771896
+              ],
+              "delta_uno": -0.008251517992351753,
+              "delta_uno_95ci": [
+                -0.02662593838296743,
+                0.008905911323307227
+              ]
+            },
+            "A0_vs_A2": {
+              "delta_ibs": -0.005284877192515272,
+              "delta_ibs_95ci": [
+                -0.012782474692582726,
+                0.0024992482257613
+              ],
+              "delta_uno": -0.010977843432679801,
+              "delta_uno_95ci": [
+                -0.0504399316648401,
+                0.026214828907329464
+              ]
+            },
+            "A1_vs_A3": {
+              "delta_ibs": -0.006839113410482334,
+              "delta_ibs_95ci": [
+                -0.015202747201654038,
+                0.0013228639242345139
+              ],
+              "delta_uno": 0.0009364659789711683,
+              "delta_uno_95ci": [
+                -0.03989237263491751,
+                0.039781220469929525
+              ]
+            },
+            "A2_vs_A3": {
+              "delta_ibs": -0.0010661601763831102,
+              "delta_ibs_95ci": [
+                -0.004866652565761406,
+                0.002299378975512047
+              ],
+              "delta_uno": 0.0036627914192992163,
+              "delta_uno_95ci": [
+                -0.009185083083563876,
+                0.017012576060054175
+              ]
+            },
+            "A3_vs_A4": {
+              "delta_ibs": 0.01542306822978561,
+              "delta_ibs_95ci": [
+                0.005943337013056851,
+                0.025884555490433923
+              ],
+              "delta_uno": -0.022271102577959768,
+              "delta_uno_95ci": [
+                -0.06505265453799047,
+                0.01917628767789443
+              ]
+            }
+          },
+          "rejected_attempts": 3,
+          "status": "POST_HOC_CONDITIONAL_EXPLORATORY_ONLY",
+          "valid_resamples": 2000
+        },
+        "v4_policy_increment_over_a0": {
+          "delta_ibs": -0.0003300222412792597,
+          "delta_ibs_95ci": [
+            -0.001756139358751551,
+            0.0009026860674926946
+          ],
+          "delta_uno": 0.0020955710473080204,
+          "delta_uno_95ci": [
+            -0.004327864669798306,
+            0.008411647169290116
+          ],
+          "uncertainty_scope": "CONDITIONAL_FIXED_MODELS_POST_HOC_NOT_CONFIRMATORY"
+        }
+      }
+    },
+    "branchwise_matched_pairs": {
+      "inferential_claim": "NONE",
+      "status": "TEN_CONDITIONAL_EXPLORATORY_JOINT_PAIR_INTERVALS_VERIFIED"
+    },
+    "calibration": {
+      "limitation": "EXISTING_HESSIAN_INTERVALS_DO_NOT_ACCOUNT_FOR_FOLD_CLUSTERING",
+      "status": "COMPLETED_WITH_ESTIMABILITY_GATES"
+    },
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "external_claim_allowed": false,
+    "external_validation": "EXTERNAL_PENDING",
+    "legacy_v4_post_eval": {
+      "global_selected_arm_oof": "SELECTION_INFORMED_DESCRIPTIVE_ONLY",
+      "legacy_pairwise_ci": "SUPERSEDED_BY_JOINT_FOLD_STRATIFIED_CONDITIONAL_INTERVALS",
+      "pooled_branch_friedman": "INVALID_FOR_CLAIM",
+      "raw_risk_score_noninferiority": "INVALID_FOR_CLAIM"
+    },
+    "positive_claim_allowed": false,
+    "quantitative_pet": {
+      "evidence_present": true,
+      "fbp_ftp_pattern_scale": "NOT_EQUIVALENT_TO_OFFICIAL_CENTILOID_OR_CENTAUR",
+      "official_atlas_assets": "PASS_FOR_ASSET_INTEGRITY_NOT_IMAGE_EQUIVALENCE",
+      "tau_scan_level_quantitation": "BLOCKED"
+    },
+    "quantitative_pet_claim_allowed": false,
+    "remaining_gates": [
+      "SCANNER_LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_EXECUTED",
+      "TAU_SECOND_MANUFACTURER_EVENT_SUPPORT_INSUFFICIENT",
+      "PET_IMAGE_QUANTITATIVE_EQUIVALENCE_UNPROVEN",
+      "XAI_FIDELITY_AND_COVERAGE_FAILED",
+      "XAI_RISK_TARGET_SENSITIVITY_DISCORDANT",
+      "EXTERNAL_COHORT_ACCESS_AND_VALIDATION_PENDING",
+      "SELECTION_AND_REFIT_UNCERTAINTY_NOT_COVERED_BY_LOCKED_MODEL_BOOTSTRAP"
+    ],
+    "report_sha256": "c039a1394d9f7cceed9676b97d6fc879882b0e10b5f723a00cc3443bd4de66c0",
+    "schema_version": "4.2",
+    "scientific_validation_status": "BLOCKED",
+    "source_code_sha256": "0254660cb54100ec61f15e9607be8d3781fbb7c3f30c095424cb66d94b25ac59",
+    "source_sha256": {
+      "claim_v3": "08cef86c67a1622a715b7da03fbdeb4224a1247060546578e5288ecafa0c4fd9",
+      "external_v2": "beea767ae65aa877dc9d06cedf4230ed522c1a37a41ac1db2cd10fa9474fd4c5",
+      "joint_pairs_v4_2": "732bd0323713a2384d7068ca500c3d42f5eeb2c505249484f7c64bd123ded87a",
+      "pairwise_v4_2": "1ac75399c671a8dc1ecc8e110dc6f96ecd18c088a058519971f9bca4b207fc8b",
+      "quantitative_v2": "16d7e0e3a103a95bf945bb187c134a5e9ab5ad12134a8ce036e539a50bccff32",
+      "risk_sensitivity_v4": "b81714c96c1859bb9dfb228573c24fa8dd77a0f31a46ac4c553f6f27478c4824",
+      "scanner_v3_amyloid": "1eae98eb5f78b4a813a7af8bce05281d9ce99ab28eb756a60609698d5d3b546b",
+      "scanner_v3_tau": "8c694b8600a72e73bc20999ca38e56005fc1f0bc474e2ed3aff3ace9f7f9bd0b",
+      "selection_flow": "0a8bed734b6162c1e13976f548284f0414f497210eebc1af9c4020b92418b9ac",
+      "v3_incremental": "5a1e4724010c4e7c4bd13f1296522a6f8b3a98b3b9890b7f9c195ff667d3c6eb",
+      "v4_correction": "5d94d6d75c9020f4a00a622cd13d24e52e8a4c466e4cee830489545559c45e77",
+      "v4_policy_bootstrap": "2b8e30c10ffb494129bce8c5d9d9419137f0d475d42dc898fad97b13dba2a461",
+      "v4_scanner": "4da3adbbdf22bb7ac2878d7361d5cae99b52445f9c26cb9cf56ff81999fe35d4",
+      "xai_v4": "b71e2f1d6c0b1db9795bf6cc238e106086dbe279359eda9285e5c327660df96f"
+    },
+    "statistical_reanalysis_status": "COMPLETE_FOR_V3_INCREMENTAL_V4_FOLD_LOCAL_POLICY_AND_JOINT_PAIRS",
+    "status": "LOCKED_ARTIFACT_REANALYSIS_COMPLETE_SCIENCE_BLOCKED",
+    "technical_training_status": "V3_20_OF_20_AND_V4_50_OF_50_FINALIZED",
+    "xai": {
+      "evaluated_cells": 45,
+      "expected_cells": 50,
+      "legacy_sensitivity_pass_meaning": "COMPUTATION_COMPLETED_NOT_AGREEMENT_PASS",
+      "nonpass_cells": 30,
+      "risk_target_sensitivity_rho_descriptive": -0.4530846748714782,
+      "science_gate_status": "FAIL",
+      "voxel_bootstrap_ci_status": "INVALID_FOR_SUBJECT_LEVEL_INFERENCE_SPATIAL_PSEUDOREPLICATION"
+    },
+    "xai_claim_allowed": false
+  }
+}

@@ -1,0 +1,475 @@
+{
+  "source_id": "82b7f3c677e6babb",
+  "source_sha256": "3d1e4138de1ebe79da6dd04c6a06bc38072450fe6d9af74aca1c675e5fc5432b",
+  "scientific_role": "corrected_postfusion_with_review_addendum",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "both_mri_and_pet_training_selection_exclude_held_manufacturer": true,
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "clinical_claim_allowed": false,
+    "components": 3,
+    "excluded": [
+      {
+        "events": 0,
+        "manufacturer": "CANON_TOSHIBA",
+        "n": 5,
+        "status": "NOT_ESTIMABLE_SUPPORT"
+      },
+      {
+        "events": 6,
+        "manufacturer": "UNKNOWN",
+        "n": 35,
+        "status": "NOT_ESTIMABLE_SUPPORT"
+      }
+    ],
+    "external_validation": false,
+    "groups": [
+      {
+        "arms": {
+          "clinical_mri_amyloid": {
+            "administrative_cutoff_days": 1637.9999999999998,
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "events": 34,
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "horizons": {
+              "1095.75": {
+                "calibration_bins": [
+                  {
+                    "ipcw_observed_fraction": 0.022551303758895653,
+                    "n": 42,
+                    "predicted_risk": 0.04091321005787023
+                  },
+                  {
+                    "ipcw_observed_fraction": 0.18412113885024597,
+                    "n": 41,
+                    "predicted_risk": 0.07626459927932354
+                  },
+                  {
+                    "ipcw_observed_fraction": 0.11576797356763036,
+                    "n": 41,
+                    "predicted_risk": 0.1685231202635095
+                  }
+                ],
+                "calibration_intercept": -0.6812120194792183,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_slope": 0.6186340325647894,
+                "dynamic_auc": 0.6237821246871307,
+                "events_by_horizon": 14,
+                "n_at_risk": 110,
+                "status": "ESTIMABLE"
+              },
+              "547.875": {
+                "events_by_horizon": 1,
+                "n_at_risk": 135,
+                "status": "NOT_ESTIMABLE"
+              }
+            },
+            "ibs": 0.04246577882777984,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "n": 151,
+            "uno_c_index": 0.6186252926902963
+          },
+          "clinical_mri_amyloid_pet": {
+            "administrative_cutoff_days": 1637.9999999999998,
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "events": 34,
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "horizons": {
+              "1095.75": {
+                "calibration_bins": [
+                  {
+                    "ipcw_observed_fraction": 0.044962363467525454,
+                    "n": 42,
+                    "predicted_risk": 0.03539161837557242
+                  },
+                  {
+                    "ipcw_observed_fraction": 0.11388507290766035,
+                    "n": 41,
+                    "predicted_risk": 0.0741857338926758
+                  },
+                  {
+                    "ipcw_observed_fraction": 0.16248859084249276,
+                    "n": 41,
+                    "predicted_risk": 0.16648137908910204
+                  }
+                ],
+                "calibration_intercept": -0.5883083411726407,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_slope": 0.6465682952034688,
+                "dynamic_auc": 0.6483147103810883,
+                "events_by_horizon": 14,
+                "n_at_risk": 110,
+                "status": "ESTIMABLE"
+              },
+              "547.875": {
+                "events_by_horizon": 1,
+                "n_at_risk": 135,
+                "status": "NOT_ESTIMABLE"
+              }
+            },
+            "ibs": 0.04240834402720837,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "n": 151,
+            "uno_c_index": 0.6388498304824889
+          }
+        },
+        "events": 34,
+        "manufacturer": "GE",
+        "matched_contrast": {
+          "augmented": "clinical_mri_amyloid_pet",
+          "base": "clinical_mri_amyloid",
+          "delta_ibs_bonferroni_ci": [
+            -0.0019630164411180385,
+            0.0016491967438446748
+          ],
+          "delta_ibs_ci95": [
+            -0.001572852289945309,
+            0.00132556700289435
+          ],
+          "delta_ibs_mean": -5.743480057146928e-05,
+          "delta_uno_bonferroni_ci": [
+            -0.06401199592016872,
+            0.11531745550613269
+          ],
+          "delta_uno_ci95": [
+            -0.050026607300457666,
+            0.1002598306430739
+          ],
+          "delta_uno_mean": 0.020224537792192576,
+          "family_size": 3,
+          "full_training_uncertainty_included": false,
+          "multiplicity": "EXPLORATORY_NO_CONFIRMATORY_SIGNIFICANCE_CLAIM",
+          "resamples": 2000,
+          "resampling": "PAIRED_SUBJECT_WITHIN_HELD_MANUFACTURER",
+          "uncertainty": "CONDITIONAL_ON_FITTED_MODELS_AND_TRAIN_CENSORING_NOT_SELECTION_UNCERTAINTY",
+          "valid_ibs_resamples": 2000,
+          "valid_uno_resamples": 2000
+        },
+        "n": 151
+      },
+      {
+        "arms": {
+          "clinical_mri_amyloid": {
+            "administrative_cutoff_days": 1638.9999999999998,
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "events": 14,
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "horizons": {
+              "1095.75": {
+                "calibration_bins": [
+                  {
+                    "ipcw_observed_fraction": 0.0,
+                    "n": 16,
+                    "predicted_risk": 0.04657360098203096
+                  },
+                  {
+                    "ipcw_observed_fraction": 0.19201238477732663,
+                    "n": 15,
+                    "predicted_risk": 0.09682862754951421
+                  },
+                  {
+                    "ipcw_observed_fraction": 0.1925788263906849,
+                    "n": 15,
+                    "predicted_risk": 0.21841264185224646
+                  }
+                ],
+                "calibration_intercept": 0.6946001365149707,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_slope": 1.362372075170274,
+                "dynamic_auc": 0.7840196244411834,
+                "events_by_horizon": 6,
+                "n_at_risk": 40,
+                "status": "ESTIMABLE"
+              },
+              "547.875": {
+                "events_by_horizon": 0,
+                "n_at_risk": 50,
+                "status": "NOT_ESTIMABLE"
+              }
+            },
+            "ibs": 0.03787015722844692,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "n": 55,
+            "uno_c_index": 0.7669239887192683
+          },
+          "clinical_mri_amyloid_pet": {
+            "administrative_cutoff_days": 1638.9999999999998,
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "events": 14,
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "horizons": {
+              "1095.75": {
+                "calibration_bins": [
+                  {
+                    "ipcw_observed_fraction": 0.0,
+                    "n": 16,
+                    "predicted_risk": 0.04862194268036638
+                  },
+                  {
+                    "ipcw_observed_fraction": 0.19201238477732663,
+                    "n": 15,
+                    "predicted_risk": 0.09280508735643338
+                  },
+                  {
+                    "ipcw_observed_fraction": 0.1925788263906849,
+                    "n": 15,
+                    "predicted_risk": 0.21744723934833385
+                  }
+                ],
+                "calibration_intercept": 0.6786132120178542,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_slope": 1.3446642955139574,
+                "dynamic_auc": 0.7798020196884213,
+                "events_by_horizon": 6,
+                "n_at_risk": 40,
+                "status": "ESTIMABLE"
+              },
+              "547.875": {
+                "events_by_horizon": 0,
+                "n_at_risk": 50,
+                "status": "NOT_ESTIMABLE"
+              }
+            },
+            "ibs": 0.03879955422222378,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "n": 55,
+            "uno_c_index": 0.7593712068863137
+          }
+        },
+        "events": 14,
+        "manufacturer": "PHILIPS",
+        "matched_contrast": {
+          "augmented": "clinical_mri_amyloid_pet",
+          "base": "clinical_mri_amyloid",
+          "delta_ibs_bonferroni_ci": [
+            -0.0007255185878811038,
+            0.0028914851001453695
+          ],
+          "delta_ibs_ci95": [
+            -0.00047138171906684035,
+            0.002535335282168113
+          ],
+          "delta_ibs_mean": 0.0009293969937768618,
+          "delta_uno_bonferroni_ci": [
+            -0.07527375427376268,
+            0.05329052144882281
+          ],
+          "delta_uno_ci95": [
+            -0.05841461348599645,
+            0.041365295272411916
+          ],
+          "delta_uno_mean": -0.007552781832954603,
+          "family_size": 3,
+          "full_training_uncertainty_included": false,
+          "multiplicity": "EXPLORATORY_NO_CONFIRMATORY_SIGNIFICANCE_CLAIM",
+          "resamples": 2000,
+          "resampling": "PAIRED_SUBJECT_WITHIN_HELD_MANUFACTURER",
+          "uncertainty": "CONDITIONAL_ON_FITTED_MODELS_AND_TRAIN_CENSORING_NOT_SELECTION_UNCERTAINTY",
+          "valid_ibs_resamples": 2000,
+          "valid_uno_resamples": 1992
+        },
+        "n": 55
+      },
+      {
+        "arms": {
+          "clinical_mri_amyloid": {
+            "administrative_cutoff_days": 1638.9999999999998,
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "events": 58,
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "horizons": {
+              "1095.75": {
+                "calibration_bins": [
+                  {
+                    "ipcw_observed_fraction": 0.044943699075821346,
+                    "n": 85,
+                    "predicted_risk": 0.05391089073348604
+                  },
+                  {
+                    "ipcw_observed_fraction": 0.06824632836980377,
+                    "n": 84,
+                    "predicted_risk": 0.09691407892954208
+                  },
+                  {
+                    "ipcw_observed_fraction": 0.19369302729957918,
+                    "n": 84,
+                    "predicted_risk": 0.19301506325952655
+                  }
+                ],
+                "calibration_intercept": 0.314103039513382,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_slope": 1.242441695665804,
+                "dynamic_auc": 0.7330456316321756,
+                "events_by_horizon": 27,
+                "n_at_risk": 226,
+                "status": "ESTIMABLE"
+              },
+              "547.875": {
+                "events_by_horizon": 1,
+                "n_at_risk": 277,
+                "status": "NOT_ESTIMABLE"
+              }
+            },
+            "ibs": 0.040031487503987245,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "n": 298,
+            "uno_c_index": 0.72479925816733
+          },
+          "clinical_mri_amyloid_pet": {
+            "administrative_cutoff_days": 1638.9999999999998,
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "events": 58,
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "horizons": {
+              "1095.75": {
+                "calibration_bins": [
+                  {
+                    "ipcw_observed_fraction": 0.044943699075821346,
+                    "n": 85,
+                    "predicted_risk": 0.05122964468744011
+                  },
+                  {
+                    "ipcw_observed_fraction": 0.05699184894744899,
+                    "n": 84,
+                    "predicted_risk": 0.09620698131086902
+                  },
+                  {
+                    "ipcw_observed_fraction": 0.20514061584491988,
+                    "n": 84,
+                    "predicted_risk": 0.20750459674641156
+                  }
+                ],
+                "calibration_intercept": 0.2026777340658051,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_slope": 1.211348096115495,
+                "dynamic_auc": 0.7548526670761647,
+                "events_by_horizon": 27,
+                "n_at_risk": 226,
+                "status": "ESTIMABLE"
+              },
+              "547.875": {
+                "events_by_horizon": 1,
+                "n_at_risk": 277,
+                "status": "NOT_ESTIMABLE"
+              }
+            },
+            "ibs": 0.03973879997107712,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "n": 298,
+            "uno_c_index": 0.7473864398829116
+          }
+        },
+        "events": 58,
+        "manufacturer": "SIEMENS",
+        "matched_contrast": {
+          "augmented": "clinical_mri_amyloid_pet",
+          "base": "clinical_mri_amyloid",
+          "delta_ibs_bonferroni_ci": [
+            -0.0012683056531744212,
+            0.0006650781888000182
+          ],
+          "delta_ibs_ci95": [
+            -0.001102780234147597,
+            0.0004621941380314676
+          ],
+          "delta_ibs_mean": -0.0002926875329101208,
+          "delta_uno_bonferroni_ci": [
+            -0.007376137009729409,
+            0.052470085731534305
+          ],
+          "delta_uno_ci95": [
+            -0.0019178096911215297,
+            0.047223201116589356
+          ],
+          "delta_uno_mean": 0.022587181715581606,
+          "family_size": 3,
+          "full_training_uncertainty_included": false,
+          "multiplicity": "EXPLORATORY_NO_CONFIRMATORY_SIGNIFICANCE_CLAIM",
+          "resamples": 2000,
+          "resampling": "PAIRED_SUBJECT_WITHIN_HELD_MANUFACTURER",
+          "uncertainty": "CONDITIONAL_ON_FITTED_MODELS_AND_TRAIN_CENSORING_NOT_SELECTION_UNCERTAINTY",
+          "valid_ibs_resamples": 2000,
+          "valid_uno_resamples": 2000
+        },
+        "n": 298
+      }
+    ],
+    "new_expert_fits": 54,
+    "parent_oof_performance_not_directly_compared_to_different_lmo_training_sizes": true,
+    "parent_training_or_results_changed": false,
+    "robustness_generalization_to_unobserved_devices_not_established": true,
+    "scanner_invariance_proven": false,
+    "scope": "ONE_FIXED_SEED_THREE_COMPONENT_PAIRED_FUSION_SENSITIVITY_NOT_FULL_NINE_COMPONENT_MODEL",
+    "site_lmo_status": "NOT_ESTIMABLE_NO_LOCKED_EXACT_PET_SITE",
+    "status": "PET_MANUFACTURER_AUDIT_COMPLETED",
+    "training_seed": 13
+  }
+}

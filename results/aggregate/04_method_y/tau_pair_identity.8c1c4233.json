@@ -1,0 +1,18 @@
+{
+  "source_id": "8c1c4233e3523b02",
+  "source_sha256": "70e8d7306cc646d739d4dc9dc2cde5c02caa0091b6afa33a5a2e43cc1fdc49d5",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "analysis_role": "POST_HOC_INTERNAL_EXPLORATORY",
+    "branch": "tau",
+    "challenger_arm": "A2",
+    "comparison_semantics": "MATCHED_IMAGE_PLUS_TABULAR_ARM_COMPARISON",
+    "not_an_image_incremental_value_analysis": true,
+    "pair_kind": "ARCHITECTURE_EFFECT_WITHOUT_AUGMENTATION",
+    "reference_arm": "A0",
+    "schema_version": "4.0"
+  }
+}

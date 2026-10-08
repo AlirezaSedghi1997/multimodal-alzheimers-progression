@@ -1,0 +1,11 @@
+preferred_device: cuda
+cpu_fallback_allowed: true
+gpu_name_expected: RTX 4060
+vram:
+  expected_gb: 8
+  dryrun_guard_gb: 6.5
+  training_soft_cap_gb: 7.0
+  hard_stop_gb: 7.5
+fallback:
+  on_cuda_unavailable: use_cpu_for_non_training_checks
+  on_oom: reduce_batch_then_accumulate_then_checkpoint_then_block

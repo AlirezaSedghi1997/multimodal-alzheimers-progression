@@ -1,0 +1,2396 @@
+[
+  {
+    "path": "configs/compute/device_policy.yaml",
+    "sha256": "608e8d5f1e37b38eda787a95970aa13c6d0902171a1b57e7c0e4d46b2ac1bb95",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/experiments/method_x_3d_candidate_grid.yaml",
+    "sha256": "572331584ff053d7e9e15198950bf96aa2d36160d57bc46e5323e29715f4a5b8",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/experiments/method_x_claim_benchmark_v3.yaml",
+    "sha256": "fd602f37b59b75aaab1cab8b1fc0e416c65d9084671f0b89187f0bea8cd0b91c",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/experiments/method_x_fasttrack_v2.json",
+    "sha256": "e7c9bd8bdf041670edb00122b700fb4d98c7534b14266fe1d4fa26933a19683e",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/experiments/method_x_fasttrack_v2_20260926_mx04_import.json",
+    "sha256": "147ae5369a23d8ba19843cbd2c7ce7c541b4efd84cc3dec83b48236b3402c2c5",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/experiments/method_x_fasttrack_v2_20260927_mx05_gate_import.json",
+    "sha256": "a0b37e36ed74984a1c4a51a6870427a09396d8a2045918778b2977c4d43e57d6",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/experiments/method_x_finetune_v1.yaml",
+    "sha256": "8e38ac22688cec81a2f720cf9eb139325dc474ef1dd362852474866480333766",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/experiments/method_x_hybrid_v1.yaml",
+    "sha256": "b17508a431c82d3d8e9cb5a784b66937774d8f39eee055e555f2708110397c13",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/experiments/method_x_quick_validation_v1.json",
+    "sha256": "685561ad2374b1f305e75b82757b5ff7f6c5fe365b97af0437c177342f50ed2a",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/experiments/method_x_science_extension_v1_20260927.json",
+    "sha256": "1dc3a70cd09df715862bd679893f87f0c58007563f4467a53b882235db9c6a20",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/experiments/method_x_xai_v1.yaml",
+    "sha256": "ef4bb50a14870f4a7efc288a8781a663f11c9d023f54c6a9655d191cbb410e59",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/experiments/method_x_xai_v22.json",
+    "sha256": "3ea654b095c9a18688027fe26b119f61515b7710c27b13badb82b79a59f324ce",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/method_y_amyloid_lmo_a4_v2.yaml",
+    "sha256": "21f89bbd18452f076e43e6344fe10a163a19748ecd03625a641383990bc7932b",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/method_y_amyloid_lmo_v1.yaml",
+    "sha256": "9df985c74d555af0169c0444f5651b314959070f12f8233a08dc631249971e0c",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/method_y_image_factorial_v4.yaml",
+    "sha256": "3e6d6607210413de0790495a421df5eddbc433c8c7c289ffcafb042e5dc4bab6",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/method_y_revival_v1.yaml",
+    "sha256": "3afe2d821a5235c4b218f4b4976856aade86282b8183a01dc7bb7561ceadf8a8",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/method_y_revival_v2.yaml",
+    "sha256": "9c8861ba7238fdcc4bbfac23c06e19a72ed11fcb662d4e7a75d3fb440ccaa027",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/method_y_revival_v2_endpoint.yaml",
+    "sha256": "dd27fa97962039382a109237c66192a6f73318f4d95270454ed5a0d4d47d8d9f",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/method_y_tau_progression_v1.yaml",
+    "sha256": "e780bbce6eae254bb55b5536cd58c93d5d9fd39fa08d530bfbe01609fc452ef8",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/method_y_training_control_v2.yaml",
+    "sha256": "549a17e9630d2057b6152b5785dd179ff9033a792075aff68f30e7566d8dfd07",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/model/method_y_suvr_reference_policy.yaml",
+    "sha256": "926acfc3c2a702e6825dd943f008db039a9ed9d2de9b3ed7821001fc5aba4a58",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/policy/method_x_autosupervision.yaml",
+    "sha256": "9d8284a65f075abfeec6c54f23576487a44e4bd3cfda2395fb59a7ae2d8f69fc",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/policy/method_x_storage_locality_v1.yaml",
+    "sha256": "3b565e4799ed4b29b8fd7671d9169ea1d98ecb67092f2bbd00e137241e4f791f",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/xyz_fp32_spatial_sensitivity_v1.json",
+    "sha256": "6499fbdd5e83d9d290d1c1cb7eb1ab87f180cb70d81416ee68503382615b95ea",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/xyz_fusion_postall_v2.json",
+    "sha256": "d1d513df296ae71bab731e63f75514dbacbf51316d12285e2a24c9aef1437a5b",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/xyz_fusion_v2.json",
+    "sha256": "cb4131a9cbd4ba19c03d65b17c90aec18c0e7468e98529b8d326c04015e33256",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/xyz_mri_baseline_fast_v1.json",
+    "sha256": "26cb6ae71edcd5e3c0a506a82bba54a6721bb0a1cf69f228d59672eee235e5aa",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/xyz_pet_manufacturer_audit_v1.json",
+    "sha256": "c8353806f5f2993b5b575b8af372461ac9ed8799ddca05c901ee00357026652c",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "configs/xyz_regional_evidence_v1.json",
+    "sha256": "c3d83b8d712d9aff95f7cd6d7b06ca5652598f1a70553c973d9cb1d3974bbe15",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "requirements-dev.txt",
+    "sha256": "6aef6fa77c16b6cc7ae49fe2fa743ffe4fbaacbf277ea3d7a38ca3f1f830ea22",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "requirements.txt",
+    "sha256": "68078f97d57f58eb36b75b191f47400bc5266a5e87ea55716308864a2127be58",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/analyze_method_y_amyloid_lmo_a4_v2.py",
+    "sha256": "95dd79db909a1dd31ca89edd95e4a582bc79e18f892a63f5cb415c945193a7ec",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/analyze_method_y_amyloid_lmo_calibration_v1.py",
+    "sha256": "26ea14e764dc0e2ea9a5bf1f51afbcc648ad45b4829791b3706989bea900c4ac",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/analyze_method_y_remaining_subgroups_v1.py",
+    "sha256": "a39bbf20f20c0cc5640585ffa3f4b83ebc39e42e9713a7c810a6dd04c68dbe46",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/audit_artifact_consistency.py",
+    "sha256": "36f2a6a5664aa4ed5d8ece5b8bd072863fd72ccf6d31fd3bab4ffb1e41b52058",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/audit_method_y_amyloid_lmo_release_v1.py",
+    "sha256": "fa4bfb4731ec810a00993279c6d4975d421d8e2facd10ac8aedfcca04b8fce1b",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/audit_method_y_exact_sidecar_sites_v1.py",
+    "sha256": "c904132b61f0a3f12f24c81f9ca1d41bbd00bb8748537db484bb33a9574bf87c",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/audit_raw_dataset_qc.py",
+    "sha256": "210b184a9c5fbff6eb86d442615dbdc80bc2ab0695dea3f2fc39ce0587af373b",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/build_branch_catalogs.py",
+    "sha256": "084b97f860d78ef2dbe231ff610c50acf4ae5a60884bd4b17c88eb34c0cf6d85",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/build_fold_local_mri_augmented_cache.py",
+    "sha256": "3d111811a814b619380548efb7cec97e4e4848e2977fdea75c5ccd8ba8ced7c0",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/build_method_y_pet_augmentation_qc_v4.py",
+    "sha256": "e21dd935cd1ae4ded70e59d5f354822a684a785402b9af4c4558f3d11d93e9ec",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/build_method_y_pretraining_contracts_v2.py",
+    "sha256": "b1a68b559c415c61e454f49b74a1f1fc2ff9b3467e2a4c802d4fa9063454aa5a",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/build_method_y_reporting_crosswalk_v1.py",
+    "sha256": "949e022b52442c7962a5391a5bc57ae1cb3392b8ee1c10f19b286b05dce491e9",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/build_method_y_tau_progression.py",
+    "sha256": "556f391c617a0f7a3970926f4ebf5b7b2e73f7e0a75b19e41a1c494abd5642c9",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/build_mri_volume_cache.py",
+    "sha256": "c422bf2a8ad63ffe5fb440c7e3ea5a05000de0a9a51da4a92dd886fb082d0b9d",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/build_raw_qc_visual_review_worksheet.py",
+    "sha256": "4eb67b230c8a8d7d938a8317e66488db0c737ec1e6b3c8806793d3f197c878f4",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/check_spm_toolchain.py",
+    "sha256": "b3afbaaca32e15e7e0807975ea314313b7ffffd8be59e44593d47554ff10ea7a",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/finalize_mx05_outer.py",
+    "sha256": "f39b8f7466296cfa9f5334ad3f20ea4a46e9a58ef1b7d040de06ad6b6fc83533",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/materialize_method_y_transforms_v2.py",
+    "sha256": "9cd7f07cb94b7975cf4ac8e62375a06859c1105b425eaa377c796ecfa8aae9ab",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/merge_real_synthetic.py",
+    "sha256": "7eb4d943d143721f541772c7c634a89f19744d5b669c7ee7e99eb48bffeb24ab",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2/audit_inputs.py",
+    "sha256": "1f336071147320082086f06e44c6eb50f65b822e9804e5f5a9484021eaffa954",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2/capture_preflight.py",
+    "sha256": "5fa58ede0bb988cfbaa951001b894d148d5f583b2609618288d747e0c10c8fee",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2/evaluate_hybrid_pair.py",
+    "sha256": "e6366d1150b9e7c67951c3fb2c2ba46511a86c4f1a3606eaa3b2999a5308bb33",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2/evaluate_locked.py",
+    "sha256": "2770303b5c7cee8fbd17bf44e3920a9f3a4ed7f5b33f39401cc87c5f39210759",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2/freeze_report.py",
+    "sha256": "2804a301d9358f101a7639c633291ccb5b6575d2f01aab5a9095e138924fc95a",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2/import_mx04.py",
+    "sha256": "3e3a620b5d2bfd5a4c6d2e5512a3eefdf4848ff48fa768826b79f1d6e4ded62f",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2/integrity.py",
+    "sha256": "a20286b200f93071f01347d9c1f9c2363e5f925f7a22ba46d6d2a1f45f76cb71",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2/reattest_mx04_staging_prune.py",
+    "sha256": "7f486007179197a265f6c1a01fe629d6fed7341f95f2838ba688f714324730a4",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2/run.py",
+    "sha256": "55e0534f3b8b37f45e70405be111a6ecb352304de585ee68a346d78e07bbbd7a",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2/supervise.py",
+    "sha256": "aa1dfb17adf08d8732feffa5e6e6606fb534203a521ea47b688d17afe298daa6",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2/xai_limited.py",
+    "sha256": "7c0481e4a2f6a727ce8cb61274e9714c38e7d2a42af58d1461981be303bd7ebb",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_1/supervise_v21.py",
+    "sha256": "8287838c494f99c413df98a39f9919286b8e978dc7de0fef25a5bdd6049dab4c",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_2/__init__.py",
+    "sha256": "c899a6c6afc11b1133fecfaeba9177c3b00fd2999baf58f9c6118621efcf00d8",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_2/independent_gate.py",
+    "sha256": "a6835381b60438c22c2098ea9b785c330aae685c3b53c30e97a125f76b5bcd72",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_2/supervise_v22.py",
+    "sha256": "c5a62bb6cad6d62cf7786c64004410ba152be0ad1b4272a3c216102cb1209b1a",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_2/thesis_report.py",
+    "sha256": "064259cacac54e2262ae8e49f161e6010345a6fc8c6bd9a8341f9f6d26bc9500",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_2/xai_crossfit.py",
+    "sha256": "28b9b38dc642f87bbd44bb98b5f9a3983e60c9b24746ad78d550c567b439522b",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_2/xai_runner.py",
+    "sha256": "fbc0dab8431fd8ac1eb8d124ae8c7e5621b31b75a7cdb9f5848a02263300ae00",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_3/__init__.py",
+    "sha256": "54cb817dbb3a4110d5f85c60fd9e8334774636552db6eaefaeb49155020bbdc4",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_3/outer_guard_runner.py",
+    "sha256": "542f3d3c00bbc1f03a83c863f8008e5e436a65840b02aa58e22ab663a8cc3482",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_3/supervise_v23.py",
+    "sha256": "337a380738419404ff5c93e67399bc44413c84dac8d7e441a54b021d591d1067",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4/__init__.py",
+    "sha256": "ec6c00f1e06455f147954a63d579d33c5a5e269ff6f8f196114763a21e79c7fa",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4/import_resume.py",
+    "sha256": "59c1db5c7ac439c1edb3779fc4c25e2fb891a9ffa7dfe05e651edd12fe918eff",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4/outer_guard_runner.py",
+    "sha256": "d8dcc287f9e459046e3463a218f6a735cec19dd7832d57341e3b18c7535d5ea0",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4/supervise_v24.py",
+    "sha256": "201d912046d9bb790101e04868fe28badcd47f256bc078c95c1942dd7863f7c0",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_1/__init__.py",
+    "sha256": "c8877cdc02149a62b2a6417abbb8852198fb9c5173a6d0ac8b155a0a8a62e366",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_1/compatible_lock.py",
+    "sha256": "210588f163c8a0aaa80425a05fc36e514936a5a95926b82e598973b6cdf33a5b",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_1/entry_v241.py",
+    "sha256": "ef1e620d4e153e43687fba9a10b72a3b481f3c0e7e787cad45b4ae0f259c9e75",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_1/supervise_v241.py",
+    "sha256": "ff90e1387b9a3a4fe425caf4798e1072a4a946cc0c0ebd438b4c3197c8816873",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_2/__init__.py",
+    "sha256": "76d8c85b26da39ed5f82e1a9472c3c0fb2be60ca8df514d0c46a03dc69a255cb",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_2/checkpoint_projection.py",
+    "sha256": "8a05e2a0e3b89d3b1ecd59439df0200a7db8e8ee3bca3bc89a6529d838e0d6cd",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_2/entry_v242.py",
+    "sha256": "45c5b6ff44ad3346f8c1bc639f37c25cdd0a1d81966c82ea2145fba6614ce2c8",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_2/supervise_v242.py",
+    "sha256": "a0fcaaf5d0ecde8a279fe48c058ffd74f491d73002a0f1da95cf4ce83353dcd0",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_3/__init__.py",
+    "sha256": "62b6e2085edcc6d62a1d94e53c6370c53cbeb712ce471cbef47422d96e8ad652",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_3/entry_v243.py",
+    "sha256": "dcd091885ca9446a5a72b3391c0eb6197a81f20e3f906c1fbbf0e4b126b32a59",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_3/supervise_v243.py",
+    "sha256": "b106671a27166a14c01854bdac7dc0b2a4875f6582dc73d3ca31d34edbe7b390",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_4/__init__.py",
+    "sha256": "e643ffba54f89c4225a8e5ab1108dbd8cb3b45d3096606f96be19c8b78f98586",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_4/control_eligibility.py",
+    "sha256": "dfd382cb555596c08f12319280ff9d1d897c915ecd27c82dc1ba2a629e2bf127",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_4/entry_v244.py",
+    "sha256": "559afd786190c0bf6f04900f3782dac340dd858cb896839a4f058b709b773a2f",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_fasttrack_v2_4_4/supervise_v244.py",
+    "sha256": "836f2f02b6c6be0ca03e7e10d4e3a61ed6b834200041374f820bb0f0c369ca57",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_quick_validation_v1/__init__.py",
+    "sha256": "9460902ab6be1232a180275442e0ebf0327d5e018b0acee8d9c9bb8c5121840d",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_quick_validation_v1/audit.py",
+    "sha256": "f311dbbe599a8aa7e447808f6dd21c0aec1ec49b8c504d4263ccddd27d84afb4",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_quick_validation_v1/common.py",
+    "sha256": "7926da4d5ef31958be301871f6797ec8b6eb1406ed8eae2a8fbd8e6df16cfe7a",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_quick_validation_v1/paired_analysis.py",
+    "sha256": "572552d3a4615aa4cbfe6b9ae9a9d31bdca59f2d203ff091e7b2a0030394c196",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_quick_validation_v1/stress.py",
+    "sha256": "6404d7c271092f839bacf2a6b0de9146e87e12e8a476b9483e33f691fb4e2ae8",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_quick_validation_v1/supervise.py",
+    "sha256": "266b0b933661b765f4f5f5fc4ae2d6c2f367bb77e62c3453662cc757190934c0",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_quick_validation_v1/tabular.py",
+    "sha256": "7e9beb5cbdde9f276999653a4f75fadb3d4de210a9f26324d3634e9a0e85cf08",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_science_extension_v1/__init__.py",
+    "sha256": "3d6c1f80264abb6ba9d72e433abba84c81f777c08cfb34a372687786bf8801b4",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_science_extension_v1/analysis.py",
+    "sha256": "0a1f5f70a3103ce21c63300b543cd4889fb87e0ded745592576f7360b9223c7f",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_science_extension_v1/audit_and_lock.py",
+    "sha256": "c946951a7d7ed4b5de5fd23ce0e89330f6d2802bd2ebd9ce45a03d41a1f0037e",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_science_extension_v1/baselines.py",
+    "sha256": "33732232160125be0d7aa1159e3c6cea4182deb035ba2a057f96734065d8a12b",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_science_extension_v1/execution.py",
+    "sha256": "ccdb93e2ac8148a17e2ca3afac0c04faa935bf2b20c6f541dbc4eb379369d3f6",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_science_extension_v1/outer.py",
+    "sha256": "b739489858fa3441263ed32e1b8d4928258a18f18e5b2303d09d2de778771a1d",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_science_extension_v1/plan_arms.py",
+    "sha256": "11512d28f274c8bd9332f1bb84c73c9b2e0ae58c1bdf945c79fb5c61bb936e70",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_science_extension_v1/process_log.py",
+    "sha256": "06225c0f09f91beeb2e07c030adb8e8495a7ada5212367d29a36052e3e48dc29",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_science_extension_v1/random_label_train.py",
+    "sha256": "19acfb817bd487ecb8484c7aee0a7cfaab7085ae38ae083c3ec28aa3ac60a0b4",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_science_extension_v1/report.py",
+    "sha256": "aa0b9b37df68103de4e27b28f4dd294803073f70f09e15b5c5fd2c815f491ded",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_science_extension_v1/selection.py",
+    "sha256": "47fe1241da694c9774feb1e49bab5d8ecee6e72bd40e912e344fc588a0d301d1",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_science_extension_v1/supervise_extension.py",
+    "sha256": "204489b58885813c27df86734a80700e074ba3fd171d85f7b31221789a6bc3e8",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/mx_science_extension_v1/terminal.py",
+    "sha256": "08e02d31fe64e40fb038461452142ff66dddfe009bb6d0094778b804431c5603",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/orchestrate_method_x_mri_5fold.py",
+    "sha256": "73e0912fc758d77ffd7c5c79e815dd90a54fa470874fbf0ca26bfc2c6e7cc048",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/preprocess_mri_full.py",
+    "sha256": "408df81858b27e57ffb11b7536d48b1a9fb03cff2cd8fd8183964303f8fe0fdc",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/preprocess_mri_spm.py",
+    "sha256": "f78433ae6045a682bc2df3ec23e7ddf97c9910e1b754591ecc417e91f2aa33e2",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/profile_mx04_throughput.py",
+    "sha256": "7122547d843d05c8294db8cb6636b2e453a098a40a0e7e3199852a4a82657b33",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/profile_mx05_hybrid_throughput.py",
+    "sha256": "222adc0441ddf7d2b14a34f258c0f95e02bdf0d99096b7a4df323d44d4dc0885",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/project_runtime_env.ps1",
+    "sha256": "7ff08f64d01021325cdaf6d48552a6ee56884525d48aad357bebce3b30a05730",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/review_method_y_after_v5.py",
+    "sha256": "e53a7819b99d3bb400637eeb316014172b03c856dc711230b3e67da9444de303",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_3d_hyperparameter_search.py",
+    "sha256": "793922e87c86002704ed184735e61db593dd77d4e873e8f9d0e5cb50d8cb64fa",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_x_anatomical_xai.py",
+    "sha256": "fdc71ff6f9156da04b4187fb3e01758627db3dc776788092b40f4684cfe95ac2",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_x_claim_benchmark.py",
+    "sha256": "915cd9440d561bd9961be0a97c9de2c1a3563fc00a566b8f8872c03db85510c8",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_x_finetune_orchestrator.py",
+    "sha256": "42b7f55d9410e0a40b789f7d45b475177d98bb476b03d32853b0ba5012f89203",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_x_hybrid_orchestrator.py",
+    "sha256": "dcc2c7e6f2e2d5f51d1f2e0209b0611bf61ae52c2c37bf76615a5faeae00e313",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_amyloid_lmo_a4_v2.ps1",
+    "sha256": "3a272f85d3daef23ed4aab327853798b1488ddd44405e3d86fe0caaa3928cfa3",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_amyloid_lmo_a4_v2.py",
+    "sha256": "79e4e0e7d7c67ed7f4ecdcf4dccfd7bd83d3655ae8584da5f53e95382f31c8ad",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_amyloid_lmo_v1.py",
+    "sha256": "a813fc23a6b12703375e762b78035d4f3f3853cd971eb9847640269c520440fa",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_image_factorial_v4.ps1",
+    "sha256": "a41a5aef8ba9c4629fe0c6e25d71f0fd06c0c9ab699781fc87b56ee63a5a1144",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_image_factorial_v4.py",
+    "sha256": "dd85e862b8592bb007b547740665814f80e651e34055526eb548a832579d8720",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_local_validation_v5.ps1",
+    "sha256": "ac4dab47b7fc1f990dfc4537a073afbddf15a7da7fcfdfb24559b7c6c5e2320a",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_local_validation_v5.py",
+    "sha256": "c5d04ec6142d61bd7f34d3465354a38d69dfbc34a9fbc675c3411ae8e160c11e",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_pet_attribution_v4.py",
+    "sha256": "b635fdda2ef9083c3df639a5e1cbed04dee054bc12eada8af747c91353283405",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_post_eval_v4.py",
+    "sha256": "f6d4ccf24b0c7d202c3628d287b5d3bd1c2756882ffab74a80d2d22789b61f1c",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_posttraining_bootstrap_v4_2.py",
+    "sha256": "59d16549ce0b1cf928f888080873426a1528fbe6676f934a71ee38ff7a318ecd",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_posttraining_correction_v4_2.py",
+    "sha256": "4110332851c0bfb3b15d19d9be7bf46940a99638d9b3c1a748132f7f04dad6b4",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_posttraining_joint_pairs_v4_2.py",
+    "sha256": "47d396f279faa18107c4e9152785c716cb4e5e520b270f7b7e7c21d940a86352",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_posttraining_pairwise_v4_2.py",
+    "sha256": "d26be4271b11ede02686fdee0437c783d61c1c8d21e92f47426880dd1719b742",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_posttraining_scanner_v4_2.py",
+    "sha256": "f5a8303fe3f8c778764cc9e6447016334a6f739410e58b77cbf800d851c12caa",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_posttraining_science_status_v4_2.py",
+    "sha256": "de1ca4b0849c258aefeb99b66981e853c99a887e32fe784ee48f971b3db0944b",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_posttraining_selection_flow_v4_2.py",
+    "sha256": "22d5864e4df844fa7e0a49ff1140eee5e85baae43e6f6daa30bbe94904ff6f98",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_posttraining_xai_limited_v1.py",
+    "sha256": "d4cb0d702f0d995bbb62ae5da28c08cf7dd0b52352542e3b5ba9c2295794526f",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_posttraining_xai_limited_v2.py",
+    "sha256": "d8a531dbfa5e5c597937092e58b3a280076e037c5077d630e7a1be4776ffa553",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_training_v2.ps1",
+    "sha256": "6b37a9808356f8fe5aed39adea57318ee812267105ca4c09270fe900d7459606",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_training_v2.py",
+    "sha256": "0fef05d7b22870675ef26ccb535e6c0e79a82d372d03639f6840501106f6c013",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_method_y_transforms_manual.ps1",
+    "sha256": "761926126631fd38fcdc7c177e472bd64e6dfc56edafb837e262efe37eaef6a9",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_xy_spatial_validation_v1.ps1",
+    "sha256": "aac2f5d4109716f523ede8f82939996427b20958ea681a668ceebd2a0056faf1",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_xy_spatial_validation_v1.py",
+    "sha256": "70be611ee1c683f65b6d01bb5693f102b77fcaba0b431f9059f32e19512447d1",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_xyz_fp32_spatial_v1.ps1",
+    "sha256": "40dd471771f9d06dcc07cb484ceb58367e294a243a31b5e09d166b418d023c67",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_xyz_fp32_spatial_v1.py",
+    "sha256": "3542ca03b01c3bd1f2ee737ab4e808704cd721dc812d237a0b48272a5d30ffd2",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_xyz_fusion_postall_v2.ps1",
+    "sha256": "4e244d71fe5d94fb2676bb091f8afcba7884103e46032d8c4b02defc38b9b860",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_xyz_fusion_postall_v2.py",
+    "sha256": "a02af49191687e1b0b9828d6801b66a7e2ccceeb669fb3f60663cf1293c0da45",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_xyz_fusion_v2.ps1",
+    "sha256": "eeef8cf44b3ce0a68f585ac0952f66418f43721bb9c7b31e9041d61ca6db4b2c",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_xyz_fusion_v2.py",
+    "sha256": "f2a0806b0ffb315a5f1e93a774595a0645c1a6c8ef02a711d57e4c4d39425246",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_xyz_mri_baseline_fast_v1.ps1",
+    "sha256": "ba5844e7d1cd787836b6d81f5cc698754604a244064b4aa5397ec4de91bb0350",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_xyz_mri_baseline_fast_v1.py",
+    "sha256": "285b7a4eba220344565134b21ec0239ad45875fe09ec501557b2e811b81e0773",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_xyz_pet_manufacturer_audit_v1.py",
+    "sha256": "6d6f279bc293446636b17ee8b01ed06abe66270941f8ba914faf6e088cdac840",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_xyz_postfusion_final_v1.ps1",
+    "sha256": "5bf0cea57141ba21ae686c3066ebf9626978c2f0a0c4cc8ec856846dbe1e0b34",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_xyz_postfusion_final_v1.py",
+    "sha256": "28b308cf92862e6a100fe58dc3a29b201088e55601005271b1b50c3282e154e5",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/run_xyz_regional_evidence_v1.py",
+    "sha256": "bdb7e08c7ec8897b31fdb202635ba30cf99679ee6fbb9931546296abc1f642c3",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/smoke_method_x_backbone.py",
+    "sha256": "9f4b600a57d76b1b5ff1382ffe6d749fa6f2319cda3893522ba158d2d2fc7f4b",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/smoke_method_x_hybrid_variants.py",
+    "sha256": "300938cf131b3539a509bf2ce1d1619a0a688a6d3c8fafa2e30c97388c190598",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/spm_completion_guard.py",
+    "sha256": "1efe5ed28abd27b1430f79bb3318e14cc9f18f96eb894c8a685bef25c4b5876f",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/spm_preprocess_backend.py",
+    "sha256": "aea37b70516ab81347cdf9f0e17efc4c52579d29f1b4bb5975a56ca13381e4de",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/summarize_xy_spatial_validation_v1.py",
+    "sha256": "2839e7260fce07ce0c94f2fa4ac59a81a882d29ede842382760d7c803577c395",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/train_3d_mri.py",
+    "sha256": "35dc1303759461485c98b2a369b60ffc065225434b4900f72d799051c138352b",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/train_baseline.py",
+    "sha256": "185df25466c0516bdde7b331cb87757001e461992f0c6a5da5c4066f59d0c6ca",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/train_pet_method_y.py",
+    "sha256": "50142a9c38c14ecffdbed89fe97609817ca1e89dcb2ad2395019704852f14904",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/verify_method_y_image_factorial_v4.py",
+    "sha256": "799114b7e19e64df56395bd461f3a2b20687df56fcc131175ddda9e1e0da24eb",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fp32_spatial_v1/__init__.py",
+    "sha256": "e8bc5d3758bc5f10c324ae9ff3af27d8286cfaaead035c810d71e06d33c72f13",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fp32_spatial_v1/numerics.py",
+    "sha256": "f241d3c19a49a423176ad4949383d37bfb7963322b7ea0a264f7021d7039995b",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fp32_spatial_v1/pipeline.py",
+    "sha256": "159fbef38075e0eb453d7f179e3c28d282156c284684ed207fd3eab6bc7149a2",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fp32_spatial_v1/resources.py",
+    "sha256": "eeb49851d96696e4590258269d1fe0a0fff4611661cd68f616dcf7189fecc2d1",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fp32_spatial_v1/runner.py",
+    "sha256": "020a5e928bacaf72becce4b9ce1e9278c67549874ce24664acbc1848df3db2f6",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fp32_spatial_v1/spatial.py",
+    "sha256": "f87287d7780442f70467354d22e6b97981e069554350089ddb84e0209dd0a3d2",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/__init__.py",
+    "sha256": "e545f971e5749802c54958c86158017c471a8cb66ce56150af8d739679cfc8cb",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/audit.py",
+    "sha256": "a8e307e4a1b7259e2bd69f23021ce79581c1f3a7b61ed0ce513194a008ff4015",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/context.py",
+    "sha256": "3b7c981e8ff1e7d427e1c1bbcaafa01b18799fe123c1ef25f7407f777ac0a572",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/contrasts.py",
+    "sha256": "5a90b701072f587853296d3d66ceb31960bc021139a82fb93b857ad6bb551e31",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/core.py",
+    "sha256": "c6c90cbce15b966b0b396d906a967d0fdc4ced9c6c65fb19c188720e9e37d8e2",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/experts.py",
+    "sha256": "36866912e69dd3834a34aa8a4275a0dbed9b6c387819c8fbf439eaaafe308ca1",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/integrated_gradients.py",
+    "sha256": "50de719dccf1f5c4417e21228eb0659c1619a46f650f081a0de086880d2bf3e9",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/occlusion_maps.py",
+    "sha256": "38bf2d2bfed7cea148658d0256c80a0b28078d2b68980fdc2a519783e3f24568",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/release.py",
+    "sha256": "a55590de59d1ce3328d059b7daa19f10246c14ded287eae0edb3527749b73f7f",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/review_cpu.py",
+    "sha256": "d719ca2dbbc700e55a03491a382878a44353a6893b6b443089c3e3e80aecc27a",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/robustness.py",
+    "sha256": "fc9fd618403d06a136ecb916a963396fa68e5b70fa636453941fcc87e4497339",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/roi_fidelity.py",
+    "sha256": "123bf1ea5926b59f5c54e67947e2d2a40f0aaed7f1b3866827f380a3f5b9578d",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/runner.py",
+    "sha256": "be78ed7bb1f55db652367eb9908e63f03647ce99232b6e3e187e73eb250b2275",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/secondary.py",
+    "sha256": "6a7734e9e9953c980dce836986c0d2432ff000a9f654e1e54bd25286cc346532",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/smoke.py",
+    "sha256": "9c790f704620ef5cd7f414b2fe8a722441c82da74fdf477f135ed685fa72db77",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/spatial.py",
+    "sha256": "21d982ca6aa8abcaebc13d6a89f18bee98c70c11669220bbd44a5d6a3536f1f6",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/spatial_target.py",
+    "sha256": "06a6cacc1b1f122c5a37b91f488059721282e4c297ed3ed43197b2d213b9b78e",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/statistics.py",
+    "sha256": "b1ea51fb2c0031103b4cb17a2beaf831d3b8ec6baa120c7e2dd23f8b40dd182e",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/subgroups.py",
+    "sha256": "3f312beb7e8f2b503f272d65bbb1410fcac88a7ef1d4867e76043dd922536258",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_postall_v2/supersession.py",
+    "sha256": "373b32580eb7148171cb6a2c3ccf371d4e5e9121cdd01e5eac43c7289fe5564d",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v1/__init__.py",
+    "sha256": "60346926362a03b30533f005d78e04f006067b8b334dd34e7240ea757f76fcbf",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v1/audit.py",
+    "sha256": "02591441bc804ec9f8b9d7ec50d9fd3b1a177deb7a89cb0c1b52a864de253c06",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v1/baseline.py",
+    "sha256": "531786dc828bf8606ad4cc75793504d43d9e0845b7ffa6ba796644c9665b810b",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v1/benchmark.py",
+    "sha256": "ab17d293cef96d316058bbc6a96b27138b2f008b373e9ccd24136ec57ddc39f0",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v1/intake.py",
+    "sha256": "1294b80c018b70617f093d0367f846f11c0bb14e787fd5e3d41d612c2ea2b020",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v1/loss.py",
+    "sha256": "c009c1e3d5372cc3c3e243cf9e668ddddb22adce18f34d9a395e95be4ca07acb",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v1/mri_cache.py",
+    "sha256": "adfe22ee34b53b6dc0cfe9bb122bfbad4040f78a05af1217ccd079b4a926387a",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v1/mri_training.py",
+    "sha256": "53a86da2f9ace3604e75012a930631da7e702f02ed847316518b7536f26dd8cf",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v1/pipeline.py",
+    "sha256": "6a3e37404b08d9e9331c8661f69a62498632e5f3a58e566dde0240263367b306",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v1/report.py",
+    "sha256": "c6db1d134e67c782132705a75287c33de37852badddbaf0540890ef05e27a2c6",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v1/runtime.py",
+    "sha256": "d0b19ac4429901e94c703755f1ac0b5f70c9cf9e032a7a19d3c7344b9f0b9b60",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v1/statistics.py",
+    "sha256": "a6fcf4be965905f1620b7b902d8b3824d3fafcb8e2a0dd8d87cab5d37423ad35",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v1/store.py",
+    "sha256": "79a89c7a0f9847c2cad52f6b27c49986d0571ac3caeb6a3ccdff1560355f3524",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/__init__.py",
+    "sha256": "a39e7fdcf54f0d4afa0575aad877df8eab5c63b40b2d399910e87f3c035515bb",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/atlas.py",
+    "sha256": "1395471eb983fdb52e543325e99fb30ac39fc9236ab44bd041ad266e7c3bb4ba",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/benchmark.py",
+    "sha256": "847959aedbba95bb76b80117dea8601fb6204ebc96f5ea9ca53ac7353dc60326",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/data.py",
+    "sha256": "71e73da3a78c593c65ee21d6a0b66ef5278d95930790b7b7d88f9b748356c4ec",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/endpoints.py",
+    "sha256": "de0179b4d1ed8041c9293983a8439046c08b0b051b79e8eb743b09e26ed2894b",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/feasibility.py",
+    "sha256": "dbcc6937947000abbaf36f87c10f9885e30651eb136584316a82927ddc94d551",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/inference.py",
+    "sha256": "ccce50b87b460fa600c5614c1c8e1d8130f69f007145560ab77905d246510a93",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/models.py",
+    "sha256": "37cb540f38bdbf04b84db4a1e2492bd6d221431aa2ab3657b3b6a5d470fce11b",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/pipeline.py",
+    "sha256": "d57c22bab4945cf848002c11de8b29eaf34ad82f47b533bb61cbf00ba5996561",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/privacy.py",
+    "sha256": "24eea927131834667899ac907f308268f9311b2dce8c24d6758c996bd10666fd",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/protocol.py",
+    "sha256": "998673aacd36edcac38e7010268debbea719006e99cea0c9aaa43f163a9dbb90",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/reporting.py",
+    "sha256": "a241078bea00b95fc6ad785941e89d7614f6705e869a92a32d0135356522523f",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/review.py",
+    "sha256": "833a80a7c1f0cd6ed813cbeab20afa7cf213e4a98b43be17168e041040ff4b2a",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/robustness.py",
+    "sha256": "88acbe06d4130990c443f5798655e4dd026a5ddd5fbbf8878da1b52511fbf8eb",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/runner.py",
+    "sha256": "00e31ddaa1e49921d0be9f15fc2cef2204786991bc44fe47c4808f79171039f1",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/sensitivity.py",
+    "sha256": "09c9150d8ce05a6cbc096c44e7762f565f7a0ff981fb9df416e23ecfc9aa08ed",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/spatial.py",
+    "sha256": "08cfbbbae2ec92a0a52f7d4d546cc23f1a576fb9e1036d91f14178c6b795afeb",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/store.py",
+    "sha256": "08a0d91e08d1a3dc4d2f6baa18d9af7e86227d169aeaf8ffcaa9cd52390e4493",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/subgroups.py",
+    "sha256": "43ae906dfd1e1660c78ff3e4f4f66ceabf50002fef1796452240ee5b5ec7f0c0",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/tabular.py",
+    "sha256": "5973991782aebe45686333ce3bf3e05c20bb0e9a6f077fbd03d0cf9ffac63c04",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/training.py",
+    "sha256": "5526c4083380c0fb2dcb48d0a1e38c1d758d96bd91f5f153688e69aed5f1e271",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_fusion_v2/verification.py",
+    "sha256": "872a938854b205690e2c83b0aff889bacbb96b4047b9e824bb21ff1a319be639",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_pet_manufacturer_audit_v1/__init__.py",
+    "sha256": "2f7b282be15f533e870ea4e32ef32ec8e7645637d86a6af60d963c7a908c1b79",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_pet_manufacturer_audit_v1/access.py",
+    "sha256": "9b24bad6d10895630ddc41e5ca6a5bdbcc828805ffc0471e4d83d8e2d8b767f7",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_pet_manufacturer_audit_v1/pipeline.py",
+    "sha256": "410a4a4905f033d42ee645681cc57d87d50c2f43854a19be546128385cca4a4e",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_pet_manufacturer_audit_v1/protocol.py",
+    "sha256": "5aaa2d5e70d7e7b7639513f8289160d4bfd0a17b2eed0ffffc077ad8bac40837",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_pet_manufacturer_audit_v1/reporting.py",
+    "sha256": "5f7642c37db7970ef8dd5a4c3d355f3a3c90e16b40b144c52ed0d75d514f2156",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_pet_manufacturer_audit_v1/resources.py",
+    "sha256": "14714006fd190d16f8058a891725e093325d187967576bd195c7c12cebd8db0b",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_pet_manufacturer_audit_v1/runner.py",
+    "sha256": "ab0bb0e4c4bcb2a3d7157dc3f5f738503e9656c85780646b2b3c69858703b4ad",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_postfusion_final_v1/__init__.py",
+    "sha256": "a95954dc682aee437bf95a661952c091f3b28e2919b3a885a4c522b02dc113f2",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_postfusion_final_v1/closure.py",
+    "sha256": "487e76f9f7a51459e0da39348ff14c48cb3955166e64711e16409e86db907358",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_postprimary_v1/__init__.py",
+    "sha256": "659081e9a1e88426f3db5a6d939cbbc2b742eed109f7635c635d42958ee57e15",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_postprimary_v1/context.py",
+    "sha256": "040a4fa79598c03fd4e7e7fef9500a22b72dd21966a9f68988f2bcb36e743110",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_postprimary_v1/feasibility.py",
+    "sha256": "1d1eb9a0df43539a65ff0447fc4f93bd570a07f5aaad0f2aeb9d6111c662d3e6",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_postprimary_v1/rendering.py",
+    "sha256": "10e9e5b9808971522885ef373e7f22ed46d7160c1337cd08a5531f8e5861e932",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_postprimary_v1/reporting.py",
+    "sha256": "6bca8e280afdff1ef9c371bc1c8b6f019a88c7420fc51c80e39ed32a60c74242",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_postprimary_v1/spatial.py",
+    "sha256": "28ac98900c19c5e42ef2331db32ca153e8e38903b143987eeeace92dc6710a2a",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_postprimary_v1/spatial_run.py",
+    "sha256": "1368d3dcd73fb9c87dbcf516b8b3a90dfc764ff7275f3d4fdc1f69067e27755d",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_postprimary_v1/statistical_audit.py",
+    "sha256": "ae9dd81ee21b343a716132a5a7b86a917b9f12dd27ad061856efe3abc0e0543c",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_regional_evidence_v1/__init__.py",
+    "sha256": "c285614dc70f50f643aae6f5abad5f332b69a3449eee60b8c75ca18b1abf7968",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_regional_evidence_v1/reporting.py",
+    "sha256": "c68691a815c460f247cad0597d291a43ac4e07a269c294dc04bbcef6a686f716",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_regional_evidence_v1/runner.py",
+    "sha256": "1621160ca08c9f7b266cafc7af6c6ba4ebd405193a007ada8b13c1b37f42ded9",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "scripts/xyz_regional_evidence_v1/statistics.py",
+    "sha256": "671b175efed7a26ad2dadb0c78fc9cec298bf5463e5bc8f2fedec40e8a718948",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/__init__.py",
+    "sha256": "8ae5879c6426d97ab5c4a6d1fdb46bdd37172e0e2754b66af5920366971e51db",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/data/__init__.py",
+    "sha256": "6e136e279287004bd08570bd344263cf93ad9f138f84f999363867a53ee9c8f1",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/data/a4_schema.py",
+    "sha256": "ca123b6ec6d273ef77b0c822ae9fc8bcc67a23669d1b8b1c11b20052a8fd57a8",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/data/cohort_audit.py",
+    "sha256": "c55051cdcd75a33ff161925cf357440cd22eb31ec7abf8dc8ad1ca3c5c38671c",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/data/combined_mri_cache.py",
+    "sha256": "c7f8e7f2afe8ff48eb52468a41a307f4143b38c762a224026f726a768530baec",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/data/label_policy.py",
+    "sha256": "bf7d40450d199e66fbe4acd6eb91b58e69d98e3cddee09f47b4df249d2eb7b94",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/data/volume_augmentation.py",
+    "sha256": "83865c507e557ffba1c9e5e548cf74525542d81d62dc8d76d312875225363f47",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/evaluation/__init__.py",
+    "sha256": "41efdf2f3fcbee5018c7aa68f332eea8d4fee99080eca44a036f082ffaa09fb4",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/evaluation/bootstrap_ci.py",
+    "sha256": "f47a08e0fa28ce5de867a09a16ed81fde45459da901a9f9f3917e654aa180fa9",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/evaluation/calibration.py",
+    "sha256": "03b3ae1ef2bb21217cedce55880695fa9925faba4ee7580e8fa40968cb72638d",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/evaluation/cohort_probe.py",
+    "sha256": "afcd4d9c90b4cfd4a63c06ec8be5be103dd23a40e91e104fb2c74d7c7f9f6508",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/evaluation/conformal_prediction.py",
+    "sha256": "45e0fc3e5968ec8cafe9d75cc61261e212c4079bc11b038d2d5a40c2d040d796",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/evaluation/matched_benchmark.py",
+    "sha256": "a99fb85154c990351e26176f42bb999f313674a01190ef06d5c4889b0883a408",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/evaluation/method_x_battery_gate.py",
+    "sha256": "f928f1f0ed894b5a6b32a5a6af0778e0b58ea590f8971b386d49d0c41a2e74f6",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/evaluation/method_x_finetune_selection.py",
+    "sha256": "d99f3842ace3a41cdaacca2c4ac5f1566aced8e8bdcad2798cb0339619a46418",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/evaluation/method_x_xai_forward.py",
+    "sha256": "0a9b35b144e6617d9b1f904635a7235e4a92bdc07dfe644100bad555754cbe50",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/evaluation/signed_spatial_validation_v1.py",
+    "sha256": "b26cbdff4848748e46a93c5a55ca2b7da80039e0b8d041beb010675a97b318c1",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/evaluation/threshold_metrics.py",
+    "sha256": "3e4fff097679239f07878f262257093c3ecd3e03231c25755725ea7165cb4cc6",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/evaluation/tta.py",
+    "sha256": "fd654941667bf947e512e0b31b915043b71281011b5dd203aeea05dc70a50e33",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/evaluation/xai_regions.py",
+    "sha256": "e3f99fb17c199cabcb6a388f4cfb86a2edb1a46af023fbdf4605c588b300dfa7",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/evaluation/xai_validation.py",
+    "sha256": "df8555f17b84763c5946fee0498f7d53eb675cb5cee800739a5b92e4d97e1373",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/__init__.py",
+    "sha256": "024c205d3b11376469c514e5f94db6d55d88e25402622c776aa5857582be1f62",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/atomic_io.py",
+    "sha256": "82f2a57d5d71890f1cf5a2f92fee0b3c26aa1485fbc3f15a08d0393859225533",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/branch_readiness.py",
+    "sha256": "a8643fe0660f9ae0efc8b755ee841e9adee9e8f675ceb6e45e65ce7c362b1ff8",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/constants.py",
+    "sha256": "782a3c7e114cd1cc7742143f7f639c7290febc87ed25453c8ee0f8ba83e338cb",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/contracts.py",
+    "sha256": "cbbdc5100f34733a32b6f4333ee6cd2ebae9568b9961ec0d07ecada1214b5fff",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/endpoint_builder.py",
+    "sha256": "d6ddc539bfac7d09b1d2a67c041e838734d9db5e629e852df0303c17346aebb2",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/image_factorial_orchestrator_v4.py",
+    "sha256": "8bf50a4a54ce3e5b3682d28107b9de99fc584917cbd1bd2a29c5969eaff9f06b",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/image_factorial_reporting_v4.py",
+    "sha256": "510441c9d1029a3c3dfe38f2376972b86c8c875725cbf200669d545be80189ad",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/image_factorial_v4.py",
+    "sha256": "49f8d7fa675c0dcf952b11983f3cfcd0d43c41c82b33a82764cdde56e7b0ac5e",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/image_lmo_v1.py",
+    "sha256": "ced94dabe5ec1972adaadc2405350c387385cdff351729effdf54c39485d1c63",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/image_modeling_v3.py",
+    "sha256": "4af0ab1591f56a06dae1f5bc9acd6c90b7a2a81dc29bdbb49cbff4d6e0e5ecf8",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/image_outer_eval_v3.py",
+    "sha256": "23e53e0d4119bbb07491938107183a77a4d20ab1f8d3b494df59c68ce2ca2564",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/image_outer_eval_v4.py",
+    "sha256": "8ef56c7902944ba4b0e4f18ee7d6e2920617a3eeaa3795bebf6ffa02275acf15",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/image_reporting_v3.py",
+    "sha256": "643b7fb465826ae5c7f01d2104b02afbbe407fe30d6d847f83ef2647da10558f",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/image_robustness_v3.py",
+    "sha256": "ccbb340857cbe96c9d8520d762873d5b9287fef91ed9e9d9991d0b1bd46aed89",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/image_survival_v3.py",
+    "sha256": "e255adb297e487e7da15ffa88f0295656b4da8c779b985df432f0ccb997a0c33",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/image_training_orchestrator_v3.py",
+    "sha256": "3beaec31e5e14bd9a7faac8f36f10efa362c66104f72d86ada89bfd0d359b586",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/image_training_runtime_v3.py",
+    "sha256": "2a15e7af5623d4cabfb1c726c6752146443a50dfa51deec25a8491fa39791275",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/image_training_runtime_v4.py",
+    "sha256": "532687a025c97c4494533227d888517963744b35e0aff934be24119e66365d32",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/local_validation_v5.py",
+    "sha256": "141f5b52ad987df3a6a449101ac4f836213401e086ea5fbe552f83080ee91498",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/longitudinal_pacc.py",
+    "sha256": "7504c493b858699b9e2e7273cafa55782fbe4271ea6705041ee1f4cdf5e454c5",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/model_family_adapters.py",
+    "sha256": "a79ecbd457c18b3a15aabaa9f2989a9ea7fc81b384f22e87625c52e87b89322f",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/oof_reporting.py",
+    "sha256": "ac681bbc627b987e69071eb4a0b2749bb49b4a38cbb45a1001e8315c92a4fe06",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/outer_evaluation_control.py",
+    "sha256": "3c6cfb0fcd92300ac568031710ef13e9477ef0aa520ac496a688e38b4cea7d29",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/pet_attribution_v4.py",
+    "sha256": "624241deeb3f6fb46c9ae95cf7babdd6706f132420010e6ebf506c1217176865",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/pet_augmentation_qc_v4.py",
+    "sha256": "2242236f7247c1cef2a6a5d7060bfc03234949ad78792c21684cd544ebde2ccc",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/pet_augmentation_v4.py",
+    "sha256": "1fe9e4020621ada3ae76377c077a7365ef7fe90c1f9b737e39beeb6a94b7b2d3",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/post_eval_v4.py",
+    "sha256": "0d35d9a7feadb7a8f1206e26cd5baedd98cf80ff0d9ea01218cf4dab2434afa1",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/posttraining_bootstrap_v4_2.py",
+    "sha256": "e7866ced8e8279923d3aac8cf03239369f8705b0034e60e75e74c555bda05266",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/posttraining_correction_v4_2.py",
+    "sha256": "6b256627159f50c2971abb11efc5a8d3c16e5d3628a273f78a922c40e992c536",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/posttraining_joint_pairs_v4_2.py",
+    "sha256": "d1456f62b765067403abb1a8e4782b64cc8a01ac4abb796c99f99bfe9f3a8cfc",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/posttraining_pairwise_descriptive_v4_2.py",
+    "sha256": "07a6f5f71b1cfe8565bb0446bdc5ce13de523a198ad4c9160549fc913cd48f13",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/posttraining_scanner_v4_2.py",
+    "sha256": "f2ad3bb9c303f31a1e4c4a8a029fb52af39ba68cc6f197c0e27bfbcf95af1469",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/posttraining_science_status_v4_2.py",
+    "sha256": "0254660cb54100ec61f15e9607be8d3781fbb7c3f30c095424cb66d94b25ac59",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/posttraining_selection_flow_v4_2.py",
+    "sha256": "a45581553c7a22e066aa9a172f495a4c29cc8e3d54e4e6596f7290d4cb54ca56",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/posttraining_v3_incremental_v4_2.py",
+    "sha256": "c3cf21727101ba9da578bebdf3c6d48bde99fcd5e8f476f676765c9746b76580",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/posttraining_xai_limited_v1.py",
+    "sha256": "3c016442462f6543ca3b8f4453c31273112bd738e1816ae69ca4f56750283a3a",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/posttraining_xai_limited_v2.py",
+    "sha256": "40e9efc36b844e9c8c8812d786fcc725bdb540bfeecc1b4e463db4e892325e87",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/pretraining_contracts.py",
+    "sha256": "1bab6422b0a511b01f0fedb806b5d9db7316ce8e32249d9eeed8bcb0e7ea1fe2",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/privacy.py",
+    "sha256": "7478189bec37ab279503cf3844db309e7d240d3e5793234ae7f1e6324ea04f90",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/process_guard.py",
+    "sha256": "f082e63d766025f4e423e83adc32ef195e076813acd5538784c58e5ca107710f",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/review_receipt.py",
+    "sha256": "878f8e8f8ea79c08516129eedcae14f1038ac8762a87ab47a9d332fba8cbea1f",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/science_gates.py",
+    "sha256": "da8ec51b71a30bf374412a1d56e79f27b038f684fb207ea63d5bdfef65b24539",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/software_contract_v4.py",
+    "sha256": "bcd17be746b2107480995c904a49f5479d813a1a80fb19b875125906f93a588e",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/splits.py",
+    "sha256": "5e0f27a145bc8d30421f44b36086eff15857e7c57f5283718acc709a553f5343",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/strict_yaml.py",
+    "sha256": "f12c508642ffc8b607191c5239022d912373ace5bb04ac58cfe01d885c3a97e9",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/survival_models.py",
+    "sha256": "744d9b76c1e51d7c75604ace063760ec2c921611009ac222cb6a54205bcfd192",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/method_y_revival/training_runtime_control.py",
+    "sha256": "8c5dfaf50658785b479b20261882881e254e38bf0716f8cb48eae16525870c2b",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/__init__.py",
+    "sha256": "f34b19a1983a79c9693c1752e552ff873521b98122abec0a8adb18a5083c80f0",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/backbones/__init__.py",
+    "sha256": "e07eb4d5a26cdc91b934dfebb441b609f15a501bf33de75175dfffbb70e7e291",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/backbones/amuse_x_hybrid3d.py",
+    "sha256": "c3176a8d64646b3f63f2f5195c852d09f97e83c7a506c976b86c86e18fff6531",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/backbones/attention.py",
+    "sha256": "c14bb9be53734ee67c4bca389f4d6fc6a9a705be8a859f9ebe99ff5ac50358b2",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/backbones/backbone_factory.py",
+    "sha256": "3b06fad884e9b191bfc6e18018a480708264b71c5232cf846234507f9e542e15",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/backbones/deterministic_pool.py",
+    "sha256": "e3979b3373841b7d8cb5c84f01a97f8ab77d8497760e93f7283b500ab5694208",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/backbones/lightweight_3d.py",
+    "sha256": "f158c57e75cd81363fd8ce6be38e8231119f75c3d967acc69adf79a1e55779b9",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/backbones/modern_3d.py",
+    "sha256": "d2f288ef246f331f858c8cf7fdc7c90dfe21c9500902194d51d9a13d6204d095",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/backbones/pretrained_loader.py",
+    "sha256": "f4d85a1fce5ea406aae4a3b07ef20d36a65a3247f964ed37e4e466f6d924455a",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/causal_intervention_block.py",
+    "sha256": "3e83f456bd4c717eb04c8cfa1b528f60063381144e4dbfcd6b9836bab404f7b7",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/fusion/__init__.py",
+    "sha256": "570f07f4eb70d2baf95e4e8843cd01f4537b7d9513c4f678bd9b892a114363f4",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/fusion/amplitude_phase_fusion.py",
+    "sha256": "0da44754bb2d2a12b75a5c1b1be00f0e1dc03cc434b3e19fe614e4e9698ff87b",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/fusion/bottleneck_cross_attention.py",
+    "sha256": "e7b1a6edc0931a75bc0f18ae8ab53bcc9ef55f92f3f2916494e5c0760a71e9f8",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/fusion/channel_gate.py",
+    "sha256": "27737174455295a36c326dcfdea6919c21199d2fdd74166edf89245c8f441146",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/fusion/conv_feature_fusion.py",
+    "sha256": "45ee32dea40d8e330f882a92f34f43ee4df4bd698bd3ed081b42439381b3085d",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/fusion/healnet_fusion.py",
+    "sha256": "52db5340b947e191fb11be0201aa5b5af687b50f1c7eff30cf387e0e55b4f7be",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/fusion/moe_fusion.py",
+    "sha256": "e887f98300ca48ade7afd8218f3e5c916bdf7fa758beb9b84ae2c4e1d5ffa176",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/fusion/registry.py",
+    "sha256": "ec5e6531087ffdca90180d12bfe2c3dd83f8d68f68fc6875cdffcbde03d40967",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/losses/__init__.py",
+    "sha256": "b3eaa8d24d8307208cc850467bb173b60ba47cad3287e5e8c72adf6adc1ed8f8",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/losses/contrastive_alignment.py",
+    "sha256": "50fa5031170f6510d13f84726aae66ac1d22ffb64f8870c36ed59aa4641b4fc3",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/losses/distillation.py",
+    "sha256": "20bca7f6fc11bf86e8dd7036b5acf3f4b1381069596341ddafc5f510ca3e4fc6",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/losses/evidential.py",
+    "sha256": "de2f6b28b19555db48dac6f72cab6edd2af73dbec86222fccce76b9ab5695a67",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/losses/latent_alignment.py",
+    "sha256": "a761795290d38b3b25be42da98a871757b413cbf28fce5e72f79d5a3de0e1256",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/losses/phase1_losses.py",
+    "sha256": "0e74f77e052a5074461b30175688c2605a8107055453541bedbc996feae65cd8",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/losses/phenotypic_contrastive.py",
+    "sha256": "079a23799d5b5cb47cfebfe0486529660f3187a8c70f2f22e80024b2821bc53d",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/models/losses/synib_synergy_loss.py",
+    "sha256": "ea3f3e81b216e3ccd6674942abeb127d03440245be839b264e979ff9b3d4a41f",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/program_governance/__init__.py",
+    "sha256": "a4c516592d0ce8e55b989f265898d05a67501303b76846fa521867cb4581aa67",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/program_governance/method_x_completion_scope.py",
+    "sha256": "20a9652e09b15fbc27da2b4f642ac35a7f7e1cc509875a4ac0407914e7da478a",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/program_governance/method_x_live_reconciliation.py",
+    "sha256": "63df9794621e0cd222d353a7cf5fa3e6e4a663c2ccea38bcb3d00833e602cf77",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/__init__.py",
+    "sha256": "302d43deb04d6a577d68498c603b3ef5983a5854f625e25a9a7d9cf18b468c6f",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/checkpoint_staging.py",
+    "sha256": "532f3185a63785a843f444bc36af7ae0869cd9bfd257f1a905a23cfce55ca79d",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/method_x_autosupervisor.py",
+    "sha256": "9f7c35ff8675ec4a51b637665587b91c4b18a944b61c368b7b50c484ebf54119",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/method_x_finetune.py",
+    "sha256": "8acfffc96ed6b9ccd896db8ea17f3ee06a2776cedc5e2450d0e5d07a37e6d340",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/method_x_loop_guard.py",
+    "sha256": "5ef686b2bbbffc37555835f865e5876d6caa2366e9ad030ed65e7ac5edc9ec41",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/method_x_outer_compatibility.py",
+    "sha256": "00062eab4d39188864aba6b3456095d5a434d0fa1a2ba5d440b98dd52734f538",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/method_x_registry.py",
+    "sha256": "4859bd5d69920202a1f650e2de20b48502cefe01a4ab3f50dfb32427e3c0fbd8",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/method_x_registry_lifecycle.py",
+    "sha256": "8c9e071d4096804083d981cec193e7dec7e7370dbb37edda02daa5bbf560ab55",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/method_x_repair_gate.py",
+    "sha256": "614e402d4ef07ca0822e4c480ee64c95fbb8ff05ea50d3c5417c19708db3db82",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/method_x_resume.py",
+    "sha256": "687c63ee5deb9b027dfeaf2af556a2d60a9584e895b76d60ab80d6728623660d",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/method_x_source_compatibility.py",
+    "sha256": "6a0c163baea314725e525cfce9a10857256abf0ac1e27e1a43d3e8fc21b41f1d",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/method_x_spm_snapshot.py",
+    "sha256": "0b492bfe4a1b9ec98ec690e3c84aec14d0cf9b182bff397bcb02183b94f587bf",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/method_x_stage_maps.py",
+    "sha256": "e85498f725d508d3b072cbccfede2681dc27838f35ac258b05906bc7955f74da",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/method_x_stage_registry.py",
+    "sha256": "9ac3e19cb4cf19b39963ed9e605785022b0b7aea1189d6d0fc6dff776b9788c7",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/training/storage_locality.py",
+    "sha256": "031eef0abd555b6b17367896f95986a9f030b0301ca5b1983efb3f6719207af0",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/__init__.py",
+    "sha256": "b1889dd76636ac4f0500078d8bfdc713987755e20dc8746e0be28baaa5fc59ad",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/artifact_provenance.py",
+    "sha256": "2cde405eed75f3f1c58b2b260498b057db1dd76f1edb8461f018b9dfcaf5df3c",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/cache_qc_filters.py",
+    "sha256": "2e25cda8eb45c59127da780b4a5791638b0c9e32bfc72b0f4a18064e6d425b9b",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/dataloader_config.py",
+    "sha256": "89108304599d11351f3b1727bfbdc56cdb7f2aa24b18ee12b7a532994ac01dc8",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/final_claim_policy.py",
+    "sha256": "c30b89f4fed4b71c2f57b34c4430ba6378f9b795378ef16b1d65ed9fea45c73d",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/io_helpers.py",
+    "sha256": "3d4385cdb72dad16fcbd5c517d670c72d37569a3df3a62164ea7062594d76a2b",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/pet_manifest.py",
+    "sha256": "28ad69ad061bcb0d6519301a7fb6cdeb8df7810cf32d01dc3e4d9bc31656506e",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/pet_path_resolver.py",
+    "sha256": "0eef70e6d385891b3a93385329761546b2ed273bf675e03114aaed21bc308648",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/pet_spatial_qc.py",
+    "sha256": "b0e9f1ca08a27fbfbf2ee08c9301e82c3bc3403247f9225ef6951b19f475c93a",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/preprocess_quality.py",
+    "sha256": "ea445a33b892a9d8ee2a20f623d3cf0ac51dd5260086827d72bb07fc054cfe31",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/privacy.py",
+    "sha256": "5055a295e23c5632e5f6e0413a693976959cdbf51c783327854a0b3fdaa174fb",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/reproducibility.py",
+    "sha256": "6a0b87cb528efe09303144c2269e2d4af7c4afa64b5b290bf174e6575ca27564",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/resumable.py",
+    "sha256": "b8004b6995409b8bad7204c99b83a4c418debf3c7bc82dea51820951eb819a02",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/run_manifest.py",
+    "sha256": "1a3a13f42c2e833085691c1d5da46d5ff46547d8ff88d3bd3ee9764a13c4a212",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "src/utils/state_manager.py",
+    "sha256": "5fa1c713b23b8e59c5850a416b58897b8addf31bde2a76b800fbdd60cf182e3d",
+    "role": "REQUIRED_COMPATIBILITY_DEPENDENCY",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/method_y_revival/test_pet_factorial_contract_v4.py",
+    "sha256": "b15f0a283a15f540b8efe4bc665646f16c7d54f2dc7908828563f4958dcab248",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/method_y_revival/test_pet_factorial_runtime_v4.py",
+    "sha256": "f095a88e163dc5128a7089232555f051e6ef047a361ceda46096e289caa15156",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/method_y_revival/test_pet_factorial_v4.py",
+    "sha256": "ff092cf64c35724dfba9a6a4766caf819be2b8955042530df5bcfa119d7610fe",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/method_y_revival/test_post_eval_v4.py",
+    "sha256": "7a1e2238de9e69f12853ddabc2b12f49931d0a395d5fe6e3ffa573278a3a02d1",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/test_mx_fasttrack_v22.py",
+    "sha256": "96cd55906c76cf75b7654fbb8133063d9e1c6867b60703da37b87c386115186c",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/test_mx_fasttrack_v241_gate_repair.py",
+    "sha256": "9f21820fd609ef2a3352c2476b27ada888cfa9ecfd236235a0cdd46e1229cb82",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/test_mx_fasttrack_v242_checkpoint_projection.py",
+    "sha256": "240b91a2dfd8c52798b74ba4e1fbbfeb69131f8a7996ec17c53259eadad98189",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/test_mx_fasttrack_v243_xai_resume.py",
+    "sha256": "7b45ec7c6895e3891f0f972bee23731b59eabfd927e0effa87f4cc0ae9ecf6f4",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/test_mx_fasttrack_v244_xai_eligibility.py",
+    "sha256": "4685847a7813e9b70a48c514b8d918ffad262c59c28b6733fceab23b7d0fa455",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/test_mx_fasttrack_v24_resume.py",
+    "sha256": "ee02ed82ddcf4964d23be5235e69eb2f3f953add691c2f3518663040bca4e954",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/test_mx_quick_validation_v1.py",
+    "sha256": "891d531f3349541e6d8df01ef60a6889787280b04b2f5eb8133c244c8b7740b0",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/test_mx_science_extension_analysis.py",
+    "sha256": "02602c12430cce437e8bce664ea901a7fec5aa0c39f7573c9190c9edc9695c37",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/test_mx_science_extension_baselines.py",
+    "sha256": "3256ee4df4c231a32c1f48fc5725c4c34c90688dc783f873b6068454775b9ae8",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/test_mx_science_extension_day1.py",
+    "sha256": "4cd4691f62c410d2c273f086005118357704eac6f6482296ea51f35d25af9159",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/test_mx_science_extension_execution.py",
+    "sha256": "6211e4f5162fdcf5fe656090f7cab43ca6faf43189910476de351f5dfc20b74b",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/test_mx_science_extension_recovery.py",
+    "sha256": "a8c7b644255d1dec37373d362416a92d4adb1662e7d7907f86dba1bb0cc12e06",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/test_mx_science_extension_report.py",
+    "sha256": "48b6c80f74f7605d6a2e647fb5125ca155542388c3989415c0df8bcb73c0c4c7",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/test_mx_science_extension_selection.py",
+    "sha256": "6da783a252bd4b3b2a8de6750c8f1b3ef695d46dce68b41345430ef87a75d5e9",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/xyz_fp32_spatial_v1/test_precision_companion.py",
+    "sha256": "fb15f2e0fe9b5689a3075983bddf432c5f1437c13b2f59838d0612daf7fdc06f",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/xyz_fusion_postall_v2/test_review_invariants.py",
+    "sha256": "59976894d615c7073ec618be748110bb6a198d5cd50c3c395ee05be4528f86d6",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/xyz_pet_manufacturer_audit_v1/test_combined_release.py",
+    "sha256": "f45fae3cb0b08417b45ce1518abb1069b7006432750a7f29194fc80494fa79c2",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/xyz_pet_manufacturer_audit_v1/test_manufacturer_audit.py",
+    "sha256": "287b7dc341ee4fdabfb05226915abecc1f7c11d7c1412be1099a6de067e570c5",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  },
+  {
+    "path": "tests/xyz_regional_evidence_v1/test_regional.py",
+    "sha256": "7a6ef1f0190130be21612d41af5761bfa441227b4c517504659c674e36c75c42",
+    "role": "ENTRY_CONFIG_OR_TEST",
+    "scientific_result_authority": false
+  }
+]

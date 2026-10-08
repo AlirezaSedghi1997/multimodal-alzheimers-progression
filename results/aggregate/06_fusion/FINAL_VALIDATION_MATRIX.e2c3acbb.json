@@ -1,0 +1,35 @@
+{
+  "source_id": "e2c3acbb0888ddb8",
+  "source_sha256": "533c0da067d57ef78a3714512f8d34c97a9c7b658fa7c34542a9c32ba3b574a7",
+  "scientific_role": "corrected_postfusion_with_review_addendum",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "all_scientific_gates_passed": false,
+    "alzheimer_lesion_localization_allowed": false,
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "clinical_or_external_claim_allowed": false,
+    "not_estimable_or_negative_results_are_valid_reported_outcomes_not_successful_gates": true,
+    "parent_fusion_retrained": false,
+    "regional_analysis_status": "REGIONAL_POSTHOC_DOSSIER_COMPLETED",
+    "sources": {
+      "manufacturer": "results/xyz_pet_manufacturer_audit_v1_ram",
+      "postall": "results/xyz_fusion_postall_v2",
+      "regional": "results/xyz_regional_evidence_v1"
+    },
+    "stage_matrix": {
+      "F00": "PARENT_STRUCTURAL_AND_ARTIFACT_VERIFICATION_PASSED",
+      "F01": "COMPLETED",
+      "F02": "EXACT_INPUT_AND_ALL_COMPONENT_ANCESTRY_VERIFIED",
+      "F03": "COMPLETED_MATCHED_INTERNAL_EXTENSION",
+      "F04": "COMPLETED_SPATIAL_DIAGNOSTICS_LABEL_CONTROL_PENDING",
+      "F05": "PET_MANUFACTURER_AUDIT_COMPLETED; PROBES_FROM_CORRECTED_POSTALL",
+      "F06": "COMPLETED_SECONDARY_ASSOCIATION",
+      "F07": "NOT_ESTIMABLE_COMMON_META_SUPPORT",
+      "F08": "COMBINED_DOSSIER_COMPUTED_PENDING_ACTUAL_POST_RUN_REVIEW"
+    },
+    "status": "ALL_POSTFUSION_COMPUTATIONS_COMPLETE_PENDING_SUPERVISORY_REVIEW",
+    "supersession_promoted": false
+  }
+}

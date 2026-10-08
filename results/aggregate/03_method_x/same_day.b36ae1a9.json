@@ -1,0 +1,19 @@
+{
+  "source_id": "b36ae1a9b77653be",
+  "source_sha256": "bfb05aa9a28134c4c4aa163edd5f7096891af551e5a367775ccd4f5af72196b4",
+  "scientific_role": "posthoc_sensitivity",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "payload": {
+      "n": 3,
+      "negative": 0,
+      "positive": 3,
+      "status": "NOT_ESTIMABLE_PRESPECIFIED_MINIMUM_20_PER_CLASS"
+    },
+    "payload_sha256": "c67bae835aa45726551e6300f41894a0e6fbb618480f638007337233d532419b",
+    "protocol_sha256": "f901ffa588743b99131252936e2960ba75a445f11e725d00e942dd449cf2e331",
+    "unit": "statistics/same_day"
+  }
+}

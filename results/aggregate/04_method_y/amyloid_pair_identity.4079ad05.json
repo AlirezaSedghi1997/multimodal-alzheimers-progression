@@ -1,0 +1,18 @@
+{
+  "source_id": "4079ad0509d0a563",
+  "source_sha256": "f6128522c7bd508c7f82fceb75b063fc7e288f31d0b32f975c4cc9a31a8314c3",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "analysis_role": "POST_HOC_INTERNAL_EXPLORATORY",
+    "branch": "amyloid",
+    "challenger_arm": "A4",
+    "comparison_semantics": "MATCHED_IMAGE_PLUS_TABULAR_ARM_COMPARISON",
+    "not_an_image_incremental_value_analysis": true,
+    "pair_kind": "DEPTH_EFFECT_WITH_PET_SAFE_AUGMENTATION",
+    "reference_arm": "A3",
+    "schema_version": "4.0"
+  }
+}

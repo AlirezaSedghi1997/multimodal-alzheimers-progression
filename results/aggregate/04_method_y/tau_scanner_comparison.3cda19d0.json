@@ -1,0 +1,143 @@
+{
+  "source_id": "3cda19d06af9a5e1",
+  "source_sha256": "d301aaf2bc76bc1e0d98972ec5d2d9f9d0c5218411afd85d6e760adb003acefb",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "challenger": {
+      "leave_manufacturer_out_eligibility": {
+        "eligible_manufacturers": [
+          "SIEMENS"
+        ],
+        "not_estimable": [
+          "GE",
+          "PHILIPS"
+        ],
+        "total_manufacturers": 4
+      },
+      "leave_manufacturer_out_performance": {
+        "status": "NOT_ESTIMABLE_NOT_EXECUTED_AS_LOCKED_TRAINING_DESIGN"
+      },
+      "manufacturer_support": {
+        "GE": {
+          "events": 9,
+          "subjects": 42
+        },
+        "PHILIPS": {
+          "events": 9,
+          "subjects": 38
+        },
+        "SIEMENS": {
+          "events": 50,
+          "subjects": 180
+        },
+        "UNKNOWN": {
+          "events": 7,
+          "subjects": 46
+        }
+      },
+      "oof_scanner_probe": {
+        "convergence_warning_count": 0,
+        "embedding_source": "OOF_LOCKED_MODEL_ONLY",
+        "fold_aucs": [
+          0.5827126337149923,
+          0.5131664631664632,
+          0.555218892588482,
+          0.6328017658442187,
+          0.463076116755362
+        ],
+        "fold_count": 5,
+        "macro_auc": 0.5493951744139036,
+        "per_class_support": {
+          "GE": 42,
+          "PHILIPS": 38,
+          "SIEMENS": 180,
+          "UNKNOWN": 46
+        },
+        "permutation_null_auc": 0.5471403056545954,
+        "preprocessing": "STANDARD_SCALER_FIT_WITHIN_PROBE_FOLD",
+        "scanner_is_primary_predictor": false,
+        "status": "COMPLETED"
+      },
+      "scanner_robustness_passed": false,
+      "status": "COMPLETED_WITH_CLAIM_GATE_UNRESOLVED",
+      "terminal_reason": "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED",
+      "unknown_scanner_excluded_sensitivity": {
+        "remaining_count": 260,
+        "status": "ELIGIBILITY_COUNTED",
+        "unknown_excluded_count": 46
+      }
+    },
+    "challenger_arm": "A1",
+    "leave_manufacturer_out_performance_established": false,
+    "reference": {
+      "leave_manufacturer_out_eligibility": {
+        "eligible_manufacturers": [
+          "SIEMENS"
+        ],
+        "not_estimable": [
+          "GE",
+          "PHILIPS"
+        ],
+        "total_manufacturers": 4
+      },
+      "leave_manufacturer_out_performance": {
+        "status": "NOT_ESTIMABLE_NOT_EXECUTED_AS_LOCKED_TRAINING_DESIGN"
+      },
+      "manufacturer_support": {
+        "GE": {
+          "events": 9,
+          "subjects": 42
+        },
+        "PHILIPS": {
+          "events": 9,
+          "subjects": 38
+        },
+        "SIEMENS": {
+          "events": 50,
+          "subjects": 180
+        },
+        "UNKNOWN": {
+          "events": 7,
+          "subjects": 46
+        }
+      },
+      "oof_scanner_probe": {
+        "convergence_warning_count": 0,
+        "embedding_source": "OOF_LOCKED_MODEL_ONLY",
+        "fold_aucs": [
+          0.574952628608289,
+          0.5665995115995115,
+          0.5985315918820358,
+          0.6219089662957588,
+          0.5254725044347686
+        ],
+        "fold_count": 5,
+        "macro_auc": 0.5774930405640728,
+        "per_class_support": {
+          "GE": 42,
+          "PHILIPS": 38,
+          "SIEMENS": 180,
+          "UNKNOWN": 46
+        },
+        "permutation_null_auc": 0.5399615687268295,
+        "preprocessing": "STANDARD_SCALER_FIT_WITHIN_PROBE_FOLD",
+        "scanner_is_primary_predictor": false,
+        "status": "COMPLETED"
+      },
+      "scanner_robustness_passed": false,
+      "status": "COMPLETED_WITH_CLAIM_GATE_UNRESOLVED",
+      "terminal_reason": "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED",
+      "unknown_scanner_excluded_sensitivity": {
+        "remaining_count": 260,
+        "status": "ELIGIBILITY_COUNTED",
+        "unknown_excluded_count": 46
+      }
+    },
+    "reference_arm": "A0",
+    "scanner_probe_not_worse": true,
+    "status": "COMPLETED_WITH_CLAIM_GATE_UNRESOLVED"
+  }
+}

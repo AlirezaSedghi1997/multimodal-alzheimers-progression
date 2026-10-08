@@ -1,0 +1,26 @@
+schema_version: "1.0"
+analysis_role: POST_HOC_INTERNAL_SCANNER_TRANSPORT_EXPLORATORY
+source_factorial_config: configs/method_y_image_factorial_v4.yaml
+output_root: results/method_y_revival_v4_amyloid_lmo_v1
+branch: amyloid
+tracer: FBP
+development_cohort: A4
+manufacturer_order: [GE, PHILIPS, SIEMENS]
+minimum_subjects_per_heldout_manufacturer: 30
+minimum_events_per_heldout_manufacturer: 10
+inner_folds: 3
+active_arms: [A0, A2]
+primary_arm: A0
+secondary_arm: A2
+requested_horizons_days: [547.875, 1095.75, 1640.0]
+claim_status: POST_HOC_INTERNAL_EXPLORATORY
+external_validation_status: EXTERNAL_PENDING
+quantitative_equivalence_status: BLOCKED
+anatomical_localization_status: BLOCKED_SOURCE_SPACE_UNPROVEN
+positive_claim_allowed: false
+interpretation:
+  - "This is a local manufacturer-held-out sensitivity analysis, not external validation."
+  - "Eligibility thresholds were fixed before this versioned analysis."
+  - "All inner selection and tabular fitting occur without the held-out manufacturer."
+  - "Existing PET pattern cache is reused unchanged; this study cannot validate its source-space or quantitative equivalence."
+  - "A0 is primary resource baseline; A2 is a matched architecture sensitivity. No arm is selected using LMO performance."

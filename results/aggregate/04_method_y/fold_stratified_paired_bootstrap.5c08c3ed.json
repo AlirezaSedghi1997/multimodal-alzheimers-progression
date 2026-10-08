@@ -1,0 +1,85 @@
+{
+  "source_id": "5c08c3ed1c2f087a",
+  "source_sha256": "2b8e30c10ffb494129bce8c5d9d9419137f0d475d42dc898fad97b13dba2a461",
+  "scientific_role": "corrected_nested_image_analysis",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 1,
+  "aggregate": {
+    "branches": {
+      "amyloid": {
+        "delta_ibs_95ci": [
+          -0.0038567366788535853,
+          0.0017056181514521057
+        ],
+        "delta_uno_95ci": [
+          -0.02538436658937252,
+          0.015177338889408152
+        ],
+        "fold_sizes_preserved": [
+          109,
+          107,
+          132,
+          105,
+          107
+        ],
+        "interpretation_limit": "CONDITIONAL_ON_FITTED_MODELS_AND_POST_HOC_SELECTION; DOES_NOT_INCLUDE_TRAINING_OR_SELECTION_VARIANCE",
+        "method": "FOLD_STRATIFIED_PAIRED_SUBJECT_BOOTSTRAP_FIXED_LOCKED_MODELS",
+        "point_delta_ibs": -0.0009975497236583615,
+        "point_delta_uno": -0.005303932418675194,
+        "rejected_attempt_reasons": {
+          "ValueError:all times must be within follow-up time of test data: [366.0; 1621.0[": 1,
+          "ValueError:all times must be within follow-up time of test data: [366.0; 1635.0[": 8,
+          "ValueError:all times must be within follow-up time of test data: [366.0; 1637.999998362[": 16,
+          "ValueError:all times must be within follow-up time of test data: [368.0; 1619.0[": 1,
+          "ValueError:all times must be within follow-up time of test data: [368.0; 1621.0[": 2,
+          "ValueError:all times must be within follow-up time of test data: [368.0; 1637.999998362[": 2,
+          "ValueError:all times must be within follow-up time of test data: [369.0; 1635.0[": 1,
+          "ValueError:all times must be within follow-up time of test data: [369.0; 1637.999998362[": 3
+        },
+        "rejected_attempts": 34,
+        "status": "COMPLETED_CONDITIONAL_EXPLORATORY",
+        "valid_resamples": 2000
+      },
+      "tau": {
+        "delta_ibs_95ci": [
+          -0.001756139358751551,
+          0.0009026860674926946
+        ],
+        "delta_uno_95ci": [
+          -0.004327864669798306,
+          0.008411647169290116
+        ],
+        "fold_sizes_preserved": [
+          60,
+          62,
+          63,
+          59,
+          62
+        ],
+        "interpretation_limit": "CONDITIONAL_ON_FITTED_MODELS_AND_POST_HOC_SELECTION; DOES_NOT_INCLUDE_TRAINING_OR_SELECTION_VARIANCE",
+        "method": "FOLD_STRATIFIED_PAIRED_SUBJECT_BOOTSTRAP_FIXED_LOCKED_MODELS",
+        "point_delta_ibs": -0.0003300222412792597,
+        "point_delta_uno": 0.0020955710473080204,
+        "rejected_attempt_reasons": {
+          "ValueError:all times must be within follow-up time of test data: [553.0; 1635.999998364[": 1
+        },
+        "rejected_attempts": 1,
+        "status": "COMPLETED_CONDITIONAL_EXPLORATORY",
+        "valid_resamples": 2000
+      }
+    },
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "correction_receipt_sha256": "5d94d6d75c9020f4a00a622cd13d24e52e8a4c466e4cee830489545559c45e77",
+    "external_claim_allowed": false,
+    "iterations": 2000,
+    "positive_claim_allowed": false,
+    "report_sha256": "1bd35b4f6ec46be50d79e08eae76aa860fa9c56f91b64dd9f3a5245ca44ca11a",
+    "schema_version": "4.2",
+    "science_gate_status": "BLOCKED",
+    "seed": 20260714,
+    "source_code_sha256": "e7866ced8e8279923d3aac8cf03239369f8705b0034e60e75e74c555bda05266",
+    "source_run_contract_sha256": "969ebd0f61d9ffc3bc262c5476c75b23575d64d1f5703d23fe04d1095d07743e",
+    "status": "COMPLETED_CONDITIONAL_EXPLORATORY"
+  }
+}

@@ -1,0 +1,517 @@
+{
+  "source_id": "09c0ea1357da598c",
+  "source_sha256": "48513afa69701abe418b3b4c28da4aa95b2b3c3ba5fdd79b9df7294b1412306f",
+  "scientific_role": "primary_technical",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 1,
+  "aggregate": {
+    "aggregate": {
+      "fold_bootstrap_ci95": [
+        -0.001336616650223732,
+        0.0014832478016614914
+      ],
+      "fold_mean_effect": -0.00015179663896560668,
+      "gate_status": "BLOCKED_EXPLORATORY_GATE",
+      "n_folds": 5,
+      "resampling_unit": "fold_not_image"
+    },
+    "anatomical_or_causal_region_claim_allowed": false,
+    "attribution": "NORMALIZED_ABSOLUTE_INPUT_GRADIENT_NOT_GRADCAM",
+    "context_sha256": "c363599a81b132aa29d43e96224c642ba2606fab1c86c23894a7586b538535bb",
+    "fold_mean_paired_effect": -0.00015179663896560668,
+    "fold_receipt_sha256": {
+      "0": "d41ac779333bab386af1c20ecee49c44e17c637c8dae88b32496335deec0588c",
+      "1": "b99cc70d9b15d4aafb690db7eaee86542412e15e3045e4d7ce672f1e3f477231",
+      "2": "13205d58fc89fa833f386f485eba5d6c204ea7bd49c3eedb52ab9e54b096021a",
+      "3": "b72a127f22353114e1666ff988b3bc51ca2ca7ee1ba2432f50393b157c500165",
+      "4": "19dc719e056b7f65529401b68fc355e898c4fc45fc6db75a2bb6d5b763bca53b"
+    },
+    "folds": [
+      {
+        "aggregate_only": true,
+        "checkpoint_sha256": "9bf03097bc63944c886674c97e597c2004f80ce2f488d7f05e8bbdb1d8958187",
+        "context_sha256": "c363599a81b132aa29d43e96224c642ba2606fab1c86c23894a7586b538535bb",
+        "crossfit_directions": [
+          {
+            "assessment_mean_paired_effect": 0.0006084069609642029,
+            "assessment_mean_top_target_drop": 0.0005699507892131805,
+            "assessment_n": 4,
+            "controls": [
+              {
+                "atlas_id": 219,
+                "volume": 1989
+              },
+              {
+                "atlas_id": 11,
+                "volume": 1995
+              },
+              {
+                "atlas_id": 217,
+                "volume": 2011
+              }
+            ],
+            "selection_n": 4,
+            "top_region": "Right VIIb",
+            "top_region_id": 216,
+            "top_volume": 1958
+          },
+          {
+            "assessment_mean_paired_effect": 0.005355019122362137,
+            "assessment_mean_top_target_drop": 0.005427815020084381,
+            "assessment_n": 4,
+            "controls": [
+              {
+                "atlas_id": 15,
+                "volume": 4562
+              },
+              {
+                "atlas_id": 42,
+                "volume": 4458
+              },
+              {
+                "atlas_id": 13,
+                "volume": 4736
+              }
+            ],
+            "selection_n": 4,
+            "top_region": "Right Crus II",
+            "top_region_id": 213,
+            "top_volume": 4562
+          }
+        ],
+        "fold": 0,
+        "frozen_target_class_counts": {
+          "negative": 5,
+          "positive": 3
+        },
+        "gate_status": "PASS_EXPLORATORY",
+        "model_selection_overlap": true,
+        "occlusion_fill": "zero_in_normalized_input_out_of_distribution_possible",
+        "paired_mean_effect": 0.00298171304166317,
+        "paired_mean_top_target_drop": 0.002998882904648781,
+        "paired_positive_count": 7,
+        "peak_reserved_gb": 6.365,
+        "randomization_sanity": [
+          {
+            "absolute_correlation": 0.04002999258758538,
+            "seed": 13,
+            "status": "PASS",
+            "threshold": 0.9
+          },
+          {
+            "absolute_correlation": 0.041985348457593906,
+            "seed": 29,
+            "status": "PASS",
+            "threshold": 0.9
+          },
+          {
+            "absolute_correlation": 0.04731030148467801,
+            "seed": 47,
+            "status": "PASS",
+            "threshold": 0.9
+          }
+        ],
+        "sample_count": 8,
+        "schema_version": 1,
+        "selected_task": "mx04_scratch",
+        "split_membership_digest": "c895169c146a118da5d92a1640d79a2cda52d65dfe10cf26587bfe3e03b0f542",
+        "state_source": "model_state_dict",
+        "subject_level_outputs_written": false,
+        "target_definition": "FROZEN_UNOCCLUDED_PREDICTED_CLASS_BEFORE_ROI_SELECTION",
+        "target_receipt_sha256": "87ee1e3f3ea5dfe90e9b6546329d23253103c5c678b4197136c4005fdb4ec407"
+      },
+      {
+        "aggregate_only": true,
+        "checkpoint_sha256": "66c52982ce39efe894a8d87b7413d892591708e828881650e980be8faa110314",
+        "context_sha256": "c363599a81b132aa29d43e96224c642ba2606fab1c86c23894a7586b538535bb",
+        "crossfit_directions": [
+          {
+            "assessment_mean_paired_effect": -0.001416422426700592,
+            "assessment_mean_top_target_drop": -0.0014164000749588013,
+            "assessment_n": 4,
+            "controls": [
+              {
+                "atlas_id": 116,
+                "volume": 1214
+              },
+              {
+                "atlas_id": 105,
+                "volume": 1110
+              },
+              {
+                "atlas_id": 37,
+                "volume": 1451
+              }
+            ],
+            "selection_n": 4,
+            "top_region": "Superior Temporal Gyrus, anterior division",
+            "top_region_id": 9,
+            "top_volume": 1230
+          },
+          {
+            "assessment_mean_paired_effect": -0.0016825571656227112,
+            "assessment_mean_top_target_drop": -0.0016824454069137573,
+            "assessment_n": 4,
+            "controls": [
+              {
+                "atlas_id": 116,
+                "volume": 1214
+              },
+              {
+                "atlas_id": 105,
+                "volume": 1110
+              },
+              {
+                "atlas_id": 37,
+                "volume": 1451
+              }
+            ],
+            "selection_n": 4,
+            "top_region": "Superior Temporal Gyrus, anterior division",
+            "top_region_id": 9,
+            "top_volume": 1230
+          }
+        ],
+        "fold": 1,
+        "frozen_target_class_counts": {
+          "negative": 5,
+          "positive": 3
+        },
+        "gate_status": "BLOCKED_EXPLORATORY_GATE",
+        "model_selection_overlap": true,
+        "occlusion_fill": "zero_in_normalized_input_out_of_distribution_possible",
+        "paired_mean_effect": -0.0015494897961616516,
+        "paired_mean_top_target_drop": -0.0015494227409362793,
+        "paired_positive_count": 0,
+        "peak_reserved_gb": 5.879,
+        "randomization_sanity": [
+          {
+            "absolute_correlation": 0.03348585806932995,
+            "seed": 13,
+            "status": "PASS",
+            "threshold": 0.9
+          },
+          {
+            "absolute_correlation": 0.038388073077947386,
+            "seed": 29,
+            "status": "PASS",
+            "threshold": 0.9
+          },
+          {
+            "absolute_correlation": 0.0449935236316254,
+            "seed": 47,
+            "status": "PASS",
+            "threshold": 0.9
+          }
+        ],
+        "sample_count": 8,
+        "schema_version": 1,
+        "selected_task": "mx04_scratch",
+        "split_membership_digest": "fcccdcea30c5adf1d925f092f6a372d91159f65dade3033f5ef7cfbe5efe3171",
+        "state_source": "model_state_dict",
+        "subject_level_outputs_written": false,
+        "target_definition": "FROZEN_UNOCCLUDED_PREDICTED_CLASS_BEFORE_ROI_SELECTION",
+        "target_receipt_sha256": "bbf05ed69695bf8cbbf16cbb94a6f45f49837d75eecc81bb882b30e0e2501e0c"
+      },
+      {
+        "aggregate_only": true,
+        "checkpoint_sha256": "397359f9a1d777a884ab8086aa5605c7f01c42d0bb8db506b06fab807f19cde9",
+        "context_sha256": "c363599a81b132aa29d43e96224c642ba2606fab1c86c23894a7586b538535bb",
+        "crossfit_directions": [
+          {
+            "assessment_mean_paired_effect": -0.004734694957733154,
+            "assessment_mean_top_target_drop": -0.004464864730834961,
+            "assessment_n": 4,
+            "controls": [
+              {
+                "atlas_id": 18,
+                "volume": 6801
+              },
+              {
+                "atlas_id": 33,
+                "volume": 7341
+              },
+              {
+                "atlas_id": 36,
+                "volume": 7806
+              }
+            ],
+            "selection_n": 4,
+            "top_region": "Paracingulate Gyrus",
+            "top_region_id": 28,
+            "top_volume": 7053
+          },
+          {
+            "assessment_mean_paired_effect": 0.0018128976225852966,
+            "assessment_mean_top_target_drop": -0.00019302964210510254,
+            "assessment_n": 4,
+            "controls": [
+              {
+                "atlas_id": 33,
+                "volume": 7341
+              },
+              {
+                "atlas_id": 28,
+                "volume": 7053
+              },
+              {
+                "atlas_id": 18,
+                "volume": 6801
+              }
+            ],
+            "selection_n": 4,
+            "top_region": "Lingual Gyrus",
+            "top_region_id": 36,
+            "top_volume": 7806
+          }
+        ],
+        "fold": 2,
+        "frozen_target_class_counts": {
+          "negative": 4,
+          "positive": 4
+        },
+        "gate_status": "BLOCKED_EXPLORATORY_GATE",
+        "model_selection_overlap": true,
+        "occlusion_fill": "zero_in_normalized_input_out_of_distribution_possible",
+        "paired_mean_effect": -0.0014608986675739288,
+        "paired_mean_top_target_drop": -0.0023289471864700317,
+        "paired_positive_count": 5,
+        "peak_reserved_gb": 5.879,
+        "randomization_sanity": [
+          {
+            "absolute_correlation": 0.06125523367006772,
+            "seed": 13,
+            "status": "PASS",
+            "threshold": 0.9
+          },
+          {
+            "absolute_correlation": 0.053116171908134065,
+            "seed": 29,
+            "status": "PASS",
+            "threshold": 0.9
+          },
+          {
+            "absolute_correlation": 0.07939035387492027,
+            "seed": 47,
+            "status": "PASS",
+            "threshold": 0.9
+          }
+        ],
+        "sample_count": 8,
+        "schema_version": 1,
+        "selected_task": "mx04_scratch",
+        "split_membership_digest": "86195f09170874f07921eceb64ce455c5fe5c64c7b22f9bb754e4456014a57fe",
+        "state_source": "model_state_dict",
+        "subject_level_outputs_written": false,
+        "target_definition": "FROZEN_UNOCCLUDED_PREDICTED_CLASS_BEFORE_ROI_SELECTION",
+        "target_receipt_sha256": "db3a5e68e4f165406ceba579dbb162495c4345fb61bb853b467cfa935819bcf7"
+      },
+      {
+        "aggregate_only": true,
+        "checkpoint_sha256": "fdfb8430c5803612f253299c0d4a1ef4b0525638fb0c203220729418606f5a7f",
+        "context_sha256": "c363599a81b132aa29d43e96224c642ba2606fab1c86c23894a7586b538535bb",
+        "crossfit_directions": [
+          {
+            "assessment_mean_paired_effect": -0.0006842091679573059,
+            "assessment_mean_top_target_drop": -0.000686153769493103,
+            "assessment_n": 4,
+            "controls": [
+              {
+                "atlas_id": 44,
+                "volume": 1772
+              },
+              {
+                "atlas_id": 203,
+                "volume": 1699
+              },
+              {
+                "atlas_id": 35,
+                "volume": 1693
+              }
+            ],
+            "selection_n": 4,
+            "top_region": "Left VIIb",
+            "top_region_id": 214,
+            "top_volume": 1784
+          },
+          {
+            "assessment_mean_paired_effect": -0.0006404034793376923,
+            "assessment_mean_top_target_drop": -0.0006482414901256561,
+            "assessment_n": 4,
+            "controls": [
+              {
+                "atlas_id": 44,
+                "volume": 1772
+              },
+              {
+                "atlas_id": 203,
+                "volume": 1699
+              },
+              {
+                "atlas_id": 35,
+                "volume": 1693
+              }
+            ],
+            "selection_n": 4,
+            "top_region": "Left VIIb",
+            "top_region_id": 214,
+            "top_volume": 1784
+          }
+        ],
+        "fold": 3,
+        "frozen_target_class_counts": {
+          "negative": 5,
+          "positive": 3
+        },
+        "gate_status": "BLOCKED_EXPLORATORY_GATE",
+        "model_selection_overlap": true,
+        "occlusion_fill": "zero_in_normalized_input_out_of_distribution_possible",
+        "paired_mean_effect": -0.0006623063236474991,
+        "paired_mean_top_target_drop": -0.0006671976298093796,
+        "paired_positive_count": 1,
+        "peak_reserved_gb": 5.879,
+        "randomization_sanity": [
+          {
+            "absolute_correlation": 0.051034105124176596,
+            "seed": 13,
+            "status": "PASS",
+            "threshold": 0.9
+          },
+          {
+            "absolute_correlation": 0.048642992422933205,
+            "seed": 29,
+            "status": "PASS",
+            "threshold": 0.9
+          },
+          {
+            "absolute_correlation": 0.05804324215159444,
+            "seed": 47,
+            "status": "PASS",
+            "threshold": 0.9
+          }
+        ],
+        "sample_count": 8,
+        "schema_version": 1,
+        "selected_task": "mx04_scratch",
+        "split_membership_digest": "d8ea712fbdc010029236053837341055c8d266f669225731a3ee9afb2e3e4ac5",
+        "state_source": "model_state_dict",
+        "subject_level_outputs_written": false,
+        "target_definition": "FROZEN_UNOCCLUDED_PREDICTED_CLASS_BEFORE_ROI_SELECTION",
+        "target_receipt_sha256": "7177a4e93b75304ab511e40a085b491c8e0db799e636ea2779219d6090d98d0d"
+      },
+      {
+        "aggregate_only": true,
+        "checkpoint_sha256": "822fb3b5a0a01a16fae1da2fa787819bc83cd4777f89577ad2947f9d42933a8c",
+        "context_sha256": "c363599a81b132aa29d43e96224c642ba2606fab1c86c23894a7586b538535bb",
+        "control_eligibility_policy": "ATLAS_ONLY_THREE_CONTROLS_WITHIN_1_5X",
+        "crossfit_directions": [
+          {
+            "assessment_mean_paired_effect": 9.357929229736328e-06,
+            "assessment_mean_top_target_drop": 5.53131103515625e-05,
+            "assessment_n": 4,
+            "controls": [
+              {
+                "atlas_id": 203,
+                "volume": 1699
+              },
+              {
+                "atlas_id": 220,
+                "volume": 1671
+              },
+              {
+                "atlas_id": 119,
+                "volume": 1667
+              }
+            ],
+            "selection_n": 4,
+            "top_region": "Parahippocampal Gyrus, posterior division",
+            "top_region_id": 35,
+            "top_volume": 1693
+          },
+          {
+            "assessment_mean_paired_effect": -0.0001453608274459839,
+            "assessment_mean_top_target_drop": -0.0001722872257232666,
+            "assessment_n": 4,
+            "controls": [
+              {
+                "atlas_id": 203,
+                "volume": 1699
+              },
+              {
+                "atlas_id": 220,
+                "volume": 1671
+              },
+              {
+                "atlas_id": 119,
+                "volume": 1667
+              }
+            ],
+            "selection_n": 4,
+            "top_region": "Parahippocampal Gyrus, posterior division",
+            "top_region_id": 35,
+            "top_volume": 1693
+          }
+        ],
+        "fold": 4,
+        "frozen_target_class_counts": {
+          "negative": 0,
+          "positive": 8
+        },
+        "gate_status": "BLOCKED_EXPLORATORY_GATE",
+        "model_selection_overlap": true,
+        "occlusion_fill": "zero_in_normalized_input_out_of_distribution_possible",
+        "paired_mean_effect": -6.800144910812378e-05,
+        "paired_mean_top_target_drop": -5.848705768585205e-05,
+        "paired_positive_count": 2,
+        "peak_reserved_gb": 6.365,
+        "post_hoc_control_eligibility_amendment_sha256": "8121f184cbd424c0171557141e8a49c3d5f2c50e61482fdb75dbd6a6d701be4b",
+        "randomization_sanity": [
+          {
+            "absolute_correlation": 0.23506272917383095,
+            "seed": 13,
+            "status": "PASS",
+            "threshold": 0.9
+          },
+          {
+            "absolute_correlation": 0.20403737889931042,
+            "seed": 29,
+            "status": "PASS",
+            "threshold": 0.9
+          },
+          {
+            "absolute_correlation": 0.3640014402232614,
+            "seed": 47,
+            "status": "PASS",
+            "threshold": 0.9
+          }
+        ],
+        "sample_count": 8,
+        "schema_version": 1,
+        "selected_task": "mx04_scratch",
+        "selection_trace": [
+          {
+            "assessable_top_id": 35,
+            "unrestricted_top_id": 227
+          },
+          {
+            "assessable_top_id": 35,
+            "unrestricted_top_id": 227
+          }
+        ],
+        "split_membership_digest": "de6bb96c06acb6b1e92196c162eab128e9b1a4df210d35ca66a18536bfa06365",
+        "state_source": "model_state_dict",
+        "subject_level_outputs_written": false,
+        "target_definition": "FROZEN_UNOCCLUDED_PREDICTED_CLASS_BEFORE_ROI_SELECTION",
+        "target_receipt_sha256": "28163fb5200ad34f1170a272d060e7c26b66a60ef33ae75d5e3d9b55265ddece"
+      }
+    ],
+    "n_images": 40,
+    "not_independent_testing": true,
+    "schema_version": 1,
+    "scope": "inner_validation_crossfit_8_per_fold",
+    "selected_task": "mx04_scratch",
+    "status": "BLOCKED_EXPLORATORY_GATE",
+    "subject_level_outputs_written": false
+  }
+}

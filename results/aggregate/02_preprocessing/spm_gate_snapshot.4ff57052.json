@@ -1,0 +1,92 @@
+{
+  "source_id": "4ff5705294653056",
+  "source_sha256": "5aa2c1da6334b91e43e0d0dcb3a9b2e2c0cc01a22c303bdc136183c3ffa2ed23",
+  "scientific_role": "population_and_qc",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 6,
+  "aggregate": {
+    "created_at_utc": "2026-07-28T04:13:35.895856+00:00",
+    "guard_status": {
+      "active_catalog_sample_count": 1699,
+      "blocked_post_spm_stages": [
+        "mri-volume-cache",
+        "train-3d",
+        "optuna",
+        "fusion",
+        "external",
+        "calibration",
+        "final-analysis"
+      ],
+      "checks": {
+        "config_hash_ok": true,
+        "done_count_ok": true,
+        "manifest_exists": true,
+        "manifest_readable": true,
+        "manifest_total_ok": true,
+        "preprocessed_file_count_ok": true,
+        "preprocessed_output_contract_ok": true,
+        "preprocessed_qc_ok": true
+      },
+      "config_hash": "1017762cafcd82ee",
+      "done_count": 1536,
+      "expected_config_hash": "1017762cafcd82ee",
+      "expected_total": 1699,
+      "expected_total_source": "catalog",
+      "manifest_item_count": 1699,
+      "manifest_terminal_count": 1699,
+      "manifest_total": 1699,
+      "next_action": "post_spm_stages_allowed",
+      "preprocessed_file_count": 1699,
+      "preprocessed_output_contract_invalid_count": 0,
+      "preprocessed_output_contract_valid_count": 1699,
+      "preprocessed_qc_file_count": 1699,
+      "preprocessed_qc_invalid_count": 0,
+      "preprocessed_qc_missing_count": 0,
+      "preprocessed_qc_valid_count": 1699,
+      "privacy": {
+        "raw_identifiers_exported": false,
+        "raw_paths_exported": false,
+        "subject_level_outputs_exported": false
+      },
+      "ready": true,
+      "safe_before_spm_complete": [
+        "spm-completion-guard",
+        "mri-volume-cache-smoke",
+        "clinical-ad-feasibility",
+        "public-bundle",
+        "privacy-leakage-tests",
+        "docs-config-script-tests"
+      ],
+      "source_of_truth": {
+        "expected_config_hash": "1017762cafcd82ee",
+        "expected_total": 1699,
+        "expected_total_source": "catalog"
+      },
+      "status": "SPM_COMPLETE_WITH_RECONCILED_TERMINAL_ROWS"
+    },
+    "output_inventory": {
+      "count": 1699,
+      "digest": "32cb46224b5d75c2a8973241e21200dc93296e117a2bde8363e7aafcf3c8733e"
+    },
+    "privacy": {
+      "raw_identifiers_exported": false,
+      "raw_paths_exported": false,
+      "stored_subject_membership": false,
+      "subject_level_outputs_exported": false
+    },
+    "qc_bundle": {
+      "count": 1699,
+      "digest": "b0681b8265edc7b93ad3b9db9a3b75ceca6e8b6dfd0672513f3e48d4c2bc7882"
+    },
+    "ready": true,
+    "schema_version": 1,
+    "snapshot_sha256": "2d659c87d451da0ebc14e847570ea52ea3804ccc2b153f2764ab56cbb1098ebb",
+    "source_hashes": {
+      "data/processed/master_catalog.csv": "dda3ad5078cb41286de69888250fba8d0056e6822ef58e02ff91e20cf2664a5e",
+      "results/logs/spm_mri_preprocess_v2_128_resume.json": "dda091307dbcbc3f3aafdb569fdd6d9cc1a2049e1cc1c44a95f135dc7461465c",
+      "scripts/spm_completion_guard.py": "1efe5ed28abd27b1430f79bb3318e14cc9f18f96eb894c8a685bef25c4b5876f"
+    },
+    "status": "VERIFIED_READY"
+  }
+}

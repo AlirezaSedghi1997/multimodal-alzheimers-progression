@@ -1,0 +1,45 @@
+{
+  "source_id": "21b15e960e3b61d8",
+  "source_sha256": "7b6af62365fe485730a0724c9d77755a3339ca4bddb6b89436564ca5ec744a05",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "blockers": [
+      "UNO_CINDEX_NOT_NONINFERIOR",
+      "CALIBRATION_NOT_WORSE_NOT_DEMONSTRATED",
+      "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED"
+    ],
+    "branch": "amyloid",
+    "calibration_not_worse": false,
+    "challenger_arm": "A2",
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "delta_ibs_95ci": [
+      -0.0036025620956583798,
+      0.007529559404239798
+    ],
+    "delta_uno_cindex_95ci": [
+      -0.03530263760626412,
+      0.03802007112791968
+    ],
+    "exploratory_operational_acceptance": false,
+    "external_claim_allowed": false,
+    "fold_delta_ibs": [
+      0.003186347000397202,
+      0.004429849602251457,
+      0.005149124280329556,
+      -0.004987747934128914,
+      0.0003653047791198766
+    ],
+    "gate_role": "EXPLORATORY_OPERATIONAL_MODEL_COMPARISON",
+    "leave_manufacturer_out_performance_established": false,
+    "locked_external_validation_passed": false,
+    "pair_kind": "ARCHITECTURE_EFFECT_WITHOUT_AUGMENTATION",
+    "positive_claim_allowed": false,
+    "quantitative_equivalence_proven": false,
+    "reference_arm": "A0",
+    "scanner_probe_not_worse": true,
+    "selected_epoch_nll_gap_delta": 0.00249038967342588
+  }
+}

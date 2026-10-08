@@ -1,0 +1,49 @@
+schema_version: 4
+protocol_name: method_x_matched_backbone_battery_v3_depth_and_diversity
+output_root: results/final_results/method_x_model_battery_v3_depth_and_diversity
+scope: PET_FREE_TECHNICAL_BENCHMARK
+folds: 5
+seed: 13
+resolution: 128
+epochs: 100
+equal_hpo_budget: true
+trials_per_family: 1
+backbones:
+  - resnet10_3d
+  - resnet18_3d
+  - resnet34_3d
+  - resnet50_3d
+  - densenet121_3d
+  - efficientnet3d_b0
+  - mednext_3d_s
+negative_resource_baseline: tiny
+common:
+  fusion: cross_attention
+  task_loss: bce
+  optimizer: adamw
+  learning_rate: 0.0001
+  scheduler: cosine
+  dropout: 0.2
+  augmentation: locked_fold_local_materialized_only
+  online_augmentation: false
+  ema: false
+  pretrained: false
+  batch_size: 1
+  grad_accum: 8
+  amp: true
+  gradient_checkpointing: true
+  outer_test_access: exactly_once_after_lock
+  num_workers: 2
+  pin_memory: true
+  persistent_workers: false
+  prefetch_factor: 2
+hardware:
+  expected_gpu: RTX4060
+  hard_stop_vram_gb: 7.5
+  memory_policy: fail_closed_128_smoke_before_each_full_run
+claim_boundary:
+  cohort_scope: A4_LEARN_INTERNAL_ONLY
+  diagnosis: false
+  external_generalization: false
+  pet_input: false
+  raw_identifiers: false

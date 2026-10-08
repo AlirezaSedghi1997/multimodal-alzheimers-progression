@@ -1,0 +1,65 @@
+schema_version: 2
+protocol_name: method_y_revival_v2
+output_root: results/method_y_revival_v2
+raw_data_root: H:/A4 Learn
+read_only_inputs: true
+branches:
+  amyloid:
+    tracer: FBP
+    development_cohort: A4
+    endpoint: sustained_cdr_global_progression
+    quantitative_feature: global_centiloid
+  tau:
+    tracer: FTP
+    development_cohort: A4
+    endpoint: sustained_cdr_global_progression
+    quantitative_feature: centaur_regional
+  paired_at:
+    tracers: [FBP, FTP]
+    endpoint: sustained_cdr_global_progression
+spaces:
+  quantification_space: documented_source_or_centaurlib_space
+  model_space: MNI152NLin2009cAsym_128x128x128_1p5mm
+  template: data/templates/method_y_mni152nlin2009casym_v1/reference_128_1p5mm.nii.gz
+  template_sha256: REQUIRED_AT_ASSET_LOCK
+  shape: [128, 128, 128]
+  voxel_spacing_mm: [1.5, 1.5, 1.5]
+linkage:
+  max_pet_t1_days: 183
+  subject_only_fallback: false
+  ambiguous_action: exclude
+preprocessing:
+  amyloid_intensity: suvr_preserving_or_centiloid
+  tau_intensity: centaur_or_suvr_preserving
+  per_scan_zscore_claim_bearing: false
+  affine_aware_only: true
+  require_pet_t1_mni_chain: true
+  background_nonfinite_requires_brain_mask: true
+  visual_qc:
+    protocol: AUTOMATED_THREE_LAYER_AGENT_MULTI_PASS
+    passes: [STRUCTURAL_GATE, METRIC_GATE, CONSISTENCY_GATE]
+    review_all_failures_and_outliers: true
+    random_pass_fraction: 0.05
+    # Immutable compatibility field for the already-running v2 contract.
+    # False explicitly disables any human gate; the agent-only protocol above is authoritative.
+    human_review_required: false
+splits:
+  outer_folds: 5
+  inner_folds: 3
+  seed: 20260714
+  group_unit: subject_key
+  outer_test_access: exactly_once_after_lock
+models:
+  primary: coxnet
+  challengers: [rsf, gbsa]
+  image_branch: secondary_only
+  equal_hpo_budget: true
+external:
+  status: EXTERNAL_PENDING
+  required_dua: [SCAN_NACC, ADNI, OASIS3]
+  no_refit_initial_evaluation: true
+claim_policy:
+  diagnosis_allowed: false
+  causal_allowed: false
+  external_claim_requires_pass: true
+  current_default_claim_status: EXPLORATORY

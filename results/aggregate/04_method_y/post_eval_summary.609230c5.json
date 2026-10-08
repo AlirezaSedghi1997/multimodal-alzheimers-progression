@@ -1,0 +1,52 @@
+{
+  "source_id": "609230c51d377ae9",
+  "source_sha256": "1ac4c8c36910ae2e67c6db2b6717a771dd68f1bf987a71b7471899136ce38ebf",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "artifact_status": "COMPLETED",
+    "ceiling": "POST_HOC_INTERNAL_EXPLORATORY",
+    "claim_blockers": [],
+    "claim_status": "INTERNAL_ONLY",
+    "compiled": true,
+    "contrasts": [
+      {
+        "status": "PASS"
+      },
+      {
+        "status": "PASS"
+      },
+      {
+        "status": "PASS"
+      },
+      {
+        "status": "PASS"
+      },
+      {
+        "status": "PASS"
+      },
+      {
+        "status": "PASS"
+      },
+      {
+        "status": "PASS"
+      },
+      {
+        "status": "PASS"
+      },
+      {
+        "status": "PASS"
+      },
+      {
+        "status": "PASS"
+      }
+    ],
+    "external_claim_allowed": false,
+    "positive_claim_allowed": false,
+    "schema_version": "4.0",
+    "science_gate_status": "BLOCKED",
+    "status": "PASS"
+  }
+}

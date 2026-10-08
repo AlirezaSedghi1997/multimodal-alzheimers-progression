@@ -1,0 +1,105 @@
+{
+  "source_id": "3eca772dfcd03fbf",
+  "source_sha256": "d241a75873942d3a1e3c2d7d0581e602afc1c5d08625851cdd088d9d4c3231f4",
+  "scientific_role": "separate_regional_analysis",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "artifact_sha256": {
+      "calibration": "182faae1268f7bb5938d3c5d7dbfa63c0f0e37c2e922ed764d2e7619f4f8fbc2",
+      "dlbs_secondary_replication": "9076acac70093e850c8c7ffb6f895b89579113648ad5517a9252bcc3252751a7",
+      "learn_transport": "cad6d2fa3e4b7b8c7f9969ec1428d41028d4065a4e5d3f0eca9aecd0a4d290e9",
+      "longitudinal_pacc": "d92b71ddc8c3f9dc4b1e07d8ae20181f0f4c8a3d6fa474c22c62100e030cdd6d",
+      "open_dataset_search": "0c1ef0086e395ffb5e262c18c4335c0d30b995cd7798b8b64433b2c5e31cd3aa",
+      "paired_at_negative": "fd1d9a47a15e4690f1d9ba19b689506a9c6e89bc6ac3e3d011ac0346e071800c",
+      "public_privacy_scan": "ff9c9fad82662fc12754bd8f6714c7d329754d5a483e2aaa948566861f333170",
+      "rsf_and_learn": "a87581eb793250f1b632e65d4450b31de821d73154bc0992d6f461bec7e71652",
+      "source_regional_provenance": "c58cd1eeacad8c31d4b8eba97557e955e0080ced73f6694c17eece168f651b4e",
+      "subgroup": "c1ef989090eab42c7b762a25ba7c9952c9357bd22cb8dfeaf78425cb9720a865"
+    },
+    "artifact_status": "COMPLETED",
+    "claim_boundaries": [
+      "NO_ALZHEIMER_DIAGNOSIS_CLAIM",
+      "NO_CAUSAL_CLAIM",
+      "NO_EXTERNAL_GENERALIZATION_CLAIM",
+      "NO_OFFICIAL_GAAIN_CTX_OR_CENTAUR_EQUIVALENCE_CLAIM",
+      "NO_POSITIVE_SUBGROUP_CLAIM",
+      "DLBS_SECONDARY_IS_NOT_PRIMARY_EXTERNAL_VALIDATION"
+    ],
+    "claim_status": "EXPLORATORY",
+    "external_validation": {
+      "external_generalization_claim_allowed": false,
+      "open_dataset_search_completed": true,
+      "open_dataset_search_status": "QUALIFYING_SECONDARY_ONLY_NO_PRIMARY_EXTERNAL_DATASET_FOUND",
+      "primary_external_validation_status": "NO_QUALIFYING_FULLY_OPEN_DATASET_FOUND",
+      "required_for_internal_completion": false,
+      "secondary_open_replication": {
+        "primary_external_validation_eligible": false,
+        "report_sha256": "c726f4bf4ba753d6880ed94d0e6862186d642d3b535edd12736fb409c9fe2512",
+        "role": "SECONDARY_OPEN_EXTERNAL_REPLICATION",
+        "status": "DLBS_SECONDARY_REPLICATION_COMMITTED"
+      },
+      "status": "EXTERNAL_PRIMARY_UNAVAILABLE_NONBLOCKING"
+    },
+    "generated_utc": "2026-08-24T05:15:21.794871+00:00",
+    "human_independent_review_required": false,
+    "image_branches": {
+      "amyloid": "BLOCKED",
+      "image_training_allowed": false,
+      "required_for_source_regional_completion": false,
+      "tau": "BLOCKED"
+    },
+    "learn_transport": {
+      "access_count": 1,
+      "role": "INTERNAL_TRANSPORT_NOT_EXTERNAL_VALIDATION",
+      "status": "LEARN_TRANSPORT_COMMITTED",
+      "used_for_selection": false
+    },
+    "local_internal_completion": true,
+    "longitudinal_pacc": {
+      "claim_status": "EXPLORATORY",
+      "measurement_count": 9595,
+      "status": "LONGITUDINAL_PACC_MODELS_COMPLETED",
+      "subject_count": 1105
+    },
+    "paired_at": {
+      "conclusion": "TAU_INCREMENTAL_VALUE_NOT_DEMONSTRATED",
+      "negative_result_preserved": true
+    },
+    "regional_training": {
+      "inner_selection_only": true,
+      "outer_result_count": 35,
+      "physical_test_access_count_retroactively_provable": false,
+      "single_committed_result_per_fold": true,
+      "status": "PASS"
+    },
+    "remaining_optional_work": [
+      "PRIMARY_EXTERNAL_VALIDATION_ONLY_IF_COMPATIBLE_DATA_BECOME_AVAILABLE",
+      "IMAGE_BRANCH_ONLY_AFTER_STANDARDIZED_QUANTITATIVE_GATE_PASS"
+    ],
+    "report_sha256": "cd0da8a5692e07268dd3b124355d535e25c7d86ebb3554b305f2331be8115eea",
+    "rsf_challenger": {
+      "outer_family_claim_allowed": false,
+      "role": "DEVELOPMENT_CHALLENGER_NO_OUTER_FAMILY_CLAIM",
+      "status": "DEVELOPMENT_COMPLETED_MODELS_LOCKED"
+    },
+    "schema_version": "2.0",
+    "science_gate_status": "FAIL_POSITIVE_CLAIM_NOT_ALLOWED",
+    "source_regional_provenance": {
+      "label_constraints_preserved": true,
+      "status": "PASS"
+    },
+    "status": "LOCAL_INTERNAL_PIPELINE_COMPLETED_CLAIMS_RESTRICTED",
+    "supervision": {
+      "layers": [
+        "CONTRACT_AND_SOURCE_HASH",
+        "SPLIT_AND_MEMBERSHIP",
+        "INNER_SELECTION",
+        "COMMITTED_OUTER_RESULT",
+        "SCIENCE_CLAIM_AND_PRIVACY"
+      ],
+      "mode": "AUTOMATED_AGENT_MULTI_LAYER"
+    }
+  }
+}

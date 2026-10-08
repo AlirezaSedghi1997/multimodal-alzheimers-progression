@@ -1,0 +1,154 @@
+schema_version: 1
+name: method_x_3d_candidate_grid_b5
+description: B5 config-driven candidate grid for Method X 128-cubed 8GB-conscious HPO.
+policy:
+  b5_niftynet_config_driven: true
+  method_x_pet_free: true
+  official_resolution: 128
+  min_gpu_planning_gb: 8
+  default_grad_accum: 8
+  require_amp_for_gpu: true
+  require_checkpoint_for_gpu: true
+  c1_distillation_candidates_allowed: false
+candidate_defaults:
+  attention: none
+  alignment_head: linear
+  tab_encoder: linear
+  causal_adjustment: none
+  q2_channel_gate: none
+  fusion_num_heads: 2
+  n_experts: 4
+  moe_load_balance_lambda: 0.0
+  task_loss: bce
+  focal_gamma: 2.0
+  focal_alpha: -1.0
+  auc_margin: 1.0
+  auc_loss_weight: 1.0
+  ema_decay: 0.0
+  swa: false
+  swa_start_fraction: 0.8
+  restore_best_at_end: true
+  supervised_contrastive_alignment: false
+  phenotypic_contrastive_alignment: false
+  phenotypic_contrastive_lambda: 0.0
+  phenotypic_temperature: 0.1
+  contrastive_temperature: 0.07
+  synib_lambda: 0.0
+  scheduler: cosine
+  warmup_epochs: 5
+  pos_weight: auto
+  aug_prob_scale: 0.2
+  layerwise_lr_decay: 1.0
+  discriminative_lr: false
+  resolution: 128
+  input_mode: mri_plus_tabular
+candidates:
+  - name: resnet10_cross_attention_bce_lr1e4_drop10
+    backbone: resnet10_3d
+    fusion: cross_attention
+    lr: 0.0001
+    dropout: 0.10
+    latent_dim: 128
+    tab_hidden_dim: 32
+    bottleneck_dim: 32
+    latent_alignment_lambda: 0.0
+    label_smoothing: 0.0
+  - name: resnet34_cross_attention_bce_lr1e4_drop10
+    backbone: resnet34_3d
+    fusion: cross_attention
+    lr: 0.0001
+    dropout: 0.10
+    latent_dim: 128
+    tab_hidden_dim: 32
+    bottleneck_dim: 32
+    latent_alignment_lambda: 0.0
+    label_smoothing: 0.0
+  - &matched_resnet18
+    name: matched_resnet18_baseline_mlp
+    backbone: resnet18_3d
+    fusion: cross_attention
+    lr: 0.00005
+    dropout: 0.15
+    latent_dim: 128
+    tab_hidden_dim: 48
+    bottleneck_dim: 32
+    latent_alignment_lambda: 0.02
+    label_smoothing: 0.03
+    alignment_head: mlp
+    tab_encoder: bn_gelu
+    ema_decay: 0.995
+  - <<: *matched_resnet18
+    name: matched_resnet18_a3_linear
+    alignment_head: linear
+  - <<: *matched_resnet18
+    name: matched_resnet18_a3_a4_channel
+    alignment_head: linear
+    causal_adjustment: channel
+  - name: densenet121_cross_attention_focal_lr5e5_drop20
+    backbone: densenet121_3d
+    fusion: cross_attention
+    lr: 0.00005
+    dropout: 0.20
+    latent_dim: 128
+    tab_hidden_dim: 48
+    bottleneck_dim: 32
+    latent_alignment_lambda: 0.0
+    label_smoothing: 0.0
+    task_loss: focal
+    ema_decay: 0.995
+  - name: efficientnet3d_b0_moe_bce_lb_lr5e5_drop20
+    backbone: efficientnet3d_b0
+    fusion: moe
+    lr: 0.00005
+    dropout: 0.20
+    latent_dim: 128
+    tab_hidden_dim: 48
+    bottleneck_dim: 32
+    latent_alignment_lambda: 0.0
+    label_smoothing: 0.05
+    n_experts: 4
+    moe_load_balance_lambda: 0.01
+  - name: efficientnet3d_b0_moe_auc_lb_lr5e5_drop20
+    backbone: efficientnet3d_b0
+    fusion: moe
+    lr: 0.00005
+    dropout: 0.20
+    latent_dim: 128
+    tab_hidden_dim: 48
+    bottleneck_dim: 32
+    latent_alignment_lambda: 0.0
+    label_smoothing: 0.0
+    n_experts: 4
+    moe_load_balance_lambda: 0.01
+    task_loss: bce_auc
+    auc_loss_weight: 0.2
+  - name: resnet50_healnet_auc_ema_lr5e5_drop15
+    backbone: resnet50_3d
+    fusion: healnet
+    lr: 0.00005
+    dropout: 0.15
+    latent_dim: 128
+    tab_hidden_dim: 48
+    bottleneck_dim: 32
+    latent_alignment_lambda: 0.01
+    label_smoothing: 0.0
+    task_loss: bce_auc
+    auc_loss_weight: 0.2
+    ema_decay: 0.995
+  - name: mednext_s_healnet_focal_q2phenotype_lr5e5_drop20
+    backbone: mednext_3d_s
+    fusion: healnet
+    lr: 0.00005
+    dropout: 0.20
+    latent_dim: 128
+    tab_hidden_dim: 48
+    bottleneck_dim: 32
+    latent_alignment_lambda: 0.0
+    label_smoothing: 0.0
+    task_loss: focal
+    q2_channel_gate: phenotype
+    ema_decay: 0.995
+excluded_candidates:
+  - id: matched_resnet18_a3_a4_a2
+    execution_status: BLOCKED_REQUIRES_PHYSICAL_BATCH_AT_LEAST_2_OR_VALIDATED_MEMORY
+    reason: physical_batch_size_1

@@ -1,0 +1,25 @@
+{
+  "source_id": "3130dec293c2266f",
+  "source_sha256": "6333033edd0b29daf20bf2c59f86b17db4df0f07cb6add6118775ecaf7b39f07",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "branch": "amyloid",
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "exploratory_operational_acceptance": false,
+    "external_claim_allowed": false,
+    "hard_blockers": [
+      "POST_HOC_OUTER_TEST_PREVIOUSLY_EXPOSED",
+      "QUANTITATIVE_EQUIVALENCE_NOT_ESTABLISHED",
+      "SCANNER_ROBUSTNESS_NOT_ESTABLISHED",
+      "LOCKED_EXTERNAL_VALIDATION_MISSING"
+    ],
+    "official_centaur_equivalence_claim_allowed": false,
+    "official_centiloid_equivalence_claim_allowed": false,
+    "pair_kind": "RESNET10_AUGMENTATION_EFFECT",
+    "positive_claim_allowed": false,
+    "schema_version": "4.0"
+  }
+}

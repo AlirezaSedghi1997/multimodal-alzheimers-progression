@@ -1,0 +1,128 @@
+schema_version: 1
+protocol_name: amuse_x_hybrid3d_v1
+backbone_name: amuse_x_hybrid3d
+input_mode: mri_plus_tabular
+resolution: 128
+folds: 5
+seed: 13
+parameter_budget_max: 20000000
+smoke_vram_budget_gb: 6.5
+training_vram_hard_stop_gb: 7.5
+components:
+  stem: shared_conv3d_norm_gelu
+  residual_stages: true
+  capped_dense_skip_reuse: true
+  depthwise_large_kernel_se: true
+  window_attention: low_width_optional
+  multiscale_gated_fusion: true
+  a3_tabular_projection: linear_then_optional_mlp
+  cross_attention_bottleneck: true
+  a4_channel_gate: phenotype_only_causal_inspired
+  calibrated_head: temperature_scaling_inner_validation_only
+  a6_claim_validator: true
+tabular_features: [age, sex, education_years, apoe4_carrier, mmse_base]
+attention:
+  enabled: true
+  heads: 2
+  window_size: 4
+fallback:
+  name: amuse_x_hybrid_lite
+  remove_attention_if_smoke_fails: true
+ablation_order:
+  - baseline
+  - plus_dense_skip
+  - plus_large_kernel
+  - plus_attention
+  - plus_a3
+  - plus_a4
+  - full_model
+variant_definitions:
+  baseline:
+    dense_skip: false
+    large_kernel: false
+    attention: false
+    a3_alignment: false
+    a4_channel_gate: false
+  plus_dense_skip:
+    dense_skip: true
+    large_kernel: false
+    attention: false
+    a3_alignment: false
+    a4_channel_gate: false
+  plus_large_kernel:
+    dense_skip: false
+    large_kernel: true
+    attention: false
+    a3_alignment: false
+    a4_channel_gate: false
+  plus_attention:
+    dense_skip: false
+    large_kernel: false
+    attention: true
+    a3_alignment: false
+    a4_channel_gate: false
+  plus_a3:
+    dense_skip: false
+    large_kernel: false
+    attention: false
+    a3_alignment: true
+    a4_channel_gate: false
+  plus_a4:
+    dense_skip: false
+    large_kernel: false
+    attention: false
+    a3_alignment: false
+    a4_channel_gate: true
+  full_model:
+    dense_skip: true
+    large_kernel: true
+    attention: true
+    a3_alignment: true
+    a4_channel_gate: true
+replication_seeds: [13, 29, 47]
+max_same_failure_attempts: 2
+inner_selection_only: true
+promotion:
+  all_five_folds_finalized: true
+  sanity_checks_required: true
+  bootstrap_resamples: 1000
+  roc_auc_delta_min: 0.02
+  brier_degradation_max: 0.01
+  ece_degradation_max: 0.02
+  cohort_probe_auc_increase_max: 0.0
+  memory_hard_stop_gb: 7.5
+exact_resume:
+  required: true
+  checkpoint_staging_root: 'C:\Users\USER\AppData\Local\AMUSE-X\checkpoint_staging'
+  checkpoint_full_cadence: 1
+  checkpoint_h_mirror: epoch
+  resume_replay_policy: deterministic
+  storage_policy: configs/policy/method_x_storage_locality_v1.yaml
+  no_resume_forbidden: true
+throughput_profile:
+  evidence_artifact: results/method_x_registry/MX05_HYBRID_THROUGHPUT_PROFILE.json
+  receipts_artifact: results/method_x_registry/MX05_HYBRID_THROUGHPUT_PROFILE_RECEIPTS.json
+  profile_variant: full_model
+  profile_limit: 64
+  folds: 1
+  epochs: 1
+  seed: 13
+  loader_trials: 2
+  metric_equivalence_tolerance: 0.000001
+  checkpoint_soft_cap_gb: 7.0
+  memory_hard_stop_gb: 7.5
+  persistent_workers: false
+runtime_readiness:
+  evidence_artifact: results/method_x_registry/MX05_RUNTIME_READINESS.json
+  junit_artifact: results/method_x_registry/MX05_RUNTIME_READINESS_TESTS.xml
+outer_finalization:
+  canonical_seed: 13
+  destination_root: final_model_v1
+  logical_evaluation_count: 1
+  journal_batch_size: 1
+  outer_used_for_selection: false
+claim_boundary:
+  pet_input: false
+  diagnosis: false
+  causal_region_claim: false
+  external_generalization: false

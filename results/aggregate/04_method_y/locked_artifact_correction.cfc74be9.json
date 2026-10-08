@@ -1,0 +1,839 @@
+{
+  "source_id": "cfc74be9cac036c5",
+  "source_sha256": "5d94d6d75c9020f4a00a622cd13d24e52e8a4c466e4cee830489545559c45e77",
+  "scientific_role": "corrected_nested_image_analysis",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 4,
+  "aggregate": {
+    "branches": {
+      "amyloid": {
+        "a0_fold_mean_ibs": 0.09582756920389612,
+        "a0_fold_mean_uno": 0.6973980914969091,
+        "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+        "fold_mean_ibs": 0.09483001961707034,
+        "fold_mean_uno": 0.692094159078234,
+        "folds": [
+          {
+            "inner_winner_source_sha256": {
+              "A0": "58fbb0397770c99f5939da1b0638de5a3ecfcfe48e66f988eb1749c88a953449",
+              "A1": "c71f48ec4d84ea2bb56a266f8931e70489998aee7680d4f452087646c6748b67",
+              "A2": "dc9144595da653384fdfdd6b8a6ee1dec3bde670845aa196aa874c16289a65b9",
+              "A3": "955a326563c9ba5ba4e04fd54e636daffa368a56be0bddc5f01a96abcee9cb3f",
+              "A4": "0e7e14d430eb9f51e2637e7a5f774574efb2211da4fb14bf26f97d54c4f5bcbd"
+            },
+            "outer_fold": 0,
+            "outer_ibs": 0.09031509940566343,
+            "outer_test_event_count": 21,
+            "outer_test_subject_count": 109,
+            "outer_uno": 0.6885182128954294,
+            "reference_a0_ibs": 0.09031509940566343,
+            "reference_a0_uno": 0.6885182128954294,
+            "selected_arm": "A0",
+            "selected_outer_private_sha256": "38308878aebdc422e22cba6c6da4071c564075da5bbb3f08f07562cc64447868",
+            "selection": {
+              "arm_summaries": {
+                "A0": {
+                  "mean_ibs": 0.0944054150909482,
+                  "standard_error": 0.008445934365979478
+                },
+                "A1": {
+                  "mean_ibs": 0.09516513384919341,
+                  "standard_error": 0.00842392068454096
+                },
+                "A2": {
+                  "mean_ibs": 0.09594518858494655,
+                  "standard_error": 0.009009643130945062
+                },
+                "A3": {
+                  "mean_ibs": 0.09777381904921062,
+                  "standard_error": 0.008825438895105751
+                },
+                "A4": {
+                  "mean_ibs": 0.09369050391069027,
+                  "standard_error": 0.00828548576167333
+                }
+              },
+              "best_mean_arm": "A4",
+              "eligible_within_one_standard_error": [
+                "A0",
+                "A1",
+                "A2",
+                "A3",
+                "A4"
+              ],
+              "one_standard_error_threshold": 0.1019759896723636,
+              "outer_test_consulted_for_this_fold_selection": false,
+              "selected_arm": "A0",
+              "selection_metric": "IPCW_INTEGRATED_BRIER_SCORE"
+            }
+          },
+          {
+            "inner_winner_source_sha256": {
+              "A0": "0c03c1f7233b73528913c32bb50af66b1d1238fdd72d979a3a632ae61f4d6eb4",
+              "A1": "adfc1a25079e796bed9ee9078825a07d979ffbac0b03cce38dca17ba20ec8604",
+              "A2": "593a3f116319786b80c0eedf52d0bb2d954867a7a16becd12d29a374dbaa0bdd",
+              "A3": "76bebd3bfee3182b77afc2f051859fbd4aea78e6d1da45287ff244a660096a8e",
+              "A4": "39e5077f439a249c9657e258bafa44c47c139424417dfc6ba1ab3595bceb322c"
+            },
+            "outer_fold": 1,
+            "outer_ibs": 0.11077007821878682,
+            "outer_test_event_count": 20,
+            "outer_test_subject_count": 107,
+            "outer_uno": 0.651973402554717,
+            "reference_a0_ibs": 0.11077007821878682,
+            "reference_a0_uno": 0.651973402554717,
+            "selected_arm": "A0",
+            "selected_outer_private_sha256": "4fb685273325f1b9e6160d3bfa2c512bba2c138c49f924891b64461d7f8dba91",
+            "selection": {
+              "arm_summaries": {
+                "A0": {
+                  "mean_ibs": 0.09198615971107797,
+                  "standard_error": 0.004935112062394102
+                },
+                "A1": {
+                  "mean_ibs": 0.09253832342126966,
+                  "standard_error": 0.004727816672036222
+                },
+                "A2": {
+                  "mean_ibs": 0.09349330009412911,
+                  "standard_error": 0.00439926702223617
+                },
+                "A3": {
+                  "mean_ibs": 0.092710698962719,
+                  "standard_error": 0.004876529886655197
+                },
+                "A4": {
+                  "mean_ibs": 0.09330540751603243,
+                  "standard_error": 0.005032314249933779
+                }
+              },
+              "best_mean_arm": "A0",
+              "eligible_within_one_standard_error": [
+                "A0",
+                "A1",
+                "A2",
+                "A3",
+                "A4"
+              ],
+              "one_standard_error_threshold": 0.09692127177347207,
+              "outer_test_consulted_for_this_fold_selection": false,
+              "selected_arm": "A0",
+              "selection_metric": "IPCW_INTEGRATED_BRIER_SCORE"
+            }
+          },
+          {
+            "inner_winner_source_sha256": {
+              "A0": "b7d4545745270d3539fe93369afd6c515febaac6499c35743fadd41ad718102e",
+              "A1": "1d22168dc5ee629bc38828957a8cb4f0b159773d2cdc17790ca44b2cb45b7d86",
+              "A2": "f12d3ed8274d3e0a310e319bd643d577954309781977720d8f61c42aa017cd8b",
+              "A3": "fd3c0916a5e820fac7838f655bdabad8892f3777269c94870a83bdcce99637c4",
+              "A4": "76782788c12f1f0752f879b3315a5e530567666fd2535af3dc34884c582aea74"
+            },
+            "outer_fold": 2,
+            "outer_ibs": 0.092513216145502,
+            "outer_test_event_count": 30,
+            "outer_test_subject_count": 132,
+            "outer_uno": 0.7211085528393056,
+            "reference_a0_ibs": 0.092513216145502,
+            "reference_a0_uno": 0.7211085528393056,
+            "selected_arm": "A0",
+            "selected_outer_private_sha256": "4afba2cd7a0eb5c29ca1dfc71415b7ace7a68daaf3fe4c5159d73bc9356b258a",
+            "selection": {
+              "arm_summaries": {
+                "A0": {
+                  "mean_ibs": 0.09723512135610968,
+                  "standard_error": 0.0070690211011765975
+                },
+                "A1": {
+                  "mean_ibs": 0.0973501997937582,
+                  "standard_error": 0.0074490440620719545
+                },
+                "A2": {
+                  "mean_ibs": 0.100833880617967,
+                  "standard_error": 0.006504683507670511
+                },
+                "A3": {
+                  "mean_ibs": 0.10042443028778952,
+                  "standard_error": 0.006373886086524306
+                },
+                "A4": {
+                  "mean_ibs": 0.09275568854363585,
+                  "standard_error": 0.006146850670550074
+                }
+              },
+              "best_mean_arm": "A4",
+              "eligible_within_one_standard_error": [
+                "A0",
+                "A1",
+                "A4"
+              ],
+              "one_standard_error_threshold": 0.09890253921418592,
+              "outer_test_consulted_for_this_fold_selection": false,
+              "selected_arm": "A0",
+              "selection_metric": "IPCW_INTEGRATED_BRIER_SCORE"
+            }
+          },
+          {
+            "inner_winner_source_sha256": {
+              "A0": "de3681ecc60d0355962b23dfec6b7fec9fcb859eee17d8f65d70f9cc076bd86c",
+              "A1": "e0915c6c78912aa71f05ebe9c1f1640163b3706728fad72c14700cf3d9cc63d9",
+              "A2": "ce4a01261d6b008aefa1b164f4128f9096ffd84f37ce01aa3b7812e20267cdd7",
+              "A3": "b54b7f5873cc1d519ac55c5464ebbe9f5ba4b1cf4131ef7d7cd1904f2fa7c3b2",
+              "A4": "c84507c5ba93b5fc1b5267e694ac429cfb71541e1de1c93b22553b7b79bcdd69"
+            },
+            "outer_fold": 3,
+            "outer_ibs": 0.08070934237939534,
+            "outer_test_event_count": 19,
+            "outer_test_subject_count": 105,
+            "outer_uno": 0.7596275680686854,
+            "reference_a0_ibs": 0.08569709031352425,
+            "reference_a0_uno": 0.7861472301620613,
+            "selected_arm": "A2",
+            "selected_outer_private_sha256": "7dce53fe4b4f8c69d6dc0fa9cafc840131b81082ebb0d6f65636e4c77ae4e72f",
+            "selection": {
+              "arm_summaries": {
+                "A0": {
+                  "mean_ibs": 0.09634698224629722,
+                  "standard_error": 0.0013851068520300954
+                },
+                "A1": {
+                  "mean_ibs": 0.09753062456427027,
+                  "standard_error": 0.0013345980366561208
+                },
+                "A2": {
+                  "mean_ibs": 0.09369652791533457,
+                  "standard_error": 0.001797442105890776
+                },
+                "A3": {
+                  "mean_ibs": 0.09555348613699156,
+                  "standard_error": 0.0009702745439481834
+                },
+                "A4": {
+                  "mean_ibs": 0.09685733331082769,
+                  "standard_error": 0.0026420455666706826
+                }
+              },
+              "best_mean_arm": "A2",
+              "eligible_within_one_standard_error": [
+                "A2"
+              ],
+              "one_standard_error_threshold": 0.09549397002122535,
+              "outer_test_consulted_for_this_fold_selection": false,
+              "selected_arm": "A2",
+              "selection_metric": "IPCW_INTEGRATED_BRIER_SCORE"
+            }
+          },
+          {
+            "inner_winner_source_sha256": {
+              "A0": "7fe0ce3c78841d328d6e16bc859ac15eb0f3edb0456a3bf66ee5a61ee5a213f1",
+              "A1": "5f600c4d8fce829538fa34a27d6515d93df807f71c6c525c4c804d74690e8919",
+              "A2": "ccf6797c8a59857cd23a9c4e20be30f754160b808ce9be2101ff140814b7900d",
+              "A3": "451b071524d78cba16454f88c500fc0c975d9a0a8ae246d47463f7b660322d58",
+              "A4": "effe915f791c0da3eb54f129919f8ad3f9ecb2e58213964ed48995cb5c8f4176"
+            },
+            "outer_fold": 4,
+            "outer_ibs": 0.09984236193600414,
+            "outer_test_event_count": 20,
+            "outer_test_subject_count": 107,
+            "outer_uno": 0.6392430590330327,
+            "reference_a0_ibs": 0.09984236193600414,
+            "reference_a0_uno": 0.6392430590330327,
+            "selected_arm": "A0",
+            "selected_outer_private_sha256": "243bb85187fbb5c2ab577e354c0ded1b0aef339357be8d9db25ad2d2b6934bd6",
+            "selection": {
+              "arm_summaries": {
+                "A0": {
+                  "mean_ibs": 0.09364412051492184,
+                  "standard_error": 0.004005308397223755
+                },
+                "A1": {
+                  "mean_ibs": 0.09267948358689045,
+                  "standard_error": 0.004088803450827467
+                },
+                "A2": {
+                  "mean_ibs": 0.09291613767963802,
+                  "standard_error": 0.00571094789445499
+                },
+                "A3": {
+                  "mean_ibs": 0.0931336081752684,
+                  "standard_error": 0.006525015105732448
+                },
+                "A4": {
+                  "mean_ibs": 0.09306011398741047,
+                  "standard_error": 0.008298984682248904
+                }
+              },
+              "best_mean_arm": "A1",
+              "eligible_within_one_standard_error": [
+                "A0",
+                "A1",
+                "A2",
+                "A3",
+                "A4"
+              ],
+              "one_standard_error_threshold": 0.0967682870377179,
+              "outer_test_consulted_for_this_fold_selection": false,
+              "selected_arm": "A0",
+              "selection_metric": "IPCW_INTEGRATED_BRIER_SCORE"
+            }
+          }
+        ],
+        "global_arm_internal_performance_role": "SELECTION_INFORMED_DESCRIPTIVE_ONLY",
+        "strict_nested_policy_reconstruction": "POST_HOC_FROM_COMMITTED_OUTER_RESULTS",
+        "subject_count": 560
+      },
+      "tau": {
+        "a0_fold_mean_ibs": 0.12211255628204362,
+        "a0_fold_mean_uno": 0.7169451704495702,
+        "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+        "fold_mean_ibs": 0.12178253393834564,
+        "fold_mean_uno": 0.7190407414968781,
+        "folds": [
+          {
+            "inner_winner_source_sha256": {
+              "A0": "4468bb0d6a79a8dfb2b8a796a4fa8e58fa27841b4b912888a6eff809b0c47565",
+              "A1": "fd3f4b4966d034088a1065e089ccdff6952b4082a2ef67cdfaca32f30dc4f9d6",
+              "A2": "5515d0941335adcee9c6b2ecd950d606b1db11cf0a0b9ff4f54aa92b84c87d6f",
+              "A3": "d16e1099070d48b53dac86b6219408b9646842e6b9d8bd2753ec0f8fcfffc17b",
+              "A4": "80e1b599730cd88659c5535270d19df36a9f10b671604d06b08c1e9deb32a8ec"
+            },
+            "outer_fold": 0,
+            "outer_ibs": 0.11734561478793686,
+            "outer_test_event_count": 14,
+            "outer_test_subject_count": 60,
+            "outer_uno": 0.7225811610859235,
+            "reference_a0_ibs": 0.11899572650642677,
+            "reference_a0_uno": 0.7121033058493834,
+            "selected_arm": "A1",
+            "selected_outer_private_sha256": "0073e8a1d0cb2f7404acb67e2ad313bf2127652af3f651a152e536a9138f8652",
+            "selection": {
+              "arm_summaries": {
+                "A0": {
+                  "mean_ibs": 0.11533740196774935,
+                  "standard_error": 0.0016820164128516766
+                },
+                "A1": {
+                  "mean_ibs": 0.11173688836857194,
+                  "standard_error": 0.0016390076851964467
+                },
+                "A2": {
+                  "mean_ibs": 0.12104809595471198,
+                  "standard_error": 0.005716523746715127
+                },
+                "A3": {
+                  "mean_ibs": 0.11958218058146243,
+                  "standard_error": 0.006301784964333169
+                },
+                "A4": {
+                  "mean_ibs": 0.12229111996753139,
+                  "standard_error": 0.002067095868127958
+                }
+              },
+              "best_mean_arm": "A1",
+              "eligible_within_one_standard_error": [
+                "A1"
+              ],
+              "one_standard_error_threshold": 0.1133758960537684,
+              "outer_test_consulted_for_this_fold_selection": false,
+              "selected_arm": "A1",
+              "selection_metric": "IPCW_INTEGRATED_BRIER_SCORE"
+            }
+          },
+          {
+            "inner_winner_source_sha256": {
+              "A0": "7f14a6f080a73dea1a7e4a7ead5035185c7d66bc525f462c21d5a94d74fca8c1",
+              "A1": "b7b2d7a64c3096ef7df7c6cc33b6727effc66432714c146262d2950b9f57886b",
+              "A2": "2a4c1eccdc9d50f8ab8233a80b91f9664f9e40bef5659f4d26402d9e4da77f69",
+              "A3": "a33c3487644edbce872e21419a9bab30db9c8f82145eefcbb45c6f77c3a2a890",
+              "A4": "3cd85fecb0a4ed06ca42ccddbcefdb2c34a123bcac36b3bcdd80e9eac2bb0bed"
+            },
+            "outer_fold": 1,
+            "outer_ibs": 0.12963987577995628,
+            "outer_test_event_count": 15,
+            "outer_test_subject_count": 62,
+            "outer_uno": 0.7402686767567017,
+            "reference_a0_ibs": 0.12963987577995628,
+            "reference_a0_uno": 0.7402686767567017,
+            "selected_arm": "A0",
+            "selected_outer_private_sha256": "d6340518f1510995bad4f7370b393074fc4857851fdb8eacbb6c319374781d06",
+            "selection": {
+              "arm_summaries": {
+                "A0": {
+                  "mean_ibs": 0.12015584479836248,
+                  "standard_error": 0.0029303605800363028
+                },
+                "A1": {
+                  "mean_ibs": 0.11772277888226168,
+                  "standard_error": 0.0046559314673163205
+                },
+                "A2": {
+                  "mean_ibs": 0.12056623775300729,
+                  "standard_error": 0.006676788256848197
+                },
+                "A3": {
+                  "mean_ibs": 0.11863614136175053,
+                  "standard_error": 0.008012385661247418
+                },
+                "A4": {
+                  "mean_ibs": 0.11442423857046001,
+                  "standard_error": 0.0084295718654623
+                }
+              },
+              "best_mean_arm": "A4",
+              "eligible_within_one_standard_error": [
+                "A0",
+                "A1",
+                "A2",
+                "A3",
+                "A4"
+              ],
+              "one_standard_error_threshold": 0.1228538104359223,
+              "outer_test_consulted_for_this_fold_selection": false,
+              "selected_arm": "A0",
+              "selection_metric": "IPCW_INTEGRATED_BRIER_SCORE"
+            }
+          },
+          {
+            "inner_winner_source_sha256": {
+              "A0": "425caa84016f3a105138ce4be191ae4e771c5b0bdfa1a74e885050a987d56440",
+              "A1": "cb73ffd6c89240fbafa8848c3a0f974144d82acc9e57aa3f151c9f58db46e99d",
+              "A2": "77d7dd6e2c049fe61c6bfcec911af6f16cd80fd271e39faa9cd8eebc76d134ed",
+              "A3": "2dc3a94159029951f5467459350724e2c50339d193b1575808ef5d5595de0002",
+              "A4": "3d6fbe96614dea6877267e8dd583f5472c9e56b971432cae3fd431f2a2483827"
+            },
+            "outer_fold": 2,
+            "outer_ibs": 0.1084308568668997,
+            "outer_test_event_count": 16,
+            "outer_test_subject_count": 63,
+            "outer_uno": 0.7211769959768234,
+            "reference_a0_ibs": 0.1084308568668997,
+            "reference_a0_uno": 0.7211769959768234,
+            "selected_arm": "A0",
+            "selected_outer_private_sha256": "fe17bb956b2c5de94ebef247c8341ebce2c9bea54156c10c56806f4691f11c2b",
+            "selection": {
+              "arm_summaries": {
+                "A0": {
+                  "mean_ibs": 0.11485188088551414,
+                  "standard_error": 0.009489969805189137
+                },
+                "A1": {
+                  "mean_ibs": 0.1135732080636989,
+                  "standard_error": 0.008971929588493816
+                },
+                "A2": {
+                  "mean_ibs": 0.12453013318625439,
+                  "standard_error": 0.009888744504476455
+                },
+                "A3": {
+                  "mean_ibs": 0.12218773933928893,
+                  "standard_error": 0.009865837982041993
+                },
+                "A4": {
+                  "mean_ibs": 0.11925677095327515,
+                  "standard_error": 0.007440949306788373
+                }
+              },
+              "best_mean_arm": "A1",
+              "eligible_within_one_standard_error": [
+                "A0",
+                "A1",
+                "A3",
+                "A4"
+              ],
+              "one_standard_error_threshold": 0.12254513765219271,
+              "outer_test_consulted_for_this_fold_selection": false,
+              "selected_arm": "A0",
+              "selection_metric": "IPCW_INTEGRATED_BRIER_SCORE"
+            }
+          },
+          {
+            "inner_winner_source_sha256": {
+              "A0": "ba61c1a74c0e2d7daee7eb5887ad4d9cef407f2100e77374c3c5d478a15a2139",
+              "A1": "9d6e78e0fb2b1483d15f6681d773565cec99a3e790706f38d8ba4a11e564d2b4",
+              "A2": "80aacf873a922e416d4049fefd55eb8296a5f21e5fc07e832335b6c07fdf3a11",
+              "A3": "44d49928c6107ac8f6d8408da9245d9b5b1d501c0b52fd0ae91a939a25b21d53",
+              "A4": "bfeff26341f41fbf29147b510e6f68e4144a460f30d227cffcc2c1a20f5375de"
+            },
+            "outer_fold": 3,
+            "outer_ibs": 0.1257993626215991,
+            "outer_test_event_count": 14,
+            "outer_test_subject_count": 59,
+            "outer_uno": 0.6750283674127248,
+            "reference_a0_ibs": 0.1257993626215991,
+            "reference_a0_uno": 0.6750283674127248,
+            "selected_arm": "A0",
+            "selected_outer_private_sha256": "3e2823a1786be2cf1e09c5b7c70613d3c0aa00d0766e11e3b154d10f974b91a9",
+            "selection": {
+              "arm_summaries": {
+                "A0": {
+                  "mean_ibs": 0.11313083217180053,
+                  "standard_error": 0.010274935471137947
+                },
+                "A1": {
+                  "mean_ibs": 0.112335602494521,
+                  "standard_error": 0.010533537751550635
+                },
+                "A2": {
+                  "mean_ibs": 0.1115016676031368,
+                  "standard_error": 0.011960057195720087
+                },
+                "A3": {
+                  "mean_ibs": 0.11070177043011388,
+                  "standard_error": 0.012449157002720198
+                },
+                "A4": {
+                  "mean_ibs": 0.11357676378480684,
+                  "standard_error": 0.008994581909747505
+                }
+              },
+              "best_mean_arm": "A3",
+              "eligible_within_one_standard_error": [
+                "A0",
+                "A1",
+                "A2",
+                "A3",
+                "A4"
+              ],
+              "one_standard_error_threshold": 0.12315092743283408,
+              "outer_test_consulted_for_this_fold_selection": false,
+              "selected_arm": "A0",
+              "selection_metric": "IPCW_INTEGRATED_BRIER_SCORE"
+            }
+          },
+          {
+            "inner_winner_source_sha256": {
+              "A0": "c174d21e3d329970cf3d0fba8e324a783b5286556656d208d1c1a253590daef6",
+              "A1": "6e4290f3ffab9516ba80a6da8523d5a7e7d95e1fa1a04d7ec7baac429ba9ac6d",
+              "A2": "a10695c7a3f9246caa4f7de6ebfbd0df29eeb7190f1ab29f5378e596d2a3cae1",
+              "A3": "b3c88f21ea84b6c77efa3d625df251d88a232915b4d34a9215a03a483d4b7d1a",
+              "A4": "edbb19e81e439fe0dd55fa50149ae2775e204e9ac59f863e4a45638a33b6d7a3"
+            },
+            "outer_fold": 4,
+            "outer_ibs": 0.12769695963533625,
+            "outer_test_event_count": 16,
+            "outer_test_subject_count": 62,
+            "outer_uno": 0.7361485062522175,
+            "reference_a0_ibs": 0.12769695963533625,
+            "reference_a0_uno": 0.7361485062522175,
+            "selected_arm": "A0",
+            "selected_outer_private_sha256": "f9678684048c6eb04b1a1cfcb2498489e38b7d0908b74053e49b2501c24cbd9b",
+            "selection": {
+              "arm_summaries": {
+                "A0": {
+                  "mean_ibs": 0.1167378063258163,
+                  "standard_error": 0.007594115737865897
+                },
+                "A1": {
+                  "mean_ibs": 0.11546501892931228,
+                  "standard_error": 0.007175941622430912
+                },
+                "A2": {
+                  "mean_ibs": 0.11636764201015005,
+                  "standard_error": 0.00995650628202873
+                },
+                "A3": {
+                  "mean_ibs": 0.11298773549777846,
+                  "standard_error": 0.008871968867634247
+                },
+                "A4": {
+                  "mean_ibs": 0.1209710831995069,
+                  "standard_error": 0.009401517905758485
+                }
+              },
+              "best_mean_arm": "A3",
+              "eligible_within_one_standard_error": [
+                "A0",
+                "A1",
+                "A2",
+                "A3",
+                "A4"
+              ],
+              "one_standard_error_threshold": 0.12185970436541271,
+              "outer_test_consulted_for_this_fold_selection": false,
+              "selected_arm": "A0",
+              "selection_metric": "IPCW_INTEGRATED_BRIER_SCORE"
+            }
+          }
+        ],
+        "global_arm_internal_performance_role": "SELECTION_INFORMED_DESCRIPTIVE_ONLY",
+        "strict_nested_policy_reconstruction": "POST_HOC_FROM_COMMITTED_OUTER_RESULTS",
+        "subject_count": 306
+      }
+    },
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "correction_source_sha256": "6b256627159f50c2971abb11efc5a8d3c16e5d3628a273f78a922c40e992c536",
+    "design_correction": "ARM_CHOICE_IS_LOCAL_TO_EACH_OUTER_TRAIN_PARTITION",
+    "external_claim_allowed": false,
+    "interpretation_limit": "REANALYSIS_OCCURRED_AFTER_ALL_OUTER_ARMS_WERE_EXPOSED",
+    "legacy_post_eval_corrections": {
+      "calibration": {
+        "amyloid:A0_vs_A1": {
+          "confidence_interval_note": "EXISTING_HESSIAN_INTERVALS_DO_NOT_ACCOUNT_FOR_FOLD_CLUSTERING",
+          "horizon_status": {
+            "1095.75": "ESTIMABLE",
+            "1640.0": "NOT_ESTIMABLE",
+            "547.875": "ESTIMABLE"
+          },
+          "source_sha256": "7ee0fee99e6b9c90fb0092eab065b35e1c673e37dddcf4709a35955b0fbb4c8d",
+          "status": "COMPLETED_WITH_ESTIMABILITY_GATES"
+        },
+        "amyloid:A0_vs_A2": {
+          "confidence_interval_note": "EXISTING_HESSIAN_INTERVALS_DO_NOT_ACCOUNT_FOR_FOLD_CLUSTERING",
+          "horizon_status": {
+            "1095.75": "ESTIMABLE",
+            "1640.0": "NOT_ESTIMABLE",
+            "547.875": "ESTIMABLE"
+          },
+          "source_sha256": "83cd08b0d661d6095f19f61c92aadeba7ca243b4927a0307b84ba39b0e433c54",
+          "status": "COMPLETED_WITH_ESTIMABILITY_GATES"
+        },
+        "amyloid:A1_vs_A3": {
+          "confidence_interval_note": "EXISTING_HESSIAN_INTERVALS_DO_NOT_ACCOUNT_FOR_FOLD_CLUSTERING",
+          "horizon_status": {
+            "1095.75": "ESTIMABLE",
+            "1640.0": "NOT_ESTIMABLE",
+            "547.875": "ESTIMABLE"
+          },
+          "source_sha256": "9ce479be037de98c8de344c8cbbeed55f0b3bc34136ac8b145986cb0b20748c6",
+          "status": "COMPLETED_WITH_ESTIMABILITY_GATES"
+        },
+        "amyloid:A2_vs_A3": {
+          "confidence_interval_note": "EXISTING_HESSIAN_INTERVALS_DO_NOT_ACCOUNT_FOR_FOLD_CLUSTERING",
+          "horizon_status": {
+            "1095.75": "ESTIMABLE",
+            "1640.0": "NOT_ESTIMABLE",
+            "547.875": "ESTIMABLE"
+          },
+          "source_sha256": "e02d0f2da408487e0eadaa83b5e043a9f4f81145c16bc716f4b9a87a1c1fe217",
+          "status": "COMPLETED_WITH_ESTIMABILITY_GATES"
+        },
+        "amyloid:A3_vs_A4": {
+          "confidence_interval_note": "EXISTING_HESSIAN_INTERVALS_DO_NOT_ACCOUNT_FOR_FOLD_CLUSTERING",
+          "horizon_status": {
+            "1095.75": "ESTIMABLE",
+            "1640.0": "NOT_ESTIMABLE",
+            "547.875": "ESTIMABLE"
+          },
+          "source_sha256": "d1039e756e9f1153518a8df33bc547baef1ae2343365924a56299592932a2d99",
+          "status": "COMPLETED_WITH_ESTIMABILITY_GATES"
+        },
+        "tau:A0_vs_A1": {
+          "confidence_interval_note": "EXISTING_HESSIAN_INTERVALS_DO_NOT_ACCOUNT_FOR_FOLD_CLUSTERING",
+          "horizon_status": {
+            "1095.75": "ESTIMABLE",
+            "1640.0": "NOT_ESTIMABLE",
+            "547.875": "ESTIMABLE"
+          },
+          "source_sha256": "d0fc142cb57bcd87d495375dffe9ce0b8a23190f5c57a8d34f1444d331f04adc",
+          "status": "COMPLETED_WITH_ESTIMABILITY_GATES"
+        },
+        "tau:A0_vs_A2": {
+          "confidence_interval_note": "EXISTING_HESSIAN_INTERVALS_DO_NOT_ACCOUNT_FOR_FOLD_CLUSTERING",
+          "horizon_status": {
+            "1095.75": "ESTIMABLE",
+            "1640.0": "NOT_ESTIMABLE",
+            "547.875": "ESTIMABLE"
+          },
+          "source_sha256": "7a67ae176e7759d5771759ab506b0021a7cc03b8089f0a0eb8dd4ded67a9173f",
+          "status": "COMPLETED_WITH_ESTIMABILITY_GATES"
+        },
+        "tau:A1_vs_A3": {
+          "confidence_interval_note": "EXISTING_HESSIAN_INTERVALS_DO_NOT_ACCOUNT_FOR_FOLD_CLUSTERING",
+          "horizon_status": {
+            "1095.75": "ESTIMABLE",
+            "1640.0": "NOT_ESTIMABLE",
+            "547.875": "ESTIMABLE"
+          },
+          "source_sha256": "c959ba7624f052a985f09b86fbed988601de2520f8960a8736aabe66c1aa806a",
+          "status": "COMPLETED_WITH_ESTIMABILITY_GATES"
+        },
+        "tau:A2_vs_A3": {
+          "confidence_interval_note": "EXISTING_HESSIAN_INTERVALS_DO_NOT_ACCOUNT_FOR_FOLD_CLUSTERING",
+          "horizon_status": {
+            "1095.75": "ESTIMABLE",
+            "1640.0": "NOT_ESTIMABLE",
+            "547.875": "ESTIMABLE"
+          },
+          "source_sha256": "7bb1e72c94f397dbf80167938e08c795d186c24d55472c7a86b3a5d10af49a68",
+          "status": "COMPLETED_WITH_ESTIMABILITY_GATES"
+        },
+        "tau:A3_vs_A4": {
+          "confidence_interval_note": "EXISTING_HESSIAN_INTERVALS_DO_NOT_ACCOUNT_FOR_FOLD_CLUSTERING",
+          "horizon_status": {
+            "1095.75": "ESTIMABLE",
+            "1640.0": "NOT_ESTIMABLE",
+            "547.875": "ESTIMABLE"
+          },
+          "source_sha256": "70f93a2e6df3d9e0523e3a5415b2555f4066a41ca27cc4150f7f5ea3f9c42fe2",
+          "status": "COMPLETED_WITH_ESTIMABILITY_GATES"
+        }
+      },
+      "calibration_leg": "COMPLETED_WITH_ESTIMABILITY_GATES",
+      "contrasts": {
+        "amyloid:A0_vs_A1": {
+          "bootstrap_source_sha256": "0ab95766cbd356028e207d005f672b1641ae2ca559b3573950798687063bcf9f",
+          "delta_ibs_ci_legacy": [
+            -0.0024546273173974105,
+            0.0022863883019533255
+          ],
+          "delta_ibs_point_from_legacy_bootstrap": -0.00010254948604916192,
+          "delta_uno_ci_legacy": [
+            -0.01952462187776076,
+            0.014754332168769093
+          ],
+          "delta_uno_point_from_legacy_bootstrap": -0.0020420957878228424,
+          "inference_status": "REANALYSIS_REQUIRED_FOLD_STRATIFIED_BOOTSTRAP",
+          "old_midpoint_was_not_point_estimate": true
+        },
+        "amyloid:A0_vs_A2": {
+          "bootstrap_source_sha256": "77e0be9568f87fae0b4b9d46597afa69dc84bbe6ced94b40f01cd58507033131",
+          "delta_ibs_ci_legacy": [
+            -0.0036025620956583798,
+            0.007529559404239798
+          ],
+          "delta_ibs_point_from_legacy_bootstrap": 0.0016713895773914778,
+          "delta_uno_ci_legacy": [
+            -0.03530263760626412,
+            0.03802007112791968
+          ],
+          "delta_uno_point_from_legacy_bootstrap": 0.00034287298429792955,
+          "inference_status": "REANALYSIS_REQUIRED_FOLD_STRATIFIED_BOOTSTRAP",
+          "old_midpoint_was_not_point_estimate": true
+        },
+        "amyloid:A1_vs_A3": {
+          "bootstrap_source_sha256": "144fc6699bf9909be9e223682628633787f1678ce447c34e9b15ba1f746c6f54",
+          "delta_ibs_ci_legacy": [
+            -0.003866320493121074,
+            0.005889413567636416
+          ],
+          "delta_ibs_point_from_legacy_bootstrap": 0.0009345379974098745,
+          "delta_uno_ci_legacy": [
+            -0.029359908726623942,
+            0.03833567949275609
+          ],
+          "delta_uno_point_from_legacy_bootstrap": 0.0027893375287172464,
+          "inference_status": "REANALYSIS_REQUIRED_FOLD_STRATIFIED_BOOTSTRAP",
+          "old_midpoint_was_not_point_estimate": true
+        },
+        "amyloid:A2_vs_A3": {
+          "bootstrap_source_sha256": "0cbea29a56d2e273bdc3fb7cd42edec32e14b4d1492b9127159b87e7cf6e6358",
+          "delta_ibs_ci_legacy": [
+            -0.002701427101440716,
+            0.0009635091683760214
+          ],
+          "delta_ibs_point_from_legacy_bootstrap": -0.0008394010660307653,
+          "delta_uno_ci_legacy": [
+            -0.015325992771295144,
+            0.016380751194466366
+          ],
+          "delta_uno_point_from_legacy_bootstrap": 0.00040436875659647417,
+          "inference_status": "REANALYSIS_REQUIRED_FOLD_STRATIFIED_BOOTSTRAP",
+          "old_midpoint_was_not_point_estimate": true
+        },
+        "amyloid:A3_vs_A4": {
+          "bootstrap_source_sha256": "fc26d2592d1cd51cb2ecaedc367f3bf0d7a34ba1a20b68cc57eb30922dfbf4ce",
+          "delta_ibs_ci_legacy": [
+            -0.0029813398407316687,
+            0.0053594415525526065
+          ],
+          "delta_ibs_point_from_legacy_bootstrap": 0.0011978679330563265,
+          "delta_uno_ci_legacy": [
+            -0.05607933125602947,
+            0.005379233769720789
+          ],
+          "delta_uno_point_from_legacy_bootstrap": -0.024583078405038792,
+          "inference_status": "REANALYSIS_REQUIRED_FOLD_STRATIFIED_BOOTSTRAP",
+          "old_midpoint_was_not_point_estimate": true
+        },
+        "tau:A0_vs_A1": {
+          "bootstrap_source_sha256": "88d89b68842ca06f004fde99553dca306d92955da3864f71cadb907506d4828d",
+          "delta_ibs_ci_legacy": [
+            -0.0029285331437637484,
+            0.003850958369969619
+          ],
+          "delta_ibs_point_from_legacy_bootstrap": 0.0005185343502694512,
+          "delta_uno_ci_legacy": [
+            -0.027097974192126534,
+            0.008408075343084428
+          ],
+          "delta_uno_point_from_legacy_bootstrap": -0.008740539984359306,
+          "inference_status": "REANALYSIS_REQUIRED_FOLD_STRATIFIED_BOOTSTRAP",
+          "old_midpoint_was_not_point_estimate": true
+        },
+        "tau:A0_vs_A2": {
+          "bootstrap_source_sha256": "a60735acdb22fab868012174eb9e573dcffa48666a4f4a989c713b186606b364",
+          "delta_ibs_ci_legacy": [
+            -0.013104082022147542,
+            0.0025998278586620814
+          ],
+          "delta_ibs_point_from_legacy_bootstrap": -0.0053465743651157065,
+          "delta_uno_ci_legacy": [
+            -0.05079341627739378,
+            0.027527173477872258
+          ],
+          "delta_uno_point_from_legacy_bootstrap": -0.011095812708369212,
+          "inference_status": "REANALYSIS_REQUIRED_FOLD_STRATIFIED_BOOTSTRAP",
+          "old_midpoint_was_not_point_estimate": true
+        },
+        "tau:A1_vs_A3": {
+          "bootstrap_source_sha256": "befd450effb46d99d21ef43765cc22540e829dc2cfde1b2e4c69a98a3d8b18cd",
+          "delta_ibs_ci_legacy": [
+            -0.015655025142863578,
+            0.0016353432862918876
+          ],
+          "delta_ibs_point_from_legacy_bootstrap": -0.006903182444441846,
+          "delta_uno_ci_legacy": [
+            -0.04011604133937397,
+            0.04302238206987027
+          ],
+          "delta_uno_point_from_legacy_bootstrap": 0.0015261618464180319,
+          "inference_status": "REANALYSIS_REQUIRED_FOLD_STRATIFIED_BOOTSTRAP",
+          "old_midpoint_was_not_point_estimate": true
+        },
+        "tau:A2_vs_A3": {
+          "bootstrap_source_sha256": "6c5dd6b07ba078ea414f0d11174f66038bfe58d49a74687b566bdda89ae40471",
+          "delta_ibs_ci_legacy": [
+            -0.004603930105497735,
+            0.002469817771032836
+          ],
+          "delta_ibs_point_from_legacy_bootstrap": -0.001038073729056688,
+          "delta_uno_ci_legacy": [
+            -0.00931588664418794,
+            0.01716286352334338
+          ],
+          "delta_uno_point_from_legacy_bootstrap": 0.003881434570427938,
+          "inference_status": "REANALYSIS_REQUIRED_FOLD_STRATIFIED_BOOTSTRAP",
+          "old_midpoint_was_not_point_estimate": true
+        },
+        "tau:A3_vs_A4": {
+          "bootstrap_source_sha256": "c937429389e690308814168cb7b2dcc5a0379395ce24d3e62aadb52a649b5970",
+          "delta_ibs_ci_legacy": [
+            0.005897799225448076,
+            0.026182014678095906
+          ],
+          "delta_ibs_point_from_legacy_bootstrap": 0.015502945543355424,
+          "delta_uno_ci_legacy": [
+            -0.06762196354609668,
+            0.018626992486511396
+          ],
+          "delta_uno_point_from_legacy_bootstrap": -0.023644165518836118,
+          "inference_status": "REANALYSIS_REQUIRED_FOLD_STRATIFIED_BOOTSTRAP",
+          "old_midpoint_was_not_point_estimate": true
+        }
+      }
+    },
+    "positive_claim_allowed": false,
+    "remaining_science_blockers": [
+      "CORRECTED_FOLD_STRATIFIED_PAIRED_UNCERTAINTY_PENDING",
+      "SCANNER_LEAVE_MANUFACTURER_OUT_NOT_ESTABLISHED",
+      "QUANTITATIVE_PET_EQUIVALENCE_NOT_ESTABLISHED",
+      "EXTERNAL_VALIDATION_PENDING"
+    ],
+    "report_sha256": "6c8f8f2bd1933482c50eb11410caf833611cc59dbbb79f7f36e7ea3a027c49d2",
+    "schema_version": "4.2",
+    "science_gate_status": "BLOCKED",
+    "source_run_contract_sha256": "969ebd0f61d9ffc3bc262c5476c75b23575d64d1f5703d23fe04d1095d07743e",
+    "status": "COMPLETED_FROM_HASH_VERIFIED_LOCKED_ARTIFACTS"
+  }
+}

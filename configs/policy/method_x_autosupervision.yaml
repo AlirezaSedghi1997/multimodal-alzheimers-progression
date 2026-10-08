@@ -1,0 +1,69 @@
+schema_version: 1
+mode: AUTONOMOUS_MULTI_LAYER_FAIL_CLOSED
+# Method X execution no longer waits for a human/operator approval event.
+human_approval_required: false
+manual_override_allowed: false
+fail_closed: true
+poll_seconds: 15
+max_idle_seconds: 3600
+layers:
+  - process_lock
+  - storage_locality
+  - scientific_contract
+  - data_lineage
+  - checkpoint_integrity
+  - runtime_resources
+  - recovery_resume
+  - fold_finalization
+  - claim_privacy
+  - terminal_state
+policies:
+  process_lock:
+    unexpected_writer: BLOCK
+    multiple_writers: BLOCK
+    stale_lock: ARCHIVE_AND_CONTINUE
+  scientific_contract:
+    require_resolution: 128
+    require_folds: 5
+    require_seed: 13
+    require_spm_snapshot: true
+    pet_input: FORBIDDEN
+    final_claim_default: false
+  data_lineage:
+    real_rows: 1669
+    materialized_augmented_rows: 4544
+    total_rows: 6213
+    fit_exposures: 9088
+    validation_and_outer_test_derivatives: FORBIDDEN
+  checkpoint_integrity:
+    zero_byte_payload: BLOCK
+    digest_mismatch: BLOCK
+    missing_digest: BLOCK
+    uncommitted_temp_payload: BLOCK
+    prune_before_verified_mirror: FORBIDDEN
+  storage_locality:
+    project_artifact_on_c: BLOCK
+    reparse_point_in_path: BLOCK
+    c_allowlist: CHECKPOINT_STAGING_ONLY
+    permitted_c_basenames:
+      - resume_current.pt
+      - resume_previous.pt
+  runtime_resources:
+    hard_stop_vram_gb: 7.5
+    cuda_required_for_training: true
+    no_cpu_fallback_for_claim_run: true
+  recovery_resume:
+    orphaned_running_row: PAUSE_RESUMABLE_IF_CHECKPOINT_EXISTS
+    missing_checkpoint: BLOCK
+    contract_mismatch: BLOCK_NEW_VERSIONED_RUN
+    max_deterministic_replay_steps: 31
+  fold_finalization:
+    finalized_without_committed_outer_result: BLOCK
+    outer_result_before_checkpoint_lock: BLOCK
+    outer_evaluation_count_not_one: BLOCK
+    outer_test_reuse_for_selection: FORBIDDEN
+  claim_privacy:
+    raw_identifiers: FORBIDDEN
+    raw_paths: FORBIDDEN
+    diagnostic_claim: FORBIDDEN
+    external_validation_claim: FORBIDDEN

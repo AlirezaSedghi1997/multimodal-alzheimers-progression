@@ -1,0 +1,23 @@
+[
+  {
+    "file": "mri_ibs_separate_matched_populations.svg",
+    "sha256": "99515fa42e987da685c28f4ff18c092245a9fc860c722cd08cf621a9efb8ce03",
+    "source_sha256": "afde9b1e0258a46491ca4933f2e77ec4030016d5d5fc3a4e5cbc40d30996159d",
+    "visual_review": "REVIEWED_20261008_AGGREGATE_NO_INDIVIDUAL_BRAIN_IMAGE",
+    "scope": "INTERNAL_EXPLORATORY_DESCRIPTIVE"
+  },
+  {
+    "file": "mri_calibration_with_support.svg",
+    "sha256": "ed3186c0489f04ef947bd18ad90e45cacaa1a58d514427e2b42d0411d4f76fc9",
+    "source_sha256": "afde9b1e0258a46491ca4933f2e77ec4030016d5d5fc3a4e5cbc40d30996159d",
+    "visual_review": "REVIEWED_20261008_AGGREGATE_NO_INDIVIDUAL_BRAIN_IMAGE",
+    "scope": "INTERNAL_EXPLORATORY_DESCRIPTIVE"
+  },
+  {
+    "file": "pet_calibration_with_support.svg",
+    "sha256": "d4eadab8c6716180312fa875f6fc45495e93042d031fc0d9d386ad1019c295bf",
+    "source_sha256": "afde9b1e0258a46491ca4933f2e77ec4030016d5d5fc3a4e5cbc40d30996159d",
+    "visual_review": "REVIEWED_20261008_AGGREGATE_NO_INDIVIDUAL_BRAIN_IMAGE",
+    "scope": "INTERNAL_EXPLORATORY_DESCRIPTIVE"
+  }
+]

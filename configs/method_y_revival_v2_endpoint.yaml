@@ -1,0 +1,49 @@
+schema_version: 1
+protocol_name: method_y_revival_v2_endpoint_contract
+raw_root: H:/A4 Learn
+clinical_sources:
+  amyloid_suvr: Clinical/External Data/imaging_SUVR_amyloid.csv
+  tau_suvr: Clinical/External Data/imaging_SUVR_tau.csv
+  cdr: Clinical/Raw Data/cdr.csv
+  pacc: Clinical/Derived Data/PACC.csv
+  subject_info: Clinical/Derived Data/SUBJINFO.csv
+paths:
+  project_root: H:/New project
+  raw_root: H:/A4 Learn
+  tau_regional_features: results/method_y_tau_progression/image_branch_v1_128_hq/features/tau_region_policy_features.csv
+endpoint:
+  primary_name: sustained_cdr_global_progression
+  baseline_cdr_required: 0.0
+  pet_to_baseline_window_days: 183
+  followup_window_days: 1640.0
+  event_time_rule: first_increase_if_confirmed_by_next_visit
+  forbidden_label_sources: [CDEVENT, CDOLEEVENT]
+branches:
+  paired_at:
+    scan_window_days: 183
+validation:
+  outer_folds: 5
+  inner_folds: 3
+  requested_horizons_days: [547.875, 1095.75, 1640.0]
+  minimum_at_risk_per_horizon: 20
+  bootstrap_iterations: 2000
+  minimum_total_events: 60
+  minimum_events_per_treatment_arm: 20
+  group_unit: subject_key
+  seed: 20260714
+hpo:
+  cox:
+    alpha: [0.001, 0.01, 0.1, 1.0, 10.0]
+  random_survival_forest:
+    n_estimators: [300]
+    min_samples_leaf: [5, 10, 20]
+    max_features: [sqrt, 0.5]
+    max_depth: [null, 8]
+policy:
+  fbp_only_amyloid: true
+  ftp_only_tau: true
+  same_pet_target_forbidden: true
+  outer_test_access_during_hpo: false
+  external_refit: false
+  external_feature_reselection: false
+  claim_requires_science_gate: true

@@ -1,0 +1,200 @@
+schema_version: "4.0"
+status: POST_HOC_INTERNAL_EXPLORATORY_FACTORIAL_IMAGE_BENCHMARK
+project_root: "H:/New project"
+output_root: "results/method_y_revival_v4_image_factorial_v1"
+seed: 20260714
+
+claim_policy:
+  analysis_role: POST_HOC_INTERNAL_EXPLORATORY
+  augmentation_creates_new_subjects: false
+  positive_claim_requires_locked_external_validation: true
+  positive_claim_requires_scanner_robustness: true
+  positive_claim_requires_quantitative_equivalence: true
+  forbidden_claims:
+    - ALZHEIMER_DISEASE_DIAGNOSIS
+    - CAUSAL_LOCALIZATION
+    - OFFICIAL_CENTILOID_EQUIVALENCE
+    - OFFICIAL_CENTAUR_EQUIVALENCE
+    - EXTERNAL_GENERALIZATION
+
+shared:
+  source_v3_root: "results/method_y_revival_v3_image_v2"
+  reference_template: "data/templates/method_y_mni152nlin2009casym_v1/reference_128_1p5mm.nii.gz"
+  foreground_mask: "data/templates/method_y_mni152nlin2009casym_v1/pet_augmentation_foreground_mask_v4.nii.gz"
+  augmentation_qc_contract: "results/method_y_revival_v4_image_factorial_v1/provenance/pet_augmentation_qc_contract.json"
+  augmentation_qc_expected_contract_sha256: "a4f64d9ee89a0e88e7abdaedd6714f87c5674e989337075c6ca9fc320fbf2e72"
+  expected_outer_folds: 5
+  expected_inner_folds: 3
+  requested_horizons_days: [547.875, 1095.75, 1640.0]
+  hazard_bin_edges_days: [0.0, 365.0, 730.0, 1095.0, 1460.0, 1640.0]
+
+augmentation:
+  profile: PET_SAFE_V1
+  exposure_scope: TRAIN_ONLY
+  probability: 1.0
+  max_rotation_degrees: 1.0
+  max_translation_voxels: 0.5
+  scale_min: 1.0
+  scale_max: 1.0
+  psf_smoothing_enabled: false
+  psf_status: DISABLED_NO_SCANNER_MODEL_PSF_REGISTRY
+  count_noise_enabled: false
+  count_noise_status: DISABLED_NO_RAW_COUNT_OR_CALIBRATED_NOISE_MODEL
+  image_and_mask_share_transform: true
+  seed_unit: SUBJECT_X_BRANCH_X_OUTER_FOLD_X_INNER_FOLD_X_EPOCH
+  validation_and_test_are_unaugmented: true
+
+branches:
+  amyloid:
+    enabled: true
+    tracer: FBP
+    development_cohort: A4
+    membership: "results/method_y_revival_v3_image_v2/private/amyloid_image_membership.parquet"
+    splits: "results/method_y_revival_v2/splits/amyloid_nested_splits.json"
+    pattern_cache: "caches/method_y/revival_v3_image/amyloid_pattern_128_v1.h5"
+    model_features:
+      - age
+      - sex_binary
+      - education_years
+      - apoe4_carrier
+      - baseline_pacc_raw
+      - baseline_fctotal96
+      - baseline_ldeltotal
+      - baseline_digittotal
+      - baseline_mmscore
+      - treatment_active
+      - baseline_amyloid_centiloid
+  tau:
+    enabled: true
+    tracer: FTP
+    development_cohort: A4
+    membership: "results/method_y_revival_v3_image_v2/private/tau_image_membership.parquet"
+    splits: "results/method_y_revival_v2/splits/tau_nested_splits.json"
+    pattern_cache: "caches/method_y/revival_v3_image/tau_pattern_128_v1.h5"
+    model_features:
+      - age
+      - sex_binary
+      - education_years
+      - apoe4_carrier
+      - baseline_pacc_raw
+      - baseline_fctotal96
+      - baseline_ldeltotal
+      - baseline_digittotal
+      - baseline_mmscore
+      - treatment_active
+      - baseline_amyloid_centiloid
+      - global_tau_persi_mean
+
+model:
+  family: DISCRETE_TIME_3D_SURVIVAL
+  in_channels: 1
+  base_channels: 8
+  embedding_dim: 64
+  tabular_hidden_dim: 32
+  dropout: 0.25
+  normalization: GROUPNORM
+  batch_size: 2
+  gradient_accumulation_steps: 4
+  effective_batch_size: 8
+  num_workers: 0
+  pin_memory: true
+  amp: true
+  amp_dtype: bfloat16
+  max_epochs: 40
+  early_stopping_patience: 8
+  checkpoint_every_epochs: 1
+  hpo_candidates:
+    - candidate_id: lr1e4_wd1e3
+      learning_rate: 0.0001
+      weight_decay: 0.001
+      complexity_rank: 0
+    - candidate_id: lr1e4_wd1e4
+      learning_rate: 0.0001
+      weight_decay: 0.0001
+      complexity_rank: 1
+    - candidate_id: lr3e4_wd1e4
+      learning_rate: 0.0003
+      weight_decay: 0.0001
+      complexity_rank: 2
+  selection_metric: IPCW_INTEGRATED_BRIER_SCORE
+  selection_rule: ONE_STANDARD_ERROR_THEN_LOWEST_COMPLEXITY_RANK
+
+factorial_arms:
+  A0:
+    encoder_family: GROUPNORM_RESIDUAL_TINY_3D
+    augmentation_profile: NONE
+    model_overrides: {}
+  A1:
+    encoder_family: GROUPNORM_RESIDUAL_TINY_3D
+    augmentation_profile: PET_SAFE_V1
+    model_overrides: {}
+  A2:
+    encoder_family: RESNET10_3D_GROUPNORM
+    augmentation_profile: NONE
+    model_overrides:
+      resnet_width_multiplier: 0.25
+  A3:
+    encoder_family: RESNET10_3D_GROUPNORM
+    augmentation_profile: PET_SAFE_V1
+    model_overrides:
+      resnet_width_multiplier: 0.25
+  A4:
+    encoder_family: RESNET18_3D_GROUPNORM
+    augmentation_profile: PET_SAFE_V1
+    model_overrides:
+      resnet_width_multiplier: 0.25
+    outcome_blind_width_sensitivity:
+      additional_width_multiplier: 0.5
+      role: RESOURCE_FEASIBILITY_ONLY_UNLESS_NEW_VERSIONED_ARM_IS_LOCKED
+
+execution:
+  arms: [A0, A1, A2, A3, A4]
+  inner_only_arm_complexity_ranks:
+    A0: 0
+    A1: 1
+    A2: 2
+    A3: 3
+    A4: 4
+  matched_primary_pairs:
+    - [A0, A1]
+    - [A2, A3]
+    - [A0, A2]
+    - [A1, A3]
+  secondary_pair:
+    - [A3, A4]
+  branch_order: [amyloid, tau]
+  outer_fold_order: [0, 1, 2, 3, 4]
+
+factorial_comparison:
+  role: EXPLORATORY_OPERATIONAL_GATE_NOT_CLINICAL_MARGIN
+  ibs_noninferiority_margin_absolute: 0.01
+  uno_noninferiority_margin_absolute: 0.02
+  calibration_deviation_tolerance_absolute: 0.10
+  selected_epoch_nll_gap_increase_tolerance: 0.05
+  scanner_probe_auc_increase_tolerance: 0.02
+  require_all_five_outer_folds_ibs_noninferior: true
+  require_leave_manufacturer_out_performance: true
+
+robustness:
+  bootstrap_iterations: 2000
+  scanner_is_never_a_primary_predictor: true
+  leave_manufacturer_out_sensitivity: true
+  unknown_scanner_sensitivity: true
+  subgroup_minimum_subjects: 30
+  subgroup_minimum_events: 10
+  acceptance_requires_five_fold_stability: true
+  acceptance_requires_calibration_and_overfit_report: true
+
+runtime:
+  resume: true
+  no_internal_timeout: true
+  outer_test_exactly_once: true
+  checkpoint_atomic_after_every_epoch: true
+  output_and_temp_must_be_on_h: true
+  deterministic_cuda: true
+  deterministic_algorithms: true
+  cudnn_benchmark: false
+  cudnn_deterministic: true
+  allow_tf32: false
+  cublas_workspace_config: ":4096:8"
+  max_vram_fraction_for_smoke: 0.85

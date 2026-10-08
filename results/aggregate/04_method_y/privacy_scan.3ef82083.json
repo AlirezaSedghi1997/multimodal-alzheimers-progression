@@ -1,0 +1,12 @@
+{
+  "source_id": "3ef82083112d02f7",
+  "source_sha256": "ff9c9fad82662fc12754bd8f6714c7d329754d5a483e2aaa948566861f333170",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "findings": [],
+    "status": "PASS"
+  }
+}

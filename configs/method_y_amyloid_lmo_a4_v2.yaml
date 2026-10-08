@@ -1,0 +1,25 @@
+schema_version: "2.0"
+analysis_role: POST_HOC_INTERNAL_SCANNER_TRANSPORT_EXPLORATORY
+source_factorial_config: configs/method_y_image_factorial_v4.yaml
+output_root: results/method_y_revival_v4_amyloid_lmo_a4_v2
+branch: amyloid
+tracer: FBP
+development_cohort: A4
+manufacturer_order: [GE, PHILIPS, SIEMENS]
+minimum_subjects_per_heldout_manufacturer: 30
+minimum_events_per_heldout_manufacturer: 10
+inner_folds: 3
+active_arms: [A0, A4]
+baseline_arm: A0
+selected_v4_arm: A4
+requested_horizons_days: [547.875, 1095.75, 1640.0]
+claim_status: POST_HOC_INTERNAL_EXPLORATORY
+external_validation_status: EXTERNAL_PENDING
+quantitative_equivalence_status: BLOCKED
+positive_claim_allowed: false
+minimum_h_free_gib: 20
+interpretation:
+  - "A4 was the original v4 globally selected amyloid arm; this is new manufacturer-held-out retraining, not external validation of one frozen global model."
+  - "A0 and A4 differ in both encoder and augmentation. Their contrast is a policy comparison, not an architecture-only ablation."
+  - "No model or threshold is selected using held-out manufacturer performance."
+  - "The study is post-hoc and cannot repair FBP source-space, quantitative, scanner-independent, or external claim gates."

@@ -1,0 +1,235 @@
+{
+  "source_id": "59cfa0d7058e8155",
+  "source_sha256": "732bd0323713a2384d7068ca500c3d42f5eeb2c505249484f7c64bd123ded87a",
+  "scientific_role": "corrected_nested_image_analysis",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 3,
+  "aggregate": {
+    "branch_results": {
+      "amyloid": {
+        "fold_sizes_preserved": [
+          109,
+          107,
+          132,
+          105,
+          107
+        ],
+        "ibs_estimand": "RESTRICTED_GRID_POST_HOC_SENSITIVITY_NOT_EQUIVALENT_TO_SOURCE_IBS",
+        "interpretation_limit": "CONDITIONAL_FIXED_MODELS_POST_HOC_NO_REFIT_OR_SELECTION_VARIANCE",
+        "method": "JOINT_FOLD_STRATIFIED_PAIRED_SUBJECT_BOOTSTRAP_FIXED_LOCKED_MODELS",
+        "planned_contrasts": {
+          "A0_vs_A1": {
+            "delta_ibs_95ci": [
+              -0.0030252466741099706,
+              0.0032023963451736953
+            ],
+            "delta_uno_95ci": [
+              -0.019577480182532282,
+              0.015457746189513018
+            ],
+            "familywise_claim": "NOT_EVALUATED",
+            "p_value": "NOT_COMPUTED",
+            "point_delta_ibs": 2.343241307955768e-05,
+            "point_delta_uno": -0.0019952507235047935,
+            "status": "CONDITIONAL_EXPLORATORY_ONLY"
+          },
+          "A0_vs_A2": {
+            "delta_ibs_95ci": [
+              -0.004296733656743235,
+              0.008926014138941552
+            ],
+            "delta_uno_95ci": [
+              -0.03562480309702305,
+              0.03823526551284758
+            ],
+            "familywise_claim": "NOT_EVALUATED",
+            "p_value": "NOT_COMPUTED",
+            "point_delta_ibs": 0.0022438298243688095,
+            "point_delta_uno": 0.0006011154081798864,
+            "status": "CONDITIONAL_EXPLORATORY_ONLY"
+          },
+          "A1_vs_A3": {
+            "delta_ibs_95ci": [
+              -0.0043835725895750525,
+              0.007007169912100571
+            ],
+            "delta_uno_95ci": [
+              -0.030218862820130102,
+              0.03795969213840352
+            ],
+            "familywise_claim": "NOT_EVALUATED",
+            "p_value": "NOT_COMPUTED",
+            "point_delta_ibs": 0.0011298292331943793,
+            "point_delta_uno": 0.0027999351513590563,
+            "status": "CONDITIONAL_EXPLORATORY_ONLY"
+          },
+          "A2_vs_A3": {
+            "delta_ibs_95ci": [
+              -0.00359345835362862,
+              0.0013232729842251945
+            ],
+            "delta_uno_95ci": [
+              -0.016038014949738603,
+              0.015158126245913976
+            ],
+            "familywise_claim": "NOT_EVALUATED",
+            "p_value": "NOT_COMPUTED",
+            "point_delta_ibs": -0.0010905681780948723,
+            "point_delta_uno": 0.00020356901967437667,
+            "status": "CONDITIONAL_EXPLORATORY_ONLY"
+          },
+          "A3_vs_A4": {
+            "delta_ibs_95ci": [
+              -0.0031078858618371645,
+              0.007713084837937626
+            ],
+            "delta_uno_95ci": [
+              -0.056097505214147594,
+              0.007125156550513552
+            ],
+            "familywise_claim": "NOT_EVALUATED",
+            "p_value": "NOT_COMPUTED",
+            "point_delta_ibs": 0.0022281682186495928,
+            "point_delta_uno": -0.02469290064126184,
+            "status": "CONDITIONAL_EXPLORATORY_ONLY"
+          }
+        },
+        "rejected_attempt_reasons": {},
+        "rejected_attempts": 0,
+        "shared_subject_draws_across_arms": true,
+        "status": "COMPLETED_CONDITIONAL_EXPLORATORY",
+        "support_rule": "AT_LEAST_FIVE_TEST_SUBJECTS_BEFORE_FIRST_AND_AFTER_LAST_GRID_DAY_IN_EACH_FOLD",
+        "support_stable_evaluation_grid_days": [
+          730.0,
+          1095.0,
+          1460.0
+        ],
+        "uno_tau_preserved": true,
+        "valid_resamples": 2000
+      },
+      "tau": {
+        "fold_sizes_preserved": [
+          60,
+          62,
+          63,
+          59,
+          62
+        ],
+        "ibs_estimand": "SOURCE_GRID_REPRODUCED",
+        "interpretation_limit": "CONDITIONAL_FIXED_MODELS_POST_HOC_NO_REFIT_OR_SELECTION_VARIANCE",
+        "method": "JOINT_FOLD_STRATIFIED_PAIRED_SUBJECT_BOOTSTRAP_FIXED_LOCKED_MODELS",
+        "planned_contrasts": {
+          "A0_vs_A1": {
+            "delta_ibs_95ci": [
+              -0.0028203158873047335,
+              0.003601409003771896
+            ],
+            "delta_uno_95ci": [
+              -0.02662593838296743,
+              0.008905911323307227
+            ],
+            "familywise_claim": "NOT_EVALUATED",
+            "p_value": "NOT_COMPUTED",
+            "point_delta_ibs": 0.00048807604158395134,
+            "point_delta_uno": -0.008251517992351753,
+            "status": "CONDITIONAL_EXPLORATORY_ONLY"
+          },
+          "A0_vs_A2": {
+            "delta_ibs_95ci": [
+              -0.012782474692582726,
+              0.0024992482257613
+            ],
+            "delta_uno_95ci": [
+              -0.0504399316648401,
+              0.026214828907329464
+            ],
+            "familywise_claim": "NOT_EVALUATED",
+            "p_value": "NOT_COMPUTED",
+            "point_delta_ibs": -0.005284877192515272,
+            "point_delta_uno": -0.010977843432679801,
+            "status": "CONDITIONAL_EXPLORATORY_ONLY"
+          },
+          "A1_vs_A3": {
+            "delta_ibs_95ci": [
+              -0.015202747201654038,
+              0.0013228639242345139
+            ],
+            "delta_uno_95ci": [
+              -0.03989237263491751,
+              0.039781220469929525
+            ],
+            "familywise_claim": "NOT_EVALUATED",
+            "p_value": "NOT_COMPUTED",
+            "point_delta_ibs": -0.006839113410482334,
+            "point_delta_uno": 0.0009364659789711683,
+            "status": "CONDITIONAL_EXPLORATORY_ONLY"
+          },
+          "A2_vs_A3": {
+            "delta_ibs_95ci": [
+              -0.004866652565761406,
+              0.002299378975512047
+            ],
+            "delta_uno_95ci": [
+              -0.009185083083563876,
+              0.017012576060054175
+            ],
+            "familywise_claim": "NOT_EVALUATED",
+            "p_value": "NOT_COMPUTED",
+            "point_delta_ibs": -0.0010661601763831102,
+            "point_delta_uno": 0.0036627914192992163,
+            "status": "CONDITIONAL_EXPLORATORY_ONLY"
+          },
+          "A3_vs_A4": {
+            "delta_ibs_95ci": [
+              0.005943337013056851,
+              0.025884555490433923
+            ],
+            "delta_uno_95ci": [
+              -0.06505265453799047,
+              0.01917628767789443
+            ],
+            "familywise_claim": "NOT_EVALUATED",
+            "p_value": "NOT_COMPUTED",
+            "point_delta_ibs": 0.01542306822978561,
+            "point_delta_uno": -0.022271102577959768,
+            "status": "CONDITIONAL_EXPLORATORY_ONLY"
+          }
+        },
+        "rejected_attempt_reasons": {
+          "ValueError:all times must be within follow-up time of test data: [366.0; 1611.0[": 1,
+          "ValueError:all times must be within follow-up time of test data: [366.0; 1635.999998364[": 1,
+          "ValueError:all times must be within follow-up time of test data: [553.0; 1635.999998364[": 1
+        },
+        "rejected_attempts": 3,
+        "shared_subject_draws_across_arms": true,
+        "status": "COMPLETED_CONDITIONAL_EXPLORATORY",
+        "support_rule": "AT_LEAST_FIVE_TEST_SUBJECTS_BEFORE_FIRST_AND_AFTER_LAST_GRID_DAY_IN_EACH_FOLD",
+        "support_stable_evaluation_grid_days": [
+          365.0,
+          730.0,
+          1095.0,
+          1460.0
+        ],
+        "uno_tau_preserved": true,
+        "valid_resamples": 2000
+      }
+    },
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "correction_receipt_sha256": "5d94d6d75c9020f4a00a622cd13d24e52e8a4c466e4cee830489545559c45e77",
+    "external_claim_allowed": false,
+    "iterations_per_branch": 2000,
+    "metric_helper_sha256": "e7866ced8e8279923d3aac8cf03239369f8705b0034e60e75e74c555bda05266",
+    "multiplicity": "TEN_PLANNED_CONTRASTS_TWO_METRICS_NO_ADJUSTED_CLAIM_TEST",
+    "pairwise_receipt_sha256": "1ac75399c671a8dc1ecc8e110dc6f96ecd18c088a058519971f9bca4b207fc8b",
+    "positive_claim_allowed": false,
+    "report_sha256": "b14c1ba8ab63cad141d95a811db06d84beca6e734fd7817b1334c8064c3083e0",
+    "schema_version": "4.2",
+    "science_gate_status": "BLOCKED",
+    "seed": 20260714,
+    "source_code_sha256": "d1456f62b765067403abb1a8e4782b64cc8a01ac4abb796c99f99bfe9f3a8cfc",
+    "source_run_contract_sha256": "969ebd0f61d9ffc3bc262c5476c75b23575d64d1f5703d23fe04d1095d07743e",
+    "status": "COMPLETED_CONDITIONAL_EXPLORATORY",
+    "support_helper_sha256": "c3cf21727101ba9da578bebdf3c6d48bde99fcd5e8f476f676765c9746b76580"
+  }
+}

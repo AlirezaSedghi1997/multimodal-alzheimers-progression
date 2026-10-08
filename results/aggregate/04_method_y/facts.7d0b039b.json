@@ -1,0 +1,672 @@
+{
+  "source_id": "7d0b039ba43cdd8a",
+  "source_sha256": "a3988c47ac5e0013d99087e8aa4e4ccd712d635ceca5b05428d655c083bd3ca3",
+  "scientific_role": "lmo_sensitivity",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "calibration_1095_days": {
+      "GE": {
+        "A0": {
+          "calibration_bins": [
+            {
+              "expected": 0.06441454892005001,
+              "n": 26,
+              "observed": 0.25157101266490806
+            },
+            {
+              "expected": 0.07620026427098989,
+              "n": 26,
+              "observed": 0.1011694456031615
+            },
+            {
+              "expected": 0.09203387399355044,
+              "n": 25,
+              "observed": 0.18680801988155307
+            },
+            {
+              "expected": 0.1400483945182641,
+              "n": 25,
+              "observed": 0.181892578870017
+            },
+            {
+              "expected": 0.44181621175578445,
+              "n": 25,
+              "observed": 0.3403670476213462
+            }
+          ],
+          "conditional_subject_bootstrap": {
+            "intercept_95ci": [
+              -1.9094392349786022,
+              0.10286600355784696
+            ],
+            "rejected_resamples": 0,
+            "scope": "FIXED_MODEL_AND_TRAIN_CENSORING_NO_SELECTION_OR_REFIT_UNCERTAINTY",
+            "slope_95ci": [
+              -0.218464497107082,
+              0.705216866024778
+            ],
+            "status": "ESTIMABLE",
+            "valid_resamples": 1000
+          },
+          "emax": 0.18715646374485806,
+          "events_by_horizon": 29,
+          "horizon": 1095.0,
+          "horizon_days": 1095.0,
+          "ici": 0.0902909774122647,
+          "ici_definition": "SUBJECT_COUNT_WEIGHTED_ABSOLUTE_BIN_ERROR_IPCW",
+          "intercept": -0.7630007266832161,
+          "intercept_ci": [
+            -1.5718625394527437,
+            0.045861086086311564
+          ],
+          "n_bins": 5,
+          "n_excluded_censored_before_horizon": 30,
+          "n_used": 127,
+          "observed_controls": 98,
+          "prediction_scale": "event_risk_by_horizon",
+          "slope": 0.2983635622254208,
+          "slope_ci": [
+            -0.09624597179093658,
+            0.6929730962417782
+          ],
+          "status": "ESTIMABLE_TECHNICAL_NOT_CALIBRATION_PASS",
+          "subjects": 157,
+          "uncertainty_scope": "CONDITIONAL_IPCW_GLM_HESSIAN_NOT_FULL_PIPELINE",
+          "weight_definition": "train_only_censoring_km",
+          "weight_diagnostics": {
+            "cap": 10.0,
+            "censoring_tie_policy": "REVERSE_KM_EVENTS_FIRST",
+            "frac_truncated": 0.0,
+            "km_event_definition": "censoring=~train_event",
+            "min_G": 0.834971085196624,
+            "n_eval": 127,
+            "n_train_censoring_events": 290
+          }
+        },
+        "A4": {
+          "calibration_bins": [
+            {
+              "expected": 0.1007124218425099,
+              "n": 26,
+              "observed": 0.21430884962730345
+            },
+            {
+              "expected": 0.10770812866461925,
+              "n": 26,
+              "observed": 0.10014160402246562
+            },
+            {
+              "expected": 0.11872500412460343,
+              "n": 25,
+              "observed": 0.1483672339993534
+            },
+            {
+              "expected": 0.17930473165247465,
+              "n": 25,
+              "observed": 0.3374376727495444
+            },
+            {
+              "expected": 0.41934329470033566,
+              "n": 25,
+              "observed": 0.26381197324276495
+            }
+          ],
+          "conditional_subject_bootstrap": {
+            "intercept_95ci": [
+              -1.6291669737785464,
+              0.3451061775853111
+            ],
+            "rejected_resamples": 0,
+            "scope": "FIXED_MODEL_AND_TRAIN_CENSORING_NO_SELECTION_OR_REFIT_UNCERTAINTY",
+            "slope_95ci": [
+              -0.11930153605570243,
+              1.0002342764018073
+            ],
+            "status": "ESTIMABLE",
+            "valid_resamples": 1000
+          },
+          "emax": 0.15813294109706974,
+          "events_by_horizon": 29,
+          "horizon": 1095.0,
+          "horizon_days": 1095.0,
+          "ici": 0.09238503207744399,
+          "ici_definition": "SUBJECT_COUNT_WEIGHTED_ABSOLUTE_BIN_ERROR_IPCW",
+          "intercept": -0.5886542536143686,
+          "intercept_ci": [
+            -1.4354130573309059,
+            0.2581045501021687
+          ],
+          "n_bins": 5,
+          "n_excluded_censored_before_horizon": 30,
+          "n_used": 127,
+          "observed_controls": 98,
+          "prediction_scale": "event_risk_by_horizon",
+          "slope": 0.46017967833176177,
+          "slope_ci": [
+            -0.032523092735781634,
+            0.9528824493993051
+          ],
+          "status": "ESTIMABLE_TECHNICAL_NOT_CALIBRATION_PASS",
+          "subjects": 157,
+          "uncertainty_scope": "CONDITIONAL_IPCW_GLM_HESSIAN_NOT_FULL_PIPELINE",
+          "weight_definition": "train_only_censoring_km",
+          "weight_diagnostics": {
+            "cap": 10.0,
+            "censoring_tie_policy": "REVERSE_KM_EVENTS_FIRST",
+            "frac_truncated": 0.0,
+            "km_event_definition": "censoring=~train_event",
+            "min_G": 0.834971085196624,
+            "n_eval": 127,
+            "n_train_censoring_events": 290
+          }
+        }
+      },
+      "PHILIPS": {
+        "A0": {
+          "calibration_bins": [
+            {
+              "expected": 0.08795813918113708,
+              "n": 10,
+              "observed": 0.0
+            },
+            {
+              "expected": 0.10403438056918747,
+              "n": 10,
+              "observed": 0.08912579108152645
+            },
+            {
+              "expected": 0.1388894975185394,
+              "n": 10,
+              "observed": 0.0
+            }
+          ],
+          "conditional_subject_bootstrap": {
+            "intercept_95ci": [
+              -1.1467064716376523,
+              1.7792534919546037
+            ],
+            "rejected_resamples": 0,
+            "scope": "FIXED_MODEL_AND_TRAIN_CENSORING_NO_SELECTION_OR_REFIT_UNCERTAINTY",
+            "slope_95ci": [
+              0.5047789582561394,
+              2.376501776895459
+            ],
+            "status": "ESTIMABLE",
+            "valid_resamples": 1000
+          },
+          "emax": 0.24402046047806009,
+          "events_by_horizon": 10,
+          "horizon": 1095.0,
+          "horizon_days": 1095.0,
+          "ici": 0.11012298841808944,
+          "ici_definition": "SUBJECT_COUNT_WEIGHTED_ABSOLUTE_BIN_ERROR_IPCW",
+          "intercept": 0.13408684995556078,
+          "intercept_ci": [
+            -0.9466168740779397,
+            1.2147905739890612
+          ],
+          "n_bins": 5,
+          "n_excluded_censored_before_horizon": 10,
+          "n_used": 48,
+          "observed_controls": 38,
+          "prediction_scale": "event_risk_by_horizon",
+          "slope": 1.2760712501509797,
+          "slope_ci": [
+            0.4593355577245368,
+            2.0928069425774227
+          ],
+          "status": "ESTIMABLE_TECHNICAL_NOT_CALIBRATION_PASS",
+          "subjects": 58,
+          "uncertainty_scope": "CONDITIONAL_IPCW_GLM_HESSIAN_NOT_FULL_PIPELINE",
+          "weight_definition": "train_only_censoring_km",
+          "weight_diagnostics": {
+            "cap": 10.0,
+            "censoring_tie_policy": "REVERSE_KM_EVENTS_FIRST",
+            "frac_truncated": 0.0,
+            "km_event_definition": "censoring=~train_event",
+            "min_G": 0.8236464417233259,
+            "n_eval": 48,
+            "n_train_censoring_events": 370
+          }
+        },
+        "A4": {
+          "calibration_bins": [
+            {
+              "expected": 0.090981388092041,
+              "n": 10,
+              "observed": 0.0
+            },
+            {
+              "expected": 0.1173713683850303,
+              "n": 10,
+              "observed": 0.09829955326491122
+            },
+            {
+              "expected": 0.15629612068813464,
+              "n": 10,
+              "observed": 0.08912579108152645
+            }
+          ],
+          "conditional_subject_bootstrap": {
+            "intercept_95ci": [
+              -0.8665522021226648,
+              2.039852946892128
+            ],
+            "rejected_resamples": 1,
+            "scope": "FIXED_MODEL_AND_TRAIN_CENSORING_NO_SELECTION_OR_REFIT_UNCERTAINTY",
+            "slope_95ci": [
+              0.757817530554618,
+              2.9909969456870247
+            ],
+            "status": "ESTIMABLE",
+            "valid_resamples": 999
+          },
+          "emax": 0.14665334109918998,
+          "events_by_horizon": 10,
+          "horizon": 1095.0,
+          "horizon_days": 1095.0,
+          "ici": 0.07979784874859469,
+          "ici_definition": "SUBJECT_COUNT_WEIGHTED_ABSOLUTE_BIN_ERROR_IPCW",
+          "intercept": 0.35984731330292197,
+          "intercept_ci": [
+            -0.8107202603549152,
+            1.530414886960759
+          ],
+          "n_bins": 5,
+          "n_excluded_censored_before_horizon": 10,
+          "n_used": 48,
+          "observed_controls": 38,
+          "prediction_scale": "event_risk_by_horizon",
+          "slope": 1.5391597848307743,
+          "slope_ci": [
+            0.620423154321969,
+            2.4578964153395795
+          ],
+          "status": "ESTIMABLE_TECHNICAL_NOT_CALIBRATION_PASS",
+          "subjects": 58,
+          "uncertainty_scope": "CONDITIONAL_IPCW_GLM_HESSIAN_NOT_FULL_PIPELINE",
+          "weight_definition": "train_only_censoring_km",
+          "weight_diagnostics": {
+            "cap": 10.0,
+            "censoring_tie_policy": "REVERSE_KM_EVENTS_FIRST",
+            "frac_truncated": 0.0,
+            "km_event_definition": "censoring=~train_event",
+            "min_G": 0.8236464417233259,
+            "n_eval": 48,
+            "n_train_censoring_events": 370
+          }
+        }
+      },
+      "SIEMENS": {
+        "A0": {
+          "calibration_bins": [
+            {
+              "expected": 0.1696081677270446,
+              "n": 52,
+              "observed": 0.06777063895440301
+            },
+            {
+              "expected": 0.1961536912658235,
+              "n": 52,
+              "observed": 0.04983283631894731
+            },
+            {
+              "expected": 0.21736233932085475,
+              "n": 52,
+              "observed": 0.12439125643422114
+            },
+            {
+              "expected": 0.2508547563477077,
+              "n": 52,
+              "observed": 0.12044804107857883
+            },
+            {
+              "expected": 0.3306002482527218,
+              "n": 51,
+              "observed": 0.4444710277631046
+            }
+          ],
+          "conditional_subject_bootstrap": {
+            "intercept_95ci": [
+              0.408456612871676,
+              2.9449409097747847
+            ],
+            "rejected_resamples": 0,
+            "scope": "FIXED_MODEL_AND_TRAIN_CENSORING_NO_SELECTION_OR_REFIT_UNCERTAINTY",
+            "slope_95ci": [
+              1.8531759363933076,
+              4.0627529193651
+            ],
+            "status": "ESTIMABLE",
+            "valid_resamples": 1000
+          },
+          "emax": 0.1463208549468762,
+          "events_by_horizon": 45,
+          "horizon": 1095.0,
+          "horizon_days": 1095.0,
+          "ici": 0.11709378846542122,
+          "ici_definition": "SUBJECT_COUNT_WEIGHTED_ABSOLUTE_BIN_ERROR_IPCW",
+          "intercept": 1.5396349201831139,
+          "intercept_ci": [
+            0.4507498135636181,
+            2.62852002680261
+          ],
+          "n_bins": 5,
+          "n_excluded_censored_before_horizon": 44,
+          "n_used": 259,
+          "observed_controls": 214,
+          "prediction_scale": "event_risk_by_horizon",
+          "slope": 2.832005807011934,
+          "slope_ci": [
+            1.8486555523581447,
+            3.8153560616657227
+          ],
+          "status": "ESTIMABLE_TECHNICAL_NOT_CALIBRATION_PASS",
+          "subjects": 303,
+          "uncertainty_scope": "CONDITIONAL_IPCW_GLM_HESSIAN_NOT_FULL_PIPELINE",
+          "weight_definition": "train_only_censoring_km",
+          "weight_diagnostics": {
+            "cap": 10.0,
+            "censoring_tie_policy": "REVERSE_KM_EVENTS_FIRST",
+            "frac_truncated": 0.0,
+            "km_event_definition": "censoring=~train_event",
+            "min_G": 0.7976250237908455,
+            "n_eval": 259,
+            "n_train_censoring_events": 168
+          }
+        },
+        "A4": {
+          "calibration_bins": [
+            {
+              "expected": 0.18951866792253216,
+              "n": 52,
+              "observed": 0.05143546425832289
+            },
+            {
+              "expected": 0.2026824328978722,
+              "n": 52,
+              "observed": 0.06803616121353101
+            },
+            {
+              "expected": 0.21748873792315335,
+              "n": 52,
+              "observed": 0.1732457547173901
+            },
+            {
+              "expected": 0.24094069816325792,
+              "n": 52,
+              "observed": 0.10384075424021308
+            },
+            {
+              "expected": 0.2692588527500522,
+              "n": 51,
+              "observed": 0.4072502380538588
+            }
+          ],
+          "conditional_subject_bootstrap": {
+            "intercept_95ci": [
+              2.167666478232813,
+              7.396625331197332
+            ],
+            "rejected_resamples": 0,
+            "scope": "FIXED_MODEL_AND_TRAIN_CENSORING_NO_SELECTION_OR_REFIT_UNCERTAINTY",
+            "slope_95ci": [
+              3.2961532829464266,
+              7.741167036671821
+            ],
+            "status": "ESTIMABLE",
+            "valid_resamples": 1000
+          },
+          "emax": 0.1380832036642093,
+          "events_by_horizon": 45,
+          "horizon": 1095.0,
+          "horizon_days": 1095.0,
+          "ici": 0.11833716439890649,
+          "ici_definition": "SUBJECT_COUNT_WEIGHTED_ABSOLUTE_BIN_ERROR_IPCW",
+          "intercept": 4.52876486980627,
+          "intercept_ci": [
+            2.2297006261696413,
+            6.827829113442899
+          ],
+          "n_bins": 5,
+          "n_excluded_censored_before_horizon": 44,
+          "n_used": 259,
+          "observed_controls": 214,
+          "prediction_scale": "event_risk_by_horizon",
+          "slope": 5.1409833928666835,
+          "slope_ci": [
+            3.183089948436419,
+            7.098876837296948
+          ],
+          "status": "ESTIMABLE_TECHNICAL_NOT_CALIBRATION_PASS",
+          "subjects": 303,
+          "uncertainty_scope": "CONDITIONAL_IPCW_GLM_HESSIAN_NOT_FULL_PIPELINE",
+          "weight_definition": "train_only_censoring_km",
+          "weight_diagnostics": {
+            "cap": 10.0,
+            "censoring_tie_policy": "REVERSE_KM_EVENTS_FIRST",
+            "frac_truncated": 0.0,
+            "km_event_definition": "censoring=~train_event",
+            "min_G": 0.7976250237908455,
+            "n_eval": 259,
+            "n_train_censoring_events": 168
+          }
+        }
+      }
+    },
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "contract_sha256": "2f0a6479ff34122c732916f384b8b350d8cf7a61579492e4738fcc8e7270bcea",
+    "external_validation": "DEFERRED_NO_EXTERNAL_DATA",
+    "latest_limited_xai": {
+      "cells_completed": 50,
+      "gradcam_zero_inside_brain_total": 83,
+      "science_gate_status": "FAIL",
+      "status": "COMPLETED_LIMITED_MASKED_XAI",
+      "subject_maps_completed": 100
+    },
+    "manufacturer_holdout": {
+      "architecture_only_ablation": false,
+      "conditional_paired_deltas": {
+        "GE": {
+          "a4_minus_a0_ibs": -0.006947853700497483,
+          "a4_minus_a0_uno": 0.038992806060710095,
+          "delta_ibs_95ci": [
+            -0.016088772413141866,
+            0.000466776202051351
+          ],
+          "delta_uno_95ci": [
+            -0.031940299045619854,
+            0.10712288894111255
+          ],
+          "rejected_attempts": 0,
+          "uncertainty_status": "CONDITIONAL_POST_HOC_EXPLORATORY",
+          "valid_resamples": 1000
+        },
+        "PHILIPS": {
+          "a4_minus_a0_ibs": -0.006210227289576389,
+          "a4_minus_a0_uno": 0.05617503987883021,
+          "delta_ibs_95ci": [
+            -0.02174680916632254,
+            0.007972569555060946
+          ],
+          "delta_uno_95ci": [
+            -0.03664480089736346,
+            0.16733768116836792
+          ],
+          "rejected_attempts": 0,
+          "uncertainty_status": "CONDITIONAL_POST_HOC_EXPLORATORY",
+          "valid_resamples": 1000
+        },
+        "SIEMENS": {
+          "a4_minus_a0_ibs": 0.002216916277959724,
+          "a4_minus_a0_uno": -0.01908521177333633,
+          "delta_ibs_95ci": [
+            -0.0011965044777979643,
+            0.00596731484881907
+          ],
+          "delta_uno_95ci": [
+            -0.07674375843236624,
+            0.03984367882139014
+          ],
+          "rejected_attempts": 0,
+          "uncertainty_status": "CONDITIONAL_POST_HOC_EXPLORATORY",
+          "valid_resamples": 1000
+        }
+      },
+      "cross_grid_ibs_pooled": false,
+      "technical_cells": 6
+    },
+    "pacc": {
+      "amyloid_model": {
+        "aic": 38761.33925537729,
+        "bic": 38854.53622168703,
+        "converged": true,
+        "fit_diagnostics": {
+          "boundary_or_singular_warning": false,
+          "optimizer": "lbfgs",
+          "random_effect_min_eigenvalue": 0.5208400208185693,
+          "warning_categories": []
+        },
+        "interaction_95ci": [
+          -0.3233665795431569,
+          -0.21996802204832527
+        ],
+        "interaction_estimate": -0.2716673007957411,
+        "interaction_p_value": 7.109379981085121e-25,
+        "interaction_parameter": "time_years:pet_z",
+        "interaction_standard_error": 0.026377667730230318,
+        "log_likelihood": -19367.669627688643,
+        "n_observations": 9595,
+        "residual_diagnostics": {
+          "mean": -5.27908444768089e-16,
+          "quantiles_01_50_99": [
+            -3.3301757882329066,
+            0.03765905783155965,
+            2.8526119850259346
+          ],
+          "rmse": 1.2815295585555195,
+          "scope": "DESCRIPTIVE_NOT_A_MISSING_AT_RANDOM_TEST"
+        }
+      },
+      "analysis_role": "POST_HOC_EXECUTION_OF_PRESPECIFIED_SECONDARY_MODEL_FORM",
+      "clinical_model": {
+        "aic": 38890.274293939045,
+        "bic": 38969.133265431905,
+        "converged": true,
+        "fit_diagnostics": {
+          "boundary_or_singular_warning": false,
+          "optimizer": "lbfgs",
+          "random_effect_min_eigenvalue": 0.5743424322348055,
+          "warning_categories": []
+        },
+        "log_likelihood": -19434.137146969522,
+        "n_observations": 9595,
+        "residual_diagnostics": {
+          "mean": 3.634172460388423e-16,
+          "quantiles_01_50_99": [
+            -3.312958234248422,
+            0.03748512144650841,
+            2.847879910552878
+          ],
+          "rmse": 1.2804053026773368,
+          "scope": "DESCRIPTIVE_NOT_A_MISSING_AT_RANDOM_TEST"
+        }
+      },
+      "measurement_count": 9595,
+      "missingness_audit": {
+        "assumption": "MAR_AND_CORRECT_LINEAR_MEAN_NOT_VERIFIED",
+        "initial_measurements": 9595,
+        "initial_subjects": 1105,
+        "missing_measurements_by_column": {
+          "age": 0,
+          "baseline_amyloid_centiloid": 0,
+          "cohort": 0,
+          "education_years": 0,
+          "pacc_raw": 0,
+          "sex_binary": 0,
+          "time_years": 0,
+          "treatment_active": 0
+        }
+      },
+      "subject_count": 1105
+    },
+    "pacc_slope_sensitivity": {
+      "amyloid_model": {
+        "aic": 38744.46832224728,
+        "bic": 38859.17228078235,
+        "converged": true,
+        "fit_diagnostics": {
+          "boundary_or_singular_warning": false,
+          "optimizer": "lbfgs",
+          "random_effect_min_eigenvalue": 0.5059348842194797,
+          "warning_categories": []
+        },
+        "interaction_95ci": [
+          -0.29900892213531155,
+          -0.1942991114933655
+        ],
+        "interaction_estimate": -0.24665401681433852,
+        "interaction_p_value": 2.6127812115603456e-20,
+        "interaction_parameter": "time_years:pet_z",
+        "interaction_standard_error": 0.0267121772307766,
+        "log_likelihood": -19356.23416112364,
+        "n_observations": 9595,
+        "residual_diagnostics": {
+          "mean": -3.591591733649282e-17,
+          "quantiles_01_50_99": [
+            -3.3288488033720687,
+            0.04149003625976505,
+            2.8470422964620328
+          ],
+          "rmse": 1.2819232462874814,
+          "scope": "DESCRIPTIVE_NOT_A_MISSING_AT_RANDOM_TEST"
+        }
+      },
+      "measurement_count": 9595,
+      "model_formula": "pacc_raw ~ time_years + age + sex_binary + education_years + treatment_active + time_years:treatment_active + time_years:age + time_years:sex_binary + time_years:education_years + pet_z + time_years:pet_z",
+      "subject_count": 1105
+    },
+    "positive_claim_allowed": false,
+    "quantitative_pet_claim_allowed": false,
+    "remaining_work": [
+      "PACC_INFORMATIVE_DROPOUT_NOT_IDENTIFIED_FROM_OBSERVED_DATA_ALONE",
+      "XAI_ZERO_MAP_CAUSE_AND_FIDELITY_NOT_ESTABLISHED",
+      "SITE_METADATA_EXACT_LINKAGE_AVAILABILITY_AUDIT",
+      "QUANTITATIVE_PET_EQUIVALENCE_UNPROVEN",
+      "ITEMIZED_REPORTING_STANDARD_ALIGNMENT"
+    ],
+    "schema_version": 5,
+    "science_gate_status": "BLOCKED",
+    "selection_bias_audit": "EXISTS_IN_PARENT_CORRECTION_NOT_SOLVED_BY_AUC",
+    "status": "LOCAL_REANALYSIS_COMMITTED_WITH_LIMITATIONS",
+    "tau_beyond_amyloid": {
+      "delta_ibs_95ci": [
+        0.0017325360751907475,
+        0.03555775058066879
+      ],
+      "delta_ibs_mean": 0.018124401326221926,
+      "subject_count": 369
+    },
+    "tau_scanner_support": {
+      "GE": {
+        "events": 9,
+        "subjects": 42
+      },
+      "PHILIPS": {
+        "events": 9,
+        "subjects": 38
+      },
+      "SIEMENS": {
+        "events": 50,
+        "subjects": 180
+      },
+      "UNKNOWN": {
+        "events": 7,
+        "subjects": 46
+      }
+    },
+    "xai_anatomical_claim_allowed": false
+  }
+}

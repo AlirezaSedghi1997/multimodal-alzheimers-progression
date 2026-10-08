@@ -1,0 +1,126 @@
+{
+  "source_id": "172d650d87b16845",
+  "source_sha256": "608224dd4dcdc4f6bdee5af0aef14c5721e8a8fb1221189799dcd441d17872e7",
+  "scientific_role": "population_and_endpoint",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 1,
+  "aggregate": {
+    "contract": {
+      "contract_sha256": "4bc43f8a8110631a4681944c23e74071ca79d826d7318a42b6dad143016107d3",
+      "endpoint_definition": {
+        "baseline_cdr_required": 0.0,
+        "event_time_rule": "first_increase_if_confirmed_by_next_visit",
+        "followup_window_days": 1640.0,
+        "forbidden_label_sources": [
+          "CDEVENT",
+          "CDOLEEVENT"
+        ],
+        "pet_to_baseline_window_days": 183,
+        "primary_name": "sustained_cdr_global_progression",
+        "treatment_structure": "active_vs_placebo_covariate"
+      },
+      "endpoint_path": "tau_progression_endpoint.parquet",
+      "endpoint_sha256": "b9ce5bdf46be45091b3bc26ed38c0fd3f2e69b15d5bc8e3fbeeafdbe38af5441",
+      "event_count": 91,
+      "locked": true,
+      "parquet_status": "AVAILABLE",
+      "row_count": 369,
+      "schema_version": "1.0",
+      "source_hashes": {
+        "cdr_csv": "102b01a7d8a7805998faf8b8a13c8613873e00def41c7147fbdd994bf3cf27e4",
+        "pacc_csv": "e22ff9b4f78eabbc3bf1cf5afba1af0347cfe63419a0942a95d3940509625dcf",
+        "subjinfo_csv": "1e87f140f3eff292c29d1d20f0c923d39f96947714572a1a366f0ae6825a5bd8",
+        "tau_suvr_csv": "bd58d602281d131675aa1ff5d72b898b2db57f16f120a3ced78e68ef77a76513"
+      },
+      "storage_format": "parquet"
+    },
+    "endpoint_audit": {
+      "baseline_gap_days_abs": {
+        "max": 183.0,
+        "median": 77.0,
+        "n": 386
+      },
+      "censored": 278,
+      "cohort_counts": {
+        "A4_placebo": 185,
+        "A4_treatment": 184
+      },
+      "eligible_rows": 369,
+      "endpoint_name": "sustained_cdr_global_progression",
+      "event_counts_by_cohort": {
+        "A4_placebo": 43,
+        "A4_treatment": 48
+      },
+      "event_definition": "first post-PET CDR increase confirmed by the next visit",
+      "event_flag_columns_used_as_predictors": false,
+      "events": 91,
+      "exclusions": {
+        "baseline_cdr_not_zero": 4,
+        "missing_baseline_cdr_within_window": 2,
+        "no_post_index_cdr_followup": 13
+      },
+      "forbidden_label_sources_not_used": [
+        "CDEVENT",
+        "CDOLEEVENT"
+      ],
+      "status": "COMPLETED",
+      "stop_conditions": {
+        "heldout_arm_event_gate_passed": true,
+        "min_events_per_heldout_arm": 20,
+        "min_total_events": 60,
+        "total_event_gate_passed": true
+      },
+      "time_zero_rule": "max(first analyzed FTP scan date, selected baseline CDR date)"
+    },
+    "raw_identifiers_exported": false,
+    "raw_paths_exported": false,
+    "regional_feature_count": 192,
+    "status": "ENDPOINT_LOCKED",
+    "tau_source_audit": {
+      "eligible_scan_groups": 1368,
+      "first_analyzed_tau_subjects": 388,
+      "has_explicit_braak_region_names": false,
+      "has_explicit_meta_roi_names": false,
+      "ligand_counts": {
+        "Flortaucipir": 296679
+      },
+      "primary_suvr_column": "suvr_persi",
+      "sensitivity_suvr_column": "suvr_crus",
+      "suvr_nonmissing_rows": {
+        "suvr_crus": 295296,
+        "suvr_persi": 295296
+      },
+      "tau_suvr_rows": 296679,
+      "top_brain_regions": {
+        "ParaHippocampus_R": 1545,
+        "Parahippocampus_L_post": 1545,
+        "Parahippocampus_R_ant": 1545,
+        "Parahippocampus_R_post": 1545,
+        "Parietal_Sup_L": 1545,
+        "Postcentral_L": 1545,
+        "Postcentral_R": 1545,
+        "Precentral_L": 1545,
+        "Precuneus_R": 1545,
+        "Rolandic_Oper_L": 1545,
+        "Rolandic_Oper_R": 1545,
+        "Supp_Motor_Area_L": 1545,
+        "Supp_Motor_Area_R": 1545,
+        "Temporal_Inf_L": 1545,
+        "Temporal_Inf_R": 1545,
+        "Temporal_Mid_L": 1545,
+        "Temporal_Mid_R": 1545,
+        "Temporal_Pole_Mid_L": 1545,
+        "Temporal_Pole_Mid_R": 1545,
+        "Temporal_Pole_Sup_L": 1545,
+        "Temporal_Pole_Sup_R": 1545,
+        "Temporal_Sup_L": 1545,
+        "Temporal_Sup_R": 1545,
+        "Thalamus_L": 1545,
+        "Thalamus_R": 1545
+      },
+      "unavailable_suvr_column": "suvr_cer",
+      "unique_brain_regions": 192
+    }
+  }
+}

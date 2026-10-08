@@ -1,0 +1,1811 @@
+[
+  {
+    "id": "176179700c6cae7e",
+    "source_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/data_semantics_audit.json",
+    "source_sha256": "3f6fc94e0a8011aeb4d7527ed691776691b9dce3962851baaeeb2d6419bdbcb4",
+    "section": "02_preprocessing",
+    "role": "population_and_qc",
+    "projection_path": "02_preprocessing/data_semantics_audit.17617970.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "159d2c264fe82995",
+    "source_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/evaluation_outer_hybrid_pair.json",
+    "source_sha256": "6cff6ab9a1bbd3b6f1df36ee85cd1df99f71e03b180ea880ef0fc78521ee633c",
+    "section": "03_method_x",
+    "role": "primary_technical",
+    "projection_path": "03_method_x/evaluation_outer_hybrid_pair.159d2c26.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "48eecfc5a18b273f",
+    "source_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/evaluation_outer_mx04_head_last.json",
+    "source_sha256": "02c5b7c9b6b998e9f970d366a16f3a6080aead35b47b64db45417302870b0df1",
+    "section": "03_method_x",
+    "role": "primary_technical",
+    "projection_path": "03_method_x/evaluation_outer_mx04_head_last.48eecfc5.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "1cbe16a8ad12be5e",
+    "source_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/evaluation_outer_mx04_scratch.json",
+    "source_sha256": "ed60409417f65d6f82490c24ffe574bc5a7ed58015cd4b74f0014d9010918cc5",
+    "section": "03_method_x",
+    "role": "primary_technical",
+    "projection_path": "03_method_x/evaluation_outer_mx04_scratch.1cbe16a8.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "f462c8b694c20ff0",
+    "source_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/fasttrack_inner_lock.json",
+    "source_sha256": "0de7a8a1ea4c403e8e54572a02c0c1d74b84137682b49d85d119526fb66984d4",
+    "section": "03_method_x",
+    "role": "primary_technical",
+    "projection_path": "03_method_x/fasttrack_inner_lock.f462c8b6.json",
+    "omitted_fields": 9
+  },
+  {
+    "id": "e5d7c5e529bb18c7",
+    "source_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/fasttrack_negative_results_ledger.json",
+    "source_sha256": "cd97be849a039a9ebc67047f758a117148389f365a505d86a55e38cc18d90cf3",
+    "section": "03_method_x",
+    "role": "primary_technical",
+    "projection_path": "03_method_x/fasttrack_negative_results_ledger.e5d7c5e5.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "98ebef9de341c9b3",
+    "source_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/fasttrack_v22_thesis_manifest.json",
+    "source_sha256": "6af421735d0f32519568357ff208e1b6759c7cff2b6f8ba9c3a9552a85bd9419",
+    "section": "03_method_x",
+    "role": "primary_technical",
+    "projection_path": "03_method_x/fasttrack_v22_thesis_manifest.98ebef9d.json",
+    "omitted_fields": 1
+  },
+  {
+    "id": "54dcf1848aa4394b",
+    "source_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/fasttrack_v244_xai_eligibility_appendix.json",
+    "source_sha256": "73fc307f7a9488b57653040a9991a7dd5acfabb67ed5c08a503e72e41cb921de",
+    "section": "03_method_x",
+    "role": "primary_technical",
+    "projection_path": "03_method_x/fasttrack_v244_xai_eligibility_appendix.54dcf184.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "09c0ea1357da598c",
+    "source_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/xai_v22_summary.json",
+    "source_sha256": "48513afa69701abe418b3b4c28da4aa95b2b3c3ba5fdd79b9df7294b1412306f",
+    "section": "03_method_x",
+    "role": "primary_technical",
+    "projection_path": "03_method_x/xai_v22_summary.09c0ea13.json",
+    "omitted_fields": 1
+  },
+  {
+    "id": "821350d8b3b0b7f0",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/data_audit.json",
+    "source_sha256": "7010f2dc0c442ae21cca28f115394a87e621d8f051d44b87f259a725bd722985",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/data_audit.821350d8.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "72aff9629c4f2f22",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/manifest.json",
+    "source_sha256": "045cdb495137bf450311ecfbfcc9c768c9b82b462abe6b242d7c1161b1620598",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/manifest.72aff962.json",
+    "omitted_fields": 4488
+  },
+  {
+    "id": "0ad91673ddc61408",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/plan_reconciliation.json",
+    "source_sha256": "2e67cbfed7d67bb6e8d4852341074a8fb158e55085a340c9cefabc8d4e416abb",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/plan_reconciliation.0ad91673.json",
+    "omitted_fields": 1
+  },
+  {
+    "id": "dec126fabd063fce",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/sensitivity_summary.json",
+    "source_sha256": "005688ab563f088e55fd091c3964e78465cdde533b87817c6f9c15bb65cbc26e",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/sensitivity_summary.dec126fa.json",
+    "omitted_fields": 36
+  },
+  {
+    "id": "dd6c47e4ace2f49b",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/PET_after_MRI.json",
+    "source_sha256": "58b7645690eb9a540a4c33a54eed865abb34d9bc7f879213ce079443b6caa197",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/PET_after_MRI.dd6c47e4.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "21d231d41501ddb3",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/PET_before_MRI.json",
+    "source_sha256": "ecae85160330ab4b5b5e24eb23bde641f445071856ed9a0a9d6ad08a6417b5e2",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/PET_before_MRI.21d231d4.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "6a2c6f3b68a48aeb",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/age_ge75.json",
+    "source_sha256": "df6b5f6e238d134cc573d064ebd71c54433c3d07096c38373084f41126818651",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/age_ge75.6a2c6f3b.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "bf79e3106d1b22ac",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/age_lt75.json",
+    "source_sha256": "2fac662c5296f71b7d7a2e7233363b7276b893c40dd881b3bf52686c72b99bd7",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/age_lt75.bf79e310.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "b2d2abedda35a447",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/age_sex_matched.json",
+    "source_sha256": "f861ea396ba43fce9b55127a66d2841b536ad89cfab332cc8a46cca76c73a3a8",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/age_sex_matched.b2d2abed.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "f96c3f6866a22cb1",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/all.json",
+    "source_sha256": "5e3dda2d6b50fdcf128ef1f6fa56d48e2c4c0da06c88db3540e19bccf3d24f8f",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/all.f96c3f68.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "e2addb6f825c7c05",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/fold_0.json",
+    "source_sha256": "74b74132feabc174ad83b4e4289e18d5758c6782e15f1a399609148517dcb70d",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/fold_0.e2addb6f.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "918fccbb7660f1c1",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/fold_1.json",
+    "source_sha256": "e5aa6f0ac6ff2442a54df318fba60c398627b948339c5fa057be4bf14bddc3c7",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/fold_1.918fccbb.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "3fb64f8a72626143",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/fold_2.json",
+    "source_sha256": "a051a8054332f2b06850bb6839b521e5aa134aea3fc8b7941bb566235c97836f",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/fold_2.3fb64f8a.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "6dca022cace3b077",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/fold_3.json",
+    "source_sha256": "e9f090a7c5fedc7ebab1a4f9d4fe413a230f3ead81e6a50f5351eaa26bcb6e1d",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/fold_3.6dca022c.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "47ecc249fa9f8022",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/fold_4.json",
+    "source_sha256": "c1146b84df5d666be6d5ad7dd22d9c7afea5f254f630eabd5aaba7aecbfd1b41",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/fold_4.47ecc249.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "325d153bef9cff70",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/leave_out_fold_0.json",
+    "source_sha256": "86d934f396f26cb38d0b1c9e968501366b98a4b53fa5e943b98c39003f7ace7e",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/leave_out_fold_0.325d153b.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "37f928281b4e4875",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/leave_out_fold_1.json",
+    "source_sha256": "1dbfaa5aaf467e68a0526e8429609687f515008110011b8e7d9a3b2f2334242e",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/leave_out_fold_1.37f92828.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "78259ac8b2302fe2",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/leave_out_fold_2.json",
+    "source_sha256": "d84f058a6234259d935d5a41445229f94b14067e33258419f9a4508a06d5193c",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/leave_out_fold_2.78259ac8.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "a194b56d43016bd0",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/leave_out_fold_3.json",
+    "source_sha256": "b40b7fdd7edda707b4800135e66d735dfca5259e4358c2fac910f242dc0d3d5b",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/leave_out_fold_3.a194b56d.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "83b857ca6d815c95",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/leave_out_fold_4.json",
+    "source_sha256": "4aff9ede744ecd52f5c793f1c5ea3995cfe0a6ac34e23f2ffafec2a16b9e19db",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/leave_out_fold_4.83b857ca.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "b36ae1a9b77653be",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/same_day.json",
+    "source_sha256": "bfb05aa9a28134c4c4aa163edd5f7096891af551e5a367775ccd4f5af72196b4",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/same_day.b36ae1a9.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "bab4e4ca55aa40cf",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/sex_0.json",
+    "source_sha256": "9931077758780fb1cb2811aa4752d0037ba992d2a557fa8b062ff16e4869f64d",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/sex_0.bab4e4ca.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "683d26e5ae15d872",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/statistics/sex_1.json",
+    "source_sha256": "d100d2a5a43d58123d653c39c9ee287cbc77c11130dd1f686a7fb32f20785bfc",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/sex_1.683d26e5.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "b730cac365c1080e",
+    "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/stress_summary.json",
+    "source_sha256": "908964cb4de9303873c3ed92391aa2d908b04d5fdc598ad1b4228b526f01b5b5",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/stress_summary.b730cac3.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "d22afc888629c5ee",
+    "source_path": "results/final_results/method_x_science_extension_v1_20260927/reports/day1_patient_provenance_audit.json",
+    "source_sha256": "a5abfc36ede0eea52c6b090fedb501511d507fa6e7bff3eab605f23a5bf0c43a",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/day1_patient_provenance_audit.d22afc88.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "307ddf3c41438fef",
+    "source_path": "results/final_results/method_x_science_extension_v1_20260927/reports/extension_mx7_manifest.v1.json",
+    "source_sha256": "91da30cfa6588b6fc373ae1e54f0dda051393bf5400e207e965387d3b34985f1",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/extension_mx7_manifest.v1.307ddf3c.json",
+    "omitted_fields": 1
+  },
+  {
+    "id": "1198a790e8613d1e",
+    "source_path": "results/final_results/method_x_science_extension_v1_20260927/reports/extension_paired_analysis.v1.json",
+    "source_sha256": "00f763a701ebf4372c3bce7100dad923919600b50d5a8128ddaee8daa6efb8cd",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/extension_paired_analysis.v1.1198a790.json",
+    "omitted_fields": 1
+  },
+  {
+    "id": "af14924d540adae5",
+    "source_path": "results/final_results/method_x_science_extension_v1_20260927/reports/extension_xai_receipt_audit.v1.json",
+    "source_sha256": "9e8c1e7d006358bc6fc76838018466d2e3f01fa1dd8c80025c6acf33444010e2",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/extension_xai_receipt_audit.v1.af14924d.json",
+    "omitted_fields": 1
+  },
+  {
+    "id": "59d273200d170faf",
+    "source_path": "results/final_results/method_x_science_extension_v1_20260927/reports/fold_local_hybrid_selection.v1.json",
+    "source_sha256": "bdf319c3054fdb36ec2e458f0da0b128c2a5c9f6a91acbd0a8ad4c5b8ee26b36",
+    "section": "03_method_x",
+    "role": "posthoc_sensitivity",
+    "projection_path": "03_method_x/fold_local_hybrid_selection.v1.59d27320.json",
+    "omitted_fields": 6
+  },
+  {
+    "id": "4ff5705294653056",
+    "source_path": "results/method_x_registry/spm_gate_snapshot.json",
+    "source_sha256": "5aa2c1da6334b91e43e0d0dcb3a9b2e2c0cc01a22c303bdc136183c3ffa2ed23",
+    "section": "02_preprocessing",
+    "role": "population_and_qc",
+    "projection_path": "02_preprocessing/spm_gate_snapshot.4ff57052.json",
+    "omitted_fields": 6
+  },
+  {
+    "id": "9a45a3121fbb631b",
+    "source_path": "results/method_y_exact_site_screen_v1/public_bundle/site_screen.json",
+    "source_sha256": "a41724e53c5311113403e242a3722f3c8f857d1c5020bbda7f67bf8e8e7c5cda",
+    "section": "04_method_y",
+    "role": "lmo_sensitivity",
+    "projection_path": "04_method_y/site_screen.9a45a312.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "7d0b039ba43cdd8a",
+    "source_path": "results/method_y_local_validation_v5/public_bundle/facts.json",
+    "source_sha256": "a3988c47ac5e0013d99087e8aa4e4ccd712d635ceca5b05428d655c083bd3ca3",
+    "section": "04_method_y",
+    "role": "lmo_sensitivity",
+    "projection_path": "04_method_y/facts.7d0b039b.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "f5637d93cd042d88",
+    "source_path": "results/method_y_post_v5_review_20260929/public_bundle/review.json",
+    "source_sha256": "3ee484bd4520828f3a8788553ac4bd13820ca6fd5583f7d894433a69fa5d064e",
+    "section": "04_method_y",
+    "role": "lmo_sensitivity",
+    "projection_path": "04_method_y/review.f5637d93.json",
+    "omitted_fields": 3
+  },
+  {
+    "id": "cb8fc2d5208a87fe",
+    "source_path": "results/method_y_remaining_subgroups_v2/public_bundle/subgroups.json",
+    "source_sha256": "a88a991eb04655298dcc693bf940fbe3a68b974c0402a6f2f57cfd10c2042c5f",
+    "section": "04_method_y",
+    "role": "lmo_sensitivity",
+    "projection_path": "04_method_y/subgroups.cb8fc2d5.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "5711159fba464996",
+    "source_path": "results/method_y_revival_v2/endpoints/amyloid_endpoint_summary.json",
+    "source_sha256": "5a3853e0d1151e719ece8e1f4bc525c938ed844263245662e58f00636d648cb5",
+    "section": "02_preprocessing",
+    "role": "population_and_endpoint",
+    "projection_path": "02_preprocessing/amyloid_endpoint_summary.5711159f.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "a8fd8eca6be27069",
+    "source_path": "results/method_y_revival_v2/endpoints/paired_at_endpoint_summary.json",
+    "source_sha256": "02b419b655748259728be6b2f47629d3a0dfc16801054b2cb8561d984e23711f",
+    "section": "02_preprocessing",
+    "role": "population_and_endpoint",
+    "projection_path": "02_preprocessing/paired_at_endpoint_summary.a8fd8eca.json",
+    "omitted_fields": 3
+  },
+  {
+    "id": "172d650d87b16845",
+    "source_path": "results/method_y_revival_v2/endpoints/tau_endpoint_summary.json",
+    "source_sha256": "608224dd4dcdc4f6bdee5af0aef14c5721e8a8fb1221189799dcd441d17872e7",
+    "section": "02_preprocessing",
+    "role": "population_and_endpoint",
+    "projection_path": "02_preprocessing/tau_endpoint_summary.172d650d.json",
+    "omitted_fields": 1
+  },
+  {
+    "id": "416f27a16670d787",
+    "source_path": "results/method_y_revival_v2/feature_contracts/source_regional_contract_summary.json",
+    "source_sha256": "d6478792646b825032fea0d8dc0dbb894981a9bf328a561772055199276b3bfe",
+    "section": "02_preprocessing",
+    "role": "population_and_qc",
+    "projection_path": "02_preprocessing/source_regional_contract_summary.416f27a1.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "1dbaa879d6ad9c1a",
+    "source_path": "results/method_y_revival_v2/qc/ftp_t1_linkage_audit.json",
+    "source_sha256": "93fa1ac79ccd34541bce92bf429098efe7868d161bf0bec8a2e8bb882dcaa96d",
+    "section": "02_preprocessing",
+    "role": "population_and_qc",
+    "projection_path": "02_preprocessing/ftp_t1_linkage_audit.1dbaa879.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "3eca772dfcd03fbf",
+    "source_path": "results/method_y_revival_v2/reports/POSTTRAINING_READINESS_V2.json",
+    "source_sha256": "d241a75873942d3a1e3c2d7d0581e602afc1c5d08625851cdd088d9d4c3231f4",
+    "section": "04_method_y",
+    "role": "separate_regional_analysis",
+    "projection_path": "04_method_y/POSTTRAINING_READINESS_V2.3eca772d.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "f9682c2368db42f7",
+    "source_path": "results/method_y_revival_v2/reports/TRANSFORM_ELIGIBILITY_SUMMARY_V2.json",
+    "source_sha256": "dde637f43518c1a47abb5f97598a4434fcceaf941edf2b2265ea919c9e6bdc2f",
+    "section": "02_preprocessing",
+    "role": "population_and_qc",
+    "projection_path": "02_preprocessing/TRANSFORM_ELIGIBILITY_SUMMARY_V2.f9682c23.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "a2e2f5f843c7e829",
+    "source_path": "results/method_y_revival_v2/reports/TRANSFORM_FAILURE_DIAGNOSTICS_V2.json",
+    "source_sha256": "44c26798938784df4f1a96a7aa36b019ac05f8c78dacf30d85b48b4bba9e03ba",
+    "section": "02_preprocessing",
+    "role": "population_and_qc",
+    "projection_path": "02_preprocessing/TRANSFORM_FAILURE_DIAGNOSTICS_V2.a2e2f5f8.json",
+    "omitted_fields": 1
+  },
+  {
+    "id": "669e77d29576ea96",
+    "source_path": "results/method_y_revival_v2/reports/amyloid_paired_bootstrap.json",
+    "source_sha256": "b27a543c33418b6f800d31032f7b29bb59eb824ee805a246dea889e813b08898",
+    "section": "04_method_y",
+    "role": "separate_regional_analysis",
+    "projection_path": "04_method_y/amyloid_paired_bootstrap.669e77d2.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "800a698ccb262f88",
+    "source_path": "results/method_y_revival_v2/reports/amyloid_regional_development.json",
+    "source_sha256": "6127086bb0ad38da620ba33c0523a5c79ccb61e9b3c6a6f80e54007a4adb90b4",
+    "section": "04_method_y",
+    "role": "separate_regional_analysis",
+    "projection_path": "04_method_y/amyloid_regional_development.800a698c.json",
+    "omitted_fields": 4
+  },
+  {
+    "id": "945379d6bc035622",
+    "source_path": "results/method_y_revival_v2/reports/calibration_report.json",
+    "source_sha256": "182faae1268f7bb5938d3c5d7dbfa63c0f0e37c2e922ed764d2e7619f4f8fbc2",
+    "section": "04_method_y",
+    "role": "separate_regional_analysis",
+    "projection_path": "04_method_y/calibration_report.945379d6.json",
+    "omitted_fields": 1
+  },
+  {
+    "id": "71913097d7fdd525",
+    "source_path": "results/method_y_revival_v2/reports/paired_at_power_mdes.json",
+    "source_sha256": "c52486908810daf93a564d8418943698c4321a29b659b7430ca20d1693e60801",
+    "section": "04_method_y",
+    "role": "separate_regional_analysis",
+    "projection_path": "04_method_y/paired_at_power_mdes.71913097.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "7f403e4e4f43e5d9",
+    "source_path": "results/method_y_revival_v2/reports/paired_at_regional_development.json",
+    "source_sha256": "814ace688a0dfb612c751d5351411acf28a4326beef8afa0befaeb56be5c6b9c",
+    "section": "04_method_y",
+    "role": "separate_regional_analysis",
+    "projection_path": "04_method_y/paired_at_regional_development.7f403e4e.json",
+    "omitted_fields": 4
+  },
+  {
+    "id": "452cede606e14504",
+    "source_path": "results/method_y_revival_v2/reports/paired_at_tau_beyond_amyloid_bootstrap.json",
+    "source_sha256": "fd1d9a47a15e4690f1d9ba19b689506a9c6e89bc6ac3e3d011ac0346e071800c",
+    "section": "04_method_y",
+    "role": "separate_regional_analysis",
+    "projection_path": "04_method_y/paired_at_tau_beyond_amyloid_bootstrap.452cede6.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "96216dc9bd144318",
+    "source_path": "results/method_y_revival_v2/reports/rsf_and_learn_transport_summary.json",
+    "source_sha256": "a87581eb793250f1b632e65d4450b31de821d73154bc0992d6f461bec7e71652",
+    "section": "04_method_y",
+    "role": "separate_regional_analysis",
+    "projection_path": "04_method_y/rsf_and_learn_transport_summary.96216dc9.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "f97c959d1caa4fad",
+    "source_path": "results/method_y_revival_v2/reports/subgroup_report.json",
+    "source_sha256": "c1ef989090eab42c7b762a25ba7c9952c9357bd22cb8dfeaf78425cb9720a865",
+    "section": "04_method_y",
+    "role": "separate_regional_analysis",
+    "projection_path": "04_method_y/subgroup_report.f97c959d.json",
+    "omitted_fields": 1
+  },
+  {
+    "id": "aa9e5abe9e64244c",
+    "source_path": "results/method_y_revival_v2/reports/tau_paired_bootstrap.json",
+    "source_sha256": "9b5639ecdac075b5c84427f2ff50b36a10fceb32211ad0a3866ee43f589a3734",
+    "section": "04_method_y",
+    "role": "separate_regional_analysis",
+    "projection_path": "04_method_y/tau_paired_bootstrap.aa9e5abe.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "078034e2482eef3c",
+    "source_path": "results/method_y_revival_v2/reports/tau_regional_development.json",
+    "source_sha256": "d17d5bc5f6bbb29aa42549ff24207ea0e78d37ec76ddd359dd72ec4cd6540ef6",
+    "section": "04_method_y",
+    "role": "separate_regional_analysis",
+    "projection_path": "04_method_y/tau_regional_development.078034e2.json",
+    "omitted_fields": 2
+  },
+  {
+    "id": "465be8ae3a993860",
+    "source_path": "results/method_y_revival_v4_amyloid_lmo_a4_v2/reports/amyloid_lmo_a4_public_summary.json",
+    "source_sha256": "6dc6372bd294a1abd2cc38d2da64812450ba7a104a51ae1cd49e3660c9d9047b",
+    "section": "04_method_y",
+    "role": "lmo_sensitivity",
+    "projection_path": "04_method_y/amyloid_lmo_a4_public_summary.465be8ae.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "f8bc3ea80c95529d",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/factorial_benchmark_summary.json",
+    "source_sha256": "701c197f710fa48690720011c940f22d644d0ba9c3c20b1eb91e87d74e8fea20",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/factorial_benchmark_summary.f8bc3ea8.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "aa4de26dab34c573",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A0_fold_0_public.json",
+    "source_sha256": "94096eae7b113f52fbab8a833bf3aa8d27e4ee91660dd804549f09c823bc24da",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A0_fold_0_public.aa4de26d.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "2f10de2687aebfb0",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A0_fold_1_public.json",
+    "source_sha256": "1811b4106727bc7303cddd801c2390fdf9a3e5abbe2ee3ff8d223c6ecc550df5",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A0_fold_1_public.2f10de26.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "2292a8e93b7d653f",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A0_fold_2_public.json",
+    "source_sha256": "e6ecf4f3eabad85e371ec782186074224ded4cd47f3e7da940113d90b785f419",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A0_fold_2_public.2292a8e9.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "06bb7a8154f6fbf3",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A0_fold_3_public.json",
+    "source_sha256": "48aa77a81327d88c3371cb337228d0aad4c54bbb7f29ffc4f5fa186329ecbab8",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A0_fold_3_public.06bb7a81.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "1bbe4728989736ef",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A0_fold_4_public.json",
+    "source_sha256": "f1e0f4a40d250ae9c81c98ff0b6c88ec83fec2d98ea3ce7de4a25564e6dad4d2",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A0_fold_4_public.1bbe4728.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "a7ec4475ee26530a",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A1_fold_0_public.json",
+    "source_sha256": "c71d229f455bfd71226dab011449b41eeb107f8edf9521d87bc2ddce1c466153",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A1_fold_0_public.a7ec4475.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "0215ee5bd999d85f",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A1_fold_1_public.json",
+    "source_sha256": "1e7c688c77726ab62b24ec057a18880bdf4c7acdf8c1fd6ad0cd6bcfda7782f3",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A1_fold_1_public.0215ee5b.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "6c11232485c08144",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A1_fold_2_public.json",
+    "source_sha256": "2f4f7028e0f355b05d034d2a0e415921a82bd48368d991e8cdd6f42fe5dc2a38",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A1_fold_2_public.6c112324.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "3eed8eda895fc88f",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A1_fold_3_public.json",
+    "source_sha256": "a65a64c58240635f60a08f237f5a2b96490923171c4e189cd19b5a995488fa65",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A1_fold_3_public.3eed8eda.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "d60728d81a2887bd",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A1_fold_4_public.json",
+    "source_sha256": "8753d9eed626dc3186fab6a0d5ef69dbdfd34e9efda69cd0edf63f3dd6a22f40",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A1_fold_4_public.d60728d8.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "5598b519879627bb",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A2_fold_0_public.json",
+    "source_sha256": "85f7a7275ffca38cf20915864ea39f0f1e76662a240ac4174bdfca5cc6149bfc",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A2_fold_0_public.5598b519.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "a06b70a6f764b939",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A2_fold_1_public.json",
+    "source_sha256": "98b73e6ad39f30a89f43c53636ccaa434f81ba8133e828d6b75055f1150d6d39",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A2_fold_1_public.a06b70a6.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "f3bdc1c9010b95d4",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A2_fold_2_public.json",
+    "source_sha256": "0545b08bad908ea7936765fa8b10d758b7e329c92d1b7bbf8ed493547bff7c62",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A2_fold_2_public.f3bdc1c9.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "36b7e04f98d3c7e3",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A2_fold_3_public.json",
+    "source_sha256": "3d7689f512e260874b017fef8707c52262b2a611395dd81ca0944b78c82b710d",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A2_fold_3_public.36b7e04f.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "6c92667b8321dcdf",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A2_fold_4_public.json",
+    "source_sha256": "3b41496c79c948954f5dc442e3f5f3f0421ae37f92fa09bc33183e9cd873f7ba",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A2_fold_4_public.6c92667b.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "9dc436194e09c444",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A3_fold_0_public.json",
+    "source_sha256": "99954ff85aaa2dd8c5b29abfcfff97b56c7fae9a3d8c56daf5dd20c0d65d06b9",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A3_fold_0_public.9dc43619.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "2c07078622481518",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A3_fold_1_public.json",
+    "source_sha256": "4b4fa09ded815f0972824a35f66c12f98df07b1f890dbd4b3ab5984518a179ec",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A3_fold_1_public.2c070786.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "1ec202f184adbd44",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A3_fold_2_public.json",
+    "source_sha256": "0fb07ce9a8637ab8a948b29eb386bc9128365e4f61944fb89fed2e8fd8f767a6",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A3_fold_2_public.1ec202f1.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "2f8954dd944ae73b",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A3_fold_3_public.json",
+    "source_sha256": "4a42b1758022eb1b92315309567dd3b7f93c8732d11554d2c7bdc2f5fe7a139e",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A3_fold_3_public.2f8954dd.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "f0cf4b2b26651938",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A3_fold_4_public.json",
+    "source_sha256": "dc536d858bb9cabc7b7e7540a59fa6e11e45520f04fb7cd2021fa4f855ce5ebc",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A3_fold_4_public.f0cf4b2b.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "479ed09c566923d9",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A4_fold_0_public.json",
+    "source_sha256": "e52f3590dedf542929f76dbfcee0c9b8538c66b494a045400a98dc738880a1ff",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A4_fold_0_public.479ed09c.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "e01e69e3f84ebb34",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A4_fold_1_public.json",
+    "source_sha256": "20281255553c959685dbb98fed4bf2d6f466afa9e5f48e04417207fa6b4daf93",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A4_fold_1_public.e01e69e3.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "d6c9a2b737ba3e5a",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A4_fold_2_public.json",
+    "source_sha256": "ea3e996e535e51cd75629e3e3050004bfa057f861d0ed64a4e2b28ac224066a1",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A4_fold_2_public.d6c9a2b7.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "c154c0c0921504d0",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A4_fold_3_public.json",
+    "source_sha256": "1e958da6330a9fe08ecb24ae6d9464af55a777033f7da92359a1479927cf12e1",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A4_fold_3_public.c154c0c0.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "360e02205407d325",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/amyloid_A4_fold_4_public.json",
+    "source_sha256": "121b2c2bc9f9a0d8bf7b7e6eab7caa4bf5bfd0e523f73574ad6c3daed4ae2ca7",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_A4_fold_4_public.360e0220.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "b2296a688bc4757c",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A0_fold_0_public.json",
+    "source_sha256": "0d23df575ff46fb522c87b5ff35f9c17640b954926bac84a3efa6dff4b91dd97",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A0_fold_0_public.b2296a68.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "4170887b1230aef0",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A0_fold_1_public.json",
+    "source_sha256": "9f971b225435df33eda0652e30873125ec354ccfd02310d94d90287951210f87",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A0_fold_1_public.4170887b.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "5b818e9446145240",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A0_fold_2_public.json",
+    "source_sha256": "f55eb31e886b1b27217b5d22811912b08287325323541ce5283177739f0cdadb",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A0_fold_2_public.5b818e94.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "8d7744e2dd366a00",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A0_fold_3_public.json",
+    "source_sha256": "3fb4d9dd0b2046f6cd376087a9ab97135a87a93deb2a674a492086fca78f0100",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A0_fold_3_public.8d7744e2.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "adbba25cc02d9eb0",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A0_fold_4_public.json",
+    "source_sha256": "b119fa5bb1914638f07064a0372a58fcd30f79f7b38c20d9fa91bcdf2c60823f",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A0_fold_4_public.adbba25c.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "6cb0c510482ecc27",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A1_fold_0_public.json",
+    "source_sha256": "d3718fa273645d1f426fe1c74d7b9d27be1a6f2fc48adae1f726112d797e8195",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A1_fold_0_public.6cb0c510.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "32e8ee5eaafcd72a",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A1_fold_1_public.json",
+    "source_sha256": "d2a6a494a99146139465cb28c2d0dae5ec8c7d0a8f53062cad5e5fedb93e5ced",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A1_fold_1_public.32e8ee5e.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "c3128b274be2c50f",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A1_fold_2_public.json",
+    "source_sha256": "d36f259cfedfc9b58e05909f579271cce511483a64fc6d0f6cf7dab75877bae7",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A1_fold_2_public.c3128b27.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "fef1dde221cffba4",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A1_fold_3_public.json",
+    "source_sha256": "a34a1e549c19ac5a855f1c1f85d505619d192437c7c6aeef836a481a1decc2ba",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A1_fold_3_public.fef1dde2.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "58e3167102ea0e73",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A1_fold_4_public.json",
+    "source_sha256": "92cb8ded98e0cda3c280d71909446bdb32f5557113a5c08de1ba020f661b5dfb",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A1_fold_4_public.58e31671.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "2ef1104211e78bee",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A2_fold_0_public.json",
+    "source_sha256": "c978a7aee7a50a4dbb1d7c4ba250553ad4aad6539df9865c2e7bfd0fddc302b5",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A2_fold_0_public.2ef11042.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "21367bc7cc85f4a3",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A2_fold_1_public.json",
+    "source_sha256": "a42f51e2aa3ad56f2f795d95a00510fa1e2e1767b3ab82470cc0bab435e56983",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A2_fold_1_public.21367bc7.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "367b23dd2f86d6fa",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A2_fold_2_public.json",
+    "source_sha256": "c565d9e927fda2ed4a110840d3f6027e2842892fb4ec95528553d599e53ce30b",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A2_fold_2_public.367b23dd.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "b27ae533d7d660bd",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A2_fold_3_public.json",
+    "source_sha256": "d97c3cb716c0a6ad9787b1cf674e92e2caac81f98996c7c3e9b815c5b990240b",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A2_fold_3_public.b27ae533.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "9964de21bef3381d",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A2_fold_4_public.json",
+    "source_sha256": "079046d33c64b384bbff3b69f80efe469ede91a2184fa2f5e6d5640d03637d2d",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A2_fold_4_public.9964de21.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "1ebc1371b0cfd574",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A3_fold_0_public.json",
+    "source_sha256": "cf8f185149dd6be8e8041e223f9aceef4388a22f9e7baf37654feebb9d259df4",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A3_fold_0_public.1ebc1371.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "9c4d950c4064ab51",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A3_fold_1_public.json",
+    "source_sha256": "ad6ca3d7725b0ef4ed5375bb4f74eb7ec61aef015c600ce3590477c0f82e1593",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A3_fold_1_public.9c4d950c.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "88fe6f4b65220162",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A3_fold_2_public.json",
+    "source_sha256": "54db5a7b5be883691ec73adcee0ef5a14853e765160294e2cb3a9b9408d82465",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A3_fold_2_public.88fe6f4b.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "afdc69641b3f2a24",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A3_fold_3_public.json",
+    "source_sha256": "18a6c3744d510608dbc38d9b602afc9e88b2c5421353658bd14a52cc6fdb31ed",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A3_fold_3_public.afdc6964.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "17e688b6a484f7b3",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A3_fold_4_public.json",
+    "source_sha256": "0920d97dd36a2e586fa42898bc7ddf6a33d2bcf74d2bb80c34f768e99fbc9d5b",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A3_fold_4_public.17e688b6.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "66abf051aa8538ee",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A4_fold_0_public.json",
+    "source_sha256": "f69557889fb6a47bfd403ff2b3d7d8bb4c1b4eb4662f62ad5ac7ffdb8324b768",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A4_fold_0_public.66abf051.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "ccd9f509bd5cb8b4",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A4_fold_1_public.json",
+    "source_sha256": "925ef77bbf4a533b7d97a3983299628e5ebbf0ded27be5de079d61ad2d70d73b",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A4_fold_1_public.ccd9f509.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "1b57982d09fffcf7",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A4_fold_2_public.json",
+    "source_sha256": "8b8fb233cdd29f10fb957691366e79a54f3eec87ea71229a6ee7bf0f6d21368a",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A4_fold_2_public.1b57982d.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "f594b4f158b01004",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A4_fold_3_public.json",
+    "source_sha256": "d3b9491060b307c2dd78cfad45f296699e8ec068818a9dbe218be23231d3465d",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A4_fold_3_public.f594b4f1.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "4e042178748bf9c8",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/folds/tau_A4_fold_4_public.json",
+    "source_sha256": "1668c501788f33374958c4f19fee1e867bcd345bd2b423148e536ceb76974ae2",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_A4_fold_4_public.4e042178.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "f682ea3479349af3",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/manifest.json",
+    "source_sha256": "6a7640ab67646be729a10c36f98b34ea273c4483098194585b37186529848756",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/manifest.f682ea34.json",
+    "omitted_fields": 1
+  },
+  {
+    "id": "064f2a672d507382",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A1/amyloid_CLAIM_POLICY.json",
+    "source_sha256": "a899521378679c300e78b66bafb2f911e992baaccbdc54ccc77f89f1529f00ac",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_CLAIM_POLICY.064f2a67.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "2365a9b086bca610",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A1/amyloid_calibration.json",
+    "source_sha256": "7ee0fee99e6b9c90fb0092eab065b35e1c673e37dddcf4709a35955b0fbb4c8d",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_calibration.2365a9b0.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "5c87cd7abcac0106",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A1/amyloid_factorial_acceptance.json",
+    "source_sha256": "20617b5e826e3ac487149adbb25d42e55f7a0eb1a36a0bf78806e122117df29c",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_factorial_acceptance.5c87cd7a.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "01d10a131aaeb1f2",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A1/amyloid_pair_identity.json",
+    "source_sha256": "1631c4ac1def4b1e93a2f63d67d8725ac54c0901b3707183046ec685897b24f1",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_pair_identity.01d10a13.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "bdd63ffd0b1bd791",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A1/amyloid_paired_oof_bootstrap.json",
+    "source_sha256": "0ab95766cbd356028e207d005f672b1641ae2ca559b3573950798687063bcf9f",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_paired_oof_bootstrap.bdd63ffd.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "408003dd27a2fbb4",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A1/amyloid_scanner_comparison.json",
+    "source_sha256": "719e9075e719ae9ffc4f7f21af2df5989bc6aa4c88e626430d2ae52c3c86704e",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_scanner_comparison.408003dd.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "18527db65a97698b",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A1/amyloid_subgroups.json",
+    "source_sha256": "b5db24166d6c81b4a4e3ca564d6197b558d5637eb3a0ac69e6d21de358bf233a",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_subgroups.18527db6.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "a6166f5c9474f24c",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A1/tau_CLAIM_POLICY.json",
+    "source_sha256": "35a71baccfcc4ced37f3245e7e4e411481ebccb7d3539e93b96e910a47e8521a",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_CLAIM_POLICY.a6166f5c.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "d5c313b8d881b9e2",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A1/tau_calibration.json",
+    "source_sha256": "d0fc142cb57bcd87d495375dffe9ce0b8a23190f5c57a8d34f1444d331f04adc",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_calibration.d5c313b8.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "c0e5b9e650fe765e",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A1/tau_factorial_acceptance.json",
+    "source_sha256": "e5125e730ed6906916474f13d58f6f208a02b1d9ec89360adc996237f8a6ef11",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_factorial_acceptance.c0e5b9e6.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "40283ad8ff1f1ba4",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A1/tau_pair_identity.json",
+    "source_sha256": "88b5b295449dfda0252040bba4f7dd5f56bcda4da53fca11ceb090c20b57cdbb",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_pair_identity.40283ad8.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "417468b7d723663f",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A1/tau_paired_oof_bootstrap.json",
+    "source_sha256": "88d89b68842ca06f004fde99553dca306d92955da3864f71cadb907506d4828d",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_paired_oof_bootstrap.417468b7.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "3cda19d06af9a5e1",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A1/tau_scanner_comparison.json",
+    "source_sha256": "d301aaf2bc76bc1e0d98972ec5d2d9f9d0c5218411afd85d6e760adb003acefb",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_scanner_comparison.3cda19d0.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "198b53c816f49368",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A1/tau_subgroups.json",
+    "source_sha256": "b35fece71d459676b966e33d7931dbcb30b9d0f7edd4593595e8042c458d5a7f",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_subgroups.198b53c8.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "0c5a84662c86ae92",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A2/amyloid_CLAIM_POLICY.json",
+    "source_sha256": "b427c946b8e69be734e1659a1d999e660bd5b0938f417145f141e64465cfc369",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_CLAIM_POLICY.0c5a8466.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "e3a77a97662eaeb0",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A2/amyloid_calibration.json",
+    "source_sha256": "83cd08b0d661d6095f19f61c92aadeba7ca243b4927a0307b84ba39b0e433c54",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_calibration.e3a77a97.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "21b15e960e3b61d8",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A2/amyloid_factorial_acceptance.json",
+    "source_sha256": "7b6af62365fe485730a0724c9d77755a3339ca4bddb6b89436564ca5ec744a05",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_factorial_acceptance.21b15e96.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "ca50f14d21bcb500",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A2/amyloid_pair_identity.json",
+    "source_sha256": "308025d53bd579cb4e648fb4c99adc4c564ad195cd205d69f31bb67f5954ad69",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_pair_identity.ca50f14d.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "6e95d4ef32663795",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A2/amyloid_paired_oof_bootstrap.json",
+    "source_sha256": "77e0be9568f87fae0b4b9d46597afa69dc84bbe6ced94b40f01cd58507033131",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_paired_oof_bootstrap.6e95d4ef.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "34f293290f1517dd",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A2/amyloid_scanner_comparison.json",
+    "source_sha256": "c04166eb1a5733af0905b3975adcbc1d7a499a630478e2be573036226d5db76d",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_scanner_comparison.34f29329.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "9570ea1b13663bd9",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A2/amyloid_subgroups.json",
+    "source_sha256": "8b4f6f1ea8ad4b0b62327bb031bbf209133915a740f2fedabb2832eb8a77f15e",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_subgroups.9570ea1b.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "69cbb0347eb02324",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A2/tau_CLAIM_POLICY.json",
+    "source_sha256": "105fba615b08ea648ef43b3531130e80576364f4b818032ebd0a7516d0cb0a6d",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_CLAIM_POLICY.69cbb034.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "9baa803a181ad5b6",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A2/tau_calibration.json",
+    "source_sha256": "7a67ae176e7759d5771759ab506b0021a7cc03b8089f0a0eb8dd4ded67a9173f",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_calibration.9baa803a.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "f0ac5c462e657b0b",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A2/tau_factorial_acceptance.json",
+    "source_sha256": "4b2709201206fd94708c10150bd66f569186cda6813ffac5f980b90d762ddb16",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_factorial_acceptance.f0ac5c46.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "8c1c4233e3523b02",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A2/tau_pair_identity.json",
+    "source_sha256": "70e8d7306cc646d739d4dc9dc2cde5c02caa0091b6afa33a5a2e43cc1fdc49d5",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_pair_identity.8c1c4233.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "52e4db3366c83e78",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A2/tau_paired_oof_bootstrap.json",
+    "source_sha256": "a60735acdb22fab868012174eb9e573dcffa48666a4f4a989c713b186606b364",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_paired_oof_bootstrap.52e4db33.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "e2ba8d6a7261b657",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A2/tau_scanner_comparison.json",
+    "source_sha256": "3f15f6d36fab4f47884de6c0a66b7bbd46263217b67d993655859deb1e5dbf73",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_scanner_comparison.e2ba8d6a.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "f82e1a19ca6b4096",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A0_vs_A2/tau_subgroups.json",
+    "source_sha256": "f25fd73051e10cc198a4f7d86b99cb6b2e67f3fb24629b2af6c2c5f72057f42f",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_subgroups.f82e1a19.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "53f2c62d6e0db593",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A1_vs_A3/amyloid_CLAIM_POLICY.json",
+    "source_sha256": "36c3b359c4a5e35b868a16517afb23dea83b4dff5f6ce67d7a0510bc81c1514a",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_CLAIM_POLICY.53f2c62d.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "b5cd8e3e189a21c8",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A1_vs_A3/amyloid_calibration.json",
+    "source_sha256": "9ce479be037de98c8de344c8cbbeed55f0b3bc34136ac8b145986cb0b20748c6",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_calibration.b5cd8e3e.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "008f502335c64409",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A1_vs_A3/amyloid_factorial_acceptance.json",
+    "source_sha256": "b6b57a4ca9780540863910c0ce7d7bbccb1a2f891a7dc147d4c9d031aafae6fd",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_factorial_acceptance.008f5023.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "cc616ead7fa72bb6",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A1_vs_A3/amyloid_pair_identity.json",
+    "source_sha256": "d5fdc76255ee2d86bceb6e6e32401d7680cc1b03eedf01279882c545f697d155",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_pair_identity.cc616ead.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "a9b0b88a46e9c0b7",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A1_vs_A3/amyloid_paired_oof_bootstrap.json",
+    "source_sha256": "144fc6699bf9909be9e223682628633787f1678ce447c34e9b15ba1f746c6f54",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_paired_oof_bootstrap.a9b0b88a.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "f3fcbd0c16ebb8dd",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A1_vs_A3/amyloid_scanner_comparison.json",
+    "source_sha256": "3ffedf21d54091d369b744a6284094c47e7edc3e38d083568d989d154102c742",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_scanner_comparison.f3fcbd0c.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "a7ccab38cee130fd",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A1_vs_A3/amyloid_subgroups.json",
+    "source_sha256": "8b2603b765b229ebc676ae335ddd6698ba8b84c6e0c517c548d7975416d78b5d",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_subgroups.a7ccab38.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "e2d359742a0f5c39",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A1_vs_A3/tau_CLAIM_POLICY.json",
+    "source_sha256": "59e7d6c5e17276d2c7af23735b4300eb675593cd1dd7f476c734afbe783b03b8",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_CLAIM_POLICY.e2d35974.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "8a7d38115097d75f",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A1_vs_A3/tau_calibration.json",
+    "source_sha256": "c959ba7624f052a985f09b86fbed988601de2520f8960a8736aabe66c1aa806a",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_calibration.8a7d3811.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "d1af10d52a20c177",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A1_vs_A3/tau_factorial_acceptance.json",
+    "source_sha256": "fa15aad0f0876e17ed269b7d037e93a8c1207202c9d3d13919d91d173c4735f3",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_factorial_acceptance.d1af10d5.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "286876ea902bdc8b",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A1_vs_A3/tau_pair_identity.json",
+    "source_sha256": "5cd7b3fca20e85bde0524c8cd339283ce64ecb7e573756668eb83b0baab29eeb",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_pair_identity.286876ea.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "734d5c0aec18e8c0",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A1_vs_A3/tau_paired_oof_bootstrap.json",
+    "source_sha256": "befd450effb46d99d21ef43765cc22540e829dc2cfde1b2e4c69a98a3d8b18cd",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_paired_oof_bootstrap.734d5c0a.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "fdf08d871da09cf2",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A1_vs_A3/tau_scanner_comparison.json",
+    "source_sha256": "659c2baa92cbd5249abd34eff6285e751101dc0ecc25ab424d7b4e7174d00808",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_scanner_comparison.fdf08d87.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "7918b10bacbce03a",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A1_vs_A3/tau_subgroups.json",
+    "source_sha256": "8fcc1e31bb41946e4cdb18e762f53bba2152e0d1c92980e810fff4de1e2537c7",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_subgroups.7918b10b.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "3130dec293c2266f",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A2_vs_A3/amyloid_CLAIM_POLICY.json",
+    "source_sha256": "6333033edd0b29daf20bf2c59f86b17db4df0f07cb6add6118775ecaf7b39f07",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_CLAIM_POLICY.3130dec2.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "2d83ca94b0e2d899",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A2_vs_A3/amyloid_calibration.json",
+    "source_sha256": "e02d0f2da408487e0eadaa83b5e043a9f4f81145c16bc716f4b9a87a1c1fe217",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_calibration.2d83ca94.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "5fc7a861d4d704d4",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A2_vs_A3/amyloid_factorial_acceptance.json",
+    "source_sha256": "f21704d8a657df457704b3f45a5c4f56196e209a3d7b941fefd19a1fd72aae8b",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_factorial_acceptance.5fc7a861.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "0c8568cf1ac5a498",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A2_vs_A3/amyloid_pair_identity.json",
+    "source_sha256": "9291cd6e47b1a60ca3853c846771a53bfb18b4d015e1649f2d3997a7d3445c7a",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_pair_identity.0c8568cf.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "23cfa8f44b038dce",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A2_vs_A3/amyloid_paired_oof_bootstrap.json",
+    "source_sha256": "0cbea29a56d2e273bdc3fb7cd42edec32e14b4d1492b9127159b87e7cf6e6358",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_paired_oof_bootstrap.23cfa8f4.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "86ee296bd96b3b4b",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A2_vs_A3/amyloid_scanner_comparison.json",
+    "source_sha256": "ee5b683d81f33dbc01279271b65577de33a869548642314c10986dd01433739a",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_scanner_comparison.86ee296b.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "80d8154f9f0cb248",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A2_vs_A3/amyloid_subgroups.json",
+    "source_sha256": "8caa7e25a485d1e73870d36a19b9f28a6e90438ba12046d07f6998f0887e93b6",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_subgroups.80d8154f.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "2b67467a47e2a7c8",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A2_vs_A3/tau_CLAIM_POLICY.json",
+    "source_sha256": "0fcce85a24c0f0d20c8cf0b5df8f16ddf64557f014cf5071e78a540cf74e6b48",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_CLAIM_POLICY.2b67467a.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "fca2b5517a9cf3ab",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A2_vs_A3/tau_calibration.json",
+    "source_sha256": "7bb1e72c94f397dbf80167938e08c795d186c24d55472c7a86b3a5d10af49a68",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_calibration.fca2b551.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "1ce0f94720bd1f5b",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A2_vs_A3/tau_factorial_acceptance.json",
+    "source_sha256": "1ed1162672dc54da9e1c3599c36a8da2f1471f4ef278bb354d8bd92598e026e4",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_factorial_acceptance.1ce0f947.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "ab907ae85b586ad2",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A2_vs_A3/tau_pair_identity.json",
+    "source_sha256": "b2c857a8737ba2330c7fed2e73511f91917051cde549ab9d178085747a7dd3c0",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_pair_identity.ab907ae8.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "7cd620fddf557d37",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A2_vs_A3/tau_paired_oof_bootstrap.json",
+    "source_sha256": "6c5dd6b07ba078ea414f0d11174f66038bfe58d49a74687b566bdda89ae40471",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_paired_oof_bootstrap.7cd620fd.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "74ad79dd733c25cc",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A2_vs_A3/tau_scanner_comparison.json",
+    "source_sha256": "7abd08b60360dff8217690580be0a9f2f8184000a561d7d20317ac10acffae58",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_scanner_comparison.74ad79dd.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "74cef8dbe983982a",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A2_vs_A3/tau_subgroups.json",
+    "source_sha256": "6feb666e4b9acd233b07b6721bf8757bcabb26f341eacc52ee64197687427d41",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_subgroups.74cef8db.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "6a6562e62bb3406c",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A3_vs_A4/amyloid_CLAIM_POLICY.json",
+    "source_sha256": "d1a55bf63831ab84461c05b674b5fbd26bcb8ed83486796a7f290536353422bd",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_CLAIM_POLICY.6a6562e6.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "b27656a0a76a5dcb",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A3_vs_A4/amyloid_calibration.json",
+    "source_sha256": "d1039e756e9f1153518a8df33bc547baef1ae2343365924a56299592932a2d99",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_calibration.b27656a0.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "966b75abdcfeacd5",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A3_vs_A4/amyloid_factorial_acceptance.json",
+    "source_sha256": "4faeec10efca50bda57981066b2455fcafb3d3de07df3984394bfb79c94e640c",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_factorial_acceptance.966b75ab.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "4079ad0509d0a563",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A3_vs_A4/amyloid_pair_identity.json",
+    "source_sha256": "f6128522c7bd508c7f82fceb75b063fc7e288f31d0b32f975c4cc9a31a8314c3",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_pair_identity.4079ad05.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "ec4c18e6a6bf1971",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A3_vs_A4/amyloid_paired_oof_bootstrap.json",
+    "source_sha256": "fc26d2592d1cd51cb2ecaedc367f3bf0d7a34ba1a20b68cc57eb30922dfbf4ce",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_paired_oof_bootstrap.ec4c18e6.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "efe98aafe917941b",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A3_vs_A4/amyloid_scanner_comparison.json",
+    "source_sha256": "2488d3cccd07aebf26a146daa5330ada1cf8aaf104244e337aad607f61cdc355",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_scanner_comparison.efe98aaf.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "6aacf6a30114e9c3",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A3_vs_A4/amyloid_subgroups.json",
+    "source_sha256": "18f163605d60c564149db0717ac0eea3ca13b16a483550cfff2393e0cf99fc95",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/amyloid_subgroups.6aacf6a3.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "719b948686ef0375",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A3_vs_A4/tau_CLAIM_POLICY.json",
+    "source_sha256": "a99d3d90d7c21814bf64cd002a93d1bb164a199bd7867b50619de5e39fcb57e8",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_CLAIM_POLICY.719b9486.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "f61daa9016bfb82a",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A3_vs_A4/tau_calibration.json",
+    "source_sha256": "70f93a2e6df3d9e0523e3a5415b2555f4066a41ca27cc4150f7f5ea3f9c42fe2",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_calibration.f61daa90.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "8a4745b2cb8fe366",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A3_vs_A4/tau_factorial_acceptance.json",
+    "source_sha256": "1309429abb6cdcc0e38efff45e86d908a13937b3a8fc2cb9ad4c089c2fd701f3",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_factorial_acceptance.8a4745b2.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "1b2066c649a64b23",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A3_vs_A4/tau_pair_identity.json",
+    "source_sha256": "04eee9a1059efaeebd86ef9cd26390d6d60f51229ecfa20b723bc967dad22a90",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_pair_identity.1b2066c6.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "7143ad4b4a92c28d",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A3_vs_A4/tau_paired_oof_bootstrap.json",
+    "source_sha256": "c937429389e690308814168cb7b2dcc5a0379395ce24d3e62aadb52a649b5970",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_paired_oof_bootstrap.7143ad4b.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "5431d1e38451e97c",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A3_vs_A4/tau_scanner_comparison.json",
+    "source_sha256": "8c1c0e27efb24efb75ce83bafcd0b0620ff5417e12062d3a8c29a0e8b910de1b",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_scanner_comparison.5431d1e3.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "eb80262bfa08306a",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/pairs/A3_vs_A4/tau_subgroups.json",
+    "source_sha256": "f24296d5c3749ace89a408f6b3444d408f25893f7ac7c74593c4e9426dca8ec7",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/tau_subgroups.eb80262b.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "609230c51d377ae9",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/post_eval_summary.json",
+    "source_sha256": "1ac4c8c36910ae2e67c6db2b6717a771dd68f1bf987a71b7471899136ce38ebf",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/post_eval_summary.609230c5.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "3ef82083112d02f7",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/privacy_scan.json",
+    "source_sha256": "ff9c9fad82662fc12754bd8f6714c7d329754d5a483e2aaa948566861f333170",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/privacy_scan.3ef82083.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "9d23330e725d9371",
+    "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/xai_gate_summary.json",
+    "source_sha256": "f8d82c4a363fe723bb66cb926fa51e37a23e6d8e69273b7777e2dfa77c43c8f9",
+    "section": "04_method_y",
+    "role": "factorial_descriptive_not_global_winner_confirmatory",
+    "projection_path": "04_method_y/xai_gate_summary.9d23330e.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "9edfdd7245f519bd",
+    "source_path": "results/method_y_revival_v4_posttraining_correction_v4_2/SCIENCE_STATUS_CORRECTED.json",
+    "source_sha256": "f33e0d3dab7f3c9db90e7de53b1b56f8521eee94d2ed0d1df64b9beb423257e0",
+    "section": "04_method_y",
+    "role": "corrected_nested_image_analysis",
+    "projection_path": "04_method_y/SCIENCE_STATUS_CORRECTED.9edfdd72.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "59cfa0d7058e8155",
+    "source_path": "results/method_y_revival_v4_posttraining_correction_v4_2/branchwise_joint_fold_bootstrap.json",
+    "source_sha256": "732bd0323713a2384d7068ca500c3d42f5eeb2c505249484f7c64bd123ded87a",
+    "section": "04_method_y",
+    "role": "corrected_nested_image_analysis",
+    "projection_path": "04_method_y/branchwise_joint_fold_bootstrap.59cfa0d7.json",
+    "omitted_fields": 3
+  },
+  {
+    "id": "c7ecd8df60185f5b",
+    "source_path": "results/method_y_revival_v4_posttraining_correction_v4_2/branchwise_matched_pair_points.json",
+    "source_sha256": "1ac75399c671a8dc1ecc8e110dc6f96ecd18c088a058519971f9bca4b207fc8b",
+    "section": "04_method_y",
+    "role": "corrected_nested_image_analysis",
+    "projection_path": "04_method_y/branchwise_matched_pair_points.c7ecd8df.json",
+    "omitted_fields": 1
+  },
+  {
+    "id": "1632ffb218eb7397",
+    "source_path": "results/method_y_revival_v4_posttraining_correction_v4_2/fold_local_scanner_probes.json",
+    "source_sha256": "4da3adbbdf22bb7ac2878d7361d5cae99b52445f9c26cb9cf56ff81999fe35d4",
+    "section": "04_method_y",
+    "role": "corrected_nested_image_analysis",
+    "projection_path": "04_method_y/fold_local_scanner_probes.1632ffb2.json",
+    "omitted_fields": 13
+  },
+  {
+    "id": "5c08c3ed1c2f087a",
+    "source_path": "results/method_y_revival_v4_posttraining_correction_v4_2/fold_stratified_paired_bootstrap.json",
+    "source_sha256": "2b8e30c10ffb494129bce8c5d9d9419137f0d475d42dc898fad97b13dba2a461",
+    "section": "04_method_y",
+    "role": "corrected_nested_image_analysis",
+    "projection_path": "04_method_y/fold_stratified_paired_bootstrap.5c08c3ed.json",
+    "omitted_fields": 1
+  },
+  {
+    "id": "cf39c2a02bb8a6cd",
+    "source_path": "results/method_y_revival_v4_posttraining_correction_v4_2/image_cohort_selection_flow.json",
+    "source_sha256": "0a8bed734b6162c1e13976f548284f0414f497210eebc1af9c4020b92418b9ac",
+    "section": "04_method_y",
+    "role": "corrected_nested_image_analysis",
+    "projection_path": "04_method_y/image_cohort_selection_flow.cf39c2a0.json",
+    "omitted_fields": 1
+  },
+  {
+    "id": "cfc74be9cac036c5",
+    "source_path": "results/method_y_revival_v4_posttraining_correction_v4_2/locked_artifact_correction.json",
+    "source_sha256": "5d94d6d75c9020f4a00a622cd13d24e52e8a4c466e4cee830489545559c45e77",
+    "section": "04_method_y",
+    "role": "corrected_nested_image_analysis",
+    "projection_path": "04_method_y/locked_artifact_correction.cfc74be9.json",
+    "omitted_fields": 4
+  },
+  {
+    "id": "46a1555068943d16",
+    "source_path": "results/method_y_revival_v4_posttraining_correction_v4_2/v3_scalar_vs_image_fold_stratified_bootstrap.json",
+    "source_sha256": "5a1e4724010c4e7c4bd13f1296522a6f8b3a98b3b9890b7f9c195ff667d3c6eb",
+    "section": "04_method_y",
+    "role": "corrected_nested_image_analysis",
+    "projection_path": "04_method_y/v3_scalar_vs_image_fold_stratified_bootstrap.46a15550.json",
+    "omitted_fields": 4
+  },
+  {
+    "id": "361f058016a209f3",
+    "source_path": "results/xy_spatial_review_v1/f62a79cc50f88765/public_bundle/review.json",
+    "source_sha256": "cce0ed08bfd4249e3e4b36c8490182a259d05b1e0f71c2f63c4cd6c92626b6bc",
+    "section": "07_spatial",
+    "role": "diagnostic_not_disease_localization",
+    "projection_path": "07_spatial/review.361f0580.json",
+    "omitted_fields": 3
+  },
+  {
+    "id": "52fc76574ffcb1c7",
+    "source_path": "results/xy_spatial_review_v1/latest.json",
+    "source_sha256": "e4045cd039b052f180d18b839e67e7fd91ab0c9dcdcb9a121fa07be06fc21b2c",
+    "section": "07_spatial",
+    "role": "diagnostic_not_disease_localization",
+    "projection_path": "07_spatial/latest.52fc7657.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "e2c3acbb0888ddb8",
+    "source_path": "results/xyz_postfusion_final_v1_ram/public/FINAL_VALIDATION_MATRIX.json",
+    "source_sha256": "533c0da067d57ef78a3714512f8d34c97a9c7b658fa7c34542a9c32ba3b574a7",
+    "section": "06_fusion",
+    "role": "corrected_postfusion_with_review_addendum",
+    "projection_path": "06_fusion/FINAL_VALIDATION_MATRIX.e2c3acbb.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "82b7f3c677e6babb",
+    "source_path": "results/xyz_postfusion_final_v1_ram/public/manufacturer/PET_MANUFACTURER_AUDIT.json",
+    "source_sha256": "3d1e4138de1ebe79da6dd04c6a06bc38072450fe6d9af74aca1c675e5fc5432b",
+    "section": "06_fusion",
+    "role": "corrected_postfusion_with_review_addendum",
+    "projection_path": "06_fusion/PET_MANUFACTURER_AUDIT.82b7f3c6.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "37f0c2a848edbb84",
+    "source_path": "results/xyz_postfusion_final_v1_ram/public/postall/results.json",
+    "source_sha256": "afde9b1e0258a46491ca4933f2e77ec4030016d5d5fc3a4e5cbc40d30996159d",
+    "section": "06_fusion",
+    "role": "corrected_postfusion_with_review_addendum",
+    "projection_path": "06_fusion/results.37f0c2a8.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "d733894afcb1d176",
+    "source_path": "results/xyz_postfusion_final_v1_ram/public/regional/REGIONAL_EVIDENCE.json",
+    "source_sha256": "f091f695557f14ccfc035742937a3eae8bde99a1ddb823275aec74c047b073a0",
+    "section": "06_fusion",
+    "role": "corrected_postfusion_with_review_addendum",
+    "projection_path": "06_fusion/REGIONAL_EVIDENCE.d733894a.json",
+    "omitted_fields": 0
+  }
+]

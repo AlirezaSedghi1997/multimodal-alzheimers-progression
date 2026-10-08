@@ -1,0 +1,237 @@
+{
+  "source_id": "465be8ae3a993860",
+  "source_sha256": "6dc6372bd294a1abd2cc38d2da64812450ba7a104a51ae1cd49e3660c9d9047b",
+  "scientific_role": "lmo_sensitivity",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "analysis_role": "POST_HOC_INTERNAL_SCANNER_TRANSPORT_EXPLORATORY",
+    "architecture_only_ablation": false,
+    "cells": [
+      {
+        "arm": "A0",
+        "checkpoint_sha256": "536f676770068799bd36ed988d989dbc7648076f1138474c1158f5452d038847",
+        "evaluation_grid_days": [
+          365.0,
+          730.0,
+          1095.0,
+          1460.0
+        ],
+        "horizon_metrics": {
+          "1095.75": {
+            "at_risk": 98,
+            "dynamic_auc": 0.5580888728095831,
+            "status": "ESTIMABLE"
+          },
+          "1640.0": {
+            "at_risk": 0,
+            "reason": "OUTSIDE_COMMON_SUPPORT_OR_INSUFFICIENT_AT_RISK",
+            "status": "NOT_ESTIMABLE"
+          },
+          "547.875": {
+            "at_risk": 127,
+            "dynamic_auc": 0.513298710290626,
+            "status": "ESTIMABLE"
+          }
+        },
+        "integrated_brier_score": 0.12025719154623328,
+        "manufacturer": "GE",
+        "n_test": 157,
+        "test_events": 33,
+        "uno_c_index": 0.5750303439261049
+      },
+      {
+        "arm": "A4",
+        "checkpoint_sha256": "afc2f1ae1884f7aa8c203ec6e23c6581efa63ec39e7c42b29be2a9626e438497",
+        "evaluation_grid_days": [
+          365.0,
+          730.0,
+          1095.0,
+          1460.0
+        ],
+        "horizon_metrics": {
+          "1095.75": {
+            "at_risk": 98,
+            "dynamic_auc": 0.5960441633008944,
+            "status": "ESTIMABLE"
+          },
+          "1640.0": {
+            "at_risk": 0,
+            "reason": "OUTSIDE_COMMON_SUPPORT_OR_INSUFFICIENT_AT_RISK",
+            "status": "NOT_ESTIMABLE"
+          },
+          "547.875": {
+            "at_risk": 127,
+            "dynamic_auc": 0.5122952004966331,
+            "status": "ESTIMABLE"
+          }
+        },
+        "integrated_brier_score": 0.1133093380747381,
+        "manufacturer": "GE",
+        "n_test": 157,
+        "test_events": 33,
+        "uno_c_index": 0.614023149986815
+      },
+      {
+        "arm": "A0",
+        "checkpoint_sha256": "8908aa30ac661139f7261581278d8199af19409b0f73233af765f8e0900b9925",
+        "evaluation_grid_days": [
+          730.0,
+          1095.0,
+          1460.0
+        ],
+        "horizon_metrics": {
+          "1095.75": {
+            "at_risk": 38,
+            "dynamic_auc": 0.8027019701531287,
+            "status": "ESTIMABLE"
+          },
+          "1640.0": {
+            "at_risk": 0,
+            "reason": "OUTSIDE_COMMON_SUPPORT_OR_INSUFFICIENT_AT_RISK",
+            "status": "NOT_ESTIMABLE"
+          },
+          "547.875": {
+            "at_risk": 49,
+            "dynamic_auc": 0.7296749039322676,
+            "status": "ESTIMABLE"
+          }
+        },
+        "integrated_brier_score": 0.1191324527186454,
+        "manufacturer": "PHILIPS",
+        "n_test": 58,
+        "test_events": 14,
+        "uno_c_index": 0.7453878351450278
+      },
+      {
+        "arm": "A4",
+        "checkpoint_sha256": "487d0018b117ac4f834f39ae1d23e5dcd9d614b59233aa14696681b28cd47c82",
+        "evaluation_grid_days": [
+          730.0,
+          1095.0,
+          1460.0
+        ],
+        "horizon_metrics": {
+          "1095.75": {
+            "at_risk": 38,
+            "dynamic_auc": 0.8374873840929447,
+            "status": "ESTIMABLE"
+          },
+          "1640.0": {
+            "at_risk": 0,
+            "reason": "OUTSIDE_COMMON_SUPPORT_OR_INSUFFICIENT_AT_RISK",
+            "status": "NOT_ESTIMABLE"
+          },
+          "547.875": {
+            "at_risk": 49,
+            "dynamic_auc": 0.852787288881031,
+            "status": "ESTIMABLE"
+          }
+        },
+        "integrated_brier_score": 0.11292222584201961,
+        "manufacturer": "PHILIPS",
+        "n_test": 58,
+        "test_events": 14,
+        "uno_c_index": 0.801562875023858
+      },
+      {
+        "arm": "A0",
+        "checkpoint_sha256": "d58c57c46a520348a672292f38d0d9657a2438de8342285644150b8b76fbe9cd",
+        "evaluation_grid_days": [
+          365.0,
+          730.0,
+          1095.0,
+          1460.0
+        ],
+        "horizon_metrics": {
+          "1095.75": {
+            "at_risk": 214,
+            "dynamic_auc": 0.7527498118732544,
+            "status": "ESTIMABLE"
+          },
+          "1640.0": {
+            "at_risk": 0,
+            "reason": "OUTSIDE_COMMON_SUPPORT_OR_INSUFFICIENT_AT_RISK",
+            "status": "NOT_ESTIMABLE"
+          },
+          "547.875": {
+            "at_risk": 258,
+            "dynamic_auc": 0.7034102084287798,
+            "status": "ESTIMABLE"
+          }
+        },
+        "integrated_brier_score": 0.10249599153504838,
+        "manufacturer": "SIEMENS",
+        "n_test": 303,
+        "test_events": 57,
+        "uno_c_index": 0.7106934052943115
+      },
+      {
+        "arm": "A4",
+        "checkpoint_sha256": "47274caae752873f6e1b68da25d728467e3aa73cd25e9d94c32c2981ac9ffc3a",
+        "evaluation_grid_days": [
+          365.0,
+          730.0,
+          1095.0,
+          1460.0
+        ],
+        "horizon_metrics": {
+          "1095.75": {
+            "at_risk": 214,
+            "dynamic_auc": 0.7314514234491201,
+            "status": "ESTIMABLE"
+          },
+          "1640.0": {
+            "at_risk": 0,
+            "reason": "OUTSIDE_COMMON_SUPPORT_OR_INSUFFICIENT_AT_RISK",
+            "status": "NOT_ESTIMABLE"
+          },
+          "547.875": {
+            "at_risk": 258,
+            "dynamic_auc": 0.6665110841426686,
+            "status": "ESTIMABLE"
+          }
+        },
+        "integrated_brier_score": 0.10471290763101966,
+        "manufacturer": "SIEMENS",
+        "n_test": 303,
+        "test_events": 57,
+        "uno_c_index": 0.6916081935209751
+      }
+    ],
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "comparisons": [
+      {
+        "a4_minus_a0_ibs": -0.00694785347149518,
+        "a4_minus_a0_uno": 0.038992806060710095,
+        "manufacturer": "GE"
+      },
+      {
+        "a4_minus_a0_ibs": -0.006210226876625799,
+        "a4_minus_a0_uno": 0.05617503987883021,
+        "manufacturer": "PHILIPS"
+      },
+      {
+        "a4_minus_a0_ibs": 0.002216916095971286,
+        "a4_minus_a0_uno": -0.01908521177333633,
+        "manufacturer": "SIEMENS"
+      }
+    ],
+    "external_validation_status": "EXTERNAL_PENDING",
+    "limitations": [
+      "A4 and A0 differ in encoder and augmentation; this is a policy comparison, not an architecture-only effect.",
+      "Only three local manufacturers; no independent cohort.",
+      "Manufacturer-specific IBS grids differ and must not be averaged as identical estimands.",
+      "FBP source-space and quantitative provenance remain blocked.",
+      "The study was planned after observing the original v4 outputs and is exploratory."
+    ],
+    "outer_cells_finalized": 6,
+    "positive_claim_allowed": false,
+    "quantitative_equivalence_status": "BLOCKED",
+    "schema_version": "2.0",
+    "selected_v4_arm": "A4",
+    "source_space_status": "UNPROVEN_FOR_FBP_INPUTS",
+    "status": "PASS_TECHNICAL_LOCAL_LMO_ONLY"
+  }
+}

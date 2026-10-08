@@ -1,0 +1,29 @@
+from __future__ import annotations
+
+ARTIFACT_STATUSES = frozenset(
+    {"NOT_STARTED", "RUNNING", "COMPLETED", "FAILED", "BLOCKED", "CANCELLED"}
+)
+SCIENCE_GATE_STATUSES = frozenset({"NOT_EVALUATED", "PASS", "FAIL", "BLOCKED"})
+CLAIM_STATUSES = frozenset(
+    {"NO_CLAIM", "TECHNICAL_ONLY", "EXPLORATORY", "INTERNAL_ONLY", "EXTERNALLY_VALIDATED"}
+)
+BRANCHES = frozenset({"amyloid", "tau", "paired_at", "shared"})
+
+TRACER_TO_BRANCH = {"FBP": "amyloid", "FTP": "tau"}
+
+PIPELINE_STAGES = (
+    "INIT",
+    "PREFLIGHT_DONE",
+    "MANIFEST_LOCKED",
+    "PREPROCESSING_DONE",
+    "QC_PASSED",
+    "ENDPOINTS_LOCKED",
+    "SPLITS_LOCKED",
+    "LOCAL_HPO_DONE",
+    "MODEL_CONFIGS_LOCKED",
+    "OUTER_EVALUATION_DONE",
+    "EXTERNAL_PENDING",
+    "EXTERNAL_DONE",
+    "REPORTS_DONE",
+    "FINALIZED",
+)

@@ -1,0 +1,1974 @@
+{
+  "source_id": "dec126fabd063fce",
+  "source_sha256": "005688ab563f088e55fd091c3964e78465cdde533b87817c6f9c15bb65cbc26e",
+  "scientific_role": "posthoc_sensitivity",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 36,
+  "aggregate": {
+    "payload": {
+      "leave_one_fold_out_is_new_CV": false,
+      "matched_pairs": 419,
+      "matching_fixes_cohort_confounding": false,
+      "missing_age": 0,
+      "missing_sex": 0,
+      "status": "COMPLETED_INTERNAL_SENSITIVITY",
+      "subsets": {
+        "PET_after_MRI": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 193,
+              "positive_n": 614,
+              "smd_positive_minus_negative": 0.27929157815102507
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 193,
+              "positive_n": 614,
+              "smd_positive_minus_negative": -0.050744328193970865
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 193,
+              "positive_n": 614,
+              "smd_positive_minus_negative": 0.04144681400924015
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.009187005510576263,
+                0.013220345171612696
+              ],
+              "delta": 0.0017219414872435834,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.003448203818979006,
+                0.028580437139051198
+              ],
+              "delta": 0.012269835108268179,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.03810702784685566,
+                0.058583357028416376
+              ],
+              "delta": 0.04860435118861686,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.8656877341938799,
+            "auroc": 0.6961063948287792,
+            "brier": 0.22339238247042315
+          },
+          "n": 807,
+          "negative": 193,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.6974481443351167,
+                0.8684730168455059,
+                0.23415215882573692
+              ],
+              "nonlinear": [
+                0.6868955798214376,
+                0.8679319159692662,
+                0.1739228480137905
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.6890432228991916,
+                0.8589983762376278,
+                0.23446939377993922
+              ],
+              "nonlinear": [
+                0.6826340483704917,
+                0.8604088475259404,
+                0.17556150071380888
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.7018278172520295,
+                0.8695918094985062,
+                0.20155559480559324
+              ],
+              "nonlinear": [
+                0.6819800509696039,
+                0.8635566146247026,
+                0.17487974511781948
+              ]
+            }
+          },
+          "positive": 614,
+          "second_metrics": {
+            "auprc": 0.8639657927066363,
+            "auroc": 0.683836559720511,
+            "brier": 0.17478803128180628
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "PET_before_MRI": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 230,
+              "positive_n": 296,
+              "smd_positive_minus_negative": 0.32016014522850655
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 230,
+              "positive_n": 296,
+              "smd_positive_minus_negative": -0.07723204371790036
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 230,
+              "positive_n": 296,
+              "smd_positive_minus_negative": -0.05220970119254687
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.06986477459243806,
+                -0.02123848320661997
+              ],
+              "delta": -0.04512489759870664,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.03767539866739293,
+                -0.003633731348909755
+              ],
+              "delta": -0.020578730904817877,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                -0.014430057855399862,
+                0.011357782131077934
+              ],
+              "delta": -0.0017138087362740528,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.7692356369296575,
+            "auroc": 0.7415050920485703,
+            "brier": 0.2073692636672947
+          },
+          "n": 526,
+          "negative": 230,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.7491774383078731,
+                0.7788966008685184,
+                0.20695071828299125
+              ],
+              "nonlinear": [
+                0.7601792009400705,
+                0.8122226037359634,
+                0.21008799860826585
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.7296122209165687,
+                0.7471491653175136,
+                0.21267284171706646
+              ],
+              "nonlinear": [
+                0.7639101057579318,
+                0.8144687922848521,
+                0.20862337891057559
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.745725616921269,
+                0.7816611446029402,
+                0.20248423100182633
+              ],
+              "nonlinear": [
+                0.7621621621621621,
+                0.8163902075642768,
+                0.2085378396918648
+              ]
+            }
+          },
+          "positive": 296,
+          "second_metrics": {
+            "auprc": 0.8143605345283641,
+            "auroc": 0.7620838229533882,
+            "brier": 0.20908307240356874
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "age_ge75": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 54,
+              "positive_n": 225,
+              "smd_positive_minus_negative": -0.1595654758728411
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 54,
+              "positive_n": 225,
+              "smd_positive_minus_negative": 0.13584073233453448
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 54,
+              "positive_n": 225,
+              "smd_positive_minus_negative": -0.05894418184602074
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.026967158902565482,
+                0.004380389106296444
+              ],
+              "delta": -0.010846453438049242,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.05642852458456047,
+                0.026696658370418284
+              ],
+              "delta": -0.01456790123456786,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.01398732103112966,
+                0.040212356727195565
+              ],
+              "delta": 0.027064656845218055,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.9030327896332689,
+            "auroc": 0.6897393689986283,
+            "brier": 0.1682274107979801
+          },
+          "n": 279,
+          "negative": 54,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.6906172839506173,
+                0.9001719242552154,
+                0.1737395074611037
+              ],
+              "nonlinear": [
+                0.7053497942386832,
+                0.9218073054689393,
+                0.14178208155360783
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.645679012345679,
+                0.8924030530336856,
+                0.17771359199507675
+              ],
+              "nonlinear": [
+                0.7137448559670782,
+                0.909081175352043,
+                0.1408133235074011
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.7329218106995885,
+                0.9165233916109056,
+                0.15322913293775986
+              ],
+              "nonlinear": [
+                0.6938271604938272,
+                0.9107492483929721,
+                0.14089285679727714
+              ]
+            }
+          },
+          "positive": 225,
+          "second_metrics": {
+            "auprc": 0.9138792430713182,
+            "auroc": 0.7043072702331962,
+            "brier": 0.14116275395276204
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "age_lt75": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 369,
+              "positive_n": 688,
+              "smd_positive_minus_negative": 0.16517820928482924
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 369,
+              "positive_n": 688,
+              "smd_positive_minus_negative": -0.07545255008688927
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 369,
+              "positive_n": 688,
+              "smd_positive_minus_negative": 0.03500611290127741
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.005870652541512275,
+                0.026733385970924707
+              ],
+              "delta": 0.010913165555824333,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.0025925389095599214,
+                0.023514121847642844
+              ],
+              "delta": 0.010079226276758946,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.019419431668189387,
+                0.03863159063710517
+              ],
+              "delta": 0.029419827340752824,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.7933546532291492,
+            "auroc": 0.7049694334152644,
+            "brier": 0.22973208634710549
+          },
+          "n": 1057,
+          "negative": 369,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.7078015692947627,
+                0.7991584458802716,
+                0.23625822422929044
+              ],
+              "nonlinear": [
+                0.6961559368500662,
+                0.7823175432400431,
+                0.19998406042600872
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.700801978950022,
+                0.7807235886729781,
+                0.23834796260254884
+              ],
+              "nonlinear": [
+                0.6962130522468015,
+                0.779433636912444,
+                0.20076567825541347
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.7063047520010084,
+                0.8001819251341977,
+                0.2145900722094771
+              ],
+              "nonlinear": [
+                0.6923016323186487,
+                0.7855732828674875,
+                0.20018703833763585
+              ]
+            }
+          },
+          "positive": 688,
+          "second_metrics": {
+            "auprc": 0.7824414876733249,
+            "auroc": 0.6948902071385055,
+            "brier": 0.20031225900635266
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "age_sex_matched": {
+          "bootstrap_unit": "matched_pair",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 419,
+              "positive_n": 419,
+              "smd_positive_minus_negative": -0.4139896947556591
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 419,
+              "positive_n": 419,
+              "smd_positive_minus_negative": -0.024016716952606907
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 419,
+              "positive_n": 419,
+              "smd_positive_minus_negative": 0.0
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.029908086002511325,
+                0.010209863351122554
+              ],
+              "delta": -0.01004215549847376,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.017585934043817524,
+                0.010189383367224579
+              ],
+              "delta": -0.003773617147316388,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                -0.017301967715824065,
+                -0.0063043446695437945
+              ],
+              "delta": -0.011721732406150487,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.6455801664754472,
+            "auroc": 0.6606041964521353,
+            "brier": 0.2361331379402154
+          },
+          "n": 838,
+          "negative": 419,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.6703766781916257,
+                0.6582375366412314,
+                0.23270474384032325
+              ],
+              "nonlinear": [
+                0.6594317644579377,
+                0.6527697366011734,
+                0.24965732972552815
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.6483501461030639,
+                0.6228720345127399,
+                0.2419981888450266
+              ],
+              "nonlinear": [
+                0.6678818188549849,
+                0.6535585712034446,
+                0.24799327867970095
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.6630857650617165,
+                0.6556309282723705,
+                0.2336964811352963
+              ],
+              "nonlinear": [
+                0.6658198574854324,
+                0.660538658117145,
+                0.2459140026338686
+              ]
+            }
+          },
+          "positive": 419,
+          "second_metrics": {
+            "auprc": 0.655622321973921,
+            "auroc": 0.6643778135994517,
+            "brier": 0.24785487034636589
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "all": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 423,
+              "positive_n": 913,
+              "smd_positive_minus_negative": 0.30840654356565445
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 423,
+              "positive_n": 913,
+              "smd_positive_minus_negative": -0.061759374596186675
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 423,
+              "positive_n": 913,
+              "smd_positive_minus_negative": -0.016493177306739965
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.024543584723701665,
+                -0.0019493215503674415
+              ],
+              "delta": -0.013228042202080181,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.015516595845146416,
+                0.007728055820905007
+              ],
+              "delta": -0.003921984952490076,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.020822768301038734,
+                0.03671538006395113
+              ],
+              "delta": 0.02892799158607154,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.8296671988120532,
+            "auroc": 0.7162490494969346,
+            "brier": 0.2168879213185082
+          },
+          "n": 1336,
+          "negative": 423,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.7209858130134982,
+                0.835338011828963,
+                0.22320229460479638
+              ],
+              "nonlinear": [
+                0.7208951861605027,
+                0.8452433806365022,
+                0.18782960525729625
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.7059572914481912,
+                0.8172547703448629,
+                0.22568554538736568
+              ],
+              "nonlinear": [
+                0.7206090642389027,
+                0.8403645986620988,
+                0.18824568800489294
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.7218040440291146,
+                0.8364088142623337,
+                0.20177592396336252
+              ],
+              "nonlinear": [
+                0.7190088529488683,
+                0.8430777437437992,
+                0.18780449593512083
+              ]
+            }
+          },
+          "positive": 913,
+          "second_metrics": {
+            "auprc": 0.8428952410141334,
+            "auroc": 0.7201710344494247,
+            "brier": 0.18795992973243666
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "fold_0": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 85,
+              "positive_n": 183,
+              "smd_positive_minus_negative": 0.37458520894283176
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 85,
+              "positive_n": 183,
+              "smd_positive_minus_negative": -0.12560729832408193
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 85,
+              "positive_n": 183,
+              "smd_positive_minus_negative": -0.18053778375326796
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.015430459070531099,
+                0.018264831124405554
+              ],
+              "delta": 0.0015311997980201886,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.013341197058302473,
+                0.0357439487997137
+              ],
+              "delta": 0.011700417872066882,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.013039238025406638,
+                0.048032730833358316
+              ],
+              "delta": 0.030376072207782684,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.8565996782117614,
+            "auroc": 0.7459337833494053,
+            "brier": 0.2133954387040855
+          },
+          "n": 268,
+          "negative": 85,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.7461266473802636,
+                0.86017334411612,
+                0.22169249536515975
+              ],
+              "nonlinear": [
+                0.7358084217293475,
+                0.857294156038205,
+                0.1834565109558359
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.734619093539055,
+                0.8438252425941147,
+                0.21802184527675106
+              ],
+              "nonlinear": [
+                0.7324975891996143,
+                0.8548516826674095,
+                0.18277807400465446
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.7570556091288975,
+                0.8658004479250495,
+                0.2004719754703457
+              ],
+              "nonlinear": [
+                0.7343940855030536,
+                0.853059596535609,
+                0.1828235145284182
+              ]
+            }
+          },
+          "positive": 183,
+          "second_metrics": {
+            "auprc": 0.8550684784137412,
+            "auroc": 0.7342333654773384,
+            "brier": 0.18301936649630282
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "fold_1": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 86,
+              "positive_n": 183,
+              "smd_positive_minus_negative": 0.4146291487104243
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 86,
+              "positive_n": 183,
+              "smd_positive_minus_negative": -0.19745442409090225
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 86,
+              "positive_n": 183,
+              "smd_positive_minus_negative": -0.07527778076506285
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.03343953950555352,
+                0.0025741374504773882
+              ],
+              "delta": -0.01673695657278884,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.03851027123126571,
+                0.005057414478108369
+              ],
+              "delta": -0.017950184267378266,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.007817617641729857,
+                0.037426017404696046
+              ],
+              "delta": 0.02319664699824789,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.8261720435131424,
+            "auroc": 0.7117380438005676,
+            "brier": 0.20945440738679846
+          },
+          "n": 269,
+          "negative": 86,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.7150209683568433,
+                0.8291811298092638,
+                0.21178446324378575
+              ],
+              "nonlinear": [
+                0.7276655229381116,
+                0.8442337110550644,
+                0.18754081687804128
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.7148938874062778,
+                0.8311208554478192,
+                0.22395578900681118
+              ],
+              "nonlinear": [
+                0.7296988181471598,
+                0.8359760960435333,
+                0.18569654529392532
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.7052992756385817,
+                0.8182141452823444,
+                0.19262296990979844
+              ],
+              "nonlinear": [
+                0.7317003431185666,
+                0.8485171931591958,
+                0.18553591899368516
+              ]
+            }
+          },
+          "positive": 183,
+          "second_metrics": {
+            "auprc": 0.8429090000859313,
+            "auroc": 0.7296882280679459,
+            "brier": 0.18625776038855058
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "fold_2": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 84,
+              "positive_n": 183,
+              "smd_positive_minus_negative": 0.17029456079301564
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 84,
+              "positive_n": 183,
+              "smd_positive_minus_negative": -0.09014505149513238
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 84,
+              "positive_n": 183,
+              "smd_positive_minus_negative": 0.2320425130636583
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.009473507963573727,
+                0.026910235609360934
+              ],
+              "delta": 0.008675340231686701,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                0.002762816396461915,
+                0.044308299600638305
+              ],
+              "delta": 0.02353846821059924,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.004556124564800425,
+                0.03283866343063167
+              ],
+              "delta": 0.018518619766884098,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.808234433205977,
+            "auroc": 0.6676424668227946,
+            "brier": 0.22961603276001033
+          },
+          "n": 267,
+          "negative": 84,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.6686833203226645,
+                0.8101365166767314,
+                0.23354544713066852
+              ],
+              "nonlinear": [
+                0.6360915951079885,
+                0.7947676746644275,
+                0.21039918068913327
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.6546317980744211,
+                0.7914210815640387,
+                0.23670091903790091
+              ],
+              "nonlinear": [
+                0.6407429091855321,
+                0.7964013940497832,
+                0.21326542531256396
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.6796122820712984,
+                0.8231457013771609,
+                0.21860173211146158
+              ],
+              "nonlinear": [
+                0.6554774915430653,
+                0.8075082102086599,
+                0.20962763297768156
+              ]
+            }
+          },
+          "positive": 183,
+          "second_metrics": {
+            "auprc": 0.7995590929742903,
+            "auroc": 0.6441039986121954,
+            "brier": 0.21109741299312623
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "fold_3": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 83,
+              "positive_n": 183,
+              "smd_positive_minus_negative": 0.11801545644757762
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 83,
+              "positive_n": 183,
+              "smd_positive_minus_negative": -0.06571307507986508
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 83,
+              "positive_n": 183,
+              "smd_positive_minus_negative": 0.08545477592574874
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.02348539385366744,
+                0.018322892496611242
+              ],
+              "delta": -0.002854293924741791,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.03873240903631252,
+                0.01655494856425647
+              ],
+              "delta": -0.010961880308117733,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.01757464302255133,
+                0.06229235861211093
+              ],
+              "delta": 0.039990810246792435,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.8667255624322568,
+            "auroc": 0.7411065025127833,
+            "brier": 0.22034486501137218
+          },
+          "n": 266,
+          "negative": 83,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.721113964052933,
+                0.8549343965150187,
+                0.23481767430849337
+              ],
+              "nonlinear": [
+                0.7515965501349661,
+                0.869944813439189,
+                0.18054740365216795
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.7292119296859569,
+                0.8535665066202321,
+                0.2194928022331335
+              ],
+              "nonlinear": [
+                0.7466258476529067,
+                0.8630342173572575,
+                0.1821618765490583
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.7729936137994602,
+                0.8916757841615194,
+                0.20672411849248973
+              ],
+              "nonlinear": [
+                0.7579827506748305,
+                0.8757605382745496,
+                0.178352884092513
+              ]
+            }
+          },
+          "positive": 183,
+          "second_metrics": {
+            "auprc": 0.8695798563569986,
+            "auroc": 0.752068382820901,
+            "brier": 0.18035405476457975
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "fold_4": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 85,
+              "positive_n": 181,
+              "smd_positive_minus_negative": 0.5137708608298125
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 85,
+              "positive_n": 181,
+              "smd_positive_minus_negative": 0.17913547074166805
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 85,
+              "positive_n": 181,
+              "smd_positive_minus_negative": -0.14441241095419638
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.01355994436134292,
+                0.03373685340966568
+              ],
+              "delta": 0.008561164338469873,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.013810837904577461,
+                0.03582742895545305
+              ],
+              "delta": 0.010648900444155673,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.011250802931266292,
+                0.05298106836223174
+              ],
+              "delta": 0.03265069308786564,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.872694580466356,
+            "auroc": 0.7698407539811506,
+            "brier": 0.21169110857832876
+          },
+          "n": 266,
+          "negative": 85,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.773220669483263,
+                0.8644960349284496,
+                0.21427263335195113
+              ],
+              "nonlinear": [
+                0.7669483262918427,
+                0.8727024969461679,
+                0.1771554035034414
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.7801754956126097,
+                0.8813502675762943,
+                0.2302920905390451
+              ],
+              "nonlinear": [
+                0.7663633409164771,
+                0.8710970274111074,
+                0.1773023193109758
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.7561260968475788,
+                0.8722374388943239,
+                0.19050860184399004
+              ],
+              "nonlinear": [
+                0.744263893402665,
+                0.848600724026383,
+                0.18266352365697217
+              ]
+            }
+          },
+          "positive": 181,
+          "second_metrics": {
+            "auprc": 0.8641334161278861,
+            "auroc": 0.7591918535369949,
+            "brier": 0.17904041549046312
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "leave_out_fold_0": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 338,
+              "positive_n": 730,
+              "smd_positive_minus_negative": 0.2926361324632868
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 338,
+              "positive_n": 730,
+              "smd_positive_minus_negative": -0.04706715395949289
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 338,
+              "positive_n": 730,
+              "smd_positive_minus_negative": 0.024000669268817047
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.026433171318250286,
+                -0.0022501167417193434
+              ],
+              "delta": -0.014247102248697074,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.01874253679441262,
+                0.00699012430497079
+              ],
+              "delta": -0.005809083785901614,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.01863328011911973,
+                0.03792907080661439
+              ],
+              "delta": 0.028564615549911743,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.8266934377271161,
+            "auroc": 0.7109575531598713,
+            "brier": 0.21776431208692135
+          },
+          "n": 1068,
+          "negative": 338,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.7173340358271865,
+                0.8332858740870173,
+                0.22358115808440554
+              ],
+              "nonlinear": [
+                0.7176076031450109,
+                0.8440261477483614,
+                0.18892697349024698
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.7009199967577207,
+                0.816322488954812,
+                0.22760864616418658
+              ],
+              "nonlinear": [
+                0.7172671638161627,
+                0.838055685449842,
+                0.18961771099371683
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.714618626894707,
+                0.830471950139519,
+                0.20210313201217195
+              ],
+              "nonlinear": [
+                0.715425143876145,
+                0.8407397867292362,
+                0.18905440512706492
+              ]
+            }
+          },
+          "positive": 730,
+          "second_metrics": {
+            "auprc": 0.8409405399758132,
+            "auroc": 0.7167666369457729,
+            "brier": 0.1891996965370096
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "leave_out_fold_1": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 337,
+              "positive_n": 730,
+              "smd_positive_minus_negative": 0.2832476177405398
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 337,
+              "positive_n": 730,
+              "smd_positive_minus_negative": -0.025841850298185563
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 337,
+              "positive_n": 730,
+              "smd_positive_minus_negative": -0.001586900931262193
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.02571267932855593,
+                0.0007427613496254113
+              ],
+              "delta": -0.012054924645487741,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.013165723405944168,
+                0.01346855739464117
+              ],
+              "delta": 0.000363806349335305,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.020616561586266458,
+                0.03950118972934134
+              ],
+              "delta": 0.030372913511211713,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.8316679053808792,
+            "auroc": 0.719012777258377,
+            "brier": 0.2187619749713947
+          },
+          "n": 1067,
+          "negative": 337,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.7244990041055241,
+                0.8382687455932222,
+                0.2260808294090249
+              ],
+              "nonlinear": [
+                0.7199666680216251,
+                0.8461629946111581,
+                0.18790241132479354
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.703381976342425,
+                0.8131557238461241,
+                0.22612163204750546
+              ],
+              "nonlinear": [
+                0.7189931303605545,
+                0.8420956950579624,
+                0.18888834910072264
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.7291573513271818,
+                0.8435792467032915,
+                0.2040834634576537
+              ],
+              "nonlinear": [
+                0.7169871143449453,
+                0.8429098004099804,
+                0.1883764239550329
+              ]
+            }
+          },
+          "positive": 730,
+          "second_metrics": {
+            "auprc": 0.8437228300263669,
+            "auroc": 0.7186489709090417,
+            "brier": 0.188389061460183
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "leave_out_fold_2": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 339,
+              "positive_n": 730,
+              "smd_positive_minus_negative": 0.3455238081521454
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 339,
+              "positive_n": 730,
+              "smd_positive_minus_negative": -0.054782466998891124
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 339,
+              "positive_n": 730,
+              "smd_positive_minus_negative": -0.07820681857358205
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.023177912257301658,
+                -0.0004176050965542694
+              ],
+              "delta": -0.01174362117776917,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.019372582271164666,
+                0.005409022681131324
+              ],
+              "delta": -0.007037216632319043,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.021962795493427528,
+                0.04124648993041854
+              ],
+              "delta": 0.03152790016953555,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.8441453538952143,
+            "auroc": 0.7346277663285785,
+            "brier": 0.21370887009785236
+          },
+          "n": 1069,
+          "negative": 339,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.7370509556713946,
+                0.8501797429225453,
+                0.22061892535839045
+              ],
+              "nonlinear": [
+                0.7433870772214813,
+                0.8576196852556134,
+                0.18219248959752032
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.7304642987028731,
+                0.8355126297040878,
+                0.22293427806772778
+              ],
+              "nonlinear": [
+                0.74208590940316,
+                0.8544070590846256,
+                0.18199660487940356
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.7363680446114681,
+                0.8467436890590097,
+                0.1975734068674388
+              ],
+              "nonlinear": [
+                0.7395219622580514,
+                0.8556401808787114,
+                0.1823538153080266
+              ]
+            }
+          },
+          "positive": 730,
+          "second_metrics": {
+            "auprc": 0.8558889750729834,
+            "auroc": 0.7416649829608976,
+            "brier": 0.1821809699283168
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "leave_out_fold_3": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 340,
+              "positive_n": 730,
+              "smd_positive_minus_negative": 0.36039346037658787
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 340,
+              "positive_n": 730,
+              "smd_positive_minus_negative": -0.060857607881037716
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 340,
+              "positive_n": 730,
+              "smd_positive_minus_negative": -0.04174613377413351
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.02443296355195876,
+                -0.00013064935430321395
+              ],
+              "delta": -0.01221616865356201,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.014155733724249626,
+                0.009340677148167376
+              ],
+              "delta": -0.002058152027934468,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.01779908799674287,
+                0.03524266451014507
+              ],
+              "delta": 0.026177795545181987,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.8257837394574191,
+            "auroc": 0.7124630674187484,
+            "brier": 0.21602853157803917
+          },
+          "n": 1070,
+          "negative": 340,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.7184730056406124,
+                0.8303954642497411,
+                0.22031473292144735
+              ],
+              "nonlinear": [
+                0.7153827558420629,
+                0.8409738620323957,
+                0.18963994696473935
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.6995447219983884,
+                0.8096488963638009,
+                0.22722504976028693
+              ],
+              "nonlinear": [
+                0.7167163577759871,
+                0.8366735015869222,
+                0.18975811216120322
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.7193714746172442,
+                0.8373068577587154,
+                0.20054581205238323
+              ],
+              "nonlinear": [
+                0.7114645447219984,
+                0.8363523607136256,
+                0.19015414897262894
+              ]
+            }
+          },
+          "positive": 730,
+          "second_metrics": {
+            "auprc": 0.8379999081109811,
+            "auroc": 0.7145212194466829,
+            "brier": 0.18985073603285718
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "leave_out_fold_4": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 338,
+              "positive_n": 732,
+              "smd_positive_minus_negative": 0.26328624340782436
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 338,
+              "positive_n": 732,
+              "smd_positive_minus_negative": -0.11975847971388837
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 338,
+              "positive_n": 732,
+              "smd_positive_minus_negative": 0.01497730262583164
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.023458513088707007,
+                -0.0001727047601450179
+              ],
+              "delta": -0.011902318759092534,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.015560817910612307,
+                0.009397164263268675
+              ],
+              "delta": -0.0027854571517875737,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.019078923880169248,
+                0.03714295046329836
+              ],
+              "delta": 0.028002534951046015,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.8254464255457111,
+            "auroc": 0.7076112027246958,
+            "brier": 0.2181798392520481
+          },
+          "n": 1070,
+          "negative": 338,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.7087940957739193,
+                0.8291234792024414,
+                0.22542219170129807
+              ],
+              "nonlinear": [
+                0.7089779965725741,
+                0.8381282143123743,
+                0.19048319186152562
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.7006862935299253,
+                0.8175711924235743,
+                0.22454036687302292
+              ],
+              "nonlinear": [
+                0.7087779286707407,
+                0.8327475381894104,
+                0.19096618900730597
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.7133532188702428,
+                0.8296446050111178,
+                0.2045769591818233
+              ],
+              "nonlinear": [
+                0.713434054386135,
+                0.8411704804126265,
+                0.1890825320341746
+              ]
+            }
+          },
+          "positive": 732,
+          "second_metrics": {
+            "auprc": 0.8373487443048037,
+            "auroc": 0.7103966598764834,
+            "brier": 0.19017730430100208
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "same_day": {
+          "n": 3,
+          "negative": 0,
+          "positive": 3,
+          "status": "NOT_ESTIMABLE_PRESPECIFIED_MINIMUM_20_PER_CLASS"
+        },
+        "sex_0": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 162,
+              "positive_n": 357,
+              "smd_positive_minus_negative": 0.3643849616033199
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 162,
+              "positive_n": 357,
+              "smd_positive_minus_negative": -0.09409829111030846
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 162,
+              "positive_n": 357,
+              "smd_positive_minus_negative": null
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.04370739865981066,
+                -0.004126146343779875
+              ],
+              "delta": -0.023528191442510837,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.03150786102966487,
+                0.010731284991864147
+              ],
+              "delta": -0.010731864762365761,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.01679163277130565,
+                0.042823697268952396
+              ],
+              "delta": 0.02957937190284607,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.8234239624592599,
+            "auroc": 0.7080667658009706,
+            "brier": 0.21681950292243599
+          },
+          "n": 519,
+          "negative": 162,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.7145969498910676,
+                0.8295047845318919,
+                0.2227398081862817
+              ],
+              "nonlinear": [
+                0.7181069958847737,
+                0.8479450694719071,
+                0.18771214456240068
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.7018189992046201,
+                0.814367182303993,
+                0.22459112076637566
+              ],
+              "nonlinear": [
+                0.7174153612062109,
+                0.8448811673787947,
+                0.18818567321993743
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.7077843483072241,
+                0.8263999205418945,
+                0.20312757981465057
+              ],
+              "nonlinear": [
+                0.7208735345990248,
+                0.84803022485461,
+                0.18582257527643162
+              ]
+            }
+          },
+          "positive": 357,
+          "second_metrics": {
+            "auprc": 0.8469521539017707,
+            "auroc": 0.7187986305633364,
+            "brier": 0.18724013101958992
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        },
+        "sex_1": {
+          "bootstrap_unit": "patient",
+          "calibration_by_seed": {},
+          "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+          "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+          "demographic_balance": {
+            "age": {
+              "missing_n": 0,
+              "negative_n": 261,
+              "positive_n": 556,
+              "smd_positive_minus_negative": 0.2701144460805959
+            },
+            "education_years": {
+              "missing_n": 0,
+              "negative_n": 261,
+              "positive_n": 556,
+              "smd_positive_minus_negative": -0.046066686150397454
+            },
+            "sex": {
+              "missing_n": 0,
+              "negative_n": 261,
+              "positive_n": 556,
+              "smd_positive_minus_negative": null
+            }
+          },
+          "effects": {
+            "auprc": {
+              "ci95": [
+                -0.01771519326835758,
+                0.007412096493327488
+              ],
+              "delta": -0.00547746321334508,
+              "valid_resamples": 2000
+            },
+            "auroc": {
+              "ci95": [
+                -0.013209193017197998,
+                0.014072083946374523
+              ],
+              "delta": 0.00021132519271926942,
+              "valid_resamples": 2000
+            },
+            "brier": {
+              "ci95": [
+                0.017824562077882224,
+                0.03833192824199939
+              ],
+              "delta": 0.028514201641878123,
+              "valid_resamples": 2000
+            }
+          },
+          "effects_direction": "first_minus_second",
+          "first_metrics": {
+            "auprc": 0.834755763806878,
+            "auroc": 0.7206280952249694,
+            "brier": 0.21693138416742064
+          },
+          "n": 817,
+          "negative": 261,
+          "per_seed": {
+            "13": {
+              "hybrid": [
+                0.723931199867692,
+                0.8402977499628633,
+                0.2234960895267169
+              ],
+              "nonlinear": [
+                0.7220430552110036,
+                0.8435008043822597,
+                0.18790422227155673
+              ]
+            },
+            "29": {
+              "hybrid": [
+                0.7079784448303427,
+                0.8213229981372219,
+                0.22638077963252337
+              ],
+              "nonlinear": [
+                0.7226908128669478,
+                0.8375311324828301,
+                0.18828381245212905
+              ]
+            },
+            "47": {
+              "hybrid": [
+                0.7299746409768737,
+                0.8426465433205489,
+                0.20091728334302159
+              ],
+              "nonlinear": [
+                0.7165164420187987,
+                0.8396677441955792,
+                0.18906351285294176
+              ]
+            }
+          },
+          "positive": 556,
+          "second_metrics": {
+            "auprc": 0.8402332270202231,
+            "auroc": 0.7204167700322501,
+            "brier": 0.18841718252554251
+          },
+          "seed_count": 3,
+          "seeds_are_independent_patients": false,
+          "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+          "stratified_by_fold_class": false
+        }
+      },
+      "unmatched_patients": 498
+    },
+    "payload_sha256": "e8588e90d407aa7e72b6f7542b76826aa7af7472e5831049bf355ad40b08fca2",
+    "protocol_sha256": "f901ffa588743b99131252936e2960ba75a445f11e725d00e942dd449cf2e331",
+    "unit": "sensitivity_summary"
+  }
+}

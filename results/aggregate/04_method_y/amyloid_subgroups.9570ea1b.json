@@ -1,0 +1,203 @@
+{
+  "source_id": "9570ea1b13663bd9",
+  "source_sha256": "8b4f6f1ea8ad4b0b62327bb031bbf209133915a740f2fedabb2832eb8a77f15e",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "bootstrap_iterations": 2000,
+    "comparison_semantics": "REFERENCE_ARM_VS_CHALLENGER_ARM",
+    "multiplicity_status": "DESCRIPTIVE_NO_POSITIVE_SUBGROUP_CLAIMS",
+    "status": "COMPLETED_WITH_SUPPORT_GATES",
+    "subgroups": {
+      "age_group": {
+        "0": {
+          "delta_cindex_95ci": [
+            -0.030799481296206646,
+            0.14134838058652632
+          ],
+          "delta_cindex_mean": 0.051148893701242384,
+          "delta_ibs_95ci": [
+            -0.008076401569326389,
+            0.007862610880212399
+          ],
+          "delta_ibs_mean": -9.988442104650777e-05,
+          "event_count": 36,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 248
+        },
+        "1": {
+          "delta_cindex_95ci": [
+            -0.07513127390376409,
+            0.07427973497016803
+          ],
+          "delta_cindex_mean": -9.322353486514835e-05,
+          "delta_ibs_95ci": [
+            -0.00968679045481827,
+            0.011967799706836557
+          ],
+          "delta_ibs_mean": 0.0009336876847263611,
+          "event_count": 37,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 185
+        },
+        "2": {
+          "delta_cindex_95ci": [
+            -0.07694123097687502,
+            0.0937246901562509
+          ],
+          "delta_cindex_mean": 0.007382562204343527,
+          "delta_ibs_95ci": [
+            -0.02153213636108814,
+            0.01643195536550543
+          ],
+          "delta_ibs_mean": -0.0030402131898067866,
+          "event_count": 24,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 92
+        },
+        "3": {
+          "event_count": 13,
+          "positive_subgroup_claim_allowed": false,
+          "reason": "INSUFFICIENT_VALID_BOOTSTRAP_ITERATIONS:required=2000:completed=0:reasons={'ValueError:BOOTSTRAP_NO_COMMON_SURVIVAL_GRID': 18373, 'ValueError:BOOTSTRAP_FOLD_TOO_SMALL': 584, 'ValueError:all samples are censored': 1043}",
+          "status": "NOT_ESTIMABLE_BOOTSTRAP_FAILURE",
+          "subject_count": 35
+        }
+      },
+      "manufacturer": {
+        "GE": {
+          "delta_cindex_95ci": [
+            -0.12826580297925158,
+            0.060763357575770297
+          ],
+          "delta_cindex_mean": -0.02898971656935409,
+          "delta_ibs_95ci": [
+            -0.0014402567801054067,
+            0.02878396076598237
+          ],
+          "delta_ibs_mean": 0.012896500584967609,
+          "event_count": 33,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 157
+        },
+        "PHILIPS": {
+          "delta_cindex_95ci": [
+            -0.05092799550543468,
+            0.17445322580539
+          ],
+          "delta_cindex_mean": 0.045867795096555,
+          "delta_ibs_95ci": [
+            -0.02795415251029874,
+            0.0053643965911647695
+          ],
+          "delta_ibs_mean": -0.011113321229395165,
+          "event_count": 14,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 58
+        },
+        "SIEMENS": {
+          "delta_cindex_95ci": [
+            -0.07583884416286865,
+            0.050035595629675585
+          ],
+          "delta_cindex_mean": -0.013343686201789877,
+          "delta_ibs_95ci": [
+            -0.008253013502301863,
+            0.008498191495069253
+          ],
+          "delta_ibs_mean": 0.00030736953242918385,
+          "event_count": 57,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 303
+        },
+        "TOSHIBA": {
+          "event_count": 0,
+          "positive_subgroup_claim_allowed": false,
+          "status": "NOT_ESTIMABLE_INSUFFICIENT_SUPPORT",
+          "subject_count": 5
+        },
+        "UNKNOWN": {
+          "event_count": 6,
+          "positive_subgroup_claim_allowed": false,
+          "status": "NOT_ESTIMABLE_INSUFFICIENT_SUPPORT",
+          "subject_count": 37
+        }
+      },
+      "sex_binary": {
+        "0.0": {
+          "delta_cindex_95ci": [
+            -0.06004138833430747,
+            0.04737407487471958
+          ],
+          "delta_cindex_mean": -0.005867582670722177,
+          "delta_ibs_95ci": [
+            -0.004758914788679673,
+            0.007949954638802388
+          ],
+          "delta_ibs_mean": 0.0014869359121320361,
+          "event_count": 68,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 393
+        },
+        "1.0": {
+          "delta_cindex_95ci": [
+            -0.0670807772178031,
+            0.06803839131904568
+          ],
+          "delta_cindex_mean": 0.0011940811619685298,
+          "delta_ibs_95ci": [
+            -0.01116861630262849,
+            0.014215944579990772
+          ],
+          "delta_ibs_mean": 0.001192073399379804,
+          "event_count": 42,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 167
+        }
+      },
+      "treatment_active": {
+        "0.0": {
+          "delta_cindex_95ci": [
+            -0.05328376852117062,
+            0.08696631844524876
+          ],
+          "delta_cindex_mean": 0.014993384935199071,
+          "delta_ibs_95ci": [
+            -0.009969172739300416,
+            0.007774119368031594
+          ],
+          "delta_ibs_mean": -0.0011224671158241697,
+          "event_count": 48,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 290
+        },
+        "1.0": {
+          "delta_cindex_95ci": [
+            -0.06506155240310761,
+            0.029197096595310026
+          ],
+          "delta_cindex_mean": -0.018094657407531974,
+          "delta_ibs_95ci": [
+            -0.004366384344780026,
+            0.0129717574702628
+          ],
+          "delta_ibs_mean": 0.004360078117941787,
+          "event_count": 62,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 270
+        }
+      }
+    }
+  }
+}

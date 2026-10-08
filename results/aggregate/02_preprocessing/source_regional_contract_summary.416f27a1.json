@@ -1,0 +1,14 @@
+{
+  "source_id": "416f27a16670d787",
+  "source_sha256": "d6478792646b825032fea0d8dc0dbb894981a9bf328a561772055199276b3bfe",
+  "scientific_role": "population_and_qc",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "amyloid_status": "LOCKED",
+    "paired_status": "LOCKED",
+    "tau_status": "LOCKED",
+    "training_started": false
+  }
+}

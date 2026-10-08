@@ -1,0 +1,176 @@
+{
+  "source_id": "f82e1a19ca6b4096",
+  "source_sha256": "f25fd73051e10cc198a4f7d86b99cb6b2e67f3fb24629b2af6c2c5f72057f42f",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "bootstrap_iterations": 2000,
+    "comparison_semantics": "REFERENCE_ARM_VS_CHALLENGER_ARM",
+    "multiplicity_status": "DESCRIPTIVE_NO_POSITIVE_SUBGROUP_CLAIMS",
+    "status": "COMPLETED_WITH_SUPPORT_GATES",
+    "subgroups": {
+      "age_group": {
+        "0": {
+          "delta_cindex_95ci": [
+            -0.12507315782779405,
+            0.04627979865100482
+          ],
+          "delta_cindex_mean": -0.03202813769730509,
+          "delta_ibs_95ci": [
+            -0.023060380703488113,
+            -0.0027344343196410376
+          ],
+          "delta_ibs_mean": -0.01268167038951168,
+          "event_count": 29,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 125
+        },
+        "1": {
+          "delta_cindex_95ci": [
+            -0.05831260831748954,
+            0.11964759889815961
+          ],
+          "delta_cindex_mean": 0.02650395686590231,
+          "delta_ibs_95ci": [
+            -0.021579725233983035,
+            0.005299994891505905
+          ],
+          "delta_ibs_mean": -0.007704684742114346,
+          "event_count": 20,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 95
+        },
+        "2": {
+          "delta_cindex_95ci": [
+            -0.10992559306355328,
+            0.09824492340643587
+          ],
+          "delta_cindex_mean": -0.007835433935611551,
+          "delta_ibs_95ci": [
+            -0.015474573800963782,
+            0.02860214751652223
+          ],
+          "delta_ibs_mean": 0.007039894715222403,
+          "event_count": 19,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 67
+        },
+        "3": {
+          "event_count": 7,
+          "positive_subgroup_claim_allowed": false,
+          "status": "NOT_ESTIMABLE_INSUFFICIENT_SUPPORT",
+          "subject_count": 19
+        }
+      },
+      "manufacturer": {
+        "GE": {
+          "event_count": 9,
+          "positive_subgroup_claim_allowed": false,
+          "status": "NOT_ESTIMABLE_INSUFFICIENT_SUPPORT",
+          "subject_count": 42
+        },
+        "PHILIPS": {
+          "event_count": 9,
+          "positive_subgroup_claim_allowed": false,
+          "status": "NOT_ESTIMABLE_INSUFFICIENT_SUPPORT",
+          "subject_count": 38
+        },
+        "SIEMENS": {
+          "delta_cindex_95ci": [
+            -0.06986826656184617,
+            0.0436566140718306
+          ],
+          "delta_cindex_mean": -0.01210996025561888,
+          "delta_ibs_95ci": [
+            -0.015394426431722367,
+            0.0070660835129619185
+          ],
+          "delta_ibs_mean": -0.003992442716737921,
+          "event_count": 50,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 180
+        },
+        "UNKNOWN": {
+          "event_count": 7,
+          "positive_subgroup_claim_allowed": false,
+          "status": "NOT_ESTIMABLE_INSUFFICIENT_SUPPORT",
+          "subject_count": 46
+        }
+      },
+      "sex_binary": {
+        "0.0": {
+          "delta_cindex_95ci": [
+            -0.11987911653250033,
+            0.05250781655031706
+          ],
+          "delta_cindex_mean": -0.03388690757636022,
+          "delta_ibs_95ci": [
+            -0.007585273985422303,
+            0.012637045203026977
+          ],
+          "delta_ibs_mean": 0.0023145135469131205,
+          "event_count": 30,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 171
+        },
+        "1.0": {
+          "delta_cindex_95ci": [
+            -0.04620903420369894,
+            0.06629714337560302
+          ],
+          "delta_cindex_mean": 0.011185251752139393,
+          "delta_ibs_95ci": [
+            -0.03052862813162798,
+            -0.0024377202801713917
+          ],
+          "delta_ibs_mean": -0.01599098741229157,
+          "event_count": 45,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 135
+        }
+      },
+      "treatment_active": {
+        "0.0": {
+          "delta_cindex_95ci": [
+            -0.06314955180840233,
+            0.053030043387387496
+          ],
+          "delta_cindex_mean": -0.004070599170360351,
+          "delta_ibs_95ci": [
+            -0.020714049863293532,
+            0.001569779765420836
+          ],
+          "delta_ibs_mean": -0.00861540436968486,
+          "event_count": 34,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 155
+        },
+        "1.0": {
+          "delta_cindex_95ci": [
+            -0.0844001839622736,
+            0.03931005934057214
+          ],
+          "delta_cindex_mean": -0.02343414923982904,
+          "delta_ibs_95ci": [
+            -0.01400405377670468,
+            0.01048304065432232
+          ],
+          "delta_ibs_mean": -0.0020255758323904217,
+          "event_count": 41,
+          "positive_subgroup_claim_allowed": false,
+          "status": "ESTIMABLE",
+          "subject_count": 151
+        }
+      }
+    }
+  }
+}

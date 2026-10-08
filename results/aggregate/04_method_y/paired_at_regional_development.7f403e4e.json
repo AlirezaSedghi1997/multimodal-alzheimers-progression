@@ -1,0 +1,358 @@
+{
+  "source_id": "7f403e4e4f43e5d9",
+  "source_sha256": "814ace688a0dfb612c751d5351411acf28a4326beef8afa0befaeb56be5c6b9c",
+  "scientific_role": "separate_regional_analysis",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 4,
+  "aggregate": {
+    "blockers": [
+      "PAIRED_AT_POWER_SIMULATION_NOT_COMPLETED",
+      "TAU_SCANNER_SENSITIVITY_INSUFFICIENT_EVENT_SUPPORT",
+      "QUANTITATIVE_PET_FEATURE_PROVENANCE_NOT_FORMALLY_VALIDATED"
+    ],
+    "claim_status": "EXPLORATORY",
+    "locked_config": {
+      "feature_sets": {
+        "clinical_cognition": [
+          "treatment_active",
+          "age",
+          "sex_binary",
+          "education_years",
+          "apoe4_carrier",
+          "baseline_pacc_raw",
+          "baseline_fctotal96",
+          "baseline_ldeltotal",
+          "baseline_digittotal",
+          "baseline_mmscore",
+          "baseline_cdrsb"
+        ],
+        "clinical_cognition_amyloid": [
+          "treatment_active",
+          "age",
+          "sex_binary",
+          "education_years",
+          "apoe4_carrier",
+          "baseline_pacc_raw",
+          "baseline_fctotal96",
+          "baseline_ldeltotal",
+          "baseline_digittotal",
+          "baseline_mmscore",
+          "baseline_cdrsb",
+          "baseline_amyloid_centiloid"
+        ]
+      },
+      "fold_selected_configs": {
+        "clinical_cognition": [
+          {
+            "alpha": 0.001,
+            "fold": 0,
+            "winner": {
+              "alpha": 0.001,
+              "candidate_id": "cox_alpha_0.001",
+              "complexity_rank": 0,
+              "inner_fold_ibs": [
+                0.12106437978023159,
+                0.13426702943616098,
+                0.1549977300412421
+              ],
+              "mean_ibs": 0.1367763797525449,
+              "standard_error": 0.009875739537571477,
+              "status": "COMPLETED"
+            }
+          },
+          {
+            "alpha": 0.001,
+            "fold": 1,
+            "winner": {
+              "alpha": 0.001,
+              "candidate_id": "cox_alpha_0.001",
+              "complexity_rank": 0,
+              "inner_fold_ibs": [
+                0.11280062576023633,
+                0.12570117268377667,
+                0.13468749711140085
+              ],
+              "mean_ibs": 0.12439643185180461,
+              "standard_error": 0.0063517857296083256,
+              "status": "COMPLETED"
+            }
+          },
+          {
+            "alpha": 10.0,
+            "fold": 2,
+            "winner": {
+              "alpha": 10.0,
+              "candidate_id": "cox_alpha_10",
+              "complexity_rank": 4,
+              "inner_fold_ibs": [
+                0.15513206446556266,
+                0.14059621134175032,
+                0.1628492830572955
+              ],
+              "mean_ibs": 0.15285918628820283,
+              "standard_error": 0.00652365647984672,
+              "status": "COMPLETED"
+            }
+          },
+          {
+            "alpha": 0.001,
+            "fold": 3,
+            "winner": {
+              "alpha": 0.001,
+              "candidate_id": "cox_alpha_0.001",
+              "complexity_rank": 0,
+              "inner_fold_ibs": [
+                0.13539319449899354,
+                0.11872414856704512,
+                0.1223221758468419
+              ],
+              "mean_ibs": 0.12547983963762685,
+              "standard_error": 0.005064332912045354,
+              "status": "COMPLETED"
+            }
+          },
+          {
+            "alpha": 0.001,
+            "fold": 4,
+            "winner": {
+              "alpha": 0.001,
+              "candidate_id": "cox_alpha_0.001",
+              "complexity_rank": 0,
+              "inner_fold_ibs": [
+                0.12708908938573338,
+                0.14479774591529992,
+                0.13161637632843934
+              ],
+              "mean_ibs": 0.13450107054315755,
+              "standard_error": 0.005311629522562152,
+              "status": "COMPLETED"
+            }
+          }
+        ],
+        "clinical_cognition_amyloid": [
+          {
+            "alpha": 0.001,
+            "fold": 0,
+            "winner": {
+              "alpha": 0.001,
+              "candidate_id": "cox_alpha_0.001",
+              "complexity_rank": 0,
+              "inner_fold_ibs": [
+                0.11837416958880952,
+                0.12951535639804515,
+                0.16638775110653609
+              ],
+              "mean_ibs": 0.13809242569779692,
+              "standard_error": 0.014508624916113426,
+              "status": "COMPLETED"
+            }
+          },
+          {
+            "alpha": 0.001,
+            "fold": 1,
+            "winner": {
+              "alpha": 0.001,
+              "candidate_id": "cox_alpha_0.001",
+              "complexity_rank": 0,
+              "inner_fold_ibs": [
+                0.11085873018793405,
+                0.12369802247224039,
+                0.13350969683209965
+              ],
+              "mean_ibs": 0.12268881649742469,
+              "standard_error": 0.006558212281902198,
+              "status": "COMPLETED"
+            }
+          },
+          {
+            "alpha": 10.0,
+            "fold": 2,
+            "winner": {
+              "alpha": 10.0,
+              "candidate_id": "cox_alpha_10",
+              "complexity_rank": 4,
+              "inner_fold_ibs": [
+                0.15248067309614666,
+                0.14340540208250555,
+                0.1607933043366542
+              ],
+              "mean_ibs": 0.15222645983843544,
+              "standard_error": 0.005021064113155501,
+              "status": "COMPLETED"
+            }
+          },
+          {
+            "alpha": 0.001,
+            "fold": 3,
+            "winner": {
+              "alpha": 0.001,
+              "candidate_id": "cox_alpha_0.001",
+              "complexity_rank": 0,
+              "inner_fold_ibs": [
+                0.13390534204566334,
+                0.11698291911971784,
+                0.12347785845616022
+              ],
+              "mean_ibs": 0.12478870654051381,
+              "standard_error": 0.004928855223623826,
+              "status": "COMPLETED"
+            }
+          },
+          {
+            "alpha": 0.001,
+            "fold": 4,
+            "winner": {
+              "alpha": 0.001,
+              "candidate_id": "cox_alpha_0.001",
+              "complexity_rank": 0,
+              "inner_fold_ibs": [
+                0.12258651917837807,
+                0.14778272209041612,
+                0.1283999487984804
+              ],
+              "mean_ibs": 0.1329230633557582,
+              "standard_error": 0.007617000377879351,
+              "status": "COMPLETED"
+            }
+          }
+        ],
+        "clinical_cognition_amyloid_tau": [
+          {
+            "alpha": 10.0,
+            "fold": 0,
+            "winner": {
+              "alpha": 10.0,
+              "candidate_id": "cox_alpha_10",
+              "complexity_rank": 4,
+              "inner_fold_ibs": [
+                0.10778256097462376,
+                0.12301760079324764,
+                0.1893657417377523
+              ],
+              "mean_ibs": 0.14005530116854123,
+              "standard_error": 0.025044402378016778,
+              "status": "COMPLETED"
+            }
+          },
+          {
+            "alpha": 10.0,
+            "fold": 1,
+            "winner": {
+              "alpha": 10.0,
+              "candidate_id": "cox_alpha_10",
+              "complexity_rank": 4,
+              "inner_fold_ibs": [
+                0.15621018656407656,
+                0.12679104372701677,
+                0.1384444060725882
+              ],
+              "mean_ibs": 0.14048187878789387,
+              "standard_error": 0.008553458610722776,
+              "status": "COMPLETED"
+            }
+          },
+          {
+            "alpha": 10.0,
+            "fold": 2,
+            "winner": {
+              "alpha": 10.0,
+              "candidate_id": "cox_alpha_10",
+              "complexity_rank": 4,
+              "inner_fold_ibs": [
+                0.1812078533251478,
+                0.1575759164722442,
+                0.16273252992006426
+              ],
+              "mean_ibs": 0.16717209990581874,
+              "standard_error": 0.007174014359680707,
+              "status": "COMPLETED"
+            }
+          },
+          {
+            "alpha": 10.0,
+            "fold": 3,
+            "winner": {
+              "alpha": 10.0,
+              "candidate_id": "cox_alpha_10",
+              "complexity_rank": 4,
+              "inner_fold_ibs": [
+                0.14672531742784672,
+                0.12965527386173906,
+                0.1312332257378278
+              ],
+              "mean_ibs": 0.1358712723424712,
+              "standard_error": 0.005446105766733281,
+              "status": "COMPLETED"
+            }
+          },
+          {
+            "alpha": 10.0,
+            "fold": 4,
+            "winner": {
+              "alpha": 10.0,
+              "candidate_id": "cox_alpha_10",
+              "complexity_rank": 4,
+              "inner_fold_ibs": [
+                0.14563627313048988,
+                0.13415254560772383,
+                0.1553710445845997
+              ],
+              "mean_ibs": 0.14505328777427115,
+              "standard_error": 0.006132185000799596,
+              "status": "COMPLETED"
+            }
+          }
+        ]
+      },
+      "inner_folds": 3,
+      "model_family": "CoxPHSurvivalAnalysis",
+      "outer_folds": 5,
+      "run_contract_sha256": "a61920a83c688ebf2f3b5edae2274ff27cbc2fdf825a06072d53b07fb8d8ff3a",
+      "seed": 20260714,
+      "selection_source": "inner_validation_ibs_only",
+      "split_digest": "4c421d85172166dc1daeeb6db0637f984b819122615fffb4889e1290cd8d327c"
+    },
+    "science_gate_status": "BLOCKED",
+    "status": "OUTER_EVALUATION_DONE",
+    "tau_beyond_amyloid_bootstrap": {
+      "cache_status": "COMPUTED_AND_LOCKED",
+      "delta_cindex_95ci": [
+        -0.0659905355124333,
+        0.054897896550812654
+      ],
+      "delta_cindex_mean": -0.005468402179513081,
+      "delta_ibs_95ci": [
+        0.0017325360751907475,
+        0.03555775058066879
+      ],
+      "delta_ibs_mean": 0.018124401326221926,
+      "failed_attempt_reasons": {},
+      "failed_attempts": 0,
+      "input_evidence_sha256": "716ef43ebfd298fa5333a88fd464b7bb91f8a0bc212a5e48aa59d368a400817c",
+      "method": "paired_subject_bootstrap_over_locked_oof_predictions",
+      "requested_iterations": 2000,
+      "seed": 20264714,
+      "status": "COMPLETED",
+      "subject_count": 369,
+      "successful_iterations": 2000
+    },
+    "variants": {
+      "clinical_cognition": {
+        "mean_integrated_brier_score": 0.13325631870047996,
+        "mean_uno_c_index": 0.6827193620978927,
+        "outer_folds_completed": 5
+      },
+      "clinical_cognition_amyloid": {
+        "mean_integrated_brier_score": 0.13161015773565227,
+        "mean_uno_c_index": 0.6724817620992956,
+        "outer_folds_completed": 5
+      },
+      "clinical_cognition_amyloid_tau": {
+        "mean_integrated_brier_score": 0.14956100884927773,
+        "mean_uno_c_index": 0.6666050965196575,
+        "outer_folds_completed": 5
+      }
+    }
+  }
+}

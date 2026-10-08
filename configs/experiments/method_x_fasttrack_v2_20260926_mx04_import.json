@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "protocol_id": "method_x_fasttrack_v2_20260926_mx04_import",
+  "scope": "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE",
+  "seed": 13,
+  "folds": 5,
+  "locked_epochs_field": 100,
+  "effective_epoch_cap_per_fold": 20,
+  "mx04_family": "resnet34_3d",
+  "mx04_candidates": [
+    "scratch_baseline",
+    "head_then_last_stage_llrd"
+  ],
+  "hybrid_backbone": "amuse_x_hybrid3d",
+  "hybrid_variants": [
+    "baseline",
+    "plus_dense_skip"
+  ],
+  "predeclared_outer_comparisons": [
+    "mx04_scratch_vs_head_exploratory",
+    "hybrid_baseline_vs_dense_paired_exploratory"
+  ],
+  "mx06_limited": {
+    "optional_forward": true,
+    "sample_source": "locked_inner_validation_not_independent",
+    "selection_rule": "first_eight_QC_real_inner_validation_records_in_seeded_split_order",
+    "samples_per_fold": 8,
+    "randomization_seeds": [
+      13,
+      29,
+      47
+    ],
+    "bootstrap_resamples": 1000,
+    "cuda_required": true,
+    "hard_stop_reserved_gb": 7.5,
+    "reporting_scope": "EXPLORATORY_40_INNER_VALIDATION_NO_REGION_INFERENCE",
+    "profile_first_fold_limit": 8
+  },
+  "hybrid_parameter_ceiling": 20000000,
+  "hybrid_smoke_vram_ceiling_gb": 6.5,
+  "training_vram_hard_stop_gb": 7.5,
+  "inner_selection": "mean_best_validation_loss_only",
+  "practical_improvement_margin_loss": 0.005,
+  "minimum_folds_improved": 3,
+  "hybrid_a3": false,
+  "hybrid_a4": false,
+  "uses_pet_as_input": false,
+  "outer_test_used_for_selection": false,
+  "external_validation": false,
+  "original_mx04_mx05_status_unchanged": true,
+  "no_resume_forbidden": true,
+  "stop_day_if_hybrid_smoke_unready": 4,
+  "holdout_access_policy": "UNKNOWN_UNTIL_LOG_AUDIT_THEN_ONCE_IF_PRISTINE"
+}

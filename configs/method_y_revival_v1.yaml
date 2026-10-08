@@ -1,0 +1,130 @@
+schema_version: 1
+protocol_name: method_y_revival_v1
+status: GUARDED_IMPLEMENTATION
+seed: 20260714
+
+paths:
+  project_root: "H:/New project"
+  raw_root: "H:/A4 Learn"
+  output_root: "results/method_y_revival_v1"
+  reference_template: null
+  amyloid_input_manifest: "data/method_y/pet_input_list_broad_s1_fbp_only.csv"
+  tau_image_manifest: "results/method_y_tau_progression/image_branch_v1_128_hq/manifests/ftp_only_image_manifest.csv"
+  tau_endpoint_table: "results/method_y_tau_progression/image_branch_v1_128_hq/labels/tau_cdr_progression_labels.csv"
+  tau_regional_features: "results/method_y_tau_progression/image_branch_v1_128_hq/features/tau_region_policy_features.csv"
+
+clinical_sources:
+  amyloid_suvr: "Clinical/External Data/imaging_SUVR_amyloid.csv"
+  tau_suvr: "Clinical/External Data/imaging_SUVR_tau.csv"
+  cdr: "Clinical/Raw Data/cdr.csv"
+  pacc: "Clinical/Derived Data/PACC.csv"
+  subject_info: "Clinical/Derived Data/SUBJINFO.csv"
+
+branches:
+  amyloid:
+    tracer: FBP
+    primary_predictor: continuous_centiloid
+    primary_endpoint: sustained_cdr_global_progression
+    secondary_endpoint: longitudinal_pacc_slope
+    development_cohort: A4
+    internal_transport_cohort: LEARN
+    forbidden_primary_targets:
+      - amyloid_pos
+      - centiloid_from_same_pet
+    claim_boundary: INTERNAL_PROGNOSTIC_ONLY
+  tau:
+    tracer: FTP
+    primary_predictor: documented_regional_suvr
+    primary_endpoint: sustained_cdr_global_progression
+    development_cohort: A4
+    image_branch_role: EXPLORATORY_SECONDARY
+    claim_boundary: INTERNAL_PROGNOSTIC_ONLY
+  paired_at:
+    scan_window_days: 183
+    comparison: [clinical_cognition, clinical_cognition_amyloid, clinical_cognition_amyloid_tau]
+    minimum_power: 0.80
+
+endpoint:
+  primary_name: sustained_cdr_global_progression
+  baseline_cdr_required: 0.0
+  pet_to_baseline_window_days: 183
+  followup_window_days: 1640.0
+  sustained_event_confirmation_visits: 2
+  event_time_rule: first_increase_if_confirmed_by_next_visit
+  forbidden_label_sources: [CDEVENT, CDOLEEVENT]
+
+preprocessing:
+  output_shape: [128, 128, 128]
+  output_spacing_mm: [1.5, 1.5, 1.5]
+  require_reference_affine: true
+  require_exact_scan_metadata: true
+  amyloid_intensity_mode: suvr_preserving
+  tau_primary_mode: regional_suvr
+  tau_image_mode: suvr_preserving_pending_validation
+  forbid_shape_only_zoom: true
+  forbid_claim_bearing_amyloid_zscore: true
+  visual_qc:
+    fraction: 0.05
+    minimum_per_tracer: 100
+    maximum_per_tracer: 500
+    review_all_automated_failures: true
+
+validation:
+  outer_folds: 5
+  inner_folds: 3
+  group_unit: subject_key
+  stratification: [event, treatment_arm]
+  hpo_metric: integrated_brier_score
+  one_standard_error_rule: true
+  outer_test_access: exactly_once_after_checkpoint_lock
+  requested_horizons_days: [547.875, 1095.75, 1640.0]
+  minimum_at_risk_per_horizon: 20
+  bootstrap_iterations: 2000
+  minimum_total_events: 60
+  minimum_events_per_treatment_arm: 20
+
+pretraining_contracts_v2:
+  pacc_legacy_input_contract_sha256: "7b80ad633fb813c4e79365fbed3decf3e17f82d8ffa5e095bb20bdecfd6bbf4b"
+  pacc_exact_date_rule: "MEDIAN_EXACT_QSDTC_DAYS_T0_ACROSS_PACC_COMPONENTS"
+  pacc_component_codes: [DIGIT, FCSRT96, LMIIA, MMSE]
+  pacc_post_pet_baseline_window_days: 183
+  pacc_followup_window_days: 1640
+  pacc_minimum_longitudinal_measurements: 2
+
+hpo:
+  cox:
+    alpha: [0.001, 0.01, 0.1, 1.0, 10.0]
+    l1_ratio: [0.1, 0.5, 0.9]
+  random_survival_forest:
+    n_estimators: [300]
+    min_samples_leaf: [5, 10, 20]
+    max_features: [sqrt, 0.5]
+    max_depth: [null, 8]
+
+science_gates:
+  require_all_outer_folds: true
+  incremental_ibs_upper_ci_below_zero: true
+  incremental_cindex_lower_ci_at_least_zero: true
+  require_scanner_sensitivity_pass: true
+  completion_does_not_imply_claim: true
+  quantitative_feature_provenance_passed: false
+
+scanner_sensitivity:
+  minimum_subjects_per_manufacturer: 30
+  minimum_events_per_manufacturer: 10
+  minimum_eligible_manufacturers: 2
+  unknown_policy: exclude_without_imputation
+  readiness_does_not_imply_gate_pass: true
+
+external_validation:
+  priority: [ADNI, OASIS3]
+  allow_refit: false
+  allow_feature_reselection: false
+  allow_primary_recalibration: false
+  initial_status: EXTERNAL_PENDING
+
+legacy_policy:
+  amyloid_pet_to_pet_label: TECHNICAL_ONLY
+  tau_current_result: NEGATIVE_EXPLORATORY_RESULT
+  preserve_existing_artifacts: true
+  raw_root_read_only: true

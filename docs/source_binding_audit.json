@@ -1,0 +1,1087 @@
+{
+  "source_binding_counts": {
+    "MATCH": 150,
+    "MATCH_VERIFIED_PH_DATATYPE_ONLY_AMENDMENT": 2
+  },
+  "bindings": [
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/run_xyz_fusion_v2.ps1",
+      "recorded_sha256": "eeef8cf44b3ce0a68f585ac0952f66418f43721bb9c7b31e9041d61ca6db4b2c",
+      "current_sha256": "eeef8cf44b3ce0a68f585ac0952f66418f43721bb9c7b31e9041d61ca6db4b2c",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/run_xyz_fusion_v2.py",
+      "recorded_sha256": "f2a0806b0ffb315a5f1e93a774595a0645c1a6c8ef02a711d57e4c4d39425246",
+      "current_sha256": "f2a0806b0ffb315a5f1e93a774595a0645c1a6c8ef02a711d57e4c4d39425246",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v1/__init__.py",
+      "recorded_sha256": "60346926362a03b30533f005d78e04f006067b8b334dd34e7240ea757f76fcbf",
+      "current_sha256": "60346926362a03b30533f005d78e04f006067b8b334dd34e7240ea757f76fcbf",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v1/audit.py",
+      "recorded_sha256": "02591441bc804ec9f8b9d7ec50d9fd3b1a177deb7a89cb0c1b52a864de253c06",
+      "current_sha256": "02591441bc804ec9f8b9d7ec50d9fd3b1a177deb7a89cb0c1b52a864de253c06",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v1/baseline.py",
+      "recorded_sha256": "531786dc828bf8606ad4cc75793504d43d9e0845b7ffa6ba796644c9665b810b",
+      "current_sha256": "531786dc828bf8606ad4cc75793504d43d9e0845b7ffa6ba796644c9665b810b",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v1/benchmark.py",
+      "recorded_sha256": "ab17d293cef96d316058bbc6a96b27138b2f008b373e9ccd24136ec57ddc39f0",
+      "current_sha256": "ab17d293cef96d316058bbc6a96b27138b2f008b373e9ccd24136ec57ddc39f0",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v1/intake.py",
+      "recorded_sha256": "1294b80c018b70617f093d0367f846f11c0bb14e787fd5e3d41d612c2ea2b020",
+      "current_sha256": "1294b80c018b70617f093d0367f846f11c0bb14e787fd5e3d41d612c2ea2b020",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v1/loss.py",
+      "recorded_sha256": "c009c1e3d5372cc3c3e243cf9e668ddddb22adce18f34d9a395e95be4ca07acb",
+      "current_sha256": "c009c1e3d5372cc3c3e243cf9e668ddddb22adce18f34d9a395e95be4ca07acb",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v1/mri_cache.py",
+      "recorded_sha256": "adfe22ee34b53b6dc0cfe9bb122bfbad4040f78a05af1217ccd079b4a926387a",
+      "current_sha256": "adfe22ee34b53b6dc0cfe9bb122bfbad4040f78a05af1217ccd079b4a926387a",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v1/mri_training.py",
+      "recorded_sha256": "53a86da2f9ace3604e75012a930631da7e702f02ed847316518b7536f26dd8cf",
+      "current_sha256": "53a86da2f9ace3604e75012a930631da7e702f02ed847316518b7536f26dd8cf",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v1/pipeline.py",
+      "recorded_sha256": "6a3e37404b08d9e9331c8661f69a62498632e5f3a58e566dde0240263367b306",
+      "current_sha256": "6a3e37404b08d9e9331c8661f69a62498632e5f3a58e566dde0240263367b306",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v1/report.py",
+      "recorded_sha256": "c6db1d134e67c782132705a75287c33de37852badddbaf0540890ef05e27a2c6",
+      "current_sha256": "c6db1d134e67c782132705a75287c33de37852badddbaf0540890ef05e27a2c6",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v1/runtime.py",
+      "recorded_sha256": "d0b19ac4429901e94c703755f1ac0b5f70c9cf9e032a7a19d3c7344b9f0b9b60",
+      "current_sha256": "d0b19ac4429901e94c703755f1ac0b5f70c9cf9e032a7a19d3c7344b9f0b9b60",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v1/statistics.py",
+      "recorded_sha256": "a6fcf4be965905f1620b7b902d8b3824d3fafcb8e2a0dd8d87cab5d37423ad35",
+      "current_sha256": "a6fcf4be965905f1620b7b902d8b3824d3fafcb8e2a0dd8d87cab5d37423ad35",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v1/store.py",
+      "recorded_sha256": "79a89c7a0f9847c2cad52f6b27c49986d0571ac3caeb6a3ccdff1560355f3524",
+      "current_sha256": "79a89c7a0f9847c2cad52f6b27c49986d0571ac3caeb6a3ccdff1560355f3524",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/__init__.py",
+      "recorded_sha256": "a39e7fdcf54f0d4afa0575aad877df8eab5c63b40b2d399910e87f3c035515bb",
+      "current_sha256": "a39e7fdcf54f0d4afa0575aad877df8eab5c63b40b2d399910e87f3c035515bb",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/atlas.py",
+      "recorded_sha256": "1395471eb983fdb52e543325e99fb30ac39fc9236ab44bd041ad266e7c3bb4ba",
+      "current_sha256": "1395471eb983fdb52e543325e99fb30ac39fc9236ab44bd041ad266e7c3bb4ba",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/benchmark.py",
+      "recorded_sha256": "847959aedbba95bb76b80117dea8601fb6204ebc96f5ea9ca53ac7353dc60326",
+      "current_sha256": "847959aedbba95bb76b80117dea8601fb6204ebc96f5ea9ca53ac7353dc60326",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/data.py",
+      "recorded_sha256": "71e73da3a78c593c65ee21d6a0b66ef5278d95930790b7b7d88f9b748356c4ec",
+      "current_sha256": "71e73da3a78c593c65ee21d6a0b66ef5278d95930790b7b7d88f9b748356c4ec",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/endpoints.py",
+      "recorded_sha256": "de0179b4d1ed8041c9293983a8439046c08b0b051b79e8eb743b09e26ed2894b",
+      "current_sha256": "de0179b4d1ed8041c9293983a8439046c08b0b051b79e8eb743b09e26ed2894b",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/feasibility.py",
+      "recorded_sha256": "dbcc6937947000abbaf36f87c10f9885e30651eb136584316a82927ddc94d551",
+      "current_sha256": "dbcc6937947000abbaf36f87c10f9885e30651eb136584316a82927ddc94d551",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/inference.py",
+      "recorded_sha256": "ccce50b87b460fa600c5614c1c8e1d8130f69f007145560ab77905d246510a93",
+      "current_sha256": "ccce50b87b460fa600c5614c1c8e1d8130f69f007145560ab77905d246510a93",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/models.py",
+      "recorded_sha256": "37cb540f38bdbf04b84db4a1e2492bd6d221431aa2ab3657b3b6a5d470fce11b",
+      "current_sha256": "37cb540f38bdbf04b84db4a1e2492bd6d221431aa2ab3657b3b6a5d470fce11b",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/pipeline.py",
+      "recorded_sha256": "d57c22bab4945cf848002c11de8b29eaf34ad82f47b533bb61cbf00ba5996561",
+      "current_sha256": "d57c22bab4945cf848002c11de8b29eaf34ad82f47b533bb61cbf00ba5996561",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/privacy.py",
+      "recorded_sha256": "24eea927131834667899ac907f308268f9311b2dce8c24d6758c996bd10666fd",
+      "current_sha256": "24eea927131834667899ac907f308268f9311b2dce8c24d6758c996bd10666fd",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/protocol.py",
+      "recorded_sha256": "998673aacd36edcac38e7010268debbea719006e99cea0c9aaa43f163a9dbb90",
+      "current_sha256": "998673aacd36edcac38e7010268debbea719006e99cea0c9aaa43f163a9dbb90",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/reporting.py",
+      "recorded_sha256": "a241078bea00b95fc6ad785941e89d7614f6705e869a92a32d0135356522523f",
+      "current_sha256": "a241078bea00b95fc6ad785941e89d7614f6705e869a92a32d0135356522523f",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/review.py",
+      "recorded_sha256": "833a80a7c1f0cd6ed813cbeab20afa7cf213e4a98b43be17168e041040ff4b2a",
+      "current_sha256": "833a80a7c1f0cd6ed813cbeab20afa7cf213e4a98b43be17168e041040ff4b2a",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/robustness.py",
+      "recorded_sha256": "88acbe06d4130990c443f5798655e4dd026a5ddd5fbbf8878da1b52511fbf8eb",
+      "current_sha256": "88acbe06d4130990c443f5798655e4dd026a5ddd5fbbf8878da1b52511fbf8eb",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/runner.py",
+      "recorded_sha256": "00e31ddaa1e49921d0be9f15fc2cef2204786991bc44fe47c4808f79171039f1",
+      "current_sha256": "00e31ddaa1e49921d0be9f15fc2cef2204786991bc44fe47c4808f79171039f1",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/sensitivity.py",
+      "recorded_sha256": "3e545515b031dc8ead35a226c6d39c94d7be48a1481740b87b859463e1e8761b",
+      "current_sha256": "09c9150d8ce05a6cbc096c44e7762f565f7a0ff981fb9df416e23ecfc9aa08ed",
+      "status": "MATCH_VERIFIED_PH_DATATYPE_ONLY_AMENDMENT"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/spatial.py",
+      "recorded_sha256": "08cfbbbae2ec92a0a52f7d4d546cc23f1a576fb9e1036d91f14178c6b795afeb",
+      "current_sha256": "08cfbbbae2ec92a0a52f7d4d546cc23f1a576fb9e1036d91f14178c6b795afeb",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/store.py",
+      "recorded_sha256": "1caf3caaf2851317bcfd0f566f9f9e2c238da3b75950bfcf756aece801a179bc",
+      "current_sha256": "08a0d91e08d1a3dc4d2f6baa18d9af7e86227d169aeaf8ffcaa9cd52390e4493",
+      "status": "MATCH_VERIFIED_PH_DATATYPE_ONLY_AMENDMENT"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/subgroups.py",
+      "recorded_sha256": "43ae906dfd1e1660c78ff3e4f4f66ceabf50002fef1796452240ee5b5ec7f0c0",
+      "current_sha256": "43ae906dfd1e1660c78ff3e4f4f66ceabf50002fef1796452240ee5b5ec7f0c0",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/tabular.py",
+      "recorded_sha256": "5973991782aebe45686333ce3bf3e05c20bb0e9a6f077fbd03d0cf9ffac63c04",
+      "current_sha256": "5973991782aebe45686333ce3bf3e05c20bb0e9a6f077fbd03d0cf9ffac63c04",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/training.py",
+      "recorded_sha256": "5526c4083380c0fb2dcb48d0a1e38c1d758d96bd91f5f153688e69aed5f1e271",
+      "current_sha256": "5526c4083380c0fb2dcb48d0a1e38c1d758d96bd91f5f153688e69aed5f1e271",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_v2/verification.py",
+      "recorded_sha256": "872a938854b205690e2c83b0aff889bacbb96b4047b9e824bb21ff1a319be639",
+      "current_sha256": "872a938854b205690e2c83b0aff889bacbb96b4047b9e824bb21ff1a319be639",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_postprimary_v1/__init__.py",
+      "recorded_sha256": "659081e9a1e88426f3db5a6d939cbbc2b742eed109f7635c635d42958ee57e15",
+      "current_sha256": "659081e9a1e88426f3db5a6d939cbbc2b742eed109f7635c635d42958ee57e15",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_postprimary_v1/context.py",
+      "recorded_sha256": "040a4fa79598c03fd4e7e7fef9500a22b72dd21966a9f68988f2bcb36e743110",
+      "current_sha256": "040a4fa79598c03fd4e7e7fef9500a22b72dd21966a9f68988f2bcb36e743110",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_postprimary_v1/feasibility.py",
+      "recorded_sha256": "1d1eb9a0df43539a65ff0447fc4f93bd570a07f5aaad0f2aeb9d6111c662d3e6",
+      "current_sha256": "1d1eb9a0df43539a65ff0447fc4f93bd570a07f5aaad0f2aeb9d6111c662d3e6",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_postprimary_v1/rendering.py",
+      "recorded_sha256": "10e9e5b9808971522885ef373e7f22ed46d7160c1337cd08a5531f8e5861e932",
+      "current_sha256": "10e9e5b9808971522885ef373e7f22ed46d7160c1337cd08a5531f8e5861e932",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_postprimary_v1/reporting.py",
+      "recorded_sha256": "6bca8e280afdff1ef9c371bc1c8b6f019a88c7420fc51c80e39ed32a60c74242",
+      "current_sha256": "6bca8e280afdff1ef9c371bc1c8b6f019a88c7420fc51c80e39ed32a60c74242",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_postprimary_v1/spatial.py",
+      "recorded_sha256": "28ac98900c19c5e42ef2331db32ca153e8e38903b143987eeeace92dc6710a2a",
+      "current_sha256": "28ac98900c19c5e42ef2331db32ca153e8e38903b143987eeeace92dc6710a2a",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_postprimary_v1/spatial_run.py",
+      "recorded_sha256": "1368d3dcd73fb9c87dbcf516b8b3a90dfc764ff7275f3d4fdc1f69067e27755d",
+      "current_sha256": "1368d3dcd73fb9c87dbcf516b8b3a90dfc764ff7275f3d4fdc1f69067e27755d",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "scripts/xyz_postprimary_v1/statistical_audit.py",
+      "recorded_sha256": "ae9dd81ee21b343a716132a5a7b86a917b9f12dd27ad061856efe3abc0e0543c",
+      "current_sha256": "ae9dd81ee21b343a716132a5a7b86a917b9f12dd27ad061856efe3abc0e0543c",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "src/evaluation/signed_spatial_validation_v1.py",
+      "recorded_sha256": "b26cbdff4848748e46a93c5a55ca2b7da80039e0b8d041beb010675a97b318c1",
+      "current_sha256": "b26cbdff4848748e46a93c5a55ca2b7da80039e0b8d041beb010675a97b318c1",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "src/method_y_revival/privacy.py",
+      "recorded_sha256": "7478189bec37ab279503cf3844db309e7d240d3e5793234ae7f1e6324ea04f90",
+      "current_sha256": "7478189bec37ab279503cf3844db309e7d240d3e5793234ae7f1e6324ea04f90",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "src/models/backbones/amuse_x_hybrid3d.py",
+      "recorded_sha256": "c3176a8d64646b3f63f2f5195c852d09f97e83c7a506c976b86c86e18fff6531",
+      "current_sha256": "c3176a8d64646b3f63f2f5195c852d09f97e83c7a506c976b86c86e18fff6531",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "src/models/backbones/deterministic_pool.py",
+      "recorded_sha256": "e3979b3373841b7d8cb5c84f01a97f8ab77d8497760e93f7283b500ab5694208",
+      "current_sha256": "e3979b3373841b7d8cb5c84f01a97f8ab77d8497760e93f7283b500ab5694208",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "src/utils/pet_path_resolver.py",
+      "recorded_sha256": "0eef70e6d385891b3a93385329761546b2ed273bf675e03114aaed21bc308648",
+      "current_sha256": "0eef70e6d385891b3a93385329761546b2ed273bf675e03114aaed21bc308648",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_v2/private/contract.json",
+      "path": "src/utils/privacy.py",
+      "recorded_sha256": "5055a295e23c5632e5f6e0413a693976959cdbf51c783327854a0b3fdaa174fb",
+      "current_sha256": "5055a295e23c5632e5f6e0413a693976959cdbf51c783327854a0b3fdaa174fb",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/run_xyz_fusion_postall_v2.ps1",
+      "recorded_sha256": "4e244d71fe5d94fb2676bb091f8afcba7884103e46032d8c4b02defc38b9b860",
+      "current_sha256": "4e244d71fe5d94fb2676bb091f8afcba7884103e46032d8c4b02defc38b9b860",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/run_xyz_fusion_postall_v2.py",
+      "recorded_sha256": "a02af49191687e1b0b9828d6801b66a7e2ccceeb669fb3f60663cf1293c0da45",
+      "current_sha256": "a02af49191687e1b0b9828d6801b66a7e2ccceeb669fb3f60663cf1293c0da45",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/__init__.py",
+      "recorded_sha256": "e545f971e5749802c54958c86158017c471a8cb66ce56150af8d739679cfc8cb",
+      "current_sha256": "e545f971e5749802c54958c86158017c471a8cb66ce56150af8d739679cfc8cb",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/audit.py",
+      "recorded_sha256": "a8e307e4a1b7259e2bd69f23021ce79581c1f3a7b61ed0ce513194a008ff4015",
+      "current_sha256": "a8e307e4a1b7259e2bd69f23021ce79581c1f3a7b61ed0ce513194a008ff4015",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/context.py",
+      "recorded_sha256": "3b7c981e8ff1e7d427e1c1bbcaafa01b18799fe123c1ef25f7407f777ac0a572",
+      "current_sha256": "3b7c981e8ff1e7d427e1c1bbcaafa01b18799fe123c1ef25f7407f777ac0a572",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/contrasts.py",
+      "recorded_sha256": "5a90b701072f587853296d3d66ceb31960bc021139a82fb93b857ad6bb551e31",
+      "current_sha256": "5a90b701072f587853296d3d66ceb31960bc021139a82fb93b857ad6bb551e31",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/core.py",
+      "recorded_sha256": "c6c90cbce15b966b0b396d906a967d0fdc4ced9c6c65fb19c188720e9e37d8e2",
+      "current_sha256": "c6c90cbce15b966b0b396d906a967d0fdc4ced9c6c65fb19c188720e9e37d8e2",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/experts.py",
+      "recorded_sha256": "36866912e69dd3834a34aa8a4275a0dbed9b6c387819c8fbf439eaaafe308ca1",
+      "current_sha256": "36866912e69dd3834a34aa8a4275a0dbed9b6c387819c8fbf439eaaafe308ca1",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/integrated_gradients.py",
+      "recorded_sha256": "50de719dccf1f5c4417e21228eb0659c1619a46f650f081a0de086880d2bf3e9",
+      "current_sha256": "50de719dccf1f5c4417e21228eb0659c1619a46f650f081a0de086880d2bf3e9",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/occlusion_maps.py",
+      "recorded_sha256": "38bf2d2bfed7cea148658d0256c80a0b28078d2b68980fdc2a519783e3f24568",
+      "current_sha256": "38bf2d2bfed7cea148658d0256c80a0b28078d2b68980fdc2a519783e3f24568",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/release.py",
+      "recorded_sha256": "a55590de59d1ce3328d059b7daa19f10246c14ded287eae0edb3527749b73f7f",
+      "current_sha256": "a55590de59d1ce3328d059b7daa19f10246c14ded287eae0edb3527749b73f7f",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/review_cpu.py",
+      "recorded_sha256": "d719ca2dbbc700e55a03491a382878a44353a6893b6b443089c3e3e80aecc27a",
+      "current_sha256": "d719ca2dbbc700e55a03491a382878a44353a6893b6b443089c3e3e80aecc27a",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/robustness.py",
+      "recorded_sha256": "fc9fd618403d06a136ecb916a963396fa68e5b70fa636453941fcc87e4497339",
+      "current_sha256": "fc9fd618403d06a136ecb916a963396fa68e5b70fa636453941fcc87e4497339",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/roi_fidelity.py",
+      "recorded_sha256": "123bf1ea5926b59f5c54e67947e2d2a40f0aaed7f1b3866827f380a3f5b9578d",
+      "current_sha256": "123bf1ea5926b59f5c54e67947e2d2a40f0aaed7f1b3866827f380a3f5b9578d",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/runner.py",
+      "recorded_sha256": "be78ed7bb1f55db652367eb9908e63f03647ce99232b6e3e187e73eb250b2275",
+      "current_sha256": "be78ed7bb1f55db652367eb9908e63f03647ce99232b6e3e187e73eb250b2275",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/secondary.py",
+      "recorded_sha256": "6a7734e9e9953c980dce836986c0d2432ff000a9f654e1e54bd25286cc346532",
+      "current_sha256": "6a7734e9e9953c980dce836986c0d2432ff000a9f654e1e54bd25286cc346532",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/smoke.py",
+      "recorded_sha256": "9c790f704620ef5cd7f414b2fe8a722441c82da74fdf477f135ed685fa72db77",
+      "current_sha256": "9c790f704620ef5cd7f414b2fe8a722441c82da74fdf477f135ed685fa72db77",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/spatial.py",
+      "recorded_sha256": "21d982ca6aa8abcaebc13d6a89f18bee98c70c11669220bbd44a5d6a3536f1f6",
+      "current_sha256": "21d982ca6aa8abcaebc13d6a89f18bee98c70c11669220bbd44a5d6a3536f1f6",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/spatial_target.py",
+      "recorded_sha256": "06a6cacc1b1f122c5a37b91f488059721282e4c297ed3ed43197b2d213b9b78e",
+      "current_sha256": "06a6cacc1b1f122c5a37b91f488059721282e4c297ed3ed43197b2d213b9b78e",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/statistics.py",
+      "recorded_sha256": "b1ea51fb2c0031103b4cb17a2beaf831d3b8ec6baa120c7e2dd23f8b40dd182e",
+      "current_sha256": "b1ea51fb2c0031103b4cb17a2beaf831d3b8ec6baa120c7e2dd23f8b40dd182e",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/subgroups.py",
+      "recorded_sha256": "3f312beb7e8f2b503f272d65bbb1410fcac88a7ef1d4867e76043dd922536258",
+      "current_sha256": "3f312beb7e8f2b503f272d65bbb1410fcac88a7ef1d4867e76043dd922536258",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_fusion_postall_v2/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/supersession.py",
+      "recorded_sha256": "373b32580eb7148171cb6a2c3ccf371d4e5e9121cdd01e5eac43c7289fe5564d",
+      "current_sha256": "373b32580eb7148171cb6a2c3ccf371d4e5e9121cdd01e5eac43c7289fe5564d",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_pet_manufacturer_audit_v1_ram/private/contract.json",
+      "path": "scripts/run_xyz_pet_manufacturer_audit_v1.py",
+      "recorded_sha256": "6d6f279bc293446636b17ee8b01ed06abe66270941f8ba914faf6e088cdac840",
+      "current_sha256": "6d6f279bc293446636b17ee8b01ed06abe66270941f8ba914faf6e088cdac840",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_pet_manufacturer_audit_v1_ram/private/contract.json",
+      "path": "scripts/xyz_pet_manufacturer_audit_v1/__init__.py",
+      "recorded_sha256": "2f7b282be15f533e870ea4e32ef32ec8e7645637d86a6af60d963c7a908c1b79",
+      "current_sha256": "2f7b282be15f533e870ea4e32ef32ec8e7645637d86a6af60d963c7a908c1b79",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_pet_manufacturer_audit_v1_ram/private/contract.json",
+      "path": "scripts/xyz_pet_manufacturer_audit_v1/access.py",
+      "recorded_sha256": "9b24bad6d10895630ddc41e5ca6a5bdbcc828805ffc0471e4d83d8e2d8b767f7",
+      "current_sha256": "9b24bad6d10895630ddc41e5ca6a5bdbcc828805ffc0471e4d83d8e2d8b767f7",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_pet_manufacturer_audit_v1_ram/private/contract.json",
+      "path": "scripts/xyz_pet_manufacturer_audit_v1/pipeline.py",
+      "recorded_sha256": "410a4a4905f033d42ee645681cc57d87d50c2f43854a19be546128385cca4a4e",
+      "current_sha256": "410a4a4905f033d42ee645681cc57d87d50c2f43854a19be546128385cca4a4e",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_pet_manufacturer_audit_v1_ram/private/contract.json",
+      "path": "scripts/xyz_pet_manufacturer_audit_v1/protocol.py",
+      "recorded_sha256": "5aaa2d5e70d7e7b7639513f8289160d4bfd0a17b2eed0ffffc077ad8bac40837",
+      "current_sha256": "5aaa2d5e70d7e7b7639513f8289160d4bfd0a17b2eed0ffffc077ad8bac40837",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_pet_manufacturer_audit_v1_ram/private/contract.json",
+      "path": "scripts/xyz_pet_manufacturer_audit_v1/reporting.py",
+      "recorded_sha256": "5f7642c37db7970ef8dd5a4c3d355f3a3c90e16b40b144c52ed0d75d514f2156",
+      "current_sha256": "5f7642c37db7970ef8dd5a4c3d355f3a3c90e16b40b144c52ed0d75d514f2156",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_pet_manufacturer_audit_v1_ram/private/contract.json",
+      "path": "scripts/xyz_pet_manufacturer_audit_v1/resources.py",
+      "recorded_sha256": "14714006fd190d16f8058a891725e093325d187967576bd195c7c12cebd8db0b",
+      "current_sha256": "14714006fd190d16f8058a891725e093325d187967576bd195c7c12cebd8db0b",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_pet_manufacturer_audit_v1_ram/private/contract.json",
+      "path": "scripts/xyz_pet_manufacturer_audit_v1/runner.py",
+      "recorded_sha256": "ab0bb0e4c4bcb2a3d7157dc3f5f738503e9656c85780646b2b3c69858703b4ad",
+      "current_sha256": "ab0bb0e4c4bcb2a3d7157dc3f5f738503e9656c85780646b2b3c69858703b4ad",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_regional_evidence_v1/private/contract.json",
+      "path": "scripts/run_xyz_regional_evidence_v1.py",
+      "recorded_sha256": "bdb7e08c7ec8897b31fdb202635ba30cf99679ee6fbb9931546296abc1f642c3",
+      "current_sha256": "bdb7e08c7ec8897b31fdb202635ba30cf99679ee6fbb9931546296abc1f642c3",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_regional_evidence_v1/private/contract.json",
+      "path": "scripts/xyz_regional_evidence_v1/__init__.py",
+      "recorded_sha256": "c285614dc70f50f643aae6f5abad5f332b69a3449eee60b8c75ca18b1abf7968",
+      "current_sha256": "c285614dc70f50f643aae6f5abad5f332b69a3449eee60b8c75ca18b1abf7968",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_regional_evidence_v1/private/contract.json",
+      "path": "scripts/xyz_regional_evidence_v1/reporting.py",
+      "recorded_sha256": "c68691a815c460f247cad0597d291a43ac4e07a269c294dc04bbcef6a686f716",
+      "current_sha256": "c68691a815c460f247cad0597d291a43ac4e07a269c294dc04bbcef6a686f716",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_regional_evidence_v1/private/contract.json",
+      "path": "scripts/xyz_regional_evidence_v1/runner.py",
+      "recorded_sha256": "1621160ca08c9f7b266cafc7af6c6ba4ebd405193a007ada8b13c1b37f42ded9",
+      "current_sha256": "1621160ca08c9f7b266cafc7af6c6ba4ebd405193a007ada8b13c1b37f42ded9",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_regional_evidence_v1/private/contract.json",
+      "path": "scripts/xyz_regional_evidence_v1/statistics.py",
+      "recorded_sha256": "671b175efed7a26ad2dadb0c78fc9cec298bf5463e5bc8f2fedec40e8a718948",
+      "current_sha256": "671b175efed7a26ad2dadb0c78fc9cec298bf5463e5bc8f2fedec40e8a718948",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "configs/xyz_fusion_postall_v2.json",
+      "recorded_sha256": "d1d513df296ae71bab731e63f75514dbacbf51316d12285e2a24c9aef1437a5b",
+      "current_sha256": "d1d513df296ae71bab731e63f75514dbacbf51316d12285e2a24c9aef1437a5b",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "configs/xyz_pet_manufacturer_audit_v1.json",
+      "recorded_sha256": "c8353806f5f2993b5b575b8af372461ac9ed8799ddca05c901ee00357026652c",
+      "current_sha256": "c8353806f5f2993b5b575b8af372461ac9ed8799ddca05c901ee00357026652c",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "configs/xyz_regional_evidence_v1.json",
+      "recorded_sha256": "c3d83b8d712d9aff95f7cd6d7b06ca5652598f1a70553c973d9cb1d3974bbe15",
+      "current_sha256": "c3d83b8d712d9aff95f7cd6d7b06ca5652598f1a70553c973d9cb1d3974bbe15",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/run_xyz_fusion_postall_v2.py",
+      "recorded_sha256": "a02af49191687e1b0b9828d6801b66a7e2ccceeb669fb3f60663cf1293c0da45",
+      "current_sha256": "a02af49191687e1b0b9828d6801b66a7e2ccceeb669fb3f60663cf1293c0da45",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/run_xyz_pet_manufacturer_audit_v1.py",
+      "recorded_sha256": "6d6f279bc293446636b17ee8b01ed06abe66270941f8ba914faf6e088cdac840",
+      "current_sha256": "6d6f279bc293446636b17ee8b01ed06abe66270941f8ba914faf6e088cdac840",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/run_xyz_postfusion_final_v1.ps1",
+      "recorded_sha256": "5bf0cea57141ba21ae686c3066ebf9626978c2f0a0c4cc8ec856846dbe1e0b34",
+      "current_sha256": "5bf0cea57141ba21ae686c3066ebf9626978c2f0a0c4cc8ec856846dbe1e0b34",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/run_xyz_postfusion_final_v1.py",
+      "recorded_sha256": "28b308cf92862e6a100fe58dc3a29b201088e55601005271b1b50c3282e154e5",
+      "current_sha256": "28b308cf92862e6a100fe58dc3a29b201088e55601005271b1b50c3282e154e5",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/run_xyz_regional_evidence_v1.py",
+      "recorded_sha256": "bdb7e08c7ec8897b31fdb202635ba30cf99679ee6fbb9931546296abc1f642c3",
+      "current_sha256": "bdb7e08c7ec8897b31fdb202635ba30cf99679ee6fbb9931546296abc1f642c3",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/__init__.py",
+      "recorded_sha256": "e545f971e5749802c54958c86158017c471a8cb66ce56150af8d739679cfc8cb",
+      "current_sha256": "e545f971e5749802c54958c86158017c471a8cb66ce56150af8d739679cfc8cb",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/audit.py",
+      "recorded_sha256": "a8e307e4a1b7259e2bd69f23021ce79581c1f3a7b61ed0ce513194a008ff4015",
+      "current_sha256": "a8e307e4a1b7259e2bd69f23021ce79581c1f3a7b61ed0ce513194a008ff4015",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/context.py",
+      "recorded_sha256": "3b7c981e8ff1e7d427e1c1bbcaafa01b18799fe123c1ef25f7407f777ac0a572",
+      "current_sha256": "3b7c981e8ff1e7d427e1c1bbcaafa01b18799fe123c1ef25f7407f777ac0a572",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/contrasts.py",
+      "recorded_sha256": "5a90b701072f587853296d3d66ceb31960bc021139a82fb93b857ad6bb551e31",
+      "current_sha256": "5a90b701072f587853296d3d66ceb31960bc021139a82fb93b857ad6bb551e31",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/core.py",
+      "recorded_sha256": "c6c90cbce15b966b0b396d906a967d0fdc4ced9c6c65fb19c188720e9e37d8e2",
+      "current_sha256": "c6c90cbce15b966b0b396d906a967d0fdc4ced9c6c65fb19c188720e9e37d8e2",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/experts.py",
+      "recorded_sha256": "36866912e69dd3834a34aa8a4275a0dbed9b6c387819c8fbf439eaaafe308ca1",
+      "current_sha256": "36866912e69dd3834a34aa8a4275a0dbed9b6c387819c8fbf439eaaafe308ca1",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/integrated_gradients.py",
+      "recorded_sha256": "50de719dccf1f5c4417e21228eb0659c1619a46f650f081a0de086880d2bf3e9",
+      "current_sha256": "50de719dccf1f5c4417e21228eb0659c1619a46f650f081a0de086880d2bf3e9",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/occlusion_maps.py",
+      "recorded_sha256": "38bf2d2bfed7cea148658d0256c80a0b28078d2b68980fdc2a519783e3f24568",
+      "current_sha256": "38bf2d2bfed7cea148658d0256c80a0b28078d2b68980fdc2a519783e3f24568",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/release.py",
+      "recorded_sha256": "a55590de59d1ce3328d059b7daa19f10246c14ded287eae0edb3527749b73f7f",
+      "current_sha256": "a55590de59d1ce3328d059b7daa19f10246c14ded287eae0edb3527749b73f7f",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/review_cpu.py",
+      "recorded_sha256": "d719ca2dbbc700e55a03491a382878a44353a6893b6b443089c3e3e80aecc27a",
+      "current_sha256": "d719ca2dbbc700e55a03491a382878a44353a6893b6b443089c3e3e80aecc27a",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/robustness.py",
+      "recorded_sha256": "fc9fd618403d06a136ecb916a963396fa68e5b70fa636453941fcc87e4497339",
+      "current_sha256": "fc9fd618403d06a136ecb916a963396fa68e5b70fa636453941fcc87e4497339",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/roi_fidelity.py",
+      "recorded_sha256": "123bf1ea5926b59f5c54e67947e2d2a40f0aaed7f1b3866827f380a3f5b9578d",
+      "current_sha256": "123bf1ea5926b59f5c54e67947e2d2a40f0aaed7f1b3866827f380a3f5b9578d",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/runner.py",
+      "recorded_sha256": "be78ed7bb1f55db652367eb9908e63f03647ce99232b6e3e187e73eb250b2275",
+      "current_sha256": "be78ed7bb1f55db652367eb9908e63f03647ce99232b6e3e187e73eb250b2275",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/secondary.py",
+      "recorded_sha256": "6a7734e9e9953c980dce836986c0d2432ff000a9f654e1e54bd25286cc346532",
+      "current_sha256": "6a7734e9e9953c980dce836986c0d2432ff000a9f654e1e54bd25286cc346532",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/smoke.py",
+      "recorded_sha256": "9c790f704620ef5cd7f414b2fe8a722441c82da74fdf477f135ed685fa72db77",
+      "current_sha256": "9c790f704620ef5cd7f414b2fe8a722441c82da74fdf477f135ed685fa72db77",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/spatial.py",
+      "recorded_sha256": "21d982ca6aa8abcaebc13d6a89f18bee98c70c11669220bbd44a5d6a3536f1f6",
+      "current_sha256": "21d982ca6aa8abcaebc13d6a89f18bee98c70c11669220bbd44a5d6a3536f1f6",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/spatial_target.py",
+      "recorded_sha256": "06a6cacc1b1f122c5a37b91f488059721282e4c297ed3ed43197b2d213b9b78e",
+      "current_sha256": "06a6cacc1b1f122c5a37b91f488059721282e4c297ed3ed43197b2d213b9b78e",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/statistics.py",
+      "recorded_sha256": "b1ea51fb2c0031103b4cb17a2beaf831d3b8ec6baa120c7e2dd23f8b40dd182e",
+      "current_sha256": "b1ea51fb2c0031103b4cb17a2beaf831d3b8ec6baa120c7e2dd23f8b40dd182e",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/subgroups.py",
+      "recorded_sha256": "3f312beb7e8f2b503f272d65bbb1410fcac88a7ef1d4867e76043dd922536258",
+      "current_sha256": "3f312beb7e8f2b503f272d65bbb1410fcac88a7ef1d4867e76043dd922536258",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_fusion_postall_v2/supersession.py",
+      "recorded_sha256": "373b32580eb7148171cb6a2c3ccf371d4e5e9121cdd01e5eac43c7289fe5564d",
+      "current_sha256": "373b32580eb7148171cb6a2c3ccf371d4e5e9121cdd01e5eac43c7289fe5564d",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_pet_manufacturer_audit_v1/__init__.py",
+      "recorded_sha256": "2f7b282be15f533e870ea4e32ef32ec8e7645637d86a6af60d963c7a908c1b79",
+      "current_sha256": "2f7b282be15f533e870ea4e32ef32ec8e7645637d86a6af60d963c7a908c1b79",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_pet_manufacturer_audit_v1/access.py",
+      "recorded_sha256": "9b24bad6d10895630ddc41e5ca6a5bdbcc828805ffc0471e4d83d8e2d8b767f7",
+      "current_sha256": "9b24bad6d10895630ddc41e5ca6a5bdbcc828805ffc0471e4d83d8e2d8b767f7",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_pet_manufacturer_audit_v1/pipeline.py",
+      "recorded_sha256": "410a4a4905f033d42ee645681cc57d87d50c2f43854a19be546128385cca4a4e",
+      "current_sha256": "410a4a4905f033d42ee645681cc57d87d50c2f43854a19be546128385cca4a4e",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_pet_manufacturer_audit_v1/protocol.py",
+      "recorded_sha256": "5aaa2d5e70d7e7b7639513f8289160d4bfd0a17b2eed0ffffc077ad8bac40837",
+      "current_sha256": "5aaa2d5e70d7e7b7639513f8289160d4bfd0a17b2eed0ffffc077ad8bac40837",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_pet_manufacturer_audit_v1/reporting.py",
+      "recorded_sha256": "5f7642c37db7970ef8dd5a4c3d355f3a3c90e16b40b144c52ed0d75d514f2156",
+      "current_sha256": "5f7642c37db7970ef8dd5a4c3d355f3a3c90e16b40b144c52ed0d75d514f2156",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_pet_manufacturer_audit_v1/resources.py",
+      "recorded_sha256": "14714006fd190d16f8058a891725e093325d187967576bd195c7c12cebd8db0b",
+      "current_sha256": "14714006fd190d16f8058a891725e093325d187967576bd195c7c12cebd8db0b",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_pet_manufacturer_audit_v1/runner.py",
+      "recorded_sha256": "ab0bb0e4c4bcb2a3d7157dc3f5f738503e9656c85780646b2b3c69858703b4ad",
+      "current_sha256": "ab0bb0e4c4bcb2a3d7157dc3f5f738503e9656c85780646b2b3c69858703b4ad",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_postfusion_final_v1/__init__.py",
+      "recorded_sha256": "a95954dc682aee437bf95a661952c091f3b28e2919b3a885a4c522b02dc113f2",
+      "current_sha256": "a95954dc682aee437bf95a661952c091f3b28e2919b3a885a4c522b02dc113f2",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_postfusion_final_v1/closure.py",
+      "recorded_sha256": "487e76f9f7a51459e0da39348ff14c48cb3955166e64711e16409e86db907358",
+      "current_sha256": "487e76f9f7a51459e0da39348ff14c48cb3955166e64711e16409e86db907358",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_regional_evidence_v1/__init__.py",
+      "recorded_sha256": "c285614dc70f50f643aae6f5abad5f332b69a3449eee60b8c75ca18b1abf7968",
+      "current_sha256": "c285614dc70f50f643aae6f5abad5f332b69a3449eee60b8c75ca18b1abf7968",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_regional_evidence_v1/reporting.py",
+      "recorded_sha256": "c68691a815c460f247cad0597d291a43ac4e07a269c294dc04bbcef6a686f716",
+      "current_sha256": "c68691a815c460f247cad0597d291a43ac4e07a269c294dc04bbcef6a686f716",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_regional_evidence_v1/runner.py",
+      "recorded_sha256": "1621160ca08c9f7b266cafc7af6c6ba4ebd405193a007ada8b13c1b37f42ded9",
+      "current_sha256": "1621160ca08c9f7b266cafc7af6c6ba4ebd405193a007ada8b13c1b37f42ded9",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/xyz_postfusion_final_v1_ram/private/contract.json",
+      "path": "scripts/xyz_regional_evidence_v1/statistics.py",
+      "recorded_sha256": "671b175efed7a26ad2dadb0c78fc9cec298bf5463e5bc8f2fedec40e8a718948",
+      "current_sha256": "671b175efed7a26ad2dadb0c78fc9cec298bf5463e5bc8f2fedec40e8a718948",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "scripts/build_method_y_pet_augmentation_qc_v4.py",
+      "recorded_sha256": "e21dd935cd1ae4ded70e59d5f354822a684a785402b9af4c4558f3d11d93e9ec",
+      "current_sha256": "e21dd935cd1ae4ded70e59d5f354822a684a785402b9af4c4558f3d11d93e9ec",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "scripts/run_method_y_image_factorial_v4.py",
+      "recorded_sha256": "dd85e862b8592bb007b547740665814f80e651e34055526eb548a832579d8720",
+      "current_sha256": "dd85e862b8592bb007b547740665814f80e651e34055526eb548a832579d8720",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "scripts/verify_method_y_image_factorial_v4.py",
+      "recorded_sha256": "799114b7e19e64df56395bd461f3a2b20687df56fcc131175ddda9e1e0da24eb",
+      "current_sha256": "799114b7e19e64df56395bd461f3a2b20687df56fcc131175ddda9e1e0da24eb",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/atomic_io.py",
+      "recorded_sha256": "82f2a57d5d71890f1cf5a2f92fee0b3c26aa1485fbc3f15a08d0393859225533",
+      "current_sha256": "82f2a57d5d71890f1cf5a2f92fee0b3c26aa1485fbc3f15a08d0393859225533",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/contracts.py",
+      "recorded_sha256": "cbbdc5100f34733a32b6f4333ee6cd2ebae9568b9961ec0d07ecada1214b5fff",
+      "current_sha256": "cbbdc5100f34733a32b6f4333ee6cd2ebae9568b9961ec0d07ecada1214b5fff",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/image_factorial_orchestrator_v4.py",
+      "recorded_sha256": "8bf50a4a54ce3e5b3682d28107b9de99fc584917cbd1bd2a29c5969eaff9f06b",
+      "current_sha256": "8bf50a4a54ce3e5b3682d28107b9de99fc584917cbd1bd2a29c5969eaff9f06b",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/image_factorial_reporting_v4.py",
+      "recorded_sha256": "510441c9d1029a3c3dfe38f2376972b86c8c875725cbf200669d545be80189ad",
+      "current_sha256": "510441c9d1029a3c3dfe38f2376972b86c8c875725cbf200669d545be80189ad",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/image_factorial_v4.py",
+      "recorded_sha256": "49f8d7fa675c0dcf952b11983f3cfcd0d43c41c82b33a82764cdde56e7b0ac5e",
+      "current_sha256": "49f8d7fa675c0dcf952b11983f3cfcd0d43c41c82b33a82764cdde56e7b0ac5e",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/image_modeling_v3.py",
+      "recorded_sha256": "4af0ab1591f56a06dae1f5bc9acd6c90b7a2a81dc29bdbb49cbff4d6e0e5ecf8",
+      "current_sha256": "4af0ab1591f56a06dae1f5bc9acd6c90b7a2a81dc29bdbb49cbff4d6e0e5ecf8",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/image_outer_eval_v3.py",
+      "recorded_sha256": "23e53e0d4119bbb07491938107183a77a4d20ab1f8d3b494df59c68ce2ca2564",
+      "current_sha256": "23e53e0d4119bbb07491938107183a77a4d20ab1f8d3b494df59c68ce2ca2564",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/image_outer_eval_v4.py",
+      "recorded_sha256": "8ef56c7902944ba4b0e4f18ee7d6e2920617a3eeaa3795bebf6ffa02275acf15",
+      "current_sha256": "8ef56c7902944ba4b0e4f18ee7d6e2920617a3eeaa3795bebf6ffa02275acf15",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/image_reporting_v3.py",
+      "recorded_sha256": "643b7fb465826ae5c7f01d2104b02afbbe407fe30d6d847f83ef2647da10558f",
+      "current_sha256": "643b7fb465826ae5c7f01d2104b02afbbe407fe30d6d847f83ef2647da10558f",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/image_robustness_v3.py",
+      "recorded_sha256": "ccbb340857cbe96c9d8520d762873d5b9287fef91ed9e9d9991d0b1bd46aed89",
+      "current_sha256": "ccbb340857cbe96c9d8520d762873d5b9287fef91ed9e9d9991d0b1bd46aed89",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/image_survival_v3.py",
+      "recorded_sha256": "e255adb297e487e7da15ffa88f0295656b4da8c779b985df432f0ccb997a0c33",
+      "current_sha256": "e255adb297e487e7da15ffa88f0295656b4da8c779b985df432f0ccb997a0c33",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/image_training_orchestrator_v3.py",
+      "recorded_sha256": "3beaec31e5e14bd9a7faac8f36f10efa362c66104f72d86ada89bfd0d359b586",
+      "current_sha256": "3beaec31e5e14bd9a7faac8f36f10efa362c66104f72d86ada89bfd0d359b586",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/image_training_runtime_v3.py",
+      "recorded_sha256": "2a15e7af5623d4cabfb1c726c6752146443a50dfa51deec25a8491fa39791275",
+      "current_sha256": "2a15e7af5623d4cabfb1c726c6752146443a50dfa51deec25a8491fa39791275",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/image_training_runtime_v4.py",
+      "recorded_sha256": "532687a025c97c4494533227d888517963744b35e0aff934be24119e66365d32",
+      "current_sha256": "532687a025c97c4494533227d888517963744b35e0aff934be24119e66365d32",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/oof_reporting.py",
+      "recorded_sha256": "ac681bbc627b987e69071eb4a0b2749bb49b4a38cbb45a1001e8315c92a4fe06",
+      "current_sha256": "ac681bbc627b987e69071eb4a0b2749bb49b4a38cbb45a1001e8315c92a4fe06",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/outer_evaluation_control.py",
+      "recorded_sha256": "3c6cfb0fcd92300ac568031710ef13e9477ef0aa520ac496a688e38b4cea7d29",
+      "current_sha256": "3c6cfb0fcd92300ac568031710ef13e9477ef0aa520ac496a688e38b4cea7d29",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/pet_augmentation_qc_v4.py",
+      "recorded_sha256": "2242236f7247c1cef2a6a5d7060bfc03234949ad78792c21684cd544ebde2ccc",
+      "current_sha256": "2242236f7247c1cef2a6a5d7060bfc03234949ad78792c21684cd544ebde2ccc",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/pet_augmentation_v4.py",
+      "recorded_sha256": "1fe9e4020621ada3ae76377c077a7365ef7fe90c1f9b737e39beeb6a94b7b2d3",
+      "current_sha256": "1fe9e4020621ada3ae76377c077a7365ef7fe90c1f9b737e39beeb6a94b7b2d3",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/process_guard.py",
+      "recorded_sha256": "f082e63d766025f4e423e83adc32ef195e076813acd5538784c58e5ca107710f",
+      "current_sha256": "f082e63d766025f4e423e83adc32ef195e076813acd5538784c58e5ca107710f",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/science_gates.py",
+      "recorded_sha256": "da8ec51b71a30bf374412a1d56e79f27b038f684fb207ea63d5bdfef65b24539",
+      "current_sha256": "da8ec51b71a30bf374412a1d56e79f27b038f684fb207ea63d5bdfef65b24539",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/software_contract_v4.py",
+      "recorded_sha256": "bcd17be746b2107480995c904a49f5479d813a1a80fb19b875125906f93a588e",
+      "current_sha256": "bcd17be746b2107480995c904a49f5479d813a1a80fb19b875125906f93a588e",
+      "status": "MATCH"
+    },
+    {
+      "contract": "results/method_y_revival_v4_image_factorial_v1/run_contract.json",
+      "path": "src/method_y_revival/survival_models.py",
+      "recorded_sha256": "744d9b76c1e51d7c75604ace063760ec2c921611009ac222cb6a54205bcfd192",
+      "current_sha256": "744d9b76c1e51d7c75604ace063760ec2c921611009ac222cb6a54205bcfd192",
+      "status": "MATCH"
+    }
+  ],
+  "dynamic_sites": [
+    {
+      "file": "src/method_y_revival/pet_attribution_v4.py",
+      "line": 88,
+      "kind": "spec_from_file_location"
+    },
+    {
+      "file": "src/method_y_revival/post_eval_v4.py",
+      "line": 666,
+      "kind": "spec_from_file_location"
+    }
+  ],
+  "dynamic_review": "BOTH_SITES_RESOLVE_LITERAL_INCLUDED_FACTORIAL_VERIFIER",
+  "full_runtime_dependency_closure_proven": false,
+  "selected_static_closure_and_bound_source_files_included": true
+}

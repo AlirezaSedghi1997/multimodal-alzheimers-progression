@@ -1,0 +1,83 @@
+{
+  "source_id": "5711159fba464996",
+  "source_sha256": "5a3853e0d1151e719ece8e1f4bc525c938ed844263245662e58f00636d648cb5",
+  "scientific_role": "population_and_endpoint",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "amyloid_source_audit": {
+      "eligible_scan_groups": 2649,
+      "first_analyzed_fbp_subjects": 1707,
+      "rejected_missing_key_or_date_rows": 24768,
+      "rejected_non_fbp_rows": 0,
+      "rejected_not_analyzed_rows": 7,
+      "source_rows": 45967,
+      "tracer": "FBP"
+    },
+    "contract": {
+      "contract_sha256": "bb0ecf8d43b7fc6ca8467541ccd80d935d8fd42df27e4b795f6a25c4d4d17322",
+      "endpoint_definition": {
+        "baseline_cdr_required": 0.0,
+        "development_cohort": "A4",
+        "event_time_rule": "first_increase_if_confirmed_by_next_visit",
+        "followup_window_days": 1640.0,
+        "forbidden_label_sources": [
+          "CDEVENT",
+          "CDOLEEVENT"
+        ],
+        "internal_transport_cohort": "LEARN",
+        "pet_to_baseline_window_days": 183,
+        "predictor": "continuous_centiloid",
+        "primary_name": "sustained_cdr_global_progression",
+        "same_pet_derived_target_used": false,
+        "target_source": "future_sustained_cdr_global_progression",
+        "tracer": "FBP",
+        "treatment_structure": "active_vs_placebo_covariate"
+      },
+      "endpoint_path": "amyloid_progression_endpoint.parquet",
+      "endpoint_sha256": "e2b2a761252aaf758e9095e2afae6959f30949206133d22a98d3c9a4f8cc2423",
+      "event_count": 278,
+      "locked": true,
+      "parquet_status": "AVAILABLE",
+      "row_count": 1613,
+      "schema_version": "1.0",
+      "source_hashes": {
+        "amyloid_suvr_csv": "80d9fabed0c3a0d42cd9f73fea73d8962412be9023fbb95d249f5aa200fabdc3",
+        "cdr_csv": "102b01a7d8a7805998faf8b8a13c8613873e00def41c7147fbdd994bf3cf27e4",
+        "pacc_csv": "e22ff9b4f78eabbc3bf1cf5afba1af0347cfe63419a0942a95d3940509625dcf",
+        "subjinfo_csv": "1e87f140f3eff292c29d1d20f0c923d39f96947714572a1a366f0ae6825a5bd8"
+      },
+      "storage_format": "parquet"
+    },
+    "endpoint_audit": {
+      "cohort_counts": {
+        "A4": 1106,
+        "LEARN": 507
+      },
+      "development_cohort": "A4",
+      "eligible_rows": 1613,
+      "event_counts_by_cohort": {
+        "A4": 240,
+        "LEARN": 38
+      },
+      "events": 278,
+      "excluded_cohorts": {},
+      "exclusions": {
+        "no_post_index_cdr_followup": 94
+      },
+      "forbidden_label_sources_not_used": [
+        "CDEVENT",
+        "CDOLEEVENT"
+      ],
+      "internal_transport_cohort": "LEARN",
+      "same_pet_derived_target_used": false,
+      "status": "COMPLETED",
+      "tracer": "FBP",
+      "treatment_structure": "active_vs_placebo_covariate"
+    },
+    "raw_identifiers_exported": false,
+    "raw_paths_exported": false,
+    "status": "ENDPOINT_LOCKED"
+  }
+}

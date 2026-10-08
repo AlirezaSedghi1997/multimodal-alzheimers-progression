@@ -1,0 +1,22 @@
+{
+  "source_id": "f9682c2368db42f7",
+  "source_sha256": "dde637f43518c1a47abb5f97598a4434fcceaf941edf2b2265ea919c9e6bdc2f",
+  "scientific_role": "population_and_qc",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "automatic_intensity_repair_applied": false,
+    "downstream_eligible_count": 1314,
+    "excluded_count": 3,
+    "exclusion_reason_counts": {
+      "SOURCE_T1_INVALID_NUMERIC_SCALING": 3
+    },
+    "public_safe": true,
+    "raw_data_mutated": false,
+    "schema_version": "1.0",
+    "selection_is_outcome_independent": true,
+    "source_eligible_count": 1317,
+    "status": "PASS_WITH_SOURCE_QC_EXCLUSIONS"
+  }
+}

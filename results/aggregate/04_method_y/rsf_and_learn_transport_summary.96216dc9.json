@@ -1,0 +1,31 @@
+{
+  "source_id": "96216dc9bd144318",
+  "source_sha256": "a87581eb793250f1b632e65d4450b31de821d73154bc0992d6f461bec7e71652",
+  "scientific_role": "separate_regional_analysis",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "artifact_status": "COMPLETED",
+    "candidate_lock_sha256": "8921132668c94a12e54784d0aea1ae9315c8f2826649fd5cd533bf2377b3f8b1",
+    "claim_status": "EXPLORATORY",
+    "external_validation": {
+      "external_generalization_claim_allowed": false,
+      "required_for_internal_completion": false,
+      "status": "EXTERNAL_UNAVAILABLE_NONBLOCKING"
+    },
+    "learn_access_count": 1,
+    "learn_result_sha256": "164fafcdcb15a8207c9f8a4f483f854387cbcb418a8ec2b8238f26c8e5f1ede0",
+    "learn_role": "INTERNAL_TRANSPORT_NOT_EXTERNAL_VALIDATION",
+    "learn_transport_status": "LEARN_TRANSPORT_COMMITTED",
+    "learn_used_for_selection": false,
+    "posttraining_run_contract_sha256": "4b5ac0570950a40dbdf8c6a2562945997de3a70bb23109c61ec4488ff74ec792",
+    "report_sha256": "bee2581179570a819e687615a92a63766ca27803477347f8de843dba87bf2167",
+    "rsf_outer_test_accessed": false,
+    "rsf_role": "DEVELOPMENT_CHALLENGER_NO_OUTER_FAMILY_CLAIM",
+    "rsf_status": "DEVELOPMENT_COMPLETED_MODELS_LOCKED",
+    "schema_version": "2.0",
+    "science_gate_status": "INTERNAL_TRANSPORT_COMPLETE_CLAIM_RESTRICTED",
+    "status": "COMPLETED"
+  }
+}

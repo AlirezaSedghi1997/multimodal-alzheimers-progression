@@ -1,0 +1,661 @@
+{
+  "source_id": "b730cac365c1080e",
+  "source_sha256": "908964cb4de9303873c3ed92391aa2d908b04d5fdc598ad1b4228b526f01b5b5",
+  "scientific_role": "posthoc_sensitivity",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "payload": {
+      "background_may_already_be_zero_after_preprocessing": true,
+      "clinical_scanner_robustness_proven": false,
+      "comparisons": {
+        "hybrid_selected_seed13": {
+          "background_only": {
+            "bootstrap_unit": "patient",
+            "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+            "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+            "effects": {
+              "auprc": {
+                "ci95": [
+                  -0.002808300960562243,
+                  0.019702867065401437
+                ],
+                "delta": 0.009258954735196778,
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "ci95": [
+                  -0.006676152475098928,
+                  0.008781577476065432
+                ],
+                "delta": 0.0009616099133745726,
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "ci95": [
+                  -0.00018910569975474632,
+                  0.00464052135894718
+                ],
+                "delta": 0.0022545348858869774,
+                "valid_resamples": 2000
+              }
+            },
+            "effects_direction": "first_minus_second",
+            "first_metrics": {
+              "auprc": 0.8434607830407972,
+              "auroc": 0.7334561250698618,
+              "brier": 0.2177840676024717
+            },
+            "fixed_threshold_05_flip_rate": 0.015086889712638215,
+            "mean_absolute_probability_change": 0.014008387640426664,
+            "mean_probability_change": -0.006924443729424488,
+            "n": 200,
+            "negative": 64,
+            "positive": 136,
+            "second_metrics": {
+              "auprc": 0.8342018283056004,
+              "auroc": 0.7324945151564872,
+              "brier": 0.21552953271658473
+            },
+            "seed_count": 1,
+            "seeds_are_independent_patients": false,
+            "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+            "stratified_by_fold_class": true
+          },
+          "bias10": {
+            "bootstrap_unit": "patient",
+            "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+            "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+            "effects": {
+              "auprc": {
+                "ci95": [
+                  -1.2808763285107604e-05,
+                  0.0003426402068789494
+                ],
+                "delta": 8.762709787490941e-05,
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "ci95": [
+                  -1.1102230246251565e-16,
+                  0.0009124051677241729
+                ],
+                "delta": 0.00022670308067218592,
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "ci95": [
+                  -7.537848775299866e-05,
+                  -2.4358168425569355e-05
+                ],
+                "delta": -5.076107109219796e-05,
+                "valid_resamples": 2000
+              }
+            },
+            "effects_direction": "first_minus_second",
+            "first_metrics": {
+              "auprc": 0.8342894554034753,
+              "auroc": 0.7327212182371594,
+              "brier": 0.21547877164549253
+            },
+            "fixed_threshold_05_flip_rate": 0.0,
+            "mean_absolute_probability_change": 0.00017509353015057876,
+            "mean_probability_change": 9.96055379740124e-05,
+            "n": 200,
+            "negative": 64,
+            "positive": 136,
+            "second_metrics": {
+              "auprc": 0.8342018283056004,
+              "auroc": 0.7324945151564872,
+              "brier": 0.21552953271658473
+            },
+            "seed_count": 1,
+            "seeds_are_independent_patients": false,
+            "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+            "stratified_by_fold_class": true
+          },
+          "blur05": {
+            "bootstrap_unit": "patient",
+            "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+            "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+            "effects": {
+              "auprc": {
+                "ci95": [
+                  -2.664346773140202e-06,
+                  0.0004715111562193225
+                ],
+                "delta": 0.00014429042031627315,
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "ci95": [
+                  0.0,
+                  0.0014513722152790724
+                ],
+                "delta": 0.000449452598474287,
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "ci95": [
+                  -0.00016299603121121484,
+                  -1.781879751204532e-05
+                ],
+                "delta": -9.200109013968172e-05,
+                "valid_resamples": 2000
+              }
+            },
+            "effects_direction": "first_minus_second",
+            "first_metrics": {
+              "auprc": 0.8343461187259167,
+              "auroc": 0.7329439677549615,
+              "brier": 0.21543753162644505
+            },
+            "fixed_threshold_05_flip_rate": 0.004892001710863987,
+            "mean_absolute_probability_change": 0.0004297858483152757,
+            "mean_probability_change": 0.00023878720918404906,
+            "n": 200,
+            "negative": 64,
+            "positive": 136,
+            "second_metrics": {
+              "auprc": 0.8342018283056004,
+              "auroc": 0.7324945151564872,
+              "brier": 0.21552953271658473
+            },
+            "seed_count": 1,
+            "seeds_are_independent_patients": false,
+            "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+            "stratified_by_fold_class": true
+          },
+          "brain_only": {
+            "bootstrap_unit": "patient",
+            "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+            "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+            "effects": {
+              "auprc": {
+                "ci95": [
+                  0.0,
+                  0.0
+                ],
+                "delta": 0.0,
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "ci95": [
+                  0.0,
+                  0.0
+                ],
+                "delta": 0.0,
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "ci95": [
+                  0.0,
+                  0.0
+                ],
+                "delta": 0.0,
+                "valid_resamples": 2000
+              }
+            },
+            "effects_direction": "first_minus_second",
+            "first_metrics": {
+              "auprc": 0.8342018283056004,
+              "auroc": 0.7324945151564872,
+              "brier": 0.21552953271658473
+            },
+            "fixed_threshold_05_flip_rate": 0.0,
+            "mean_absolute_probability_change": 0.0,
+            "mean_probability_change": 0.0,
+            "n": 200,
+            "negative": 64,
+            "positive": 136,
+            "second_metrics": {
+              "auprc": 0.8342018283056004,
+              "auroc": 0.7324945151564872,
+              "brier": 0.21552953271658473
+            },
+            "seed_count": 1,
+            "seeds_are_independent_patients": false,
+            "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+            "stratified_by_fold_class": true
+          },
+          "noise02": {
+            "bootstrap_unit": "patient",
+            "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+            "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+            "effects": {
+              "auprc": {
+                "ci95": [
+                  -1.4732137720926964e-05,
+                  1.2395403653045448e-05
+                ],
+                "delta": -9.05812921336846e-08,
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "ci95": [
+                  -1.1102230246251565e-16,
+                  1.1102230246251565e-16
+                ],
+                "delta": 0.0,
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "ci95": [
+                  -1.1591269896076007e-06,
+                  4.091301022961165e-05
+                ],
+                "delta": 2.002463168473967e-05,
+                "valid_resamples": 2000
+              }
+            },
+            "effects_direction": "first_minus_second",
+            "first_metrics": {
+              "auprc": 0.8342017377243083,
+              "auroc": 0.7324945151564872,
+              "brier": 0.21554955734826947
+            },
+            "fixed_threshold_05_flip_rate": 0.0,
+            "mean_absolute_probability_change": 7.281639974342397e-05,
+            "mean_probability_change": -2.0704597169361615e-05,
+            "n": 200,
+            "negative": 64,
+            "positive": 136,
+            "second_metrics": {
+              "auprc": 0.8342018283056004,
+              "auroc": 0.7324945151564872,
+              "brier": 0.21552953271658473
+            },
+            "seed_count": 1,
+            "seeds_are_independent_patients": false,
+            "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+            "stratified_by_fold_class": true
+          },
+          "noise05": {
+            "bootstrap_unit": "patient",
+            "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+            "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+            "effects": {
+              "auprc": {
+                "ci95": [
+                  -6.690033449921473e-06,
+                  0.0002774251106823693
+                ],
+                "delta": 5.65779618477702e-05,
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "ci95": [
+                  -1.1102230246251565e-16,
+                  0.0010205977906566632
+                ],
+                "delta": 0.00022274951780210106,
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "ci95": [
+                  2.3418963445161203e-06,
+                  0.00011077697570559749
+                ],
+                "delta": 5.7352238729296845e-05,
+                "valid_resamples": 2000
+              }
+            },
+            "effects_direction": "first_minus_second",
+            "first_metrics": {
+              "auprc": 0.8342584062674482,
+              "auroc": 0.7327172646742893,
+              "brier": 0.21558688495531403
+            },
+            "fixed_threshold_05_flip_rate": 0.0,
+            "mean_absolute_probability_change": 0.0002091345651072325,
+            "mean_probability_change": -0.00010046696831194538,
+            "n": 200,
+            "negative": 64,
+            "positive": 136,
+            "second_metrics": {
+              "auprc": 0.8342018283056004,
+              "auroc": 0.7324945151564872,
+              "brier": 0.21552953271658473
+            },
+            "seed_count": 1,
+            "seeds_are_independent_patients": false,
+            "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+            "stratified_by_fold_class": true
+          }
+        },
+        "parent_final": {
+          "background_only": {
+            "bootstrap_unit": "patient",
+            "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+            "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+            "effects": {
+              "auprc": {
+                "ci95": [
+                  -0.04286444765196132,
+                  -0.0033788633703834402
+                ],
+                "delta": -0.025210074587181164,
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "ci95": [
+                  -0.030163020336064793,
+                  0.014088018819355173
+                ],
+                "delta": -0.007329426580900522,
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "ci95": [
+                  -0.004550211500613216,
+                  0.007214442363781103
+                ],
+                "delta": 0.0010790080663372337,
+                "valid_resamples": 2000
+              }
+            },
+            "effects_direction": "first_minus_second",
+            "first_metrics": {
+              "auprc": 0.8124270136543024,
+              "auroc": 0.7015515099215149,
+              "brier": 0.2190972793332476
+            },
+            "fixed_threshold_05_flip_rate": 0.05491382924017655,
+            "mean_absolute_probability_change": 0.03751865273117903,
+            "mean_probability_change": 0.020700568971578175,
+            "n": 200,
+            "negative": 64,
+            "positive": 136,
+            "second_metrics": {
+              "auprc": 0.8376370882414835,
+              "auroc": 0.7088809365024155,
+              "brier": 0.21801827126691037
+            },
+            "seed_count": 1,
+            "seeds_are_independent_patients": false,
+            "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+            "stratified_by_fold_class": true
+          },
+          "bias10": {
+            "bootstrap_unit": "patient",
+            "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+            "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+            "effects": {
+              "auprc": {
+                "ci95": [
+                  -0.0005034771874513927,
+                  0.00294813649066258
+                ],
+                "delta": 0.0007264673325895199,
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "ci95": [
+                  -0.001039707441912005,
+                  0.002159255381363784
+                ],
+                "delta": 0.00045213599430460327,
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "ci95": [
+                  -0.000376579339700988,
+                  -5.527501665478647e-05
+                ],
+                "delta": -0.00020997518127408021,
+                "valid_resamples": 2000
+              }
+            },
+            "effects_direction": "first_minus_second",
+            "first_metrics": {
+              "auprc": 0.838363555574073,
+              "auroc": 0.7093330724967201,
+              "brier": 0.2178082960856363
+            },
+            "fixed_threshold_05_flip_rate": 0.005073186959414504,
+            "mean_absolute_probability_change": 0.001000468496194884,
+            "mean_probability_change": 2.3551882207243275e-05,
+            "n": 200,
+            "negative": 64,
+            "positive": 136,
+            "second_metrics": {
+              "auprc": 0.8376370882414835,
+              "auroc": 0.7088809365024155,
+              "brier": 0.21801827126691037
+            },
+            "seed_count": 1,
+            "seeds_are_independent_patients": false,
+            "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+            "stratified_by_fold_class": true
+          },
+          "blur05": {
+            "bootstrap_unit": "patient",
+            "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+            "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+            "effects": {
+              "auprc": {
+                "ci95": [
+                  -0.011476769105636562,
+                  0.003933685034446646
+                ],
+                "delta": -0.0032695921412061457,
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "ci95": [
+                  -0.0031255821697732055,
+                  0.006064745504953205
+                ],
+                "delta": 0.0013678522204351173,
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "ci95": [
+                  -0.0010527131085447366,
+                  0.0005238867535082131
+                ],
+                "delta": -0.00024060622365562612,
+                "valid_resamples": 2000
+              }
+            },
+            "effects_direction": "first_minus_second",
+            "first_metrics": {
+              "auprc": 0.8343674961002774,
+              "auroc": 0.7102487887228506,
+              "brier": 0.21777766504325474
+            },
+            "fixed_threshold_05_flip_rate": 0.020000673256661283,
+            "mean_absolute_probability_change": 0.005812103478988797,
+            "mean_probability_change": 0.002363525200244026,
+            "n": 200,
+            "negative": 64,
+            "positive": 136,
+            "second_metrics": {
+              "auprc": 0.8376370882414835,
+              "auroc": 0.7088809365024155,
+              "brier": 0.21801827126691037
+            },
+            "seed_count": 1,
+            "seeds_are_independent_patients": false,
+            "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+            "stratified_by_fold_class": true
+          },
+          "brain_only": {
+            "bootstrap_unit": "patient",
+            "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+            "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+            "effects": {
+              "auprc": {
+                "ci95": [
+                  0.0,
+                  0.0
+                ],
+                "delta": 0.0,
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "ci95": [
+                  0.0,
+                  0.0
+                ],
+                "delta": 0.0,
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "ci95": [
+                  0.0,
+                  0.0
+                ],
+                "delta": 0.0,
+                "valid_resamples": 2000
+              }
+            },
+            "effects_direction": "first_minus_second",
+            "first_metrics": {
+              "auprc": 0.8376370882414835,
+              "auroc": 0.7088809365024155,
+              "brier": 0.21801827126691037
+            },
+            "fixed_threshold_05_flip_rate": 0.0,
+            "mean_absolute_probability_change": 0.0,
+            "mean_probability_change": 0.0,
+            "n": 200,
+            "negative": 64,
+            "positive": 136,
+            "second_metrics": {
+              "auprc": 0.8376370882414835,
+              "auroc": 0.7088809365024155,
+              "brier": 0.21801827126691037
+            },
+            "seed_count": 1,
+            "seeds_are_independent_patients": false,
+            "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+            "stratified_by_fold_class": true
+          },
+          "noise02": {
+            "bootstrap_unit": "patient",
+            "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+            "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+            "effects": {
+              "auprc": {
+                "ci95": [
+                  -0.0006342226820615443,
+                  0.0005902868382646557
+                ],
+                "delta": -5.14358656444891e-07,
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "ci95": [
+                  -0.0009079652475932898,
+                  0.0011603957052418886
+                ],
+                "delta": 0.00011735384431843521,
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "ci95": [
+                  -1.907659383578661e-05,
+                  2.521921806198992e-05
+                ],
+                "delta": 3.999821090117095e-06,
+                "valid_resamples": 2000
+              }
+            },
+            "effects_direction": "first_minus_second",
+            "first_metrics": {
+              "auprc": 0.8376365738828271,
+              "auroc": 0.7089982903467339,
+              "brier": 0.21802227108800049
+            },
+            "fixed_threshold_05_flip_rate": 0.005017742293191394,
+            "mean_absolute_probability_change": 0.0001338618480868177,
+            "mean_probability_change": -2.8127726685615833e-05,
+            "n": 200,
+            "negative": 64,
+            "positive": 136,
+            "second_metrics": {
+              "auprc": 0.8376370882414835,
+              "auroc": 0.7088809365024155,
+              "brier": 0.21801827126691037
+            },
+            "seed_count": 1,
+            "seeds_are_independent_patients": false,
+            "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+            "stratified_by_fold_class": true
+          },
+          "noise05": {
+            "bootstrap_unit": "patient",
+            "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+            "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+            "effects": {
+              "auprc": {
+                "ci95": [
+                  -0.0007314421534109855,
+                  0.0013107947654889388
+                ],
+                "delta": 0.00028410576317516867,
+                "valid_resamples": 2000
+              },
+              "auroc": {
+                "ci95": [
+                  -0.0014726813816789807,
+                  0.002488738799407154
+                ],
+                "delta": 0.0004841721661719145,
+                "valid_resamples": 2000
+              },
+              "brier": {
+                "ci95": [
+                  -3.992805858197834e-05,
+                  0.00010015570283775642
+                ],
+                "delta": 3.18707306695698e-05,
+                "valid_resamples": 2000
+              }
+            },
+            "effects_direction": "first_minus_second",
+            "first_metrics": {
+              "auprc": 0.8379211940046587,
+              "auroc": 0.7093651086685874,
+              "brier": 0.21805014199757994
+            },
+            "fixed_threshold_05_flip_rate": 0.0,
+            "mean_absolute_probability_change": 0.0005614366947653667,
+            "mean_probability_change": -8.2282842794578e-05,
+            "n": 200,
+            "negative": 64,
+            "positive": 136,
+            "second_metrics": {
+              "auprc": 0.8376370882414835,
+              "auroc": 0.7088809365024155,
+              "brier": 0.21801827126691037
+            },
+            "seed_count": 1,
+            "seeds_are_independent_patients": false,
+            "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+            "stratified_by_fold_class": true
+          }
+        }
+      },
+      "conditions": [
+        "clean",
+        "noise02",
+        "noise05",
+        "bias10",
+        "blur05",
+        "brain_only",
+        "background_only"
+      ],
+      "disease_region_confirmation": false,
+      "mean_nonzero_background_fraction": 0.0,
+      "patient_n": 200,
+      "primary": "noise05_minus_clean_brier",
+      "status": "COMPLETED_FIXED_WEIGHT_STRESS"
+    },
+    "payload_sha256": "937db4309e553d3af88718f879fbe6e9b2d903c7825718f4b30873065d651082",
+    "protocol_sha256": "f901ffa588743b99131252936e2960ba75a445f11e725d00e942dd449cf2e331",
+    "unit": "stress_summary"
+  }
+}

@@ -1,0 +1,381 @@
+{
+  "source_id": "1632ffb218eb7397",
+  "source_sha256": "4da3adbbdf22bb7ac2878d7361d5cae99b52445f9c26cb9cf56ff81999fe35d4",
+  "scientific_role": "corrected_nested_image_analysis",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 13,
+  "aggregate": {
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "correction_receipt_sha256": "5d94d6d75c9020f4a00a622cd13d24e52e8a4c466e4cee830489545559c45e77",
+    "leave_manufacturer_out_performance_status": "NOT_EXECUTED",
+    "permutations_per_estimable_probe": 49,
+    "pooled_oof_embedding_probe_status": "INVALID_CROSS_MODEL_COORDINATE_POOLING",
+    "report_sha256": "c7f92fcd8bf7b5ffd23077b88655ee355e388020cb957db50a37dc750c27a8a4",
+    "results": {
+      "amyloid": {
+        "completed_probes": 6,
+        "fold_model_probes": [
+          {
+            "arm": "A0",
+            "fold": 0,
+            "probe": {
+              "eligible_manufacturers": [
+                "GE",
+                "PHILIPS",
+                "SIEMENS"
+              ],
+              "embedding_coordinate_scope": "ONE_OUTER_FOLD_MODEL_ONLY",
+              "excluded_from_probe": {
+                "UNKNOWN": 5
+              },
+              "manufacturer_support": {
+                "GE": 31,
+                "PHILIPS": 12,
+                "SIEMENS": 61,
+                "UNKNOWN": 5
+              },
+              "n_probe_subjects": 104,
+              "permutation_count": 49,
+              "permutation_null_mean_auc": 0.4818393159605894,
+              "permutation_p_descriptive": 0.24,
+              "scaler_scope": "PROBE_TRAIN_SPLIT_ONLY",
+              "status": "COMPLETED_DIAGNOSTIC_ONLY",
+              "within_model_cv_macro_auc": 0.5183805866432595
+            }
+          },
+          {
+            "arm": "A0",
+            "fold": 1,
+            "probe": {
+              "eligible_manufacturers": [
+                "GE",
+                "PHILIPS",
+                "SIEMENS"
+              ],
+              "embedding_coordinate_scope": "ONE_OUTER_FOLD_MODEL_ONLY",
+              "excluded_from_probe": {
+                "TOSHIBA": 1,
+                "UNKNOWN": 11
+              },
+              "manufacturer_support": {
+                "GE": 30,
+                "PHILIPS": 11,
+                "SIEMENS": 54,
+                "TOSHIBA": 1,
+                "UNKNOWN": 11
+              },
+              "n_probe_subjects": 95,
+              "permutation_count": 49,
+              "permutation_null_mean_auc": 0.49549198282191476,
+              "permutation_p_descriptive": 0.28,
+              "scaler_scope": "PROBE_TRAIN_SPLIT_ONLY",
+              "status": "COMPLETED_DIAGNOSTIC_ONLY",
+              "within_model_cv_macro_auc": 0.5523458023458024
+            }
+          },
+          {
+            "arm": "A0",
+            "fold": 2,
+            "probe": {
+              "eligible_manufacturers": [
+                "GE",
+                "PHILIPS",
+                "SIEMENS"
+              ],
+              "embedding_coordinate_scope": "ONE_OUTER_FOLD_MODEL_ONLY",
+              "excluded_from_probe": {
+                "TOSHIBA": 2,
+                "UNKNOWN": 8
+              },
+              "manufacturer_support": {
+                "GE": 42,
+                "PHILIPS": 13,
+                "SIEMENS": 67,
+                "TOSHIBA": 2,
+                "UNKNOWN": 8
+              },
+              "n_probe_subjects": 122,
+              "permutation_count": 49,
+              "permutation_null_mean_auc": 0.4969493477985853,
+              "permutation_p_descriptive": 0.14,
+              "scaler_scope": "PROBE_TRAIN_SPLIT_ONLY",
+              "status": "COMPLETED_DIAGNOSTIC_ONLY",
+              "within_model_cv_macro_auc": 0.5959365380513358
+            }
+          },
+          {
+            "arm": "A0",
+            "fold": 3,
+            "probe": {
+              "eligible_manufacturers": [
+                "GE",
+                "PHILIPS",
+                "SIEMENS"
+              ],
+              "embedding_coordinate_scope": "ONE_OUTER_FOLD_MODEL_ONLY",
+              "excluded_from_probe": {
+                "TOSHIBA": 1,
+                "UNKNOWN": 8
+              },
+              "manufacturer_support": {
+                "GE": 29,
+                "PHILIPS": 12,
+                "SIEMENS": 55,
+                "TOSHIBA": 1,
+                "UNKNOWN": 8
+              },
+              "n_probe_subjects": 96,
+              "permutation_count": 49,
+              "permutation_null_mean_auc": 0.48140169903934904,
+              "permutation_p_descriptive": 0.06,
+              "scaler_scope": "PROBE_TRAIN_SPLIT_ONLY",
+              "status": "COMPLETED_DIAGNOSTIC_ONLY",
+              "within_model_cv_macro_auc": 0.5759043623269405
+            }
+          },
+          {
+            "arm": "A2",
+            "fold": 3,
+            "probe": {
+              "eligible_manufacturers": [
+                "GE",
+                "PHILIPS",
+                "SIEMENS"
+              ],
+              "embedding_coordinate_scope": "ONE_OUTER_FOLD_MODEL_ONLY",
+              "excluded_from_probe": {
+                "TOSHIBA": 1,
+                "UNKNOWN": 8
+              },
+              "manufacturer_support": {
+                "GE": 29,
+                "PHILIPS": 12,
+                "SIEMENS": 55,
+                "TOSHIBA": 1,
+                "UNKNOWN": 8
+              },
+              "n_probe_subjects": 96,
+              "permutation_count": 49,
+              "permutation_null_mean_auc": 0.5019966612729576,
+              "permutation_p_descriptive": 0.46,
+              "scaler_scope": "PROBE_TRAIN_SPLIT_ONLY",
+              "status": "COMPLETED_DIAGNOSTIC_ONLY",
+              "within_model_cv_macro_auc": 0.5104102574544985
+            }
+          },
+          {
+            "arm": "A0",
+            "fold": 4,
+            "probe": {
+              "eligible_manufacturers": [
+                "GE",
+                "PHILIPS",
+                "SIEMENS"
+              ],
+              "embedding_coordinate_scope": "ONE_OUTER_FOLD_MODEL_ONLY",
+              "excluded_from_probe": {
+                "TOSHIBA": 1,
+                "UNKNOWN": 5
+              },
+              "manufacturer_support": {
+                "GE": 25,
+                "PHILIPS": 10,
+                "SIEMENS": 66,
+                "TOSHIBA": 1,
+                "UNKNOWN": 5
+              },
+              "n_probe_subjects": 101,
+              "permutation_count": 49,
+              "permutation_null_mean_auc": 0.4942544863268227,
+              "permutation_p_descriptive": 0.02,
+              "scaler_scope": "PROBE_TRAIN_SPLIT_ONLY",
+              "status": "COMPLETED_DIAGNOSTIC_ONLY",
+              "within_model_cv_macro_auc": 0.6979285378283423
+            }
+          }
+        ],
+        "total_probe_cells": 6
+      },
+      "tau": {
+        "completed_probes": 6,
+        "fold_model_probes": [
+          {
+            "arm": "A0",
+            "fold": 0,
+            "probe": {
+              "eligible_manufacturers": [
+                "GE",
+                "SIEMENS"
+              ],
+              "embedding_coordinate_scope": "ONE_OUTER_FOLD_MODEL_ONLY",
+              "excluded_from_probe": {
+                "PHILIPS": 4,
+                "UNKNOWN": 9
+              },
+              "manufacturer_support": {
+                "GE": 12,
+                "PHILIPS": 4,
+                "SIEMENS": 35,
+                "UNKNOWN": 9
+              },
+              "n_probe_subjects": 47,
+              "permutation_count": 49,
+              "permutation_null_mean_auc": 0.49067202638631213,
+              "permutation_p_descriptive": 0.04,
+              "scaler_scope": "PROBE_TRAIN_SPLIT_ONLY",
+              "status": "COMPLETED_DIAGNOSTIC_ONLY",
+              "within_model_cv_macro_auc": 0.7373737373737373
+            }
+          },
+          {
+            "arm": "A1",
+            "fold": 0,
+            "probe": {
+              "eligible_manufacturers": [
+                "GE",
+                "SIEMENS"
+              ],
+              "embedding_coordinate_scope": "ONE_OUTER_FOLD_MODEL_ONLY",
+              "excluded_from_probe": {
+                "PHILIPS": 4,
+                "UNKNOWN": 9
+              },
+              "manufacturer_support": {
+                "GE": 12,
+                "PHILIPS": 4,
+                "SIEMENS": 35,
+                "UNKNOWN": 9
+              },
+              "n_probe_subjects": 47,
+              "permutation_count": 49,
+              "permutation_null_mean_auc": 0.5358044733044732,
+              "permutation_p_descriptive": 0.02,
+              "scaler_scope": "PROBE_TRAIN_SPLIT_ONLY",
+              "status": "COMPLETED_DIAGNOSTIC_ONLY",
+              "within_model_cv_macro_auc": 0.8585858585858586
+            }
+          },
+          {
+            "arm": "A0",
+            "fold": 1,
+            "probe": {
+              "eligible_manufacturers": [
+                "GE",
+                "PHILIPS",
+                "SIEMENS"
+              ],
+              "embedding_coordinate_scope": "ONE_OUTER_FOLD_MODEL_ONLY",
+              "excluded_from_probe": {
+                "UNKNOWN": 8
+              },
+              "manufacturer_support": {
+                "GE": 10,
+                "PHILIPS": 10,
+                "SIEMENS": 34,
+                "UNKNOWN": 8
+              },
+              "n_probe_subjects": 54,
+              "permutation_count": 49,
+              "permutation_null_mean_auc": 0.52298127043025,
+              "permutation_p_descriptive": 0.04,
+              "scaler_scope": "PROBE_TRAIN_SPLIT_ONLY",
+              "status": "COMPLETED_DIAGNOSTIC_ONLY",
+              "within_model_cv_macro_auc": 0.683958633958634
+            }
+          },
+          {
+            "arm": "A0",
+            "fold": 2,
+            "probe": {
+              "eligible_manufacturers": [
+                "GE",
+                "PHILIPS",
+                "SIEMENS"
+              ],
+              "embedding_coordinate_scope": "ONE_OUTER_FOLD_MODEL_ONLY",
+              "excluded_from_probe": {
+                "UNKNOWN": 12
+              },
+              "manufacturer_support": {
+                "GE": 7,
+                "PHILIPS": 7,
+                "SIEMENS": 37,
+                "UNKNOWN": 12
+              },
+              "n_probe_subjects": 51,
+              "permutation_count": 49,
+              "permutation_null_mean_auc": 0.4968594519614927,
+              "permutation_p_descriptive": 0.16,
+              "scaler_scope": "PROBE_TRAIN_SPLIT_ONLY",
+              "status": "COMPLETED_DIAGNOSTIC_ONLY",
+              "within_model_cv_macro_auc": 0.5985754985754985
+            }
+          },
+          {
+            "arm": "A0",
+            "fold": 3,
+            "probe": {
+              "eligible_manufacturers": [
+                "GE",
+                "PHILIPS",
+                "SIEMENS"
+              ],
+              "embedding_coordinate_scope": "ONE_OUTER_FOLD_MODEL_ONLY",
+              "excluded_from_probe": {
+                "UNKNOWN": 7
+              },
+              "manufacturer_support": {
+                "GE": 8,
+                "PHILIPS": 7,
+                "SIEMENS": 37,
+                "UNKNOWN": 7
+              },
+              "n_probe_subjects": 52,
+              "permutation_count": 49,
+              "permutation_null_mean_auc": 0.4821637262963793,
+              "permutation_p_descriptive": 0.18,
+              "scaler_scope": "PROBE_TRAIN_SPLIT_ONLY",
+              "status": "COMPLETED_DIAGNOSTIC_ONLY",
+              "within_model_cv_macro_auc": 0.5849808370641704
+            }
+          },
+          {
+            "arm": "A0",
+            "fold": 4,
+            "probe": {
+              "eligible_manufacturers": [
+                "GE",
+                "PHILIPS",
+                "SIEMENS"
+              ],
+              "embedding_coordinate_scope": "ONE_OUTER_FOLD_MODEL_ONLY",
+              "excluded_from_probe": {
+                "UNKNOWN": 10
+              },
+              "manufacturer_support": {
+                "GE": 5,
+                "PHILIPS": 10,
+                "SIEMENS": 37,
+                "UNKNOWN": 10
+              },
+              "n_probe_subjects": 52,
+              "permutation_count": 49,
+              "permutation_null_mean_auc": 0.4905654946146143,
+              "permutation_p_descriptive": 0.1,
+              "scaler_scope": "PROBE_TRAIN_SPLIT_ONLY",
+              "status": "COMPLETED_DIAGNOSTIC_ONLY",
+              "within_model_cv_macro_auc": 0.6800001695835028
+            }
+          }
+        ],
+        "total_probe_cells": 6
+      }
+    },
+    "schema_version": "4.2",
+    "science_gate_status": "BLOCKED",
+    "source_code_sha256": "f2ad3bb9c303f31a1e4c4a8a029fb52af39ba68cc6f197c0e27bfbcf95af1469",
+    "source_run_contract_sha256": "969ebd0f61d9ffc3bc262c5476c75b23575d64d1f5703d23fe04d1095d07743e",
+    "status": "COMPLETED_WITH_ESTIMABILITY_GATES"
+  }
+}

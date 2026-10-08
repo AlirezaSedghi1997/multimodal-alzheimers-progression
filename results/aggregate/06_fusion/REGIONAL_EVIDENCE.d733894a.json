@@ -1,0 +1,1005 @@
+{
+  "source_id": "d733894afcb1d176",
+  "source_sha256": "f091f695557f14ccfc035742937a3eae8bde99a1ddb823275aec74c047b073a0",
+  "scientific_role": "corrected_postfusion_with_review_addendum",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "all_results_retained": true,
+    "analysis_timing": "ADDED_AFTER_ORIGINAL_STUDY_RESULTS_BEFORE_THIS_EXTENSION_FITS",
+    "associations": {
+      "attrition": [
+        {
+          "events": 237,
+          "group": "included",
+          "mean_age": 71.85731244064577,
+          "mean_baseline_pacc": -0.2524652659069325,
+          "n": 1053
+        },
+        {
+          "events": 2,
+          "group": "excluded",
+          "mean_age": 75.03166666666667,
+          "mean_baseline_pacc": -1.4836733333333332,
+          "n": 6
+        }
+      ],
+      "cdr": {
+        "entorhinal": {
+          "ci95": [
+            0.6624480570270301,
+            0.9552355516481457
+          ],
+          "correction": "HOLM_FIXED_FAMILY_INCLUDING_NOT_ESTIMABLE_TESTS",
+          "disease_specificity_or_causality_proven": false,
+          "events": 237,
+          "family_size": 3,
+          "features": [
+            "region_z",
+            "age_z",
+            "education_years_z",
+            "baseline_pacc_raw_z",
+            "baseline_mmscore_z",
+            "amyloid_centiloid_z",
+            "log_icv_volume_z",
+            "sex_binary",
+            "apoe4_carrier",
+            "treatment_active"
+          ],
+          "hazard_ratio": 0.7954834600370125,
+          "informative_subjects": 986,
+          "interpretation": "ASSOCIATION_LIMITED_BY_DIAGNOSTICS_OR_STABILITY",
+          "leave_fold_out": [
+            {
+              "ci95": [
+                0.6854194499809955,
+                1.022135721507493
+              ],
+              "events": 189,
+              "excluded_fold": 0,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 0.8370135626389777,
+              "independent_replication": false,
+              "informative_subjects": 787,
+              "log_hr": -0.1779150047541966,
+              "manufacturer_stratified": true,
+              "n": 843,
+              "observational_association_not_prediction_validation": true,
+              "p": 0.08094462668184793,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 56,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.10194351409595226,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            },
+            {
+              "ci95": [
+                0.6717899678209832,
+                1.0111230447527721
+              ],
+              "events": 189,
+              "excluded_fold": 1,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 0.8241737181550497,
+              "independent_replication": false,
+              "informative_subjects": 779,
+              "log_hr": -0.19337394828901072,
+              "manufacturer_stratified": true,
+              "n": 841,
+              "observational_association_not_prediction_validation": true,
+              "p": 0.06374660596444535,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 62,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.10430387087177974,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            },
+            {
+              "ci95": [
+                0.6178499457328765,
+                0.95098607974523
+              ],
+              "events": 191,
+              "excluded_fold": 2,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 0.766528993426414,
+              "independent_replication": false,
+              "informative_subjects": 793,
+              "log_hr": -0.26588275564994346,
+              "manufacturer_stratified": true,
+              "n": 844,
+              "observational_association_not_prediction_validation": true,
+              "p": 0.01565699822813754,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 51,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.11001372531336523,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            },
+            {
+              "ci95": [
+                0.6271784664446804,
+                0.9316934166237928
+              ],
+              "events": 189,
+              "excluded_fold": 3,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 0.7644200731500417,
+              "independent_replication": false,
+              "informative_subjects": 786,
+              "log_hr": -0.26863780695290324,
+              "manufacturer_stratified": true,
+              "n": 842,
+              "observational_association_not_prediction_validation": true,
+              "p": 0.007796210535651597,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 56,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.10096241654048287,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            },
+            {
+              "ci95": [
+                0.6289453607352536,
+                0.9665494197550485
+              ],
+              "events": 190,
+              "excluded_fold": 4,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 0.7796837650459891,
+              "independent_replication": false,
+              "informative_subjects": 793,
+              "log_hr": -0.24886687093545004,
+              "manufacturer_stratified": true,
+              "n": 842,
+              "observational_association_not_prediction_validation": true,
+              "p": 0.02318411467389194,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 49,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.10961429693621552,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            }
+          ],
+          "linearity": {
+            "nonsignificance_does_not_prove_linearity": true,
+            "p": 0.08191517459295745,
+            "statistic": 3.026487462793284,
+            "status": "TESTED_QUADRATIC_DEPARTURE"
+          },
+          "log_hr": -0.22880522332866826,
+          "manufacturer_stratified": true,
+          "multiplicity_supported": true,
+          "n": 1053,
+          "observational_association_not_prediction_validation": true,
+          "p": 0.014266366679354605,
+          "p_holm": 0.014266366679354605,
+          "pacc_or_saliency_was_not_target": true,
+          "parameters": 10,
+          "ph": {
+            "early_events": 5,
+            "late_events": 232,
+            "status": "NOT_ESTIMABLE_PERIOD_SUPPORT"
+          },
+          "risk_set_noncontributing_rows": 67,
+          "robust_covariance": "SUBJECT_SANDWICH",
+          "standard_error": 0.09337138028284989,
+          "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+          "status": "ESTIMATED",
+          "unknown_scanner_excluded": {
+            "ci95": [
+              0.6624480570270301,
+              0.9552355516481457
+            ],
+            "events": 237,
+            "features": [
+              "region_z",
+              "age_z",
+              "education_years_z",
+              "baseline_pacc_raw_z",
+              "baseline_mmscore_z",
+              "amyloid_centiloid_z",
+              "log_icv_volume_z",
+              "sex_binary",
+              "apoe4_carrier",
+              "treatment_active"
+            ],
+            "hazard_ratio": 0.7954834600370125,
+            "informative_subjects": 986,
+            "log_hr": -0.22880522332866826,
+            "manufacturer_stratified": true,
+            "n": 1053,
+            "observational_association_not_prediction_validation": true,
+            "p": 0.014266366679354605,
+            "pacc_or_saliency_was_not_target": true,
+            "parameters": 10,
+            "risk_set_noncontributing_rows": 67,
+            "robust_covariance": "SUBJECT_SANDWICH",
+            "standard_error": 0.09337138028284989,
+            "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+            "status": "ESTIMATED"
+          }
+        },
+        "hippocampus": {
+          "ci95": [
+            0.5973612491427355,
+            0.8673076953470013
+          ],
+          "correction": "HOLM_FIXED_FAMILY_INCLUDING_NOT_ESTIMABLE_TESTS",
+          "disease_specificity_or_causality_proven": false,
+          "events": 237,
+          "family_size": 3,
+          "features": [
+            "region_z",
+            "age_z",
+            "education_years_z",
+            "baseline_pacc_raw_z",
+            "baseline_mmscore_z",
+            "amyloid_centiloid_z",
+            "log_icv_volume_z",
+            "sex_binary",
+            "apoe4_carrier",
+            "treatment_active"
+          ],
+          "hazard_ratio": 0.7197888636840609,
+          "informative_subjects": 986,
+          "interpretation": "ASSOCIATION_LIMITED_BY_DIAGNOSTICS_OR_STABILITY",
+          "leave_fold_out": [
+            {
+              "ci95": [
+                0.567951481580619,
+                0.8564801934589561
+              ],
+              "events": 189,
+              "excluded_fold": 0,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 0.6974519301138031,
+              "independent_replication": false,
+              "informative_subjects": 787,
+              "log_hr": -0.36032168506109485,
+              "manufacturer_stratified": true,
+              "n": 843,
+              "observational_association_not_prediction_validation": true,
+              "p": 0.0005852531206997647,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 56,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.10479469316367192,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            },
+            {
+              "ci95": [
+                0.6110559661415019,
+                0.9173329202562516
+              ],
+              "events": 189,
+              "excluded_fold": 1,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 0.7486933643759568,
+              "independent_replication": false,
+              "informative_subjects": 779,
+              "log_hr": -0.28942577264578967,
+              "manufacturer_stratified": true,
+              "n": 841,
+              "observational_association_not_prediction_validation": true,
+              "p": 0.005229976103513764,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 62,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.10364334374827781,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            },
+            {
+              "ci95": [
+                0.5275250006230839,
+                0.8095017109922016
+              ],
+              "events": 191,
+              "excluded_fold": 2,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 0.6534771538436127,
+              "independent_replication": false,
+              "informative_subjects": 793,
+              "log_hr": -0.4254477062173919,
+              "manufacturer_stratified": true,
+              "n": 844,
+              "observational_association_not_prediction_validation": true,
+              "p": 9.83617024495089e-05,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 51,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.1092404663221831,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            },
+            {
+              "ci95": [
+                0.6207411397536715,
+                0.9340832969451907
+              ],
+              "events": 189,
+              "excluded_fold": 3,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 0.7614617064374444,
+              "independent_replication": false,
+              "informative_subjects": 786,
+              "log_hr": -0.2725153949271863,
+              "manufacturer_stratified": true,
+              "n": 842,
+              "observational_association_not_prediction_validation": true,
+              "p": 0.008945993234468277,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 56,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.10424782307252638,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            },
+            {
+              "ci95": [
+                0.5800398759258504,
+                0.8990032681136888
+              ],
+              "events": 190,
+              "excluded_fold": 4,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 0.7221203113703408,
+              "independent_replication": false,
+              "informative_subjects": 793,
+              "log_hr": -0.32556351772457853,
+              "manufacturer_stratified": true,
+              "n": 842,
+              "observational_association_not_prediction_validation": true,
+              "p": 0.0035859759592297836,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 49,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.11178311657351143,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            }
+          ],
+          "linearity": {
+            "nonsignificance_does_not_prove_linearity": true,
+            "p": 0.11608330189141626,
+            "statistic": 2.4693854783854476,
+            "status": "TESTED_QUADRATIC_DEPARTURE"
+          },
+          "log_hr": -0.32879735485997297,
+          "manufacturer_stratified": true,
+          "multiplicity_supported": true,
+          "n": 1053,
+          "observational_association_not_prediction_validation": true,
+          "p": 0.0005469433244974178,
+          "p_holm": 0.0016408299734922533,
+          "pacc_or_saliency_was_not_target": true,
+          "parameters": 10,
+          "ph": {
+            "early_events": 5,
+            "late_events": 232,
+            "status": "NOT_ESTIMABLE_PERIOD_SUPPORT"
+          },
+          "risk_set_noncontributing_rows": 67,
+          "robust_covariance": "SUBJECT_SANDWICH",
+          "standard_error": 0.09512035014871491,
+          "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+          "status": "ESTIMATED",
+          "unknown_scanner_excluded": {
+            "ci95": [
+              0.5973612491427355,
+              0.8673076953470013
+            ],
+            "events": 237,
+            "features": [
+              "region_z",
+              "age_z",
+              "education_years_z",
+              "baseline_pacc_raw_z",
+              "baseline_mmscore_z",
+              "amyloid_centiloid_z",
+              "log_icv_volume_z",
+              "sex_binary",
+              "apoe4_carrier",
+              "treatment_active"
+            ],
+            "hazard_ratio": 0.7197888636840609,
+            "informative_subjects": 986,
+            "log_hr": -0.32879735485997297,
+            "manufacturer_stratified": true,
+            "n": 1053,
+            "observational_association_not_prediction_validation": true,
+            "p": 0.0005469433244974178,
+            "pacc_or_saliency_was_not_target": true,
+            "parameters": 10,
+            "risk_set_noncontributing_rows": 67,
+            "robust_covariance": "SUBJECT_SANDWICH",
+            "standard_error": 0.09512035014871491,
+            "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+            "status": "ESTIMATED"
+          }
+        },
+        "lateral_ventricle": {
+          "ci95": [
+            1.086635482834739,
+            1.508969072872107
+          ],
+          "correction": "HOLM_FIXED_FAMILY_INCLUDING_NOT_ESTIMABLE_TESTS",
+          "disease_specificity_or_causality_proven": false,
+          "events": 237,
+          "family_size": 3,
+          "features": [
+            "region_z",
+            "age_z",
+            "education_years_z",
+            "baseline_pacc_raw_z",
+            "baseline_mmscore_z",
+            "amyloid_centiloid_z",
+            "log_icv_volume_z",
+            "sex_binary",
+            "apoe4_carrier",
+            "treatment_active"
+          ],
+          "hazard_ratio": 1.2805074529588145,
+          "informative_subjects": 986,
+          "interpretation": "ASSOCIATION_LIMITED_BY_DIAGNOSTICS_OR_STABILITY",
+          "leave_fold_out": [
+            {
+              "ci95": [
+                1.0991284823983252,
+                1.5714268483320355
+              ],
+              "events": 189,
+              "excluded_fold": 0,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 1.3142298151416187,
+              "independent_replication": false,
+              "informative_subjects": 787,
+              "log_hr": 0.27325080213770797,
+              "manufacturer_stratified": true,
+              "n": 843,
+              "observational_association_not_prediction_validation": true,
+              "p": 0.0027311095139380716,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 56,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.09119042096365852,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            },
+            {
+              "ci95": [
+                1.0825430507802143,
+                1.576924627315897
+              ],
+              "events": 189,
+              "excluded_fold": 1,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 1.3065560825716604,
+              "independent_replication": false,
+              "informative_subjects": 779,
+              "log_hr": 0.26739473086792925,
+              "manufacturer_stratified": true,
+              "n": 841,
+              "observational_association_not_prediction_validation": true,
+              "p": 0.005327730574179899,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 62,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.09596009234201422,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            },
+            {
+              "ci95": [
+                1.0460942099588113,
+                1.5398819658690912
+              ],
+              "events": 191,
+              "excluded_fold": 2,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 1.2691972299511405,
+              "independent_replication": false,
+              "informative_subjects": 793,
+              "log_hr": 0.23838459820887445,
+              "manufacturer_stratified": true,
+              "n": 844,
+              "observational_association_not_prediction_validation": true,
+              "p": 0.015654233940214164,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 51,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.09863324986719016,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            },
+            {
+              "ci95": [
+                1.0308123002323613,
+                1.4857525771418436
+              ],
+              "events": 189,
+              "excluded_fold": 3,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 1.2375508198129654,
+              "independent_replication": false,
+              "informative_subjects": 786,
+              "log_hr": 0.2131342811330296,
+              "manufacturer_stratified": true,
+              "n": 842,
+              "observational_association_not_prediction_validation": true,
+              "p": 0.022288922064710198,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 56,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.09325874933831882,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            },
+            {
+              "ci95": [
+                1.0493672232760543,
+                1.5057707633432544
+              ],
+              "events": 190,
+              "excluded_fold": 4,
+              "features": [
+                "region_z",
+                "age_z",
+                "education_years_z",
+                "baseline_pacc_raw_z",
+                "baseline_mmscore_z",
+                "amyloid_centiloid_z",
+                "log_icv_volume_z",
+                "sex_binary",
+                "apoe4_carrier",
+                "treatment_active"
+              ],
+              "hazard_ratio": 1.257022865671017,
+              "independent_replication": false,
+              "informative_subjects": 793,
+              "log_hr": 0.22874612011172893,
+              "manufacturer_stratified": true,
+              "n": 842,
+              "observational_association_not_prediction_validation": true,
+              "p": 0.01302508299153076,
+              "pacc_or_saliency_was_not_target": true,
+              "parameters": 10,
+              "risk_set_noncontributing_rows": 49,
+              "robust_covariance": "SUBJECT_SANDWICH",
+              "standard_error": 0.09212182760432562,
+              "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+              "status": "ESTIMATED"
+            }
+          ],
+          "linearity": {
+            "nonsignificance_does_not_prove_linearity": true,
+            "p": 0.4605820869494823,
+            "statistic": 0.544479731894171,
+            "status": "TESTED_QUADRATIC_DEPARTURE"
+          },
+          "log_hr": 0.24725644699100408,
+          "manufacturer_stratified": true,
+          "multiplicity_supported": true,
+          "n": 1053,
+          "observational_association_not_prediction_validation": true,
+          "p": 0.0031577216727254422,
+          "p_holm": 0.0063154433454508845,
+          "pacc_or_saliency_was_not_target": true,
+          "parameters": 10,
+          "ph": {
+            "early_events": 5,
+            "late_events": 232,
+            "status": "NOT_ESTIMABLE_PERIOD_SUPPORT"
+          },
+          "risk_set_noncontributing_rows": 67,
+          "robust_covariance": "SUBJECT_SANDWICH",
+          "standard_error": 0.08376032523984972,
+          "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+          "status": "ESTIMATED",
+          "unknown_scanner_excluded": {
+            "ci95": [
+              1.086635482834739,
+              1.508969072872107
+            ],
+            "events": 237,
+            "features": [
+              "region_z",
+              "age_z",
+              "education_years_z",
+              "baseline_pacc_raw_z",
+              "baseline_mmscore_z",
+              "amyloid_centiloid_z",
+              "log_icv_volume_z",
+              "sex_binary",
+              "apoe4_carrier",
+              "treatment_active"
+            ],
+            "hazard_ratio": 1.2805074529588145,
+            "informative_subjects": 986,
+            "log_hr": 0.24725644699100408,
+            "manufacturer_stratified": true,
+            "n": 1053,
+            "observational_association_not_prediction_validation": true,
+            "p": 0.0031577216727254422,
+            "pacc_or_saliency_was_not_target": true,
+            "parameters": 10,
+            "risk_set_noncontributing_rows": 67,
+            "robust_covariance": "SUBJECT_SANDWICH",
+            "standard_error": 0.08376032523984972,
+            "standardization": "ONE_SD_LOG_SOURCE_ROI_VOLUME",
+            "status": "ESTIMATED"
+          }
+        }
+      },
+      "complete_case_selection_not_generalized_to_all_recruited_participants": true,
+      "counts": {
+        "complete_mri_family": 1053,
+        "events": 237,
+        "parent": 1059
+      },
+      "no_cnn_training_or_new_model_selection": true,
+      "pacc": {
+        "entorhinal": {
+          "attempts": [
+            {
+              "log_likelihood": -16888.39794661131,
+              "optimizer": "lbfgs",
+              "valid": true
+            },
+            {
+              "log_likelihood": -17071.460156178917,
+              "optimizer": "bfgs",
+              "valid": false
+            }
+          ],
+          "ci95": [
+            0.13936526518592351,
+            0.2821193605171059
+          ],
+          "correction": "HOLM_FIXED_FAMILY_INCLUDING_NOT_ESTIMABLE_TESTS",
+          "effect_units": "PACC_POINTS_PER_YEAR_PER_SD_LOG_ROI_VOLUME",
+          "estimate": 0.2107423128515147,
+          "family_size": 3,
+          "formula": "pacc ~ years * (region_z + age_z + education_years_z + baseline_pacc_raw_z + baseline_mmscore_z + amyloid_centiloid_z + log_icv_volume_z + sex_binary + apoe4_carrier + treatment_active) + C(mri_manufacturer)",
+          "independent_replication": false,
+          "missing_at_random_not_proven": true,
+          "multiplicity_supported": true,
+          "n_measurements": 8504,
+          "n_subjects": 1043,
+          "p": 7.172409765033744e-09,
+          "p_holm": 1.4344819530067488e-08,
+          "random_effects": "INTERCEPT_AND_TIME_SLOPE",
+          "standard_error": 0.036417530234537074,
+          "status": "ESTIMATED"
+        },
+        "hippocampus": {
+          "attempts": [
+            {
+              "log_likelihood": -16869.76284646854,
+              "optimizer": "lbfgs",
+              "valid": true
+            },
+            {
+              "log_likelihood": -16869.762845126912,
+              "optimizer": "bfgs",
+              "valid": true
+            }
+          ],
+          "ci95": [
+            0.24147900316385762,
+            0.38497445295984123
+          ],
+          "correction": "HOLM_FIXED_FAMILY_INCLUDING_NOT_ESTIMABLE_TESTS",
+          "effect_units": "PACC_POINTS_PER_YEAR_PER_SD_LOG_ROI_VOLUME",
+          "estimate": 0.3132267280618494,
+          "family_size": 3,
+          "formula": "pacc ~ years * (region_z + age_z + education_years_z + baseline_pacc_raw_z + baseline_mmscore_z + amyloid_centiloid_z + log_icv_volume_z + sex_binary + apoe4_carrier + treatment_active) + C(mri_manufacturer)",
+          "independent_replication": false,
+          "missing_at_random_not_proven": true,
+          "multiplicity_supported": true,
+          "n_measurements": 8504,
+          "n_subjects": 1043,
+          "p": 1.1629385744580282e-17,
+          "p_holm": 3.488815723374084e-17,
+          "random_effects": "INTERCEPT_AND_TIME_SLOPE",
+          "standard_error": 0.03660665474668346,
+          "status": "ESTIMATED"
+        },
+        "lateral_ventricle": {
+          "attempts": [
+            {
+              "log_likelihood": -16904.99795754246,
+              "optimizer": "lbfgs",
+              "valid": true
+            },
+            {
+              "log_likelihood": -16904.997958190004,
+              "optimizer": "bfgs",
+              "valid": true
+            }
+          ],
+          "ci95": [
+            -0.19136725246522338,
+            -0.05892776747140924
+          ],
+          "correction": "HOLM_FIXED_FAMILY_INCLUDING_NOT_ESTIMABLE_TESTS",
+          "effect_units": "PACC_POINTS_PER_YEAR_PER_SD_LOG_ROI_VOLUME",
+          "estimate": -0.1251475099683163,
+          "family_size": 3,
+          "formula": "pacc ~ years * (region_z + age_z + education_years_z + baseline_pacc_raw_z + baseline_mmscore_z + amyloid_centiloid_z + log_icv_volume_z + sex_binary + apoe4_carrier + treatment_active) + C(mri_manufacturer)",
+          "independent_replication": false,
+          "missing_at_random_not_proven": true,
+          "multiplicity_supported": true,
+          "n_measurements": 8504,
+          "n_subjects": 1043,
+          "p": 0.00021214175524870995,
+          "p_holm": 0.00021214175524870995,
+          "random_effects": "INTERCEPT_AND_TIME_SLOPE",
+          "standard_error": 0.033786203736007374,
+          "status": "ESTIMATED"
+        }
+      },
+      "pacc_is_secondary_same_cohort_not_replication": true,
+      "same_primary_rows_for_all_three_rois": true,
+      "scale_parameters": {
+        "age": {
+          "mean": 71.85731244064577,
+          "sd": 4.800268379518578,
+          "unit": "UNIQUE_SUBJECT"
+        },
+        "amyloid_centiloid": {
+          "mean": 66.05619857549857,
+          "sd": 32.76184533987524,
+          "unit": "UNIQUE_SUBJECT"
+        },
+        "baseline_mmscore": {
+          "mean": 28.748338081671417,
+          "sd": 1.2876680338658884,
+          "unit": "UNIQUE_SUBJECT"
+        },
+        "baseline_pacc_raw": {
+          "mean": -0.2524652659069325,
+          "sd": 2.6932958680008303,
+          "unit": "UNIQUE_SUBJECT"
+        },
+        "education_years": {
+          "mean": 16.562203228869894,
+          "sd": 2.796177402978024,
+          "unit": "UNIQUE_SUBJECT"
+        },
+        "log_entorhinal_volume": {
+          "mean": 1.617713664140378,
+          "sd": 0.15266931732377917,
+          "unit": "UNIQUE_SUBJECT"
+        },
+        "log_hippocampus_volume": {
+          "mean": 1.7567591114980798,
+          "sd": 0.12525984182972905,
+          "unit": "UNIQUE_SUBJECT"
+        },
+        "log_icv_volume": {
+          "mean": 7.291415732285502,
+          "sd": 0.09698894624134383,
+          "unit": "UNIQUE_SUBJECT"
+        },
+        "log_lateral_ventricle_volume": {
+          "mean": 3.4866305623957006,
+          "sd": 0.46171155395660424,
+          "unit": "UNIQUE_SUBJECT"
+        }
+      },
+      "status": "REGIONAL_ASSOCIATIONS_COMPUTED"
+    },
+    "causal_localization": false,
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "disease_region_discovery_claim_allowed": false,
+    "external_validation": false,
+    "question": "Baseline regional volume associated with future confirmed CDR progression, not Alzheimer disease causation",
+    "region_selection": "LOCKED_SOURCE_VOLUMETRY_AND_LITERATURE_NOT_HEATMAP_OR_LOWEST_P_VALUE",
+    "spatial_evidence": {
+      "anatomical_labels_approximate_not_subject_segmentation": true,
+      "combining_roi_association_and_attribution_is_not_independent_replication": true,
+      "eligible_units": 22,
+      "interpretation": "ILLUSTRATIVE_PANEL_NOT_POPULATION_REGIONAL_DISCOVERY",
+      "mappings": {
+        "entorhinal": {
+          "fuzzy_mapping_used": false,
+          "labels": [],
+          "status": "NO_EXACT_LABEL_NO_IMAGE_MAPPING"
+        },
+        "hippocampus": {
+          "fuzzy_mapping_used": false,
+          "labels": [
+            109,
+            119
+          ],
+          "status": "ANATOMICAL_CORRESPONDENCE_NOT_QUANTITATIVE_MASK_EQUIVALENCE"
+        },
+        "lateral_ventricle": {
+          "fuzzy_mapping_used": false,
+          "labels": [],
+          "status": "NO_EXACT_LABEL_NO_IMAGE_MAPPING"
+        }
+      },
+      "mri_unique_cases": 10,
+      "requested_units": 30
+    },
+    "status": "REGIONAL_POSTHOC_DOSSIER_COMPLETED"
+  }
+}

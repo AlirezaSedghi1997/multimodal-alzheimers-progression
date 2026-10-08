@@ -1,0 +1,545 @@
+{
+  "source_id": "cf39c2a02bb8a6cd",
+  "source_sha256": "0a8bed734b6162c1e13976f548284f0414f497210eebc1af9c4020b92418b9ac",
+  "scientific_role": "corrected_nested_image_analysis",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 1,
+  "aggregate": {
+    "branches": {
+      "amyloid": {
+        "baseline_balance": {
+          "age": {
+            "excluded": {
+              "mean": 72.31615384615384,
+              "median": 71.76,
+              "missing_n": 0,
+              "observed_n": 546,
+              "q1": 68.09,
+              "q3": 75.34
+            },
+            "included": {
+              "mean": 71.58178571428572,
+              "median": 70.50999999999999,
+              "missing_n": 0,
+              "observed_n": 560,
+              "q1": 67.91,
+              "q3": 74.6525
+            },
+            "smd_included_minus_excluded": -0.1525013632367957
+          },
+          "apoe4_carrier": {
+            "excluded": {
+              "mean": 0.6062271062271062,
+              "median": 1.0,
+              "missing_n": 0,
+              "observed_n": 546,
+              "q1": 0.0,
+              "q3": 1.0
+            },
+            "included": {
+              "mean": 0.5803571428571429,
+              "median": 1.0,
+              "missing_n": 0,
+              "observed_n": 560,
+              "q1": 0.0,
+              "q3": 1.0
+            },
+            "smd_included_minus_excluded": -0.0526353859605452
+          },
+          "baseline_amyloid_centiloid": {
+            "excluded": {
+              "mean": 66.98086227106228,
+              "median": 62.5617,
+              "missing_n": 0,
+              "observed_n": 546,
+              "q1": 42.424,
+              "q3": 88.1915
+            },
+            "included": {
+              "mean": 65.66081357142859,
+              "median": 58.9003,
+              "missing_n": 0,
+              "observed_n": 560,
+              "q1": 40.5933,
+              "q3": 82.6994
+            },
+            "smd_included_minus_excluded": -0.04028788369651018
+          },
+          "baseline_digittotal": {
+            "excluded": {
+              "mean": 42.58974358974359,
+              "median": 42.0,
+              "missing_n": 0,
+              "observed_n": 546,
+              "q1": 36.0,
+              "q3": 48.0
+            },
+            "included": {
+              "mean": 43.14642857142857,
+              "median": 43.0,
+              "missing_n": 0,
+              "observed_n": 560,
+              "q1": 37.0,
+              "q3": 49.0
+            },
+            "smd_included_minus_excluded": 0.06282613418517909
+          },
+          "baseline_fctotal96": {
+            "excluded": {
+              "mean": 75.17948717948718,
+              "median": 76.0,
+              "missing_n": 0,
+              "observed_n": 546,
+              "q1": 71.0,
+              "q3": 79.0
+            },
+            "included": {
+              "mean": 76.05357142857143,
+              "median": 77.0,
+              "missing_n": 0,
+              "observed_n": 560,
+              "q1": 72.0,
+              "q3": 80.0
+            },
+            "smd_included_minus_excluded": 0.14286568157226087
+          },
+          "baseline_ldeltotal": {
+            "excluded": {
+              "mean": 11.516483516483516,
+              "median": 11.0,
+              "missing_n": 0,
+              "observed_n": 546,
+              "q1": 9.0,
+              "q3": 14.0
+            },
+            "included": {
+              "mean": 11.435714285714285,
+              "median": 11.0,
+              "missing_n": 0,
+              "observed_n": 560,
+              "q1": 9.0,
+              "q3": 14.0
+            },
+            "smd_included_minus_excluded": -0.024409230797661285
+          },
+          "baseline_mmscore": {
+            "excluded": {
+              "mean": 28.73992673992674,
+              "median": 29.0,
+              "missing_n": 0,
+              "observed_n": 546,
+              "q1": 28.0,
+              "q3": 30.0
+            },
+            "included": {
+              "mean": 28.776785714285715,
+              "median": 29.0,
+              "missing_n": 0,
+              "observed_n": 560,
+              "q1": 28.0,
+              "q3": 30.0
+            },
+            "smd_included_minus_excluded": 0.029094988451215574
+          },
+          "baseline_pacc_raw": {
+            "excluded": {
+              "mean": -1.2783992124542123,
+              "median": -1.2098905,
+              "missing_n": 0,
+              "observed_n": 546,
+              "q1": -2.77618425,
+              "q3": 0.48142050000000003
+            },
+            "included": {
+              "mean": -1.0769660267857142,
+              "median": -0.980917,
+              "missing_n": 0,
+              "observed_n": 560,
+              "q1": -2.70220025,
+              "q3": 0.5532135
+            },
+            "smd_included_minus_excluded": 0.08260984283171656
+          },
+          "education_years": {
+            "excluded": {
+              "mean": 16.794871794871796,
+              "median": 16.0,
+              "missing_n": 0,
+              "observed_n": 546,
+              "q1": 15.0,
+              "q3": 18.0
+            },
+            "included": {
+              "mean": 16.360714285714284,
+              "median": 16.0,
+              "missing_n": 0,
+              "observed_n": 560,
+              "q1": 15.0,
+              "q3": 18.0
+            },
+            "smd_included_minus_excluded": -0.15558104240042375
+          },
+          "sex_binary": {
+            "excluded": {
+              "mean": 0.5311355311355311,
+              "median": 1.0,
+              "missing_n": 0,
+              "observed_n": 546,
+              "q1": 0.0,
+              "q3": 1.0
+            },
+            "included": {
+              "mean": 0.2982142857142857,
+              "median": 0.0,
+              "missing_n": 0,
+              "observed_n": 560,
+              "q1": 0.0,
+              "q3": 1.0
+            },
+            "smd_included_minus_excluded": -0.48612666330365023
+          },
+          "treatment_active": {
+            "excluded": {
+              "mean": 0.4981684981684982,
+              "median": 0.0,
+              "missing_n": 0,
+              "observed_n": 546,
+              "q1": 0.0,
+              "q3": 1.0
+            },
+            "included": {
+              "mean": 0.48214285714285715,
+              "median": 0.0,
+              "missing_n": 0,
+              "observed_n": 560,
+              "q1": 0.0,
+              "q3": 1.0
+            },
+            "smd_included_minus_excluded": -0.03203260818375097
+          }
+        },
+        "endpoint_parent_n": 1106,
+        "excluded_event_fraction": 0.23809523809523808,
+        "excluded_events": 130,
+        "excluded_followup_days": {
+          "mean": 1206.14652014652,
+          "median": 1467.0,
+          "missing_n": 0,
+          "observed_n": 546,
+          "q1": 837.0,
+          "q3": 1497.0
+        },
+        "image_excluded_n": 546,
+        "image_included_n": 560,
+        "image_inclusion_fraction": 0.5063291139240507,
+        "included_event_fraction": 0.19642857142857142,
+        "included_events": 110,
+        "included_followup_days": {
+          "mean": 1176.1553571428572,
+          "median": 1432.0,
+          "missing_n": 0,
+          "observed_n": 560,
+          "q1": 816.0,
+          "q3": 1518.0
+        },
+        "inclusion_propensity": {
+          "baseline_features": [
+            "age",
+            "sex_binary",
+            "education_years",
+            "apoe4_carrier",
+            "treatment_active",
+            "baseline_pacc_raw",
+            "baseline_mmscore",
+            "baseline_amyloid_centiloid"
+          ],
+          "cross_validated_inclusion_auc": 0.615113160648875,
+          "ess_fraction_of_selected": 0.9330284211182035,
+          "ipw_outcome_adjustment_performed": false,
+          "oof_inclusion_probability_q05_q50_q95": [
+            0.31470700714549493,
+            0.5611569974037305,
+            0.6619698694817049
+          ],
+          "outcome_used_in_propensity_model": false,
+          "selected_inverse_inclusion_weight_ess": 522.4959158261939,
+          "selected_n": 560,
+          "status": "COMPLETED_DESCRIPTIVE_ONLY"
+        },
+        "interpretation": "SELECTION_BIAS_DIAGNOSTIC_NOT_OUTCOME_ADJUSTMENT",
+        "parent_population": "A4_ONLY"
+      },
+      "tau": {
+        "baseline_balance": {
+          "age": {
+            "excluded": {
+              "mean": 72.45396825396827,
+              "median": 71.88,
+              "missing_n": 0,
+              "observed_n": 63,
+              "q1": 68.725,
+              "q3": 76.24
+            },
+            "included": {
+              "mean": 72.14542483660131,
+              "median": 71.63499999999999,
+              "missing_n": 0,
+              "observed_n": 306,
+              "q1": 68.32249999999999,
+              "q3": 75.205
+            },
+            "smd_included_minus_excluded": -0.06249533618765482
+          },
+          "apoe4_carrier": {
+            "excluded": {
+              "mean": 0.5396825396825397,
+              "median": 1.0,
+              "missing_n": 0,
+              "observed_n": 63,
+              "q1": 0.0,
+              "q3": 1.0
+            },
+            "included": {
+              "mean": 0.5816993464052288,
+              "median": 1.0,
+              "missing_n": 0,
+              "observed_n": 306,
+              "q1": 0.0,
+              "q3": 1.0
+            },
+            "smd_included_minus_excluded": 0.08432460026483243
+          },
+          "baseline_amyloid_centiloid": {
+            "excluded": {
+              "mean": 69.04179682539683,
+              "median": 66.2231,
+              "missing_n": 0,
+              "observed_n": 63,
+              "q1": 42.424,
+              "q3": 82.6994
+            },
+            "included": {
+              "mean": 62.3582888888889,
+              "median": 57.0696,
+              "missing_n": 0,
+              "observed_n": 306,
+              "q1": 39.220275,
+              "q3": 79.038
+            },
+            "smd_included_minus_excluded": -0.20562187460633508
+          },
+          "baseline_digittotal": {
+            "excluded": {
+              "mean": 43.26984126984127,
+              "median": 42.0,
+              "missing_n": 0,
+              "observed_n": 63,
+              "q1": 36.5,
+              "q3": 49.0
+            },
+            "included": {
+              "mean": 42.290849673202615,
+              "median": 42.0,
+              "missing_n": 0,
+              "observed_n": 306,
+              "q1": 36.0,
+              "q3": 48.0
+            },
+            "smd_included_minus_excluded": -0.09921487351465665
+          },
+          "baseline_fctotal96": {
+            "excluded": {
+              "mean": 74.28571428571429,
+              "median": 74.0,
+              "missing_n": 0,
+              "observed_n": 63,
+              "q1": 70.0,
+              "q3": 79.0
+            },
+            "included": {
+              "mean": 75.5359477124183,
+              "median": 75.0,
+              "missing_n": 0,
+              "observed_n": 306,
+              "q1": 71.0,
+              "q3": 80.0
+            },
+            "smd_included_minus_excluded": 0.20664826015528295
+          },
+          "baseline_ldeltotal": {
+            "excluded": {
+              "mean": 11.142857142857142,
+              "median": 10.0,
+              "missing_n": 0,
+              "observed_n": 63,
+              "q1": 9.0,
+              "q3": 13.0
+            },
+            "included": {
+              "mean": 11.483660130718954,
+              "median": 11.0,
+              "missing_n": 0,
+              "observed_n": 306,
+              "q1": 9.0,
+              "q3": 14.0
+            },
+            "smd_included_minus_excluded": 0.10798274435567279
+          },
+          "baseline_mmscore": {
+            "excluded": {
+              "mean": 28.603174603174605,
+              "median": 29.0,
+              "missing_n": 0,
+              "observed_n": 63,
+              "q1": 28.0,
+              "q3": 30.0
+            },
+            "included": {
+              "mean": 28.627450980392158,
+              "median": 29.0,
+              "missing_n": 0,
+              "observed_n": 306,
+              "q1": 28.0,
+              "q3": 30.0
+            },
+            "smd_included_minus_excluded": 0.018413497923400933
+          },
+          "baseline_pacc_raw": {
+            "excluded": {
+              "mean": -1.5610652063492068,
+              "median": -1.71638,
+              "missing_n": 0,
+              "observed_n": 63,
+              "q1": -3.1205495,
+              "q3": 0.037861500000000006
+            },
+            "included": {
+              "mean": -1.3484889738562091,
+              "median": -1.1510905,
+              "missing_n": 0,
+              "observed_n": 306,
+              "q1": -2.833973,
+              "q3": 0.434042
+            },
+            "smd_included_minus_excluded": 0.08455526097894994
+          },
+          "education_years": {
+            "excluded": {
+              "mean": 16.77777777777778,
+              "median": 16.0,
+              "missing_n": 0,
+              "observed_n": 63,
+              "q1": 15.5,
+              "q3": 18.0
+            },
+            "included": {
+              "mean": 16.022875816993466,
+              "median": 16.0,
+              "missing_n": 0,
+              "observed_n": 306,
+              "q1": 14.0,
+              "q3": 18.0
+            },
+            "smd_included_minus_excluded": -0.2718671126905401
+          },
+          "sex_binary": {
+            "excluded": {
+              "mean": 0.38095238095238093,
+              "median": 0.0,
+              "missing_n": 0,
+              "observed_n": 63,
+              "q1": 0.0,
+              "q3": 1.0
+            },
+            "included": {
+              "mean": 0.4411764705882353,
+              "median": 0.0,
+              "missing_n": 0,
+              "observed_n": 306,
+              "q1": 0.0,
+              "q3": 1.0
+            },
+            "smd_included_minus_excluded": 0.12204779049924029
+          },
+          "treatment_active": {
+            "excluded": {
+              "mean": 0.5238095238095238,
+              "median": 1.0,
+              "missing_n": 0,
+              "observed_n": 63,
+              "q1": 0.0,
+              "q3": 1.0
+            },
+            "included": {
+              "mean": 0.4934640522875817,
+              "median": 0.0,
+              "missing_n": 0,
+              "observed_n": 306,
+              "q1": 0.0,
+              "q3": 1.0
+            },
+            "smd_included_minus_excluded": -0.06043565599827427
+          }
+        },
+        "endpoint_parent_n": 369,
+        "excluded_event_fraction": 0.25396825396825395,
+        "excluded_events": 16,
+        "excluded_followup_days": {
+          "mean": 1103.6349206349207,
+          "median": 1199.0,
+          "missing_n": 0,
+          "observed_n": 63,
+          "q1": 772.0,
+          "q3": 1447.5
+        },
+        "image_excluded_n": 63,
+        "image_included_n": 306,
+        "image_inclusion_fraction": 0.8292682926829268,
+        "included_event_fraction": 0.24509803921568626,
+        "included_events": 75,
+        "included_followup_days": {
+          "mean": 1186.7450980392157,
+          "median": 1435.0,
+          "missing_n": 0,
+          "observed_n": 306,
+          "q1": 788.25,
+          "q3": 1478.75
+        },
+        "inclusion_propensity": {
+          "baseline_features": [
+            "age",
+            "sex_binary",
+            "education_years",
+            "apoe4_carrier",
+            "treatment_active",
+            "baseline_pacc_raw",
+            "baseline_mmscore",
+            "baseline_amyloid_centiloid"
+          ],
+          "cross_validated_inclusion_auc": 0.46524535740222017,
+          "ess_fraction_of_selected": 0.9942870384128938,
+          "ipw_outcome_adjustment_performed": false,
+          "oof_inclusion_probability_q05_q50_q95": [
+            0.7140977354383395,
+            0.8380738701094468,
+            0.916333687765431
+          ],
+          "outcome_used_in_propensity_model": false,
+          "selected_inverse_inclusion_weight_ess": 304.2518337543455,
+          "selected_n": 306,
+          "status": "COMPLETED_DESCRIPTIVE_ONLY"
+        },
+        "interpretation": "SELECTION_BIAS_DIAGNOSTIC_NOT_OUTCOME_ADJUSTMENT",
+        "parent_population": "A4_TREATMENT_AND_PLACEBO"
+      }
+    },
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "correction_receipt_sha256": "5d94d6d75c9020f4a00a622cd13d24e52e8a4c466e4cee830489545559c45e77",
+    "report_sha256": "0e0235ae8e5623b1c56221513d7fa4b663522f70a8dff31fe2ab2b0aa699e170",
+    "schema_version": "4.2",
+    "science_gate_status": "BLOCKED",
+    "source_code_sha256": "a45581553c7a22e066aa9a172f495a4c29cc8e3d54e4e6596f7290d4cb54ca56",
+    "status": "COMPLETED_DESCRIPTIVE_ONLY"
+  }
+}

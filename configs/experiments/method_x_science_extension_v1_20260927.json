@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "protocol_id": "METHOD_X_MX05_SCIENCE_EXTENSION_V1_20260927",
+  "parent_protocol_id": "method_x_fasttrack_v2_20260927_mx05_gate_import",
+  "timing": "prespecified_before_extension_results_but_after_historical_method_x_outer_review",
+  "scope": "internal_exploratory_robustness_not_independent_external_validation",
+  "parent_terminal_gate": "MX7_FREEZE_COMPLETED_BEFORE_EXTENSION_GPU",
+  "patient_unit": "patient_hash",
+  "outer_folds": [0, 1, 2, 3, 4],
+  "inner_validation_fraction": 0.15,
+  "original_seed": 13,
+  "replication_seeds": [29, 47],
+  "hybrid_variants": ["baseline", "plus_dense_skip"],
+  "mri_only_arm": {
+    "seed": 13,
+    "architecture": "amuse_x_hybrid3d_baseline",
+    "input_mode": "mri_only",
+    "retrain_from_scratch": true
+  },
+  "controls": {
+    "prevalence": "fit_partition_only",
+    "tabular_only": {
+      "model": "logistic_regression",
+      "imputation_and_scaling": "fit_partition_only",
+      "c_grid": [0.01, 0.1, 1.0, 10.0],
+      "c_selection": "inner_validation_bce_only"
+    },
+    "random_labels": {
+      "seed": 13,
+      "arm": "amuse_x_hybrid3d_baseline",
+      "permutation_scope": "fit_partition_only",
+      "evaluation_labels": "unpermuted"
+    }
+  },
+  "training": {
+    "epochs_field_total_five_fold": 100,
+    "epochs_per_fold_max": 20,
+    "selection_only_before_locked_outer": true,
+    "exact_resume_required": true,
+    "no_pet_model_input": true
+  },
+  "model_selection": {
+    "scope": "within_each_fold_and_seed_inner_validation_only",
+    "metric": "binary_cross_entropy",
+    "tie_break": "baseline",
+    "outer_metrics_for_selection": false
+  },
+  "analysis": {
+    "primary_metrics": ["auroc", "auprc", "brier"],
+    "calibration": ["intercept", "slope"],
+    "paired_patient_bootstrap_resamples": 2000,
+    "bootstrap_seed": 20260927,
+    "confidence_level": 0.95,
+    "seed_repetitions_are_not_independent_patients": true,
+    "pet_mri_gap_days": [90, 180, 365],
+    "temporal_subgroups_descriptive_only": true,
+    "report_negative_results": true,
+    "multiplicity": "all_secondary_comparisons_exploratory_no_significance_claim"
+  },
+  "claim_gates": {
+    "patient_overlap_blocks_gpu": true,
+    "unverifiable_pet_source_blocks_independent_claim": true,
+    "cohort_label_perfect_confounding_blocks_disease_region_or_generalization_claim": true,
+    "unknown_prior_holdout_access_blocks_untouched_holdout_claim": true,
+    "external_validation_without_external_data": false
+  }
+}

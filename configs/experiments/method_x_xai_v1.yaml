@@ -1,0 +1,31 @@
+schema_version: 1
+protocol_name: method_x_anatomical_xai_v1
+selection_policy: PRESPECIFIED_REFERENCE_UNTIL_INNER_LOCK
+reference_backbone: resnet34_3d
+allowed_backbones:
+  - resnet10_3d
+  - resnet18_3d
+  - resnet34_3d
+  - densenet121_3d
+  - mednext_3d_s
+allowed_final_models:
+  - resnet10_3d
+  - resnet18_3d
+  - resnet34_3d
+  - densenet121_3d
+  - mednext_3d_s
+  - amuse_x_hybrid3d
+final_selection_manifest: reports/final_model_selection_manifest.json
+attribution_method: INPUT_GRADIENT_ABSOLUTE_NORMALIZED
+randomization_seeds: [13, 29, 47]
+bootstrap_resamples: 1000
+max_samples_per_fold: 0
+# NOTE (early track 034): the previous key `require_all_baselines_completed`
+# is REMOVED. It was read nowhere and contradicted the fixed exclusion-canon
+# gate (the two protocol-excluded rows must REMAIN excluded, never COMPLETED).
+# The enforced equivalent is: effective five terminal + two excluded exactly
+# excluded (see preflight_corrected_v1 in scripts/run_method_x_anatomical_xai.py).
+require_effective_five_terminal: true
+atlas_registry: results/spatial_attribution_v1/provenance/atlas_registry.json
+atlas_labels: results/spatial_attribution_v1/atlases/harvard_oxford_method_x_labels.json
+output_root: results/final_results/method_x_anatomical_xai_v3

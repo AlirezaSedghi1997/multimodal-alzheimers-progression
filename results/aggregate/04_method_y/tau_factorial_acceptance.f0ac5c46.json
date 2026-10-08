@@ -1,0 +1,44 @@
+{
+  "source_id": "f0ac5c462e657b0b",
+  "source_sha256": "4b2709201206fd94708c10150bd66f569186cda6813ffac5f980b90d762ddb16",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "blockers": [
+      "UNO_CINDEX_NOT_NONINFERIOR",
+      "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED"
+    ],
+    "branch": "tau",
+    "calibration_not_worse": true,
+    "challenger_arm": "A2",
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "delta_ibs_95ci": [
+      -0.013104082022147542,
+      0.0025998278586620814
+    ],
+    "delta_uno_cindex_95ci": [
+      -0.05079341627739378,
+      0.027527173477872258
+    ],
+    "exploratory_operational_acceptance": false,
+    "external_claim_allowed": false,
+    "fold_delta_ibs": [
+      0.005913567717190496,
+      -0.010711636070250802,
+      0.0002048768126984707,
+      -0.014304464353301002,
+      -0.007526730572668436
+    ],
+    "gate_role": "EXPLORATORY_OPERATIONAL_MODEL_COMPARISON",
+    "leave_manufacturer_out_performance_established": false,
+    "locked_external_validation_passed": false,
+    "pair_kind": "ARCHITECTURE_EFFECT_WITHOUT_AUGMENTATION",
+    "positive_claim_allowed": false,
+    "quantitative_equivalence_proven": false,
+    "reference_arm": "A0",
+    "scanner_probe_not_worse": true,
+    "selected_epoch_nll_gap_delta": -0.06099294603201216
+  }
+}

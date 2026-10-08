@@ -1,0 +1,46 @@
+{
+  "source_id": "821350d8b3b0b7f0",
+  "source_sha256": "7010f2dc0c442ae21cca28f115394a87e621d8f051d44b87f259a725bd722985",
+  "scientific_role": "posthoc_sensitivity",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "payload": {
+      "exact_duplicate_groups": 0,
+      "external_validation": false,
+      "lineage": {
+        "eligible_parent_counts_by_fold_seed": {
+          "0|13": 908,
+          "0|29": 769,
+          "0|47": 765,
+          "1|13": 907,
+          "1|29": 772,
+          "1|47": 771,
+          "2|13": 909,
+          "2|29": 776,
+          "2|47": 773,
+          "3|13": 910,
+          "3|29": 779,
+          "3|47": 772,
+          "4|13": 910,
+          "4|29": 773,
+          "4|47": 771
+        },
+        "materialized_derivatives": 4544,
+        "scope": "cache_lineage_and_eligibility_not_reconstruction_of_every_historical_optimizer_batch"
+      },
+      "near_duplicate_candidates": 0,
+      "patient_partitions": "VERIFIED_FIT_INNER_OUTER_PSEUDO",
+      "pseudo_predictions_accessed": false,
+      "raw_MRI_PET_files_rehashed": false,
+      "real_volumes": 1669,
+      "repeated_source_hash_tokens": 0,
+      "site_scanner": "UNKNOWN",
+      "status": "COMPLETED_CONTENT_AUDIT"
+    },
+    "payload_sha256": "b7bb0de2a7d8e6d00523b739effc33e5963046c87d2564ed0f2ae3f869640f7b",
+    "protocol_sha256": "f901ffa588743b99131252936e2960ba75a445f11e725d00e942dd449cf2e331",
+    "unit": "data_audit"
+  }
+}

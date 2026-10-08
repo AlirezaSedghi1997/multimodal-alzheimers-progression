@@ -1,0 +1,15 @@
+schema_version: 1
+policy_id: method_x_storage_locality_v1
+authoritative_project_root: H:\\New project
+relative_paths: FORBIDDEN
+reparse_points: FORBIDDEN
+checkpoint_staging:
+  root: C:\\Users\\USER\\AppData\\Local\\AMUSE-X\\checkpoint_staging
+  minimum_free_gb: 20
+  maximum_staging_gb: 20
+  permitted_basenames:
+    - resume_current.pt
+    - resume_previous.pt
+  permitted_temp_patterns:
+    - resume_current.pt.*.tmp
+    - resume_previous.pt.*.tmp

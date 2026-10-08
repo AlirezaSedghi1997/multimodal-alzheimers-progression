@@ -1,0 +1,16 @@
+{
+  "source_id": "f682ea3479349af3",
+  "source_sha256": "6a7640ab67646be729a10c36f98b34ea273c4483098194585b37186529848756",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 1,
+  "aggregate": {
+    "created_utc": "2026-09-09T03:27:12.724878+00:00",
+    "individual_level_data_included": false,
+    "release_scope": "AGGREGATE_ONLY",
+    "schema_version": "4.0",
+    "source_locations_included": false,
+    "status": "PUBLIC_BUNDLE_COMMITTED"
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "source_id": "d22afc888629c5ee",
+  "source_sha256": "a5abfc36ede0eea52c6b090fedb501511d507fa6e7bff3eab605f23a5bf0c43a",
+  "scientific_role": "posthoc_sensitivity",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "blockers": [],
+    "cache_sha256_reused_from_parent_audit": "ccd0d312caf96960e42a9599fd39bc9532b6ca6b60808927fabc49dba0d36bd3",
+    "claim_cap": "INTERNAL_EXPLORATORY_NO_INDEPENDENT_DISEASE_REGION_OR_GENERALIZATION_CLAIM",
+    "cohort_by_label_qc": {
+      "A4|1": 913,
+      "LEARN|0": 423
+    },
+    "cohort_label_perfectly_confounding": true,
+    "design_config_sha256": "1dc3a70cd09df715862bd679893f87f0c58007563f4467a53b882235db9c6a20",
+    "folds": [
+      {
+        "fold": 0,
+        "inner": [
+          {
+            "fit_n": 908,
+            "fit_positive_n": 624,
+            "inner_positive_n": 106,
+            "inner_validation_n": 160,
+            "membership_sha256": "204b68ec4d28d80d673f7c09be0294466ee7ea137261038a885c6285379b7d01",
+            "seed": 13
+          },
+          {
+            "fit_n": 908,
+            "fit_positive_n": 624,
+            "inner_positive_n": 106,
+            "inner_validation_n": 160,
+            "membership_sha256": "646c5353dfdc6a926eddea2a251f7dd28a09fe29abf520a0b5b39911ffd66171",
+            "seed": 29
+          },
+          {
+            "fit_n": 908,
+            "fit_positive_n": 613,
+            "inner_positive_n": 117,
+            "inner_validation_n": 160,
+            "membership_sha256": "6d3c4a41df8dc5c71de8b75774e82082877e0dd6423e2e942e276a03e33fec4e",
+            "seed": 47
+          }
+        ],
+        "outer_n": 272,
+        "outer_qc_n": 268,
+        "train_qc_n": 1068
+      },
+      {
+        "fold": 1,
+        "inner": [
+          {
+            "fit_n": 907,
+            "fit_positive_n": 621,
+            "inner_positive_n": 109,
+            "inner_validation_n": 160,
+            "membership_sha256": "8f7b3026c3955d935e36f3119b6b26379a999fc3527c25996102e33dafc797c9",
+            "seed": 13
+          },
+          {
+            "fit_n": 907,
+            "fit_positive_n": 624,
+            "inner_positive_n": 106,
+            "inner_validation_n": 160,
+            "membership_sha256": "cd981f0889ec75e9d093239dee8259fdf3b5ccb843bc569b7a1ebf83af889010",
+            "seed": 29
+          },
+          {
+            "fit_n": 907,
+            "fit_positive_n": 611,
+            "inner_positive_n": 119,
+            "inner_validation_n": 160,
+            "membership_sha256": "9c8e0691700f81ceef866f464d0c67b3faa749a267771a39395ded1e62d0e7ca",
+            "seed": 47
+          }
+        ],
+        "outer_n": 272,
+        "outer_qc_n": 269,
+        "train_qc_n": 1067
+      },
+      {
+        "fold": 2,
+        "inner": [
+          {
+            "fit_n": 909,
+            "fit_positive_n": 619,
+            "inner_positive_n": 111,
+            "inner_validation_n": 160,
+            "membership_sha256": "78328333cda0ed08d14825f1484f397d83246c1d95faf2ff42fc608dfb31891c",
+            "seed": 13
+          },
+          {
+            "fit_n": 909,
+            "fit_positive_n": 623,
+            "inner_positive_n": 107,
+            "inner_validation_n": 160,
+            "membership_sha256": "c69883eb3e767100c16992feb1132542f5a8ffb9a338811ec4d858957b37561d",
+            "seed": 29
+          },
+          {
+            "fit_n": 909,
+            "fit_positive_n": 611,
+            "inner_positive_n": 119,
+            "inner_validation_n": 160,
+            "membership_sha256": "d104afe8820e1ce17b45ad1f382791400042d95360b8e1f9cff2b27dc843ddb5",
+            "seed": 47
+          }
+        ],
+        "outer_n": 272,
+        "outer_qc_n": 267,
+        "train_qc_n": 1069
+      },
+      {
+        "fold": 3,
+        "inner": [
+          {
+            "fit_n": 910,
+            "fit_positive_n": 630,
+            "inner_positive_n": 100,
+            "inner_validation_n": 160,
+            "membership_sha256": "9dac5fd212ccd10402531d99d372466a0062408f8ffc454c8dfede0e960a7954",
+            "seed": 13
+          },
+          {
+            "fit_n": 910,
+            "fit_positive_n": 623,
+            "inner_positive_n": 107,
+            "inner_validation_n": 160,
+            "membership_sha256": "9112b1708c0cf4c8b497af149e71fad3c3aa67252d9e01853aa6809db716a0ed",
+            "seed": 29
+          },
+          {
+            "fit_n": 910,
+            "fit_positive_n": 622,
+            "inner_positive_n": 108,
+            "inner_validation_n": 160,
+            "membership_sha256": "4a66ca350d00c2cf2cc948e69ccf9b498634ae87ac0d3bda1bf2b613151eaf1c",
+            "seed": 47
+          }
+        ],
+        "outer_n": 272,
+        "outer_qc_n": 266,
+        "train_qc_n": 1070
+      },
+      {
+        "fold": 4,
+        "inner": [
+          {
+            "fit_n": 910,
+            "fit_positive_n": 626,
+            "inner_positive_n": 106,
+            "inner_validation_n": 160,
+            "membership_sha256": "b313ad6c72b0880f15c75b17bc1c414fa985bccc071463cf016ac7b29c724473",
+            "seed": 13
+          },
+          {
+            "fit_n": 910,
+            "fit_positive_n": 630,
+            "inner_positive_n": 102,
+            "inner_validation_n": 160,
+            "membership_sha256": "29d6292e221d595602584555c280bb09de419de981e064e5427b111ba633f449",
+            "seed": 29
+          },
+          {
+            "fit_n": 910,
+            "fit_positive_n": 623,
+            "inner_positive_n": 109,
+            "inner_validation_n": 160,
+            "membership_sha256": "b17dd9326dcf0484f81824d5e255e637caddc2b5da1a430ba7adfd66194e1193",
+            "seed": 47
+          }
+        ],
+        "outer_n": 271,
+        "outer_qc_n": 266,
+        "train_qc_n": 1070
+      }
+    ],
+    "holdout_labels_used_for_this_audit": false,
+    "holdout_membership_n": 340,
+    "index_sha256": "4d3df935ea16e1eabd224d7c29c02753f13b01d670f82c4b694fa319a00c9989",
+    "mri_file_hash_missing_n": 0,
+    "mri_file_provenance": "T1_HASH_TOKEN_PRESENT_BUT_SOURCE_FILE_NOT_REHASHED",
+    "outer_n": 1359,
+    "outer_qc_n": 1336,
+    "parent_data_audit_sha256": "3f6fc94e0a8011aeb4d7527ed691776691b9dce3962851baaeeb2d6419bdbcb4",
+    "parent_preregistration_sha256": "7e5c872199448e8c9217c212a8a384b1c5eec00745f165b0ba762fbd69057927",
+    "pet_image_file_hash_available_in_split": false,
+    "pet_image_provenance": "UNVERIFIED_IN_AVAILABLE_SPLIT",
+    "pet_mri_gap_inconsistent_n": 0,
+    "protocol_id": "METHOD_X_MX05_SCIENCE_EXTENSION_V1_20260927",
+    "pseudo_holdout_prior_access": "UNKNOWN",
+    "real_index_n": 1669,
+    "scanner_overlap": "UNKNOWN",
+    "schema_version": 1,
+    "site_scanner_metadata_available_in_split": false,
+    "split_sha256": {
+      "external_holdout": "2a068ac3c97b1116af7f5b2b0a3b62f4eb97d89b2b358b84b91f0800c15a4a2b",
+      "fold_0_test": "4ff37ad6522a8f0b89781709e1ec46c1134b5bc8ab07e79fc316cd0c6ef002e2",
+      "fold_0_train": "dc8c2ad2bb89308d7efbaaa2b0148a4d17ced3a9433d1d0acbf7f473a1034272",
+      "fold_1_test": "6fcbcbac04a432370bc11d979bb959b53c2d161f676d096c801d0bf95fa3fb3b",
+      "fold_1_train": "bc5ad152d6cf25f9f3a033c6a62425ff4aab1a36caf3d441b2495502feb85fd6",
+      "fold_2_test": "7d87b5e6ce52658ca34094ac74034d4c84b30a69e69015302500488674492bef",
+      "fold_2_train": "e61ecdfb309a95a74921dd374446ec0ad07899d7b25c28ebdac882e1795b4c59",
+      "fold_3_test": "55b15717e4e1b532981ec5a16fe5ae5eefe695dd91b170f177592db750892c09",
+      "fold_3_train": "1cb6189e64638663ca4516bf5adbaf0ce94e168c8a758f407d1ac2590538bd03",
+      "fold_4_test": "ba8548ad8ea60fe6ac880e2e89fd12df1921d9109bf8e6819fb64b0202306c5a",
+      "fold_4_train": "3219f7fc68348fd7f84156d123b4429d94e0ad865469d9b85cb13c4c18060d36"
+    },
+    "status": "READY_INTERNAL_ONLY",
+    "subject_level_exported": false
+  }
+}

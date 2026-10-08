@@ -1,0 +1,46 @@
+{
+  "source_id": "361f058016a209f3",
+  "source_sha256": "cce0ed08bfd4249e3e4b36c8490182a259d05b1e0f71c2f63c4cd6c92626b6bc",
+  "scientific_role": "diagnostic_not_disease_localization",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 3,
+  "aggregate": {
+    "branches": {
+      "amyloid": {
+        "blur_negative_margin": 10,
+        "blur_numerical_pass": 10,
+        "blur_positive_margin": 8,
+        "random_signed_abs_correlation_max": 0.004176948712392526,
+        "random_signed_abs_correlation_median": 0.0022247280320742283,
+        "zero_numerical_pass": 10
+      },
+      "tau": {
+        "blur_negative_margin": 10,
+        "blur_numerical_pass": 10,
+        "blur_positive_margin": 10,
+        "random_signed_abs_correlation_max": 0.008134207150197324,
+        "random_signed_abs_correlation_median": 0.0034446182337666362,
+        "zero_numerical_pass": 10
+      },
+      "x": {
+        "blur_negative_margin": 10,
+        "blur_numerical_pass": 10,
+        "blur_positive_margin": 10,
+        "random_signed_abs_correlation_max": 0.0030023635736882506,
+        "random_signed_abs_correlation_median": 0.0013739638819984966,
+        "zero_numerical_pass": 2
+      }
+    },
+    "cases_completed": 30,
+    "cases_required": 30,
+    "claims": "POST_HOC_INTERNAL_EXPLORATORY",
+    "disease_localization_allowed": false,
+    "equal_volume_controls_not_anatomical_roi_tests": true,
+    "label_permutation_training": "NOT_EXECUTED",
+    "map_selection_by_visual_appearance": false,
+    "population_representativeness": "LIMITED_FIXED_PANEL",
+    "science_gate_status": "NOT_ESTABLISHED",
+    "status": "FULL_DIAGNOSTIC_REVIEW_NOT_DISEASE_LOCALIZATION"
+  }
+}

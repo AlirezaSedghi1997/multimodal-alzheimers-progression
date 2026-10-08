@@ -1,0 +1,50 @@
+{
+  "source_id": "0ad91673ddc61408",
+  "source_sha256": "2e67cbfed7d67bb6e8d4852341074a8fb158e55085a340c9cefabc8d4e416abb",
+  "scientific_role": "posthoc_sensitivity",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 1,
+  "aggregate": {
+    "payload": {
+      "extension_outer_n": 1336,
+      "extension_six_arms": "COMPLETED_VERIFIED",
+      "external_validation": false,
+      "fasttrack": {
+        "MX00_MX03_original": "COMPLETED_BY_PRIOR_WORK_NOT_REVERIFIED_BY_FASTTRACK",
+        "MX04_focused_two_arm": "COMPLETED_EXPLORATORY",
+        "MX04_original_full_grid": "NOT_DONE_BY_FASTTRACK",
+        "MX05_original_full_battery_replication": "NOT_DONE_BY_FASTTRACK",
+        "MX05_two_hybrid_arms": "COMPLETED_EXPLORATORY",
+        "MX06_limited_optional": "NOT_DONE_OPTIONAL",
+        "MX06_original_formal": "NOT_DONE_BY_FASTTRACK",
+        "MX07_fasttrack": "READY_SCOPED_FASTTRACK",
+        "MX07_original": "NOT_DONE_BY_FASTTRACK",
+        "method_y_pet_branch": "UNKNOWN_SEPARATE_EVIDENCE_REQUIRED",
+        "pseudo_random_holdout": "UNKNOWN_OR_NOT_DONE",
+        "selected_internal_outer": "COMPLETED_EXPLORATORY",
+        "true_external_validation": "NOT_DONE"
+      },
+      "mx5_outer_n": 1336,
+      "new_work": [
+        "IMAGE_CONTENT_AUDIT",
+        "NONLINEAR_TABULAR",
+        "DEMOGRAPHIC_FOLD_SENSITIVITY",
+        "FIXED_CHECKPOINT_STRESS"
+      ],
+      "temporal_direction_appendix": "PRESENT",
+      "unresolved": [
+        "COHORT_LABEL_CONFOUNDING",
+        "NO_EXTERNAL_DATA",
+        "PSEUDO_HISTORY_UNKNOWN",
+        "SITE_SCANNER_UNKNOWN",
+        "PET_FILE_PROVENANCE_UNVERIFIED"
+      ],
+      "xai_computations": "COMPLETED_FIVE_FOLDS_40_IMAGES",
+      "xai_scientific_gate": "BLOCKED_EXPLORATORY_GATE"
+    },
+    "payload_sha256": "f520123a6edb9ccd44b70a3915683505dd8b310664aab53043609750f2205a6a",
+    "protocol_sha256": "f901ffa588743b99131252936e2960ba75a445f11e725d00e942dd449cf2e331",
+    "unit": "plan_reconciliation"
+  }
+}

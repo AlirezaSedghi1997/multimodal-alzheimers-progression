@@ -1,0 +1,190 @@
+schema_version: 1
+protocol_name: method_y_tau_progression_v1
+status: ACTIVE_INTERNAL_PROTOCOL
+
+scope:
+  branch_namespace: method_y_tau_progression
+  scientific_target: "Tau-PET-assisted prediction of AD-related clinical/cognitive progression"
+  diagnosis_claim_allowed: false
+  amyloid_cross_tracer_claim_allowed: false
+  resolves_method_y_amyloid_s1: false
+  public_outputs_aggregate_only: true
+
+data_sources:
+  data_root: "H:/A4 Learn"
+  tau_suvr_csv: "Clinical/External Data/imaging_SUVR_tau.csv"
+  cdr_csv: "Clinical/Raw Data/cdr.csv"
+  pacc_csv: "Clinical/Derived Data/PACC.csv"
+  subjinfo_csv: "Clinical/Derived Data/SUBJINFO.csv"
+  clinical_datadic_csv: "Clinical/Documents/Data Dictionaries/clinical_datadic.csv"
+  derived_datadic_csv: "Clinical/Documents/Data Dictionaries/derived_datadic.csv"
+  ftp_image_dir: "FTP/ImageData"
+  amyloid_non_fbp_decision: "results/method_y_execution/non_fbp_tracer_search_v1/audit_non_fbp_decision.json"
+  amyloid_s1_protocol_v2: "results/method_y_execution/cohort_mitigation_protocol_v2/protocol_execution_summary.json"
+
+endpoint:
+  primary_name: sustained_cdr_global_progression
+  baseline_cdr_required: 0.0
+  baseline_tau_to_cdr_window_days: 183
+  followup_window_days: 1643.625
+  event_definition: "first pair of consecutive post-index CDR visits with CDGLOBAL >= 0.5"
+  event_time_rule: "second qualifying visit date minus index date"
+  index_date_rule: "max(first analyzed FTP scan date, selected baseline CDR assessment date)"
+  censoring_rule: "min(4.5 years, last valid post-index CDR visit)"
+  forbidden_label_sources:
+    - CDEVENT
+    - CDOLEEVENT
+
+inputs:
+  tau_ligand_required: Flortaucipir
+  tau_scan_analyzed_required: "Yes"
+  tau_primary_suvr_column: suvr_persi
+  tau_sensitivity_suvr_column: suvr_crus
+  tau_unavailable_suvr_column: suvr_cer
+  allowed_baseline_covariates:
+    - age
+    - sex
+    - education_years
+    - apoe4_carrier
+    - baseline_amyloid_centiloid
+    - baseline_amyloid_status_cl24
+    - baseline_cognition
+    - baseline_cdr_components
+    - baseline_tau_suvr
+  forbidden_model_inputs:
+    - raw_subject_id
+    - raw_path
+    - site_id
+    - scan_date
+    - followup_length
+    - visit_count
+    - future_cognition
+    - future_cdr
+    - future_pet
+    - amyloid_pet_image
+    - CDEVENT
+    - CDOLEEVENT
+
+validation:
+  primary_split: leave_treatment_arm_out
+  secondary_split: pooled_5fold_subject_level
+  blocked_split_until_new_evidence: leave_learn_out_tau_pet
+  min_total_events: 60
+  min_events_per_heldout_arm: 20
+  confound_probe_auc_ceiling: 0.65
+  bootstrap_iterations: 1000
+  evaluation_times_days:
+    - 547.875
+    - 1095.75
+    - 1640.0
+  alpha_grid:
+    - 0.05
+    - 0.1
+    - 0.2
+    - 0.5
+    - 1.0
+    - 2.0
+    - 5.0
+  inner_cv_folds: 3
+
+artifacts:
+  root: "results/method_y_tau_progression"
+  protocol_json: "results/method_y_tau_progression/protocol_v1/protocol.json"
+  source_inventory_json: "results/method_y_tau_progression/audits/source_inventory.json"
+  endpoint_audit_json: "results/method_y_tau_progression/audits/endpoint_construction.json"
+  sidecar_audit_json: "results/method_y_tau_progression/audits/ftp_sidecar_qc.json"
+  death_disposition_audit_json: "results/method_y_tau_progression/audits/death_disposition_audit.json"
+  scanner_site_linkage_audit_json: "results/method_y_tau_progression/audits/scanner_site_linkage_audit.json"
+  split_json: "results/method_y_tau_progression/splits/leave_treatment_arm_out_v1.json"
+  labels_csv: "results/method_y_tau_progression/labels/tau_cdr_progression_labels.csv"
+  report_json: "results/method_y_tau_progression/reports/tau_ad_progression_report.json"
+  report_md: "results/method_y_tau_progression/reports/tau_ad_progression_report.md"
+  claim_boundary_md: "results/method_y_tau_progression/reports/final_claim_boundary.md"
+  stage_gate_summary_json: "results/method_y_tau_progression/reports/stage_gate_summary.json"
+  tau_added_value_audit_json: "results/method_y_tau_progression/reports/tau_added_value_audit.json"
+  calibration_report_json: "results/method_y_tau_progression/reports/calibration_report.json"
+  model_card_md: "results/method_y_tau_progression/reports/model_card.md"
+  tripod_summary_md: "results/method_y_tau_progression/reports/tripod_ai_summary.md"
+  selected_scan_linkage_audit_json: "results/method_y_tau_progression/audits/selected_ftp_scan_linkage_audit.json"
+  ftp_only_image_manifest_csv: "results/method_y_tau_progression/manifests/ftp_only_image_manifest.csv"
+  image_cache_audit_json: "results/method_y_tau_progression/audits/ftp_image_cache_audit.json"
+  image_cnn_report_json: "results/method_y_tau_progression/reports/image_cnn_exploratory_report.json"
+  image_explainability_json: "results/method_y_tau_progression/reports/image_explainability_summary.json"
+  secondary_endpoints_report_json: "results/method_y_tau_progression/reports/secondary_endpoints_report.json"
+  tau_region_policy_json: "results/method_y_tau_progression/reports/tau_region_policy.json"
+  tau_region_policy_features_csv: "results/method_y_tau_progression/features/tau_region_policy_features.csv"
+  learn_tau_validation_blocker_json: "results/method_y_tau_progression/reports/learn_tau_validation_blocker.json"
+  deployable_feature_schema_json: "models/method_y_tau_progression/feature_schema.json"
+  deployable_prediction_vectors_csv: "models/method_y_tau_progression/prediction_vectors.csv"
+  deployable_model_card_md: "models/method_y_tau_progression/model_card.md"
+  final_completion_status_json: "results/method_y_tau_progression/reports/final_completion_status.json"
+  final_completion_status_md: "results/method_y_tau_progression/reports/final_completion_status.md"
+  public_summary_json: "public_bundle/results/final_results/method_y_tau_progression/tau_progression_summary.json"
+  public_summary_md: "public_bundle/results/final_results/method_y_tau_progression/tau_progression_summary.md"
+  public_claim_boundary_md: "public_bundle/docs/method_y_tau_progression_claim_boundary.md"
+
+image_cache:
+  path: "caches/tau_ad_prediction/ftp_dynamic_mean_32_v1.h5"
+  target_shape:
+    - 32
+    - 32
+    - 32
+  cache_input_policy: "mean across dynamic PET frames, then per-image robust z-score and trilinear downsample"
+  raw_dynamic_mni_claim_allowed: false
+
+image_cnn:
+  status: "exploratory_only"
+  epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  min_train_events_per_fold: 20
+  min_test_events_per_fold: 20
+
+stages:
+  S1_tau:
+    name: "endpoint_split_leakage_confounding"
+    required_checks:
+      - endpoint_event_floor
+      - subject_level_split
+      - forbidden_label_sources_not_used
+      - treatment_arm_probe
+      - scanner_site_linkage_audit
+      - death_disposition_audit
+  S2_tau:
+    name: "clinical_tau_suvr_survival_models"
+    required_checks:
+      - leave_treatment_arm_out_survival
+      - pooled_5fold_subject_level_survival
+      - nested_alpha_selection
+      - bootstrap_metric_intervals
+  S3_tau:
+    name: "ftp_image_cache_and_cnn"
+    required_checks:
+      - per_scan_sidecar_linking
+      - ftp_only_image_manifest
+      - finite_fraction_qc
+      - cnn_training
+      - image_explainability
+  S4_tau:
+    name: "tau_added_value_and_multimodal_audit"
+    required_checks:
+      - regional_or_meta_roi_policy
+      - suvr_crus_sensitivity
+      - tau_plus_clinical_vs_clinical_only
+      - shortcut_audit
+  S5_tau:
+    name: "final_reporting_claim_and_delivery"
+    required_checks:
+      - calibration_report
+      - model_card
+      - tripod_ai_summary
+      - public_thesis_bundle
+      - full_verification
+
+claim_wording:
+  allowed: "Tau-PET-assisted prediction of AD-related clinical/cognitive progression in cognitively unimpaired A4 tau-PET participants, internally evaluated within the A4/LEARN data environment."
+  required_limitations:
+    - "This is not a diagnostic tool for Alzheimer disease."
+    - "This does not validate amyloid cross-tracer performance."
+    - "This does not resolve the blocked Method Y amyloid S1 gate."
+    - "LEARN tau-PET validation is blocked unless analyzed LEARN FTP is found in a later audit."

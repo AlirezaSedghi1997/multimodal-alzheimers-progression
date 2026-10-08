@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "protocol_id": "METHOD_X_FASTTRACK_V22_XAI_CROSSFIT_THESIS",
+  "parent_protocol": "method_x_fasttrack_v2_20260923",
+  "sample_source": "first_eight_real_inner_validation_per_fold_model_selection_overlap",
+  "samples_per_fold": 8,
+  "selection_assessment_halves": [[0, 1, 2, 3], [4, 5, 6, 7]],
+  "assessment_target": "unoccluded_predicted_class_per_sample_frozen_before_occlusion",
+  "occlusion_fill": "zero_normalized_MRI_input",
+  "controls": "three_nearest_volume_atlas_regions_within_1.5x_of_selected_roi",
+  "randomization_seeds": [13, 29, 47],
+  "bootstrap_resamples": 1000,
+  "bootstrap_unit": "fold",
+  "cuda_required": true,
+  "hard_stop_reserved_gb": 7.5,
+  "claim_ceiling": "INTERNAL_EXPLORATORY_MODEL_ATTRIBUTION_NOT_DISEASE_REGION",
+  "external_validation": false
+}

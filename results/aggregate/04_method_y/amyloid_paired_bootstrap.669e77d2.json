@@ -1,0 +1,30 @@
+{
+  "source_id": "669e77d29576ea96",
+  "source_sha256": "b27a543c33418b6f800d31032f7b29bb59eb824ee805a246dea889e813b08898",
+  "scientific_role": "separate_regional_analysis",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "cache_status": "COMPUTED_AND_LOCKED",
+    "delta_cindex_95ci": [
+      0.007878045596294956,
+      0.04632564038019004
+    ],
+    "delta_cindex_mean": 0.026507581022828772,
+    "delta_ibs_95ci": [
+      -0.00569336293668845,
+      -0.0006455456573603685
+    ],
+    "delta_ibs_mean": -0.003189798940286779,
+    "failed_attempt_reasons": {},
+    "failed_attempts": 0,
+    "input_evidence_sha256": "3bde47bdac29904793642bc6956c39360bd9088181104f7a5f715aae5a7ac6bd",
+    "method": "paired_subject_bootstrap_over_locked_oof_predictions",
+    "requested_iterations": 2000,
+    "seed": 20262714,
+    "status": "COMPLETED",
+    "subject_count": 1106,
+    "successful_iterations": 2000
+  }
+}

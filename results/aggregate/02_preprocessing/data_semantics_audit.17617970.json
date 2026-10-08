@@ -1,0 +1,90 @@
+{
+  "source_id": "176179700c6cae7e",
+  "source_sha256": "3f6fc94e0a8011aeb4d7527ed691776691b9dce3962851baaeeb2d6419bdbcb4",
+  "scientific_role": "population_and_qc",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "schema_version": 2,
+    "scope": "FASTTRACK_V2_READ_ONLY_AUDIT",
+    "status": "READY",
+    "blockers": [],
+    "cache_sha256": "ccd0d312caf96960e42a9599fd39bc9532b6ca6b60808927fabc49dba0d36bd3",
+    "index_sha256": "4d3df935ea16e1eabd224d7c29c02753f13b01d670f82c4b694fa319a00c9989",
+    "split_sha256": {
+      "fold_0_test": "4ff37ad6522a8f0b89781709e1ec46c1134b5bc8ab07e79fc316cd0c6ef002e2",
+      "fold_1_test": "6fcbcbac04a432370bc11d979bb959b53c2d161f676d096c801d0bf95fa3fb3b",
+      "fold_2_test": "7d87b5e6ce52658ca34094ac74034d4c84b30a69e69015302500488674492bef",
+      "fold_3_test": "55b15717e4e1b532981ec5a16fe5ae5eefe695dd91b170f177592db750892c09",
+      "fold_4_test": "ba8548ad8ea60fe6ac880e2e89fd12df1921d9109bf8e6819fb64b0202306c5a",
+      "fold_0_train": "dc8c2ad2bb89308d7efbaaa2b0148a4d17ced3a9433d1d0acbf7f473a1034272",
+      "fold_1_train": "bc5ad152d6cf25f9f3a033c6a62425ff4aab1a36caf3d441b2495502feb85fd6",
+      "fold_2_train": "e61ecdfb309a95a74921dd374446ec0ad07899d7b25c28ebdac882e1795b4c59",
+      "fold_3_train": "1cb6189e64638663ca4516bf5adbaf0ce94e168c8a758f407d1ac2590538bd03",
+      "fold_4_train": "3219f7fc68348fd7f84156d123b4429d94e0ad865469d9b85cb13c4c18060d36",
+      "external_holdout": "2a068ac3c97b1116af7f5b2b0a3b62f4eb97d89b2b358b84b91f0800c15a4a2b"
+    },
+    "physical_order": [
+      "age",
+      "education_years",
+      "apoe4_carrier",
+      "mmse_base",
+      "sex"
+    ],
+    "semantic_order": [
+      "age",
+      "sex",
+      "education_years",
+      "apoe4_carrier",
+      "mmse_base"
+    ],
+    "feature_drop_label_correction": {
+      "age": "age",
+      "sex": "education_years",
+      "education_years": "apoe4_carrier",
+      "apoe4_carrier": "mmse_base",
+      "mmse_base": "sex"
+    },
+    "index_real_n": 1669,
+    "verified_full_hdf5_real_n": 1669,
+    "development_split_n": 1359,
+    "pseudo_holdout_split_n": 340,
+    "development_qc_n": 1336,
+    "pseudo_holdout_qc_n": 333,
+    "real_retained_n": 1669,
+    "index_tabular_mismatches": 0,
+    "id_label_mismatches": 0,
+    "cohort_by_label": {
+      "A4|1": 1163,
+      "LEARN|0": 536
+    },
+    "cohort_label_perfectly_confounding": true,
+    "pet_mri_gap_median_days": 273.0,
+    "pet_vs_mri_direction": {
+      "PET_AFTER_MRI": 1012,
+      "PET_BEFORE_MRI": 654,
+      "SAME_DAY": 3
+    },
+    "time_window_sensitivity_counts": {
+      "90": {
+        "n": 259,
+        "positive": 225,
+        "negative": 34
+      },
+      "180": {
+        "n": 448,
+        "positive": 394,
+        "negative": 54
+      },
+      "365": {
+        "n": 978,
+        "positive": 842,
+        "negative": 136
+      }
+    },
+    "site_scanner_overlap": "UNKNOWN_UNLESS_SEPARATELY_VERIFIED",
+    "holdout_prior_access": "UNKNOWN_UNLESS_AUDITED_ON_ORIGINAL_MACHINE",
+    "subject_level_exported": false
+  }
+}

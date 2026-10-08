@@ -1,0 +1,144 @@
+{
+  "included": [
+    {
+      "path": "03_method_x/thesis_method_x_v22_discussion_FA.md",
+      "source_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/thesis_method_x_v22_discussion_FA.md",
+      "source_sha256": "2247b9963a1af0040db48103aa3fd520f9ab0b5a3290e8a2f22855871c78c775",
+      "role": "primary_technical",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "03_method_x/thesis_method_x_v22_results_FA.md",
+      "source_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/thesis_method_x_v22_results_FA.md",
+      "source_sha256": "147565dd2270262d37040c757f1e8d2887d2dd0fc5cbb3e088057c4592a33731",
+      "role": "primary_technical",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "03_method_x/thesis_method_x_v244_control_eligibility_FA.md",
+      "source_path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/thesis_method_x_v244_control_eligibility_FA.md",
+      "source_sha256": "5620a65e8d48b7be3e578ccb6a20d074ff2ef2602d6633da3f69d697242bd2c6",
+      "role": "primary_technical",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "03_method_x/mx7_quick_discussion_FA.md",
+      "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/mx7_quick_discussion_FA.md",
+      "source_sha256": "cb11450016c257631914fb50bb17b727f9c4b70d4ca65f617b9aa57c8241470e",
+      "role": "posthoc_sensitivity",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "03_method_x/mx7_quick_results_FA.md",
+      "source_path": "results/final_results/method_x_quick_validation_v1_20260929/reports/mx7_quick_results_FA.md",
+      "source_sha256": "b61c67fcf888bd81c42c8346ebdffbde4ccc729171399b99bad49332cf024de4",
+      "role": "posthoc_sensitivity",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "03_method_x/extension_mx7_results_limitations_FA.v1.md",
+      "source_path": "results/final_results/method_x_science_extension_v1_20260927/reports/extension_mx7_results_limitations_FA.v1.md",
+      "source_sha256": "9d4a19f79144d5b86d52855a930c684794a5dcb67fcf5bb09c7661a8b4f31e95",
+      "role": "posthoc_sensitivity",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "04_method_y/REPORTING_CROSSWALK.md",
+      "source_path": "results/method_y_reporting_crosswalk_v1/REPORTING_CROSSWALK.md",
+      "source_sha256": "f22a6bd85f2ffe18412e6d5d51da9f1925c9a57b0c85a8bf399b4882fd83941c",
+      "role": "lmo_sensitivity",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "04_method_y/NEGATIVE_RESULTS_V2.md",
+      "source_path": "results/method_y_revival_v2/reports/NEGATIVE_RESULTS_V2.md",
+      "source_sha256": "a64f924c4ad8d662e415a5e54d39ae2a15e74cd2bbead936005f72ddcd849437",
+      "role": "separate_regional_analysis",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "04_method_y/README.md",
+      "source_path": "results/method_y_revival_v4_image_factorial_v1/public_bundle/README.md",
+      "source_sha256": "7a9b279d1df3532bc09119a1c4a45284c1eb12c7d3bce9f24009797cbc105f6e",
+      "role": "factorial_descriptive_not_global_winner_confirmatory",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "06_fusion/START_HERE_FA.md",
+      "source_path": "results/xyz_postfusion_final_v1_ram/public/START_HERE_FA.md",
+      "source_sha256": "2235214b52e40b6648a1bfad04f605ae116b455a84e86b90632593d4267a7528",
+      "role": "corrected_postfusion_with_review_addendum",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "06_fusion/PET_MANUFACTURER_AUDIT_FA.md",
+      "source_path": "results/xyz_postfusion_final_v1_ram/public/manufacturer/PET_MANUFACTURER_AUDIT_FA.md",
+      "source_sha256": "3944b7da30bc3803fb9530725dd5abea060b2885d1f17962ceed984b041ad777",
+      "role": "corrected_postfusion_with_review_addendum",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "06_fusion/CLAIM_POLICY.md",
+      "source_path": "results/xyz_postfusion_final_v1_ram/public/postall/CLAIM_POLICY.md",
+      "source_sha256": "5900a5de779d2ef4c8762a20861973a7b1272b6a24bb45496b226177b35d79c8",
+      "role": "corrected_postfusion_with_review_addendum",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "06_fusion/NEGATIVE_RESULTS.md",
+      "source_path": "results/xyz_postfusion_final_v1_ram/public/postall/NEGATIVE_RESULTS.md",
+      "source_sha256": "60e26d14cc7fdcfd10bda1dbb9da70684ab1764ed7ee517eec908e5077962167",
+      "role": "corrected_postfusion_with_review_addendum",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "06_fusion/REPORT.md",
+      "source_path": "results/xyz_postfusion_final_v1_ram/public/postall/REPORT.md",
+      "source_sha256": "32f413d8d5fe72942c79e2903c80ca32afeae0d806f600fea1c740ae18eb842c",
+      "role": "corrected_postfusion_with_review_addendum",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "06_fusion/REPORTING_ALIGNMENT.md",
+      "source_path": "results/xyz_postfusion_final_v1_ram/public/postall/REPORTING_ALIGNMENT.md",
+      "source_sha256": "b05f426253d1d11e173637d7414ad30f5cdc3874eb3056342351c825e75055bf",
+      "role": "corrected_postfusion_with_review_addendum",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    },
+    {
+      "path": "06_fusion/REGIONAL_EVIDENCE_FA.md",
+      "source_path": "results/xyz_postfusion_final_v1_ram/public/regional/REGIONAL_EVIDENCE_FA.md",
+      "source_sha256": "2cb020853441b62a3c27cfb451e2f86cb14aa4a20779cc6d4a79fb880d718c11",
+      "role": "corrected_postfusion_with_review_addendum",
+      "presentation_edits_only": true,
+      "original_source_preserved": true
+    }
+  ],
+  "withheld": [
+    {
+      "source_path": "results/method_y_revival_v2/reports/IMAGE_TO_REGIONAL_VALIDATION_V2.md",
+      "source_sha256": "385eb9ecd177d1f52ea016aad80523f6a29d597917f2a92a86b379a5f08a22d2",
+      "reason": "CONSERVATIVE_TEXT_OR_EMBED_HOLD"
+    },
+    {
+      "source_path": "results/method_y_revival_v2/reports/TAU_QUANTITATIVE_VALIDATION_V2.md",
+      "source_sha256": "b539f86ccf979aa635d60567a2d42d2ba8ae6d2854e5bfe5d05ba11047267990",
+      "reason": "CONSERVATIVE_TEXT_OR_EMBED_HOLD"
+    }
+  ]
+}

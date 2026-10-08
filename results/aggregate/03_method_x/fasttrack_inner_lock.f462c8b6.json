@@ -1,0 +1,112 @@
+{
+  "source_id": "f462c8b694c20ff0",
+  "source_sha256": "0de7a8a1ea4c403e8e54572a02c0c1d74b84137682b49d85d119526fb66984d4",
+  "scientific_role": "primary_technical",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 9,
+  "aggregate": {
+    "claim_cap": "POST_HOC_INTERNAL_TECHNICAL_EVIDENCE",
+    "comparisons": {
+      "hybrid_dense_skip_effect": {
+        "baseline": "hybrid_baseline",
+        "candidate": "hybrid_dense",
+        "folds_improved": 4,
+        "mean_loss_improvement": 0.0007050639763474531,
+        "passes_practical_rule": false
+      },
+      "mx04_finetuning": {
+        "baseline": "mx04_scratch",
+        "candidate": "mx04_head_last",
+        "mean_loss_improvement_descriptive_only": 0.0002119570644572022,
+        "paired_outer_comparison": "PREDECLARED_EXPLORATORY_HISTORICAL_OUTER_TEST",
+        "reason": "SUPERVISED_FOLD_LOCAL_PRETRAINING_EXPOSED_INNER_VALIDATION_LABELS",
+        "valid_for_inner_selection": false
+      }
+    },
+    "exploratory_outer_tasks": [
+      "mx04_scratch",
+      "mx04_head_last"
+    ],
+    "external_validation": false,
+    "final_task": "mx04_scratch",
+    "fine_tuning_inner_validation_valid_for_selection": false,
+    "hybrid_candidate": "hybrid_baseline",
+    "hybrid_over_mx04_practical_rule": false,
+    "hybrid_pair": [
+      "hybrid_baseline",
+      "hybrid_dense"
+    ],
+    "minimum_folds_improved": 3,
+    "mx04_candidate": "mx04_scratch",
+    "outer_test_access_count": 0,
+    "outer_test_used_for_selection": false,
+    "practical_margin_loss": 0.005,
+    "preregistration_sha256": "7e5c872199448e8c9217c212a8a384b1c5eec00745f165b0ba762fbd69057927",
+    "schema_version": 1,
+    "selection_scope": "five_fold_inner_validation_seed_13",
+    "status": "LOCKED_INNER_ONLY_EXPLORATORY",
+    "tasks": {
+      "hybrid_baseline": {
+        "fold_best_val_loss": [
+          0.3734871020540595,
+          0.38486237798351797,
+          0.37267878288403156,
+          0.37367134750820696,
+          0.4130381484050304
+        ],
+        "mean_best_val_loss": 0.38354755176696925,
+        "metrics_sha256": "a14750520093fd904fcf44ee04bf3ce19ba1e3953c7957e8ca7225fe89d29993",
+        "run_contract_digest": "420350248b2608bbb7a2b48bfe060cdfa6845c00508f2f1efd6aae7163fb236b",
+        "run_contract_sha256": "b7aa57724e3013749aabf6b178e0c024f5a574a59f9713c5397eb227e7438b0c",
+        "staging_prune_plan_sha256": "03b42783ef7e180d83b4ae5c593e8fbc3d25cb473f78a6482dfaeeef902604d0",
+        "staging_prune_receipt_sha256": "750383a641c889ed3a593b406868303e21775a952abfedb9fc5e0202a64155be"
+      },
+      "hybrid_dense": {
+        "fold_best_val_loss": [
+          0.3880301218479872,
+          0.37977761174552144,
+          0.36303138274233787,
+          0.37324199536815283,
+          0.4101313272491097
+        ],
+        "mean_best_val_loss": 0.3828424877906218,
+        "metrics_sha256": "ed52a6e2f955775bc9c81e85bec8cc114e74c0e1fc6b2c694670f80392cc7486",
+        "run_contract_digest": "f458553d0af756fcf1fedf63b09bce8acd45dec2cc3639f190c18161478c02ad",
+        "run_contract_sha256": "b19d37d6b704e68e551dcc560fec2fcf113c33c890a55734fd4e16834b546877",
+        "staging_prune_plan_sha256": "617f282b2598641998f23ef589eb68cd67ce0319de0406e4a40e5986ad1d2188",
+        "staging_prune_receipt_sha256": "bf305a04a63ac07f76b6cd1d0f5bc3dee80d4afb63ebbf11eb14acd9893662a4"
+      },
+      "mx04_head_last": {
+        "fold_best_val_loss": [
+          0.39203570247627795,
+          0.3806391887133941,
+          0.3532676382921636,
+          0.37302480163052676,
+          0.41032855180092154
+        ],
+        "mean_best_val_loss": 0.3818591765826568,
+        "metrics_sha256": "f489d3141b961e30efdd40b5c2118dffc9b17ba64968957b4070bb6c73c6c6f6",
+        "run_contract_digest": "161f2c8eff8aee0cd48952d0f926efc04dbf82728da962d3d7f37ff4abddeeda",
+        "run_contract_sha256": "85356248dbbc16175751ca46d703f3fb22dafacd268b115bcb240d9ea6ce45c4",
+        "staging_prune_plan_sha256": "924585d111e2fa9c028448a27106adaac499b8559d5af58d5b34e0e197132bc0",
+        "staging_prune_receipt_sha256": "d346bccfd4993913cd42f0d656e11132c23c50d6b193f82194987cc2d6b15a7d"
+      },
+      "mx04_scratch": {
+        "fold_best_val_loss": [
+          0.3916517593432218,
+          0.3829560241429135,
+          0.3540797837777063,
+          0.3730603213422,
+          0.40860777962952854
+        ],
+        "mean_best_val_loss": 0.382071133647114,
+        "metrics_sha256": "9ef6d9f158b169947341dd51e65ebe7251d00d759a8cbb4ff2784efdb3d7dcca",
+        "run_contract_digest": "0be146bbcc32df3207bf16c7fe349bf7e8ca56756677243f742043895dc4130f",
+        "run_contract_sha256": "40d235c2eace910c7a9a6c347bba46bde6794e4ea2ae69b539339f57b6389f58",
+        "staging_prune_plan_sha256": "ab71da815fa1e2c10cc18d5e2d8b47560bc81ec31e92a0ab961e85bc04db6137",
+        "staging_prune_receipt_sha256": "9d6d239070371cffd621335147a16cc3906b3f86c96b072f96c318b81d9445c8"
+      }
+    }
+  }
+}

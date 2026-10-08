@@ -1,0 +1,1127 @@
+{
+  "source_id": "f8bc3ea80c95529d",
+  "source_sha256": "701c197f710fa48690720011c940f22d644d0ba9c3c20b1eb91e87d74e8fea20",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "analysis_role": "POST_HOC_INTERNAL_EXPLORATORY",
+    "augmentation_creates_new_subjects": false,
+    "external_claim_allowed": false,
+    "inner_only_arm_selections": {
+      "amyloid": {
+        "locked_before_outer_evaluation": true,
+        "outer_test_consulted": false,
+        "selection": {
+          "arm_summaries": {
+            "A0": {
+              "complexity_rank": 0,
+              "independent_outer_partition_summary_count": 5,
+              "mean_ibs": 0.09472355978387097,
+              "outer_partition_mean_inner_ibs": [
+                0.09440541509094819,
+                0.09198615971107797,
+                0.09723512135610968,
+                0.09634698224629719,
+                0.09364412051492184
+              ],
+              "standard_error": 0.0009408295903660677
+            },
+            "A1": {
+              "complexity_rank": 1,
+              "independent_outer_partition_summary_count": 5,
+              "mean_ibs": 0.0950527530430764,
+              "outer_partition_mean_inner_ibs": [
+                0.09516513384919344,
+                0.09253832342126966,
+                0.0973501997937582,
+                0.09753062456427027,
+                0.09267948358689045
+              ],
+              "standard_error": 0.0010813302577850534
+            },
+            "A2": {
+              "complexity_rank": 2,
+              "independent_outer_partition_summary_count": 5,
+              "mean_ibs": 0.09537700697840305,
+              "outer_partition_mean_inner_ibs": [
+                0.09594518858494655,
+                0.09349330009412911,
+                0.100833880617967,
+                0.09369652791533457,
+                0.09291613767963802
+              ],
+              "standard_error": 0.0014582273394272076
+            },
+            "A3": {
+              "complexity_rank": 3,
+              "independent_outer_partition_summary_count": 5,
+              "mean_ibs": 0.09591920852239583,
+              "outer_partition_mean_inner_ibs": [
+                0.09777381904921063,
+                0.092710698962719,
+                0.10042443028778952,
+                0.09555348613699155,
+                0.09313360817526843
+              ],
+              "standard_error": 0.0014478338840003201
+            },
+            "A4": {
+              "complexity_rank": 4,
+              "independent_outer_partition_summary_count": 5,
+              "mean_ibs": 0.09393380945371935,
+              "outer_partition_mean_inner_ibs": [
+                0.09369050391069027,
+                0.09330540751603243,
+                0.09275568854363585,
+                0.09685733331082769,
+                0.09306011398741047
+              ],
+              "standard_error": 0.0007467392775347907
+            }
+          },
+          "best_mean_arm": "A4",
+          "eligible_within_one_standard_error": [
+            "A4"
+          ],
+          "one_standard_error_threshold": 0.09468054873125414,
+          "outer_test_consulted": false,
+          "selected_arm": "A4",
+          "selection_metric": "IPCW_INTEGRATED_BRIER_SCORE",
+          "selection_rule": "ONE_STANDARD_ERROR_THEN_LOWEST_COMPLEXITY"
+        }
+      },
+      "tau": {
+        "locked_before_outer_evaluation": true,
+        "outer_test_consulted": false,
+        "selection": {
+          "arm_summaries": {
+            "A0": {
+              "complexity_rank": 0,
+              "independent_outer_partition_summary_count": 5,
+              "mean_ibs": 0.11604275322984856,
+              "outer_partition_mean_inner_ibs": [
+                0.11533740196774935,
+                0.12015584479836248,
+                0.11485188088551414,
+                0.11313083217180053,
+                0.1167378063258163
+              ],
+              "standard_error": 0.0011788893639554084
+            },
+            "A1": {
+              "complexity_rank": 1,
+              "independent_outer_partition_summary_count": 5,
+              "mean_ibs": 0.11416669934767316,
+              "outer_partition_mean_inner_ibs": [
+                0.11173688836857194,
+                0.11772277888226168,
+                0.1135732080636989,
+                0.112335602494521,
+                0.11546501892931228
+              ],
+              "standard_error": 0.001094085562840605
+            },
+            "A2": {
+              "complexity_rank": 2,
+              "independent_outer_partition_summary_count": 5,
+              "mean_ibs": 0.1188027553014521,
+              "outer_partition_mean_inner_ibs": [
+                0.12104809595471198,
+                0.12056623775300729,
+                0.12453013318625439,
+                0.1115016676031368,
+                0.11636764201015005
+              ],
+              "standard_error": 0.0022381905723308482
+            },
+            "A3": {
+              "complexity_rank": 3,
+              "independent_outer_partition_summary_count": 5,
+              "mean_ibs": 0.11681911344207885,
+              "outer_partition_mean_inner_ibs": [
+                0.11958218058146243,
+                0.11863614136175053,
+                0.12218773933928893,
+                0.11070177043011387,
+                0.11298773549777846
+              ],
+              "standard_error": 0.002143124086233819
+            },
+            "A4": {
+              "complexity_rank": 4,
+              "independent_outer_partition_summary_count": 5,
+              "mean_ibs": 0.11810399529511606,
+              "outer_partition_mean_inner_ibs": [
+                0.12229111996753139,
+                0.11442423857046001,
+                0.11925677095327515,
+                0.11357676378480684,
+                0.1209710831995069
+              ],
+              "standard_error": 0.0017481065827415346
+            }
+          },
+          "best_mean_arm": "A1",
+          "eligible_within_one_standard_error": [
+            "A1"
+          ],
+          "one_standard_error_threshold": 0.11526078491051377,
+          "outer_test_consulted": false,
+          "selected_arm": "A1",
+          "selection_metric": "IPCW_INTEGRATED_BRIER_SCORE",
+          "selection_rule": "ONE_STANDARD_ERROR_THEN_LOWEST_COMPLEXITY"
+        }
+      }
+    },
+    "pair_reports": {
+      "amyloid:A0_vs_A1": {
+        "acceptance_gate": {
+          "blockers": [
+            "CALIBRATION_NOT_WORSE_NOT_DEMONSTRATED",
+            "SCANNER_PROBE_NOT_WORSE_NOT_DEMONSTRATED",
+            "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED"
+          ],
+          "branch": "amyloid",
+          "calibration_not_worse": false,
+          "challenger_arm": "A1",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "delta_ibs_95ci": [
+            -0.0024546273173974105,
+            0.0022863883019533255
+          ],
+          "delta_uno_cindex_95ci": [
+            -0.01952462187776076,
+            0.014754332168769093
+          ],
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "fold_delta_ibs": [
+            0.0016354755979570423,
+            0.0020640107903203003,
+            -0.002805896427421059,
+            0.0018209555216451984,
+            -0.002617787148206374
+          ],
+          "gate_role": "EXPLORATORY_OPERATIONAL_MODEL_COMPARISON",
+          "leave_manufacturer_out_performance_established": false,
+          "locked_external_validation_passed": false,
+          "pair_kind": "TINY_AUGMENTATION_EFFECT",
+          "positive_claim_allowed": false,
+          "quantitative_equivalence_proven": false,
+          "reference_arm": "A0",
+          "scanner_probe_not_worse": false,
+          "selected_epoch_nll_gap_delta": -0.007879687141319355
+        },
+        "branch": "amyloid",
+        "challenger_arm": "A1",
+        "claim": {
+          "branch": "amyloid",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "hard_blockers": [
+            "POST_HOC_OUTER_TEST_PREVIOUSLY_EXPOSED",
+            "QUANTITATIVE_EQUIVALENCE_NOT_ESTABLISHED",
+            "SCANNER_ROBUSTNESS_NOT_ESTABLISHED",
+            "LOCKED_EXTERNAL_VALIDATION_MISSING"
+          ],
+          "official_centaur_equivalence_claim_allowed": false,
+          "official_centiloid_equivalence_claim_allowed": false,
+          "pair_kind": "TINY_AUGMENTATION_EFFECT",
+          "positive_claim_allowed": false,
+          "schema_version": "4.0"
+        },
+        "pair_kind": "TINY_AUGMENTATION_EFFECT",
+        "privacy_scan": {
+          "scanned_root": "PROJECT_ROOT/results\\method_y_revival_v4_image_factorial_v1\\analysis_pairs\\A0_vs_A1\\reports",
+          "status": "PASS",
+          "violations": []
+        },
+        "public_reports": [
+          "amyloid_CLAIM_POLICY.json",
+          "amyloid_calibration.json",
+          "amyloid_factorial_acceptance.json",
+          "amyloid_pair_identity.json",
+          "amyloid_paired_oof_bootstrap.json",
+          "amyloid_scanner_comparison.json",
+          "amyloid_subgroups.json"
+        ],
+        "reference_arm": "A0",
+        "status": "COMPLETED_FROM_MATCHED_LOCKED_OOF"
+      },
+      "amyloid:A0_vs_A2": {
+        "acceptance_gate": {
+          "blockers": [
+            "UNO_CINDEX_NOT_NONINFERIOR",
+            "CALIBRATION_NOT_WORSE_NOT_DEMONSTRATED",
+            "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED"
+          ],
+          "branch": "amyloid",
+          "calibration_not_worse": false,
+          "challenger_arm": "A2",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "delta_ibs_95ci": [
+            -0.0036025620956583798,
+            0.007529559404239798
+          ],
+          "delta_uno_cindex_95ci": [
+            -0.03530263760626412,
+            0.03802007112791968
+          ],
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "fold_delta_ibs": [
+            0.003186347000397202,
+            0.004429849602251457,
+            0.005149124280329556,
+            -0.004987747934128914,
+            0.0003653047791198766
+          ],
+          "gate_role": "EXPLORATORY_OPERATIONAL_MODEL_COMPARISON",
+          "leave_manufacturer_out_performance_established": false,
+          "locked_external_validation_passed": false,
+          "pair_kind": "ARCHITECTURE_EFFECT_WITHOUT_AUGMENTATION",
+          "positive_claim_allowed": false,
+          "quantitative_equivalence_proven": false,
+          "reference_arm": "A0",
+          "scanner_probe_not_worse": true,
+          "selected_epoch_nll_gap_delta": 0.00249038967342588
+        },
+        "branch": "amyloid",
+        "challenger_arm": "A2",
+        "claim": {
+          "branch": "amyloid",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "hard_blockers": [
+            "POST_HOC_OUTER_TEST_PREVIOUSLY_EXPOSED",
+            "QUANTITATIVE_EQUIVALENCE_NOT_ESTABLISHED",
+            "SCANNER_ROBUSTNESS_NOT_ESTABLISHED",
+            "LOCKED_EXTERNAL_VALIDATION_MISSING"
+          ],
+          "official_centaur_equivalence_claim_allowed": false,
+          "official_centiloid_equivalence_claim_allowed": false,
+          "pair_kind": "ARCHITECTURE_EFFECT_WITHOUT_AUGMENTATION",
+          "positive_claim_allowed": false,
+          "schema_version": "4.0"
+        },
+        "pair_kind": "ARCHITECTURE_EFFECT_WITHOUT_AUGMENTATION",
+        "privacy_scan": {
+          "scanned_root": "PROJECT_ROOT/results\\method_y_revival_v4_image_factorial_v1\\analysis_pairs\\A0_vs_A2\\reports",
+          "status": "PASS",
+          "violations": []
+        },
+        "public_reports": [
+          "amyloid_CLAIM_POLICY.json",
+          "amyloid_calibration.json",
+          "amyloid_factorial_acceptance.json",
+          "amyloid_pair_identity.json",
+          "amyloid_paired_oof_bootstrap.json",
+          "amyloid_scanner_comparison.json",
+          "amyloid_subgroups.json"
+        ],
+        "reference_arm": "A0",
+        "status": "COMPLETED_FROM_MATCHED_LOCKED_OOF"
+      },
+      "amyloid:A1_vs_A3": {
+        "acceptance_gate": {
+          "blockers": [
+            "UNO_CINDEX_NOT_NONINFERIOR",
+            "CALIBRATION_NOT_WORSE_NOT_DEMONSTRATED",
+            "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED"
+          ],
+          "branch": "amyloid",
+          "calibration_not_worse": false,
+          "challenger_arm": "A3",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "delta_ibs_95ci": [
+            -0.003866320493121074,
+            0.005889413567636416
+          ],
+          "delta_uno_cindex_95ci": [
+            -0.029359908726623942,
+            0.03833567949275609
+          ],
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "fold_delta_ibs": [
+            0.0029286957111929746,
+            0.0008132559895287356,
+            0.004763850658870569,
+            -0.007748264570516611,
+            0.0031981767268238898
+          ],
+          "gate_role": "EXPLORATORY_OPERATIONAL_MODEL_COMPARISON",
+          "leave_manufacturer_out_performance_established": false,
+          "locked_external_validation_passed": false,
+          "pair_kind": "ARCHITECTURE_EFFECT_WITH_PET_SAFE_AUGMENTATION",
+          "positive_claim_allowed": false,
+          "quantitative_equivalence_proven": false,
+          "reference_arm": "A1",
+          "scanner_probe_not_worse": true,
+          "selected_epoch_nll_gap_delta": -0.01567389944914189
+        },
+        "branch": "amyloid",
+        "challenger_arm": "A3",
+        "claim": {
+          "branch": "amyloid",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "hard_blockers": [
+            "POST_HOC_OUTER_TEST_PREVIOUSLY_EXPOSED",
+            "QUANTITATIVE_EQUIVALENCE_NOT_ESTABLISHED",
+            "SCANNER_ROBUSTNESS_NOT_ESTABLISHED",
+            "LOCKED_EXTERNAL_VALIDATION_MISSING"
+          ],
+          "official_centaur_equivalence_claim_allowed": false,
+          "official_centiloid_equivalence_claim_allowed": false,
+          "pair_kind": "ARCHITECTURE_EFFECT_WITH_PET_SAFE_AUGMENTATION",
+          "positive_claim_allowed": false,
+          "schema_version": "4.0"
+        },
+        "pair_kind": "ARCHITECTURE_EFFECT_WITH_PET_SAFE_AUGMENTATION",
+        "privacy_scan": {
+          "scanned_root": "PROJECT_ROOT/results\\method_y_revival_v4_image_factorial_v1\\analysis_pairs\\A1_vs_A3\\reports",
+          "status": "PASS",
+          "violations": []
+        },
+        "public_reports": [
+          "amyloid_CLAIM_POLICY.json",
+          "amyloid_calibration.json",
+          "amyloid_factorial_acceptance.json",
+          "amyloid_pair_identity.json",
+          "amyloid_paired_oof_bootstrap.json",
+          "amyloid_scanner_comparison.json",
+          "amyloid_subgroups.json"
+        ],
+        "reference_arm": "A1",
+        "status": "COMPLETED_FROM_MATCHED_LOCKED_OOF"
+      },
+      "amyloid:A2_vs_A3": {
+        "acceptance_gate": {
+          "blockers": [
+            "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED"
+          ],
+          "branch": "amyloid",
+          "calibration_not_worse": true,
+          "challenger_arm": "A3",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "delta_ibs_95ci": [
+            -0.002701427101440716,
+            0.0009635091683760214
+          ],
+          "delta_uno_cindex_95ci": [
+            -0.015325992771295144,
+            0.016380751194466366
+          ],
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "fold_delta_ibs": [
+            0.0013778243087528147,
+            -0.0015525828224024207,
+            -0.003191170048880046,
+            -0.0009395611147424987,
+            0.00021508479949763903
+          ],
+          "gate_role": "EXPLORATORY_OPERATIONAL_MODEL_COMPARISON",
+          "leave_manufacturer_out_performance_established": false,
+          "locked_external_validation_passed": false,
+          "pair_kind": "RESNET10_AUGMENTATION_EFFECT",
+          "positive_claim_allowed": false,
+          "quantitative_equivalence_proven": false,
+          "reference_arm": "A2",
+          "scanner_probe_not_worse": true,
+          "selected_epoch_nll_gap_delta": -0.026043976263887124
+        },
+        "branch": "amyloid",
+        "challenger_arm": "A3",
+        "claim": {
+          "branch": "amyloid",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "hard_blockers": [
+            "POST_HOC_OUTER_TEST_PREVIOUSLY_EXPOSED",
+            "QUANTITATIVE_EQUIVALENCE_NOT_ESTABLISHED",
+            "SCANNER_ROBUSTNESS_NOT_ESTABLISHED",
+            "LOCKED_EXTERNAL_VALIDATION_MISSING"
+          ],
+          "official_centaur_equivalence_claim_allowed": false,
+          "official_centiloid_equivalence_claim_allowed": false,
+          "pair_kind": "RESNET10_AUGMENTATION_EFFECT",
+          "positive_claim_allowed": false,
+          "schema_version": "4.0"
+        },
+        "pair_kind": "RESNET10_AUGMENTATION_EFFECT",
+        "privacy_scan": {
+          "scanned_root": "PROJECT_ROOT/results\\method_y_revival_v4_image_factorial_v1\\analysis_pairs\\A2_vs_A3\\reports",
+          "status": "PASS",
+          "violations": []
+        },
+        "public_reports": [
+          "amyloid_CLAIM_POLICY.json",
+          "amyloid_calibration.json",
+          "amyloid_factorial_acceptance.json",
+          "amyloid_pair_identity.json",
+          "amyloid_paired_oof_bootstrap.json",
+          "amyloid_scanner_comparison.json",
+          "amyloid_subgroups.json"
+        ],
+        "reference_arm": "A2",
+        "status": "COMPLETED_FROM_MATCHED_LOCKED_OOF"
+      },
+      "amyloid:A3_vs_A4": {
+        "acceptance_gate": {
+          "blockers": [
+            "UNO_CINDEX_NOT_NONINFERIOR",
+            "CALIBRATION_NOT_WORSE_NOT_DEMONSTRATED",
+            "SCANNER_PROBE_NOT_WORSE_NOT_DEMONSTRATED",
+            "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED"
+          ],
+          "branch": "amyloid",
+          "calibration_not_worse": false,
+          "challenger_arm": "A4",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "delta_ibs_95ci": [
+            -0.0029813398407316687,
+            0.0053594415525526065
+          ],
+          "delta_uno_cindex_95ci": [
+            -0.05607933125602947,
+            0.005379233769720789
+          ],
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "fold_delta_ibs": [
+            0.0057763836809010954,
+            -0.0007089255738909339,
+            -0.00282297762345933,
+            0.002783128226256648,
+            0.0010046123676391433
+          ],
+          "gate_role": "EXPLORATORY_OPERATIONAL_MODEL_COMPARISON",
+          "leave_manufacturer_out_performance_established": false,
+          "locked_external_validation_passed": false,
+          "pair_kind": "DEPTH_EFFECT_WITH_PET_SAFE_AUGMENTATION",
+          "positive_claim_allowed": false,
+          "quantitative_equivalence_proven": false,
+          "reference_arm": "A3",
+          "scanner_probe_not_worse": false,
+          "selected_epoch_nll_gap_delta": -0.017364204206027505
+        },
+        "branch": "amyloid",
+        "challenger_arm": "A4",
+        "claim": {
+          "branch": "amyloid",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "hard_blockers": [
+            "POST_HOC_OUTER_TEST_PREVIOUSLY_EXPOSED",
+            "QUANTITATIVE_EQUIVALENCE_NOT_ESTABLISHED",
+            "SCANNER_ROBUSTNESS_NOT_ESTABLISHED",
+            "LOCKED_EXTERNAL_VALIDATION_MISSING"
+          ],
+          "official_centaur_equivalence_claim_allowed": false,
+          "official_centiloid_equivalence_claim_allowed": false,
+          "pair_kind": "DEPTH_EFFECT_WITH_PET_SAFE_AUGMENTATION",
+          "positive_claim_allowed": false,
+          "schema_version": "4.0"
+        },
+        "pair_kind": "DEPTH_EFFECT_WITH_PET_SAFE_AUGMENTATION",
+        "privacy_scan": {
+          "scanned_root": "PROJECT_ROOT/results\\method_y_revival_v4_image_factorial_v1\\analysis_pairs\\A3_vs_A4\\reports",
+          "status": "PASS",
+          "violations": []
+        },
+        "public_reports": [
+          "amyloid_CLAIM_POLICY.json",
+          "amyloid_calibration.json",
+          "amyloid_factorial_acceptance.json",
+          "amyloid_pair_identity.json",
+          "amyloid_paired_oof_bootstrap.json",
+          "amyloid_scanner_comparison.json",
+          "amyloid_subgroups.json"
+        ],
+        "reference_arm": "A3",
+        "status": "COMPLETED_FROM_MATCHED_LOCKED_OOF"
+      },
+      "tau:A0_vs_A1": {
+        "acceptance_gate": {
+          "blockers": [
+            "UNO_CINDEX_NOT_NONINFERIOR",
+            "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED"
+          ],
+          "branch": "tau",
+          "calibration_not_worse": true,
+          "challenger_arm": "A1",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "delta_ibs_95ci": [
+            -0.0029285331437637484,
+            0.003850958369969619
+          ],
+          "delta_uno_cindex_95ci": [
+            -0.027097974192126534,
+            0.008408075343084428
+          ],
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "fold_delta_ibs": [
+            -0.0016501117184899161,
+            -0.000480157130875819,
+            0.0004121305255948976,
+            0.00047123226287310027,
+            0.0036872853641612413
+          ],
+          "gate_role": "EXPLORATORY_OPERATIONAL_MODEL_COMPARISON",
+          "leave_manufacturer_out_performance_established": false,
+          "locked_external_validation_passed": false,
+          "pair_kind": "TINY_AUGMENTATION_EFFECT",
+          "positive_claim_allowed": false,
+          "quantitative_equivalence_proven": false,
+          "reference_arm": "A0",
+          "scanner_probe_not_worse": true,
+          "selected_epoch_nll_gap_delta": -0.060040338395585674
+        },
+        "branch": "tau",
+        "challenger_arm": "A1",
+        "claim": {
+          "branch": "tau",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "hard_blockers": [
+            "POST_HOC_OUTER_TEST_PREVIOUSLY_EXPOSED",
+            "QUANTITATIVE_EQUIVALENCE_NOT_ESTABLISHED",
+            "SCANNER_ROBUSTNESS_NOT_ESTABLISHED",
+            "LOCKED_EXTERNAL_VALIDATION_MISSING"
+          ],
+          "official_centaur_equivalence_claim_allowed": false,
+          "official_centiloid_equivalence_claim_allowed": false,
+          "pair_kind": "TINY_AUGMENTATION_EFFECT",
+          "positive_claim_allowed": false,
+          "schema_version": "4.0"
+        },
+        "pair_kind": "TINY_AUGMENTATION_EFFECT",
+        "privacy_scan": {
+          "scanned_root": "PROJECT_ROOT/results\\method_y_revival_v4_image_factorial_v1\\analysis_pairs\\A0_vs_A1\\reports",
+          "status": "PASS",
+          "violations": []
+        },
+        "public_reports": [
+          "amyloid_CLAIM_POLICY.json",
+          "amyloid_calibration.json",
+          "amyloid_factorial_acceptance.json",
+          "amyloid_pair_identity.json",
+          "amyloid_paired_oof_bootstrap.json",
+          "amyloid_scanner_comparison.json",
+          "amyloid_subgroups.json",
+          "tau_CLAIM_POLICY.json",
+          "tau_calibration.json",
+          "tau_factorial_acceptance.json",
+          "tau_pair_identity.json",
+          "tau_paired_oof_bootstrap.json",
+          "tau_scanner_comparison.json",
+          "tau_subgroups.json"
+        ],
+        "reference_arm": "A0",
+        "status": "COMPLETED_FROM_MATCHED_LOCKED_OOF"
+      },
+      "tau:A0_vs_A2": {
+        "acceptance_gate": {
+          "blockers": [
+            "UNO_CINDEX_NOT_NONINFERIOR",
+            "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED"
+          ],
+          "branch": "tau",
+          "calibration_not_worse": true,
+          "challenger_arm": "A2",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "delta_ibs_95ci": [
+            -0.013104082022147542,
+            0.0025998278586620814
+          ],
+          "delta_uno_cindex_95ci": [
+            -0.05079341627739378,
+            0.027527173477872258
+          ],
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "fold_delta_ibs": [
+            0.005913567717190496,
+            -0.010711636070250802,
+            0.0002048768126984707,
+            -0.014304464353301002,
+            -0.007526730572668436
+          ],
+          "gate_role": "EXPLORATORY_OPERATIONAL_MODEL_COMPARISON",
+          "leave_manufacturer_out_performance_established": false,
+          "locked_external_validation_passed": false,
+          "pair_kind": "ARCHITECTURE_EFFECT_WITHOUT_AUGMENTATION",
+          "positive_claim_allowed": false,
+          "quantitative_equivalence_proven": false,
+          "reference_arm": "A0",
+          "scanner_probe_not_worse": true,
+          "selected_epoch_nll_gap_delta": -0.06099294603201216
+        },
+        "branch": "tau",
+        "challenger_arm": "A2",
+        "claim": {
+          "branch": "tau",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "hard_blockers": [
+            "POST_HOC_OUTER_TEST_PREVIOUSLY_EXPOSED",
+            "QUANTITATIVE_EQUIVALENCE_NOT_ESTABLISHED",
+            "SCANNER_ROBUSTNESS_NOT_ESTABLISHED",
+            "LOCKED_EXTERNAL_VALIDATION_MISSING"
+          ],
+          "official_centaur_equivalence_claim_allowed": false,
+          "official_centiloid_equivalence_claim_allowed": false,
+          "pair_kind": "ARCHITECTURE_EFFECT_WITHOUT_AUGMENTATION",
+          "positive_claim_allowed": false,
+          "schema_version": "4.0"
+        },
+        "pair_kind": "ARCHITECTURE_EFFECT_WITHOUT_AUGMENTATION",
+        "privacy_scan": {
+          "scanned_root": "PROJECT_ROOT/results\\method_y_revival_v4_image_factorial_v1\\analysis_pairs\\A0_vs_A2\\reports",
+          "status": "PASS",
+          "violations": []
+        },
+        "public_reports": [
+          "amyloid_CLAIM_POLICY.json",
+          "amyloid_calibration.json",
+          "amyloid_factorial_acceptance.json",
+          "amyloid_pair_identity.json",
+          "amyloid_paired_oof_bootstrap.json",
+          "amyloid_scanner_comparison.json",
+          "amyloid_subgroups.json",
+          "tau_CLAIM_POLICY.json",
+          "tau_calibration.json",
+          "tau_factorial_acceptance.json",
+          "tau_pair_identity.json",
+          "tau_paired_oof_bootstrap.json",
+          "tau_scanner_comparison.json",
+          "tau_subgroups.json"
+        ],
+        "reference_arm": "A0",
+        "status": "COMPLETED_FROM_MATCHED_LOCKED_OOF"
+      },
+      "tau:A1_vs_A3": {
+        "acceptance_gate": {
+          "blockers": [
+            "UNO_CINDEX_NOT_NONINFERIOR",
+            "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED"
+          ],
+          "branch": "tau",
+          "calibration_not_worse": true,
+          "challenger_arm": "A3",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "delta_ibs_95ci": [
+            -0.015655025142863578,
+            0.0016353432862918876
+          ],
+          "delta_uno_cindex_95ci": [
+            -0.04011604133937397,
+            0.04302238206987027
+          ],
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "fold_delta_ibs": [
+            0.007747327248144573,
+            -0.02072530865111226,
+            0.0010187290735267779,
+            -0.009381395677086346,
+            -0.012854917576811523
+          ],
+          "gate_role": "EXPLORATORY_OPERATIONAL_MODEL_COMPARISON",
+          "leave_manufacturer_out_performance_established": false,
+          "locked_external_validation_passed": false,
+          "pair_kind": "ARCHITECTURE_EFFECT_WITH_PET_SAFE_AUGMENTATION",
+          "positive_claim_allowed": false,
+          "quantitative_equivalence_proven": false,
+          "reference_arm": "A1",
+          "scanner_probe_not_worse": true,
+          "selected_epoch_nll_gap_delta": -0.022725808919879256
+        },
+        "branch": "tau",
+        "challenger_arm": "A3",
+        "claim": {
+          "branch": "tau",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "hard_blockers": [
+            "POST_HOC_OUTER_TEST_PREVIOUSLY_EXPOSED",
+            "QUANTITATIVE_EQUIVALENCE_NOT_ESTABLISHED",
+            "SCANNER_ROBUSTNESS_NOT_ESTABLISHED",
+            "LOCKED_EXTERNAL_VALIDATION_MISSING"
+          ],
+          "official_centaur_equivalence_claim_allowed": false,
+          "official_centiloid_equivalence_claim_allowed": false,
+          "pair_kind": "ARCHITECTURE_EFFECT_WITH_PET_SAFE_AUGMENTATION",
+          "positive_claim_allowed": false,
+          "schema_version": "4.0"
+        },
+        "pair_kind": "ARCHITECTURE_EFFECT_WITH_PET_SAFE_AUGMENTATION",
+        "privacy_scan": {
+          "scanned_root": "PROJECT_ROOT/results\\method_y_revival_v4_image_factorial_v1\\analysis_pairs\\A1_vs_A3\\reports",
+          "status": "PASS",
+          "violations": []
+        },
+        "public_reports": [
+          "amyloid_CLAIM_POLICY.json",
+          "amyloid_calibration.json",
+          "amyloid_factorial_acceptance.json",
+          "amyloid_pair_identity.json",
+          "amyloid_paired_oof_bootstrap.json",
+          "amyloid_scanner_comparison.json",
+          "amyloid_subgroups.json",
+          "tau_CLAIM_POLICY.json",
+          "tau_calibration.json",
+          "tau_factorial_acceptance.json",
+          "tau_pair_identity.json",
+          "tau_paired_oof_bootstrap.json",
+          "tau_scanner_comparison.json",
+          "tau_subgroups.json"
+        ],
+        "reference_arm": "A1",
+        "status": "COMPLETED_FROM_MATCHED_LOCKED_OOF"
+      },
+      "tau:A2_vs_A3": {
+        "acceptance_gate": {
+          "blockers": [
+            "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED"
+          ],
+          "branch": "tau",
+          "calibration_not_worse": true,
+          "challenger_arm": "A3",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "delta_ibs_95ci": [
+            -0.004603930105497735,
+            0.002469817771032836
+          ],
+          "delta_uno_cindex_95ci": [
+            -0.00931588664418794,
+            0.01716286352334338
+          ],
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "fold_delta_ibs": [
+            0.0001836478124641605,
+            -0.010493829711737276,
+            0.0012259827864232048,
+            0.005394300939087757,
+            -0.0016409016399818455
+          ],
+          "gate_role": "EXPLORATORY_OPERATIONAL_MODEL_COMPARISON",
+          "leave_manufacturer_out_performance_established": false,
+          "locked_external_validation_passed": false,
+          "pair_kind": "RESNET10_AUGMENTATION_EFFECT",
+          "positive_claim_allowed": false,
+          "quantitative_equivalence_proven": false,
+          "reference_arm": "A2",
+          "scanner_probe_not_worse": true,
+          "selected_epoch_nll_gap_delta": -0.021773201283452767
+        },
+        "branch": "tau",
+        "challenger_arm": "A3",
+        "claim": {
+          "branch": "tau",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "hard_blockers": [
+            "POST_HOC_OUTER_TEST_PREVIOUSLY_EXPOSED",
+            "QUANTITATIVE_EQUIVALENCE_NOT_ESTABLISHED",
+            "SCANNER_ROBUSTNESS_NOT_ESTABLISHED",
+            "LOCKED_EXTERNAL_VALIDATION_MISSING"
+          ],
+          "official_centaur_equivalence_claim_allowed": false,
+          "official_centiloid_equivalence_claim_allowed": false,
+          "pair_kind": "RESNET10_AUGMENTATION_EFFECT",
+          "positive_claim_allowed": false,
+          "schema_version": "4.0"
+        },
+        "pair_kind": "RESNET10_AUGMENTATION_EFFECT",
+        "privacy_scan": {
+          "scanned_root": "PROJECT_ROOT/results\\method_y_revival_v4_image_factorial_v1\\analysis_pairs\\A2_vs_A3\\reports",
+          "status": "PASS",
+          "violations": []
+        },
+        "public_reports": [
+          "amyloid_CLAIM_POLICY.json",
+          "amyloid_calibration.json",
+          "amyloid_factorial_acceptance.json",
+          "amyloid_pair_identity.json",
+          "amyloid_paired_oof_bootstrap.json",
+          "amyloid_scanner_comparison.json",
+          "amyloid_subgroups.json",
+          "tau_CLAIM_POLICY.json",
+          "tau_calibration.json",
+          "tau_factorial_acceptance.json",
+          "tau_pair_identity.json",
+          "tau_paired_oof_bootstrap.json",
+          "tau_scanner_comparison.json",
+          "tau_subgroups.json"
+        ],
+        "reference_arm": "A2",
+        "status": "COMPLETED_FROM_MATCHED_LOCKED_OOF"
+      },
+      "tau:A3_vs_A4": {
+        "acceptance_gate": {
+          "blockers": [
+            "IBS_NOT_NONINFERIOR",
+            "UNO_CINDEX_NOT_NONINFERIOR",
+            "IBS_NONINFERIORITY_NOT_STABLE_IN_ALL_FOLDS",
+            "CALIBRATION_NOT_WORSE_NOT_DEMONSTRATED",
+            "LEAVE_MANUFACTURER_OUT_PERFORMANCE_NOT_ESTABLISHED"
+          ],
+          "branch": "tau",
+          "calibration_not_worse": false,
+          "challenger_arm": "A4",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "delta_ibs_95ci": [
+            0.005897799225448076,
+            0.026182014678095906
+          ],
+          "delta_uno_cindex_95ci": [
+            -0.06762196354609668,
+            0.018626992486511396
+          ],
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "fold_delta_ibs": [
+            -0.005402685689561634,
+            0.012860199806131817,
+            -0.0016581325402354602,
+            0.04043879367592634,
+            0.03087716568706976
+          ],
+          "gate_role": "EXPLORATORY_OPERATIONAL_MODEL_COMPARISON",
+          "leave_manufacturer_out_performance_established": false,
+          "locked_external_validation_passed": false,
+          "pair_kind": "DEPTH_EFFECT_WITH_PET_SAFE_AUGMENTATION",
+          "positive_claim_allowed": false,
+          "quantitative_equivalence_proven": false,
+          "reference_arm": "A3",
+          "scanner_probe_not_worse": true,
+          "selected_epoch_nll_gap_delta": 0.0021396801763891443
+        },
+        "branch": "tau",
+        "challenger_arm": "A4",
+        "claim": {
+          "branch": "tau",
+          "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+          "exploratory_operational_acceptance": false,
+          "external_claim_allowed": false,
+          "hard_blockers": [
+            "POST_HOC_OUTER_TEST_PREVIOUSLY_EXPOSED",
+            "QUANTITATIVE_EQUIVALENCE_NOT_ESTABLISHED",
+            "SCANNER_ROBUSTNESS_NOT_ESTABLISHED",
+            "LOCKED_EXTERNAL_VALIDATION_MISSING"
+          ],
+          "official_centaur_equivalence_claim_allowed": false,
+          "official_centiloid_equivalence_claim_allowed": false,
+          "pair_kind": "DEPTH_EFFECT_WITH_PET_SAFE_AUGMENTATION",
+          "positive_claim_allowed": false,
+          "schema_version": "4.0"
+        },
+        "pair_kind": "DEPTH_EFFECT_WITH_PET_SAFE_AUGMENTATION",
+        "privacy_scan": {
+          "scanned_root": "PROJECT_ROOT/results\\method_y_revival_v4_image_factorial_v1\\analysis_pairs\\A3_vs_A4\\reports",
+          "status": "PASS",
+          "violations": []
+        },
+        "public_reports": [
+          "amyloid_CLAIM_POLICY.json",
+          "amyloid_calibration.json",
+          "amyloid_factorial_acceptance.json",
+          "amyloid_pair_identity.json",
+          "amyloid_paired_oof_bootstrap.json",
+          "amyloid_scanner_comparison.json",
+          "amyloid_subgroups.json",
+          "tau_CLAIM_POLICY.json",
+          "tau_calibration.json",
+          "tau_factorial_acceptance.json",
+          "tau_pair_identity.json",
+          "tau_paired_oof_bootstrap.json",
+          "tau_scanner_comparison.json",
+          "tau_subgroups.json"
+        ],
+        "reference_arm": "A3",
+        "status": "COMPLETED_FROM_MATCHED_LOCKED_OOF"
+      }
+    },
+    "positive_claim_allowed": false,
+    "real_subject_count_unchanged": true,
+    "schema_version": "4.0",
+    "science_gate_blockers": [
+      "QUANTITATIVE_EQUIVALENCE_NOT_ESTABLISHED",
+      "SCANNER_ROBUSTNESS_NOT_ESTABLISHED",
+      "LOCKED_EXTERNAL_VALIDATION_MISSING"
+    ],
+    "stability": {
+      "amyloid": {
+        "A0": {
+          "ibs_mean": 0.09582756920389612,
+          "ibs_range": [
+            0.08569709031352425,
+            0.11077007821878682
+          ],
+          "ibs_sd": 0.009790250231253812,
+          "outer_folds": 5,
+          "uno_mean": 0.6973980914969092,
+          "uno_range": [
+            0.6392430590330327,
+            0.7861472301620613
+          ],
+          "uno_sd": 0.05908226891636387
+        },
+        "A1": {
+          "ibs_mean": 0.09584692087075515,
+          "ibs_range": [
+            0.08751804583516945,
+            0.11283408900910712
+          ],
+          "ibs_sd": 0.010157610256163132,
+          "outer_folds": 5,
+          "uno_mean": 0.6954028407734044,
+          "uno_range": [
+            0.6548704835812545,
+            0.7720209190901804
+          ],
+          "uno_sd": 0.04749512268942918
+        },
+        "A2": {
+          "ibs_mean": 0.09745614474948996,
+          "ibs_range": [
+            0.08070934237939534,
+            0.11519992782103827
+          ],
+          "ibs_sd": 0.012435335299912531,
+          "outer_folds": 5,
+          "uno_mean": 0.6979992069050891,
+          "uno_range": [
+            0.6138643059971514,
+            0.7596275680686854
+          ],
+          "uno_sd": 0.05439233799564351
+        },
+        "A3": {
+          "ibs_mean": 0.09663806377393505,
+          "ibs_range": [
+            0.07976978126465284,
+            0.11364734499863585
+          ],
+          "ibs_sd": 0.01220622017566376,
+          "outer_folds": 5,
+          "uno_mean": 0.6982027759247635,
+          "uno_range": [
+            0.6271564461630846,
+            0.782601188773209
+          ],
+          "uno_sd": 0.05670638164729029
+        },
+        "A4": {
+          "ibs_mean": 0.09784450798942439,
+          "ibs_range": [
+            0.08255290949090949,
+            0.11293841942474492
+          ],
+          "ibs_sd": 0.01141044335276416,
+          "outer_folds": 5,
+          "uno_mean": 0.6735098752835016,
+          "uno_range": [
+            0.6344924016163533,
+            0.7316494968533309
+          ],
+          "uno_sd": 0.03997789689585187
+        }
+      },
+      "tau": {
+        "A0": {
+          "ibs_mean": 0.12211255628204361,
+          "ibs_range": [
+            0.1084308568668997,
+            0.12963987577995628
+          ],
+          "ibs_sd": 0.008636292134907058,
+          "outer_folds": 5,
+          "uno_mean": 0.7169451704495702,
+          "uno_range": [
+            0.6750283674127248,
+            0.7402686767567017
+          ],
+          "uno_sd": 0.026034229532182186
+        },
+        "A1": {
+          "ibs_mean": 0.12260063214269631,
+          "ibs_range": [
+            0.1088429873924946,
+            0.1313842449994975
+          ],
+          "ibs_sd": 0.009361224460694135,
+          "outer_folds": 5,
+          "uno_mean": 0.7086936524572185,
+          "uno_range": [
+            0.6615880101721375,
+            0.7369847144420183
+          ],
+          "uno_sd": 0.03152423727185533
+        },
+        "A2": {
+          "ibs_mean": 0.11682767898877737,
+          "ibs_range": [
+            0.10863573367959817,
+            0.12490929422361727
+          ],
+          "ibs_sd": 0.006641611613608288,
+          "outer_folds": 5,
+          "uno_mean": 0.7059673270168904,
+          "uno_range": [
+            0.660891502124854,
+            0.7854261025217999
+          ],
+          "uno_sd": 0.047522836890466616
+        },
+        "A3": {
+          "ibs_mean": 0.11576151902602856,
+          "ibs_range": [
+            0.1084344099979682,
+            0.12509294203608143
+          ],
+          "ibs_sd": 0.006791577104412649,
+          "outer_folds": 5,
+          "uno_mean": 0.7096301184361895,
+          "uno_range": [
+            0.6676142251251642,
+            0.8062335709494626
+          ],
+          "uno_sd": 0.056504462615628595
+        },
+        "A4": {
+          "ibs_mean": 0.13118458721389475,
+          "ibs_range": [
+            0.10820358392578591,
+            0.1573279928833122
+          ],
+          "ibs_sd": 0.02105690695387353,
+          "outer_folds": 5,
+          "uno_mean": 0.6873590158582298,
+          "uno_range": [
+            0.647335264394749,
+            0.7854962128102636
+          ],
+          "uno_sd": 0.05569637530214306
+        }
+      }
+    },
+    "status": "COMPLETED"
+  }
+}

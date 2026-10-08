@@ -1,0 +1,45 @@
+{
+  "source_id": "e5d7c5e529bb18c7",
+  "source_sha256": "cd97be849a039a9ebc67047f758a117148389f365a505d86a55e38cc18d90cf3",
+  "scientific_role": "primary_technical",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "all_arms_reported_even_if_negative": true,
+    "comparison_limitations": {
+      "cohort_label_overlap": "ABSENT_ONE_CLASS_PER_COHORT",
+      "hybrid_paired_roc_auc_delta_dense_minus_baseline": {
+        "dense_minus_baseline": 0.04001563960548826,
+        "patient_bootstrap_ci95": [
+          0.02165943497417556,
+          0.05873018069319645
+        ],
+        "valid_draws": 1000
+      },
+      "mx04_head_inner_selection": "INVALID_SUPERVISED_PRETRAINING_LABEL_EXPOSURE",
+      "mx04_paired_difference_ci": "NOT_ESTIMATED"
+    },
+    "schema_version": 2,
+    "source_lock_sha256": "0de7a8a1ea4c403e8e54572a02c0c1d74b84137682b49d85d119526fb66984d4",
+    "status": "COMPLETE_EXACT_FOUR_TASK_INVENTORY",
+    "tasks": {
+      "hybrid_baseline": {
+        "mean_inner_validation_loss": 0.38354755176696925,
+        "metrics_sha256": "a14750520093fd904fcf44ee04bf3ce19ba1e3953c7957e8ca7225fe89d29993"
+      },
+      "hybrid_dense": {
+        "mean_inner_validation_loss": 0.3828424877906218,
+        "metrics_sha256": "ed52a6e2f955775bc9c81e85bec8cc114e74c0e1fc6b2c694670f80392cc7486"
+      },
+      "mx04_head_last": {
+        "mean_inner_validation_loss": 0.3818591765826568,
+        "metrics_sha256": "f489d3141b961e30efdd40b5c2118dffc9b17ba64968957b4070bb6c73c6c6f6"
+      },
+      "mx04_scratch": {
+        "mean_inner_validation_loss": 0.382071133647114,
+        "metrics_sha256": "9ef6d9f158b169947341dd51e65ebe7251d00d759a8cbb4ff2784efdb3d7dcca"
+      }
+    }
+  }
+}

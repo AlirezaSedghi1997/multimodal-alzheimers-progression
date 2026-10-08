@@ -1,0 +1,168 @@
+{
+  "source_id": "cb8fc2d5208a87fe",
+  "source_sha256": "a88a991eb04655298dcc693bf940fbe3a68b974c0402a6f2f57cfd10c2042c5f",
+  "scientific_role": "lmo_sensitivity",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "branches": {
+      "amyloid": {
+        "cognition": {
+          "AT_OR_ABOVE_TRAIN_MEDIAN": {
+            "delta_brier_95ci": [
+              -0.0008131925168125284,
+              0.0029377463831376485
+            ],
+            "events_by_horizon": 27,
+            "fold_sizes": [
+              54,
+              43,
+              71,
+              53,
+              57
+            ],
+            "observed_controls": 205,
+            "point_delta_brier": 0.0009542260671927021,
+            "positive_subgroup_claim_allowed": false,
+            "resamples": 2000,
+            "selection_training_and_censoring_fit_uncertainty_included": false,
+            "status": "ESTIMABLE_CONDITIONAL_DESCRIPTIVE",
+            "subject_count": 278
+          },
+          "BELOW_TRAIN_MEDIAN": {
+            "delta_brier_95ci": [
+              -0.010664525652531327,
+              0.0026151184049783044
+            ],
+            "events_by_horizon": 61,
+            "fold_sizes": [
+              55,
+              64,
+              61,
+              52,
+              50
+            ],
+            "observed_controls": 173,
+            "point_delta_brier": -0.003836210279996808,
+            "positive_subgroup_claim_allowed": false,
+            "resamples": 2000,
+            "selection_training_and_censoring_fit_uncertainty_included": false,
+            "status": "ESTIMABLE_CONDITIONAL_DESCRIPTIVE",
+            "subject_count": 282
+          },
+          "MISSING": {
+            "status": "NOT_ESTIMABLE_INSUFFICIENT_SUPPORT",
+            "subject_count": 0
+          }
+        },
+        "cohort": {
+          "levels": [
+            "A4"
+          ],
+          "status": "NOT_ESTIMABLE_DEVELOPMENT_IS_A4_ONLY"
+        },
+        "horizon_days": 1095.0,
+        "limitations": [
+          "POST_HOC",
+          "FIXED_MODEL_CONDITIONAL_CI",
+          "MARGINAL_TRAIN_CENSORING_REQUIRES_INDEPENDENCE_WITHIN_SUBGROUP",
+          "NO_EXTERNAL_TRANSPORT",
+          "DESCRIPTIVE_NOT_MULTIPLICITY_ADJUSTED_SUPERIORITY"
+        ],
+        "metric": "IPCW_BRIER_AT_1095_DAYS_NOT_IBS",
+        "positive_subgroup_claim_allowed": false,
+        "qc": {
+          "levels": [
+            "PASS"
+          ],
+          "status": "NOT_ESTIMABLE_NO_VARIATION"
+        },
+        "training_median_range": [
+          -1.0098865,
+          -0.847518
+        ]
+      },
+      "tau": {
+        "cognition": {
+          "AT_OR_ABOVE_TRAIN_MEDIAN": {
+            "delta_brier_95ci": [
+              -0.0008805868899577548,
+              0.0029505564651732385
+            ],
+            "events_by_horizon": 17,
+            "fold_sizes": [
+              26,
+              34,
+              37,
+              27,
+              26
+            ],
+            "observed_controls": 117,
+            "point_delta_brier": 0.0005298868766209233,
+            "positive_subgroup_claim_allowed": false,
+            "resamples": 2000,
+            "selection_training_and_censoring_fit_uncertainty_included": false,
+            "status": "ESTIMABLE_CONDITIONAL_DESCRIPTIVE",
+            "subject_count": 150
+          },
+          "BELOW_TRAIN_MEDIAN": {
+            "delta_brier_95ci": [
+              -0.0029347000830025768,
+              0.003110549000564606
+            ],
+            "events_by_horizon": 38,
+            "fold_sizes": [
+              34,
+              28,
+              26,
+              32,
+              36
+            ],
+            "observed_controls": 104,
+            "point_delta_brier": 4.4802214608355564e-05,
+            "positive_subgroup_claim_allowed": false,
+            "resamples": 2000,
+            "selection_training_and_censoring_fit_uncertainty_included": false,
+            "status": "ESTIMABLE_CONDITIONAL_DESCRIPTIVE",
+            "subject_count": 156
+          },
+          "MISSING": {
+            "status": "NOT_ESTIMABLE_INSUFFICIENT_SUPPORT",
+            "subject_count": 0
+          }
+        },
+        "cohort": {
+          "levels": [
+            "A4"
+          ],
+          "status": "NOT_ESTIMABLE_DEVELOPMENT_IS_A4_ONLY"
+        },
+        "horizon_days": 1095.0,
+        "limitations": [
+          "POST_HOC",
+          "FIXED_MODEL_CONDITIONAL_CI",
+          "MARGINAL_TRAIN_CENSORING_REQUIRES_INDEPENDENCE_WITHIN_SUBGROUP",
+          "NO_EXTERNAL_TRANSPORT",
+          "DESCRIPTIVE_NOT_MULTIPLICITY_ADJUSTED_SUPERIORITY"
+        ],
+        "metric": "IPCW_BRIER_AT_1095_DAYS_NOT_IBS",
+        "positive_subgroup_claim_allowed": false,
+        "qc": {
+          "levels": [
+            "PASS"
+          ],
+          "status": "NOT_ESTIMABLE_NO_VARIATION"
+        },
+        "training_median_range": [
+          -1.283788,
+          -1.0308115
+        ]
+      }
+    },
+    "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+    "new_test_inference": false,
+    "new_training": false,
+    "status": "REMAINING_SUBGROUP_ANALYSES_COMPLETED_WITH_LIMITATIONS"
+  }
+}

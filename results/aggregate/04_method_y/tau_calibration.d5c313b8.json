@@ -1,0 +1,380 @@
+{
+  "source_id": "d5c313b8d881b9e2",
+  "source_sha256": "d0fc142cb57bcd87d495375dffe9ce0b8a23190f5c57a8d34f1444d331f04adc",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "comparison_semantics": "REFERENCE_ARM_VS_CHALLENGER_ARM",
+    "horizons": {
+      "1095.75": {
+        "challenger": {
+          "calibration_bins": [
+            {
+              "bin": 0,
+              "mean_predicted_risk": 0.07930180989428923,
+              "n": 28,
+              "weighted_observed_event_rate": 0.06850680169713601
+            },
+            {
+              "bin": 1,
+              "mean_predicted_risk": 0.09395454703432247,
+              "n": 28,
+              "weighted_observed_event_rate": 0.03247320389507685
+            },
+            {
+              "bin": 2,
+              "mean_predicted_risk": 0.11651250820015897,
+              "n": 27,
+              "weighted_observed_event_rate": 0.13633336744246916
+            },
+            {
+              "bin": 3,
+              "mean_predicted_risk": 0.1368295989050446,
+              "n": 28,
+              "weighted_observed_event_rate": 0.1349462295314518
+            },
+            {
+              "bin": 4,
+              "mean_predicted_risk": 0.16197498161307827,
+              "n": 27,
+              "weighted_observed_event_rate": 0.0
+            },
+            {
+              "bin": 5,
+              "mean_predicted_risk": 0.18329962520754112,
+              "n": 28,
+              "weighted_observed_event_rate": 0.06663254338494295
+            },
+            {
+              "bin": 6,
+              "mean_predicted_risk": 0.2093090052224816,
+              "n": 27,
+              "weighted_observed_event_rate": 0.24502246476110903
+            },
+            {
+              "bin": 7,
+              "mean_predicted_risk": 0.2600876911162478,
+              "n": 28,
+              "weighted_observed_event_rate": 0.269195518622427
+            },
+            {
+              "bin": 8,
+              "mean_predicted_risk": 0.3601145620522047,
+              "n": 27,
+              "weighted_observed_event_rate": 0.46108709133869463
+            },
+            {
+              "bin": 9,
+              "mean_predicted_risk": 0.6003932154153074,
+              "n": 28,
+              "weighted_observed_event_rate": 0.48072078254898787
+            }
+          ],
+          "calibration_intercept": -0.1863792897279002,
+          "calibration_intercept_95ci": [
+            -0.6809861211847823,
+            0.308227541728982
+          ],
+          "calibration_slope": 1.0369822964875877,
+          "calibration_slope_95ci": [
+            0.6860360963365646,
+            1.3879284966386107
+          ],
+          "censored_before_horizon_count": 30,
+          "effective_row_count": 276,
+          "event_count": 55,
+          "horizon_days": 1095.75,
+          "method": "IPCW_WEIGHTED_LOGISTIC_CALIBRATION",
+          "recalibration_applied": false,
+          "status": "ESTIMABLE"
+        },
+        "challenger_arm": "A1",
+        "challenger_max_absolute_deviation": 0.1863792897279002,
+        "challenger_not_worse": true,
+        "horizon_days": 1095.75,
+        "recalibration_applied": false,
+        "reference": {
+          "calibration_bins": [
+            {
+              "bin": 0,
+              "mean_predicted_risk": 0.06444992205557289,
+              "n": 28,
+              "weighted_observed_event_rate": 0.06845490989996253
+            },
+            {
+              "bin": 1,
+              "mean_predicted_risk": 0.08329563460334423,
+              "n": 28,
+              "weighted_observed_event_rate": 0.1315202329945064
+            },
+            {
+              "bin": 2,
+              "mean_predicted_risk": 0.10127468949764475,
+              "n": 27,
+              "weighted_observed_event_rate": 0.06994446477689814
+            },
+            {
+              "bin": 3,
+              "mean_predicted_risk": 0.12554655907610957,
+              "n": 28,
+              "weighted_observed_event_rate": 0.1017028786713061
+            },
+            {
+              "bin": 4,
+              "mean_predicted_risk": 0.14490511700344696,
+              "n": 27,
+              "weighted_observed_event_rate": 0.13748268550709347
+            },
+            {
+              "bin": 5,
+              "mean_predicted_risk": 0.17435369162525913,
+              "n": 28,
+              "weighted_observed_event_rate": 0.0
+            },
+            {
+              "bin": 6,
+              "mean_predicted_risk": 0.2034951087653444,
+              "n": 27,
+              "weighted_observed_event_rate": 0.1723610378046721
+            },
+            {
+              "bin": 7,
+              "mean_predicted_risk": 0.2531183995830268,
+              "n": 28,
+              "weighted_observed_event_rate": 0.23431583209429535
+            },
+            {
+              "bin": 8,
+              "mean_predicted_risk": 0.366261934937911,
+              "n": 27,
+              "weighted_observed_event_rate": 0.4633158987693652
+            },
+            {
+              "bin": 9,
+              "mean_predicted_risk": 0.5984012956300404,
+              "n": 28,
+              "weighted_observed_event_rate": 0.5156350018330675
+            }
+          ],
+          "calibration_intercept": -0.19062299669915475,
+          "calibration_intercept_95ci": [
+            -0.6813281031906375,
+            0.30008210979232797
+          ],
+          "calibration_slope": 0.9808376987222434,
+          "calibration_slope_95ci": [
+            0.6482839712434156,
+            1.313391426201071
+          ],
+          "censored_before_horizon_count": 30,
+          "effective_row_count": 276,
+          "event_count": 55,
+          "horizon_days": 1095.75,
+          "method": "IPCW_WEIGHTED_LOGISTIC_CALIBRATION",
+          "recalibration_applied": false,
+          "status": "ESTIMABLE"
+        },
+        "reference_arm": "A0",
+        "reference_max_absolute_deviation": 0.19062299669915475,
+        "status": "ESTIMABLE"
+      },
+      "1640.0": {
+        "challenger": {
+          "censored_before_horizon_count": 0,
+          "effective_row_count": 0,
+          "horizon_days": 1640.0,
+          "recalibration_applied": false,
+          "status": "NOT_ESTIMABLE"
+        },
+        "challenger_arm": "A1",
+        "challenger_not_worse": false,
+        "horizon_days": 1640.0,
+        "recalibration_applied": false,
+        "reference": {
+          "censored_before_horizon_count": 0,
+          "effective_row_count": 0,
+          "horizon_days": 1640.0,
+          "recalibration_applied": false,
+          "status": "NOT_ESTIMABLE"
+        },
+        "reference_arm": "A0",
+        "status": "NOT_ESTIMABLE"
+      },
+      "547.875": {
+        "challenger": {
+          "calibration_bins": [
+            {
+              "bin": 0,
+              "mean_predicted_risk": 0.04336521265417003,
+              "n": 30,
+              "weighted_observed_event_rate": 0.0
+            },
+            {
+              "bin": 1,
+              "mean_predicted_risk": 0.052143855092807515,
+              "n": 29,
+              "weighted_observed_event_rate": 0.033871099840327316
+            },
+            {
+              "bin": 2,
+              "mean_predicted_risk": 0.0642474010492994,
+              "n": 30,
+              "weighted_observed_event_rate": 0.1311857517563316
+            },
+            {
+              "bin": 3,
+              "mean_predicted_risk": 0.07420484860637602,
+              "n": 29,
+              "weighted_observed_event_rate": 0.03405003973065233
+            },
+            {
+              "bin": 4,
+              "mean_predicted_risk": 0.08688767016567489,
+              "n": 30,
+              "weighted_observed_event_rate": 0.03285281500761281
+            },
+            {
+              "bin": 5,
+              "mean_predicted_risk": 0.09970381671515967,
+              "n": 29,
+              "weighted_observed_event_rate": 0.033965805463187296
+            },
+            {
+              "bin": 6,
+              "mean_predicted_risk": 0.11650170859300733,
+              "n": 29,
+              "weighted_observed_event_rate": 0.10251823386992112
+            },
+            {
+              "bin": 7,
+              "mean_predicted_risk": 0.14689446445885776,
+              "n": 30,
+              "weighted_observed_event_rate": 0.2637573710394893
+            },
+            {
+              "bin": 8,
+              "mean_predicted_risk": 0.21832001077365404,
+              "n": 29,
+              "weighted_observed_event_rate": 0.34172458229061037
+            },
+            {
+              "bin": 9,
+              "mean_predicted_risk": 0.4016908932179317,
+              "n": 30,
+              "weighted_observed_event_rate": 0.2972862658112111
+            }
+          ],
+          "calibration_intercept": 0.04507041942994083,
+          "calibration_intercept_95ci": [
+            -0.7138492814967013,
+            0.803990120356583
+          ],
+          "calibration_slope": 1.046363893599355,
+          "calibration_slope_95ci": [
+            0.6438593631383867,
+            1.4488684240603236
+          ],
+          "censored_before_horizon_count": 11,
+          "effective_row_count": 295,
+          "event_count": 38,
+          "horizon_days": 547.875,
+          "method": "IPCW_WEIGHTED_LOGISTIC_CALIBRATION",
+          "recalibration_applied": false,
+          "status": "ESTIMABLE"
+        },
+        "challenger_arm": "A1",
+        "challenger_max_absolute_deviation": 0.04636389359935511,
+        "challenger_not_worse": true,
+        "horizon_days": 547.875,
+        "recalibration_applied": false,
+        "reference": {
+          "calibration_bins": [
+            {
+              "bin": 0,
+              "mean_predicted_risk": 0.03434727480139486,
+              "n": 30,
+              "weighted_observed_event_rate": 0.0
+            },
+            {
+              "bin": 1,
+              "mean_predicted_risk": 0.044571435743602075,
+              "n": 29,
+              "weighted_observed_event_rate": 0.10160736783369481
+            },
+            {
+              "bin": 2,
+              "mean_predicted_risk": 0.05442276430059812,
+              "n": 30,
+              "weighted_observed_event_rate": 0.06605560962999862
+            },
+            {
+              "bin": 3,
+              "mean_predicted_risk": 0.06655318186382435,
+              "n": 29,
+              "weighted_observed_event_rate": 0.03448883098132154
+            },
+            {
+              "bin": 4,
+              "mean_predicted_risk": 0.07728332249972439,
+              "n": 30,
+              "weighted_observed_event_rate": 0.09866816396510308
+            },
+            {
+              "bin": 5,
+              "mean_predicted_risk": 0.0924923112973525,
+              "n": 29,
+              "weighted_observed_event_rate": 0.033915837645443245
+            },
+            {
+              "bin": 6,
+              "mean_predicted_risk": 0.11001259806289093,
+              "n": 29,
+              "weighted_observed_event_rate": 0.10167853569493872
+            },
+            {
+              "bin": 7,
+              "mean_predicted_risk": 0.1403236563896484,
+              "n": 30,
+              "weighted_observed_event_rate": 0.1644771681959121
+            },
+            {
+              "bin": 8,
+              "mean_predicted_risk": 0.21681056494637108,
+              "n": 29,
+              "weighted_observed_event_rate": 0.3759871486184066
+            },
+            {
+              "bin": 9,
+              "mean_predicted_risk": 0.3924164079361207,
+              "n": 30,
+              "weighted_observed_event_rate": 0.2975025085227606
+            }
+          ],
+          "calibration_intercept": 0.005103110025485488,
+          "calibration_intercept_95ci": [
+            -0.7495829353500911,
+            0.7597891554010621
+          ],
+          "calibration_slope": 0.9782003034123763,
+          "calibration_slope_95ci": [
+            0.595276204025995,
+            1.3611244027987577
+          ],
+          "censored_before_horizon_count": 11,
+          "effective_row_count": 295,
+          "event_count": 38,
+          "horizon_days": 547.875,
+          "method": "IPCW_WEIGHTED_LOGISTIC_CALIBRATION",
+          "recalibration_applied": false,
+          "status": "ESTIMABLE"
+        },
+        "reference_arm": "A0",
+        "reference_max_absolute_deviation": 0.021799696587623707,
+        "status": "ESTIMABLE"
+      }
+    },
+    "status": "COMPLETED_WITH_ESTIMABILITY_GATES"
+  }
+}

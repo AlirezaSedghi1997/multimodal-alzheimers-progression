@@ -1,0 +1,16 @@
+{
+  "source_id": "a2e2f5f843c7e829",
+  "source_sha256": "44c26798938784df4f1a96a7aa36b019ac05f8c78dacf30d85b48b4bba9e03ba",
+  "scientific_role": "population_and_qc",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 1,
+  "aggregate": {
+    "failure_count": 3,
+    "generated_utc": "2026-07-19T07:50:34.148550+00:00",
+    "manifest_status": "BLOCKED",
+    "public_safe": false,
+    "run_contract_sha256": "b243ab4290f6501575a01a18cd1a598aaf075e62274d05275f81868139f2b33f",
+    "schema_version": "1.0"
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "source_id": "dd6c47e4ace2f49b",
+  "source_sha256": "58b7645690eb9a540a4c33a54eed865abb34d9bc7f879213ce079443b6caa197",
+  "scientific_role": "posthoc_sensitivity",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 2,
+  "aggregate": {
+    "payload": {
+      "bootstrap_unit": "patient",
+      "calibration_by_seed": {},
+      "calibration_ci": "NOT_ESTIMATED_IN_QUICK_ADDON",
+      "ci_scope": "conditional_on_fixed_fitted_models_not_training_variance",
+      "demographic_balance": {
+        "age": {
+          "missing_n": 0,
+          "negative_n": 193,
+          "positive_n": 614,
+          "smd_positive_minus_negative": 0.27929157815102507
+        },
+        "education_years": {
+          "missing_n": 0,
+          "negative_n": 193,
+          "positive_n": 614,
+          "smd_positive_minus_negative": -0.050744328193970865
+        },
+        "sex": {
+          "missing_n": 0,
+          "negative_n": 193,
+          "positive_n": 614,
+          "smd_positive_minus_negative": 0.04144681400924015
+        }
+      },
+      "effects": {
+        "auprc": {
+          "ci95": [
+            -0.009187005510576263,
+            0.013220345171612696
+          ],
+          "delta": 0.0017219414872435834,
+          "valid_resamples": 2000
+        },
+        "auroc": {
+          "ci95": [
+            -0.003448203818979006,
+            0.028580437139051198
+          ],
+          "delta": 0.012269835108268179,
+          "valid_resamples": 2000
+        },
+        "brier": {
+          "ci95": [
+            0.03810702784685566,
+            0.058583357028416376
+          ],
+          "delta": 0.04860435118861686,
+          "valid_resamples": 2000
+        }
+      },
+      "effects_direction": "first_minus_second",
+      "first_metrics": {
+        "auprc": 0.8656877341938799,
+        "auroc": 0.6961063948287792,
+        "brier": 0.22339238247042315
+      },
+      "n": 807,
+      "negative": 193,
+      "per_seed": {
+        "13": {
+          "hybrid": [
+            0.6974481443351167,
+            0.8684730168455059,
+            0.23415215882573692
+          ],
+          "nonlinear": [
+            0.6868955798214376,
+            0.8679319159692662,
+            0.1739228480137905
+          ]
+        },
+        "29": {
+          "hybrid": [
+            0.6890432228991916,
+            0.8589983762376278,
+            0.23446939377993922
+          ],
+          "nonlinear": [
+            0.6826340483704917,
+            0.8604088475259404,
+            0.17556150071380888
+          ]
+        },
+        "47": {
+          "hybrid": [
+            0.7018278172520295,
+            0.8695918094985062,
+            0.20155559480559324
+          ],
+          "nonlinear": [
+            0.6819800509696039,
+            0.8635566146247026,
+            0.17487974511781948
+          ]
+        }
+      },
+      "positive": 614,
+      "second_metrics": {
+        "auprc": 0.8639657927066363,
+        "auroc": 0.683836559720511,
+        "brier": 0.17478803128180628
+      },
+      "seed_count": 3,
+      "seeds_are_independent_patients": false,
+      "status": "DESCRIPTIVE_POST_HOC_INTERNAL",
+      "stratified_by_fold_class": false
+    },
+    "payload_sha256": "4d3e53d6c7c43e61bb4c570f79ed9533e2f2a596e32d7ba5dbf7e62f374fe816",
+    "protocol_sha256": "f901ffa588743b99131252936e2960ba75a445f11e725d00e942dd449cf2e331",
+    "unit": "statistics/PET_after_MRI"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "protocol": "REGIONAL_PROGRESSION_ASSOCIATION_V1_20261007",
+  "output_root": "results/xyz_regional_evidence_v1",
+  "postall_root": "results/xyz_fusion_postall_v2",
+  "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+  "selected_before_extension_fitting_not_before_original_study": true,
+  "selection_used_heatmaps_or_roi_p_values": false,
+  "regions": {
+    "hippocampus": {"source_prefix": "Hippocampus", "parent_ratio": "hippocampus_icv", "description": "Bilateral hippocampal volume"},
+    "entorhinal": {"source_prefix": "Entorhinal", "parent_ratio": "entorhinal_icv", "description": "Bilateral entorhinal cortex volume"},
+    "lateral_ventricle": {"source_prefix": "LateralVentricle", "parent_ratio": "ventricle_icv", "description": "Bilateral lateral ventricular volume; nonspecific comparator"}
+  },
+  "minimum_subjects": 100,
+  "minimum_events": 60,
+  "minimum_events_per_parameter": 5,
+  "alpha": 0.05,
+  "multiplicity": "HOLM_ALL_THREE_ROIS_SEPARATELY_FOR_CDR_AND_PACC",
+  "ph_step_days": 730.5,
+  "xai_is_illustrative_not_population_discovery": true,
+  "no_new_cnn_training": true,
+  "no_automated_alzheimer_disease_region_claim": true
+}

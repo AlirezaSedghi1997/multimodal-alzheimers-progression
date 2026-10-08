@@ -1,0 +1,18 @@
+{
+  "source_id": "ab907ae85b586ad2",
+  "source_sha256": "b2c857a8737ba2330c7fed2e73511f91917051cde549ab9d178085747a7dd3c0",
+  "scientific_role": "factorial_descriptive_not_global_winner_confirmatory",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "analysis_role": "POST_HOC_INTERNAL_EXPLORATORY",
+    "branch": "tau",
+    "challenger_arm": "A3",
+    "comparison_semantics": "MATCHED_IMAGE_PLUS_TABULAR_ARM_COMPARISON",
+    "not_an_image_incremental_value_analysis": true,
+    "pair_kind": "RESNET10_AUGMENTATION_EFFECT",
+    "reference_arm": "A2",
+    "schema_version": "4.0"
+  }
+}

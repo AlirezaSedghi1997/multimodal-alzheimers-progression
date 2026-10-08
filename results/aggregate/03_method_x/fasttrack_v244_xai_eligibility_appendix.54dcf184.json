@@ -1,0 +1,25 @@
+{
+  "source_id": "54dcf1848aa4394b",
+  "source_sha256": "73fc307f7a9488b57653040a9991a7dd5acfabb67ed5c08a503e72e41cb921de",
+  "scientific_role": "primary_technical",
+  "claim_ceiling": "INTERNAL_EXPLORATORY_OR_TECHNICAL_NOT_EXTERNAL_OR_CLINICAL",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "amendment_sha256": "8121f184cbd424c0171557141e8a49c3d5f2c50e61482fdb75dbd6a6d701be4b",
+    "external_validation": false,
+    "fifth_receipt_sha256": "19dc719e056b7f65529401b68fc355e898c4fc45fc6db75a2bb6d5b763bca53b",
+    "old_four_fold_receipt_sha256": {
+      "0": "d41ac779333bab386af1c20ecee49c44e17c637c8dae88b32496335deec0588c",
+      "1": "b99cc70d9b15d4aafb690db7eaee86542412e15e3045e4d7ce672f1e3f477231",
+      "2": "13205d58fc89fa833f386f485eba5d6c204ea7bd49c3eedb52ab9e54b096021a",
+      "3": "b72a127f22353114e1666ff988b3bc51ca2ca7ee1ba2432f50393b157c500165"
+    },
+    "post_hoc_internal_exploratory_only": true,
+    "schema_version": 1,
+    "status": "POST_HOC_XAI_CONTROL_ELIGIBILITY_DISCLOSED",
+    "text_sha256": "5620a65e8d48b7be3e578ccb6a20d074ff2ef2602d6633da3f69d697242bd2c6",
+    "v22_thesis_manifest_sha256": "6af421735d0f32519568357ff208e1b6759c7cff2b6f8ba9c3a9552a85bd9419",
+    "xai_summary_sha256": "48513afa69701abe418b3b4c28da4aa95b2b3c3ba5fdd79b9df7294b1412306f"
+  }
+}

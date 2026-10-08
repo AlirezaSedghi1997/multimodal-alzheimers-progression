@@ -1,0 +1,91 @@
+schema_version: 1
+protocol_name: method_x_controlled_finetune_v1
+base_battery_config: configs/experiments/method_x_claim_benchmark_v3.yaml
+selection_scope: inner_validation_only
+outer_test_access: exactly_once_after_lock
+screening_seed: 13
+replication_seeds: [13, 29, 47]
+inner_selection_only: true
+fold_local_pretrained_required: true
+max_same_failure_attempts: 2
+candidate_families:
+  - resnet10_3d
+  - resnet18_3d
+  - resnet34_3d
+  - densenet121_3d
+  - mednext_3d_s
+# NOTE (early track 032): resnet50_3d and efficientnet3d_b0 are
+# PROTOCOL_EXCLUDED_NOT_STARTED (roadmap:31-32) and must never be re-added;
+# _validate_config rejects them fail-closed even if re-inserted.
+candidates:
+  - id: scratch_baseline
+    pretrained: false
+    freeze_schedule: none
+    layerwise_lr_decay: 1.0
+    discriminative_lr: false
+    ema: false
+    swa: false
+    task_loss: bce
+  - id: head_then_last_stage_llrd
+    pretrained: true
+    freeze_schedule: head_8_then_last_stage
+    layerwise_lr_decay: 0.80
+    discriminative_lr: true
+    finetune_lr: 0.00005
+    ema: false
+    swa: false
+    task_loss: bce
+  - id: full_llrd_ema
+    pretrained: true
+    freeze_schedule: full_after_warmup
+    layerwise_lr_decay: 0.75
+    discriminative_lr: true
+    finetune_lr: 0.00005
+    ema: true
+    ema_decay: 0.999
+    swa: false
+    task_loss: bce
+  - id: full_focal_calibrated
+    pretrained: true
+    freeze_schedule: full_after_warmup
+    layerwise_lr_decay: 0.75
+    discriminative_lr: true
+    finetune_lr: 0.00005
+    ema: false
+    swa: true
+    task_loss: focal
+    focal_gamma: 2.0
+promotion:
+  all_five_folds_finalized: true
+  sanity_checks_required: true
+  bootstrap_resamples: 1000
+  roc_auc_delta_min: 0.02
+  brier_degradation_max: 0.01
+  ece_degradation_max: 0.02
+  cohort_probe_auc_increase_max: 0.0
+  memory_hard_stop_gb: 7.5
+constraints:
+  a2_phenotypic_contrastive: disabled_until_physical_batch_or_queue
+  a4_conditioning_features: [age, sex, education_years, apoe4_carrier, mmse_base]
+  pet_input: false
+  external_weights: explicit_local_checkpoint_only
+runtime_modernization:
+  # Registered 2026-09-11 (MX-03 warnings triaged warn-only-by-design, fix
+  # forbidden mid-run): torch.cuda.amp deprecation + attention
+  # non-determinism MUST be resolved at this versioned MX-04 boundary with
+  # full re-validation and an append-only evidence amendment.  The
+  # orchestrator enforces this block fail-closed (see _validate_config):
+  # MX-04 training cannot launch while any item below is unmet.
+  amp_api: torch.amp
+  determinism_evaluation_required: true
+  evidence_artifact: results/method_x_registry/MX04_RUNTIME_MODERNIZATION.json
+exact_resume:
+  required: true
+  checkpoint_staging_root: 'C:\Users\USER\AppData\Local\AMUSE-X\checkpoint_staging'
+  checkpoint_full_cadence: 1
+  checkpoint_h_mirror: epoch
+  resume_replay_policy: deterministic
+  storage_policy: configs/policy/method_x_storage_locality_v1.yaml
+  no_resume_forbidden: true
+throughput_profile:
+  evidence_artifact: results/method_x_registry/MX04_THROUGHPUT_PROFILE.json

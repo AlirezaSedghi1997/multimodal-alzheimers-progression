@@ -1,0 +1,225 @@
+[
+  {
+    "id": "mri_preprocessing",
+    "role": "CURRENT_PREPROCESSING",
+    "entries": [
+      "scripts/preprocess_mri_spm.py",
+      "scripts/preprocess_mri_full.py"
+    ],
+    "evidence": [
+      {
+        "path": "results/method_x_registry/spm_gate_snapshot.json",
+        "sha256": "5aa2c1da6334b91e43e0d0dcb3a9b2e2c0cc01a22c303bdc136183c3ffa2ed23",
+        "file_exists_not_full_validity": true
+      }
+    ],
+    "external_validated": false
+  },
+  {
+    "id": "method_x",
+    "role": "TECHNICAL_INTERNAL",
+    "entries": [
+      "scripts/mx_fasttrack_v2_4_4/entry_v244.py",
+      "scripts/mx_fasttrack_v2_2/thesis_report.py"
+    ],
+    "configs": [
+      "configs/experiments/method_x_fasttrack_v2_20260927_mx05_gate_import.json"
+    ],
+    "evidence": [
+      {
+        "path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/fasttrack_inner_lock.json",
+        "sha256": "0de7a8a1ea4c403e8e54572a02c0c1d74b84137682b49d85d119526fb66984d4",
+        "file_exists_not_full_validity": true
+      },
+      {
+        "path": "results/final_results/method_x_fasttrack_v2_20260927_mx05_gate_import/reports/fasttrack_v22_thesis_manifest.json",
+        "sha256": "6af421735d0f32519568357ff208e1b6759c7cff2b6f8ba9c3a9552a85bd9419",
+        "file_exists_not_full_validity": true
+      }
+    ],
+    "external_validated": false
+  },
+  {
+    "id": "method_x_sensitivity",
+    "role": "POST_HOC_SENSITIVITY",
+    "entries": [
+      "scripts/mx_science_extension_v1/supervise_extension.py",
+      "scripts/mx_quick_validation_v1/supervise.py"
+    ],
+    "configs": [
+      "configs/experiments/method_x_science_extension_v1_20260927.json",
+      "configs/experiments/method_x_quick_validation_v1.json"
+    ],
+    "evidence": [
+      {
+        "path": "results/final_results/method_x_quick_validation_v1_20260929/reports/manifest.json",
+        "sha256": "045cdb495137bf450311ecfbfcc9c768c9b82b462abe6b242d7c1161b1620598",
+        "file_exists_not_full_validity": true
+      }
+    ],
+    "external_validated": false
+  },
+  {
+    "id": "pet_transforms",
+    "role": "CURRENT_PREPROCESSING_NOT_QUANTITATIVE_EQUIVALENCE",
+    "entries": [
+      "scripts/run_method_y_transforms_manual.ps1"
+    ],
+    "configs": [
+      "configs/method_y_revival_v2.yaml"
+    ],
+    "evidence": [
+      {
+        "path": "results/method_y_revival_v2/reports/TRANSFORM_ELIGIBILITY_SUMMARY_V2.json",
+        "sha256": "dde637f43518c1a47abb5f97598a4434fcceaf941edf2b2265ea919c9e6bdc2f",
+        "file_exists_not_full_validity": true
+      }
+    ],
+    "external_validated": false
+  },
+  {
+    "id": "method_y_regional",
+    "role": "SEPARATE_INTERNAL_ANALYSIS",
+    "entries": [
+      "scripts/run_method_y_training_v2.ps1"
+    ],
+    "configs": [
+      "configs/method_y_revival_v2_endpoint.yaml"
+    ],
+    "evidence": [
+      {
+        "path": "results/method_y_revival_v2/reports/POSTTRAINING_READINESS_V2.json",
+        "sha256": "d241a75873942d3a1e3c2d7d0581e602afc1c5d08625851cdd088d9d4c3231f4",
+        "file_exists_not_full_validity": true
+      },
+      {
+        "path": "results/method_y_revival_v2/reports/paired_at_tau_beyond_amyloid_bootstrap.json",
+        "sha256": "fd1d9a47a15e4690f1d9ba19b689506a9c6e89bc6ac3e3d011ac0346e071800c",
+        "file_exists_not_full_validity": true
+      }
+    ],
+    "external_validated": false
+  },
+  {
+    "id": "method_y_image",
+    "role": "FACTORIAL_DESCRIPTIVE_WITH_CORRECTED_INNER_SELECTION",
+    "entries": [
+      "scripts/run_method_y_image_factorial_v4.ps1",
+      "scripts/run_method_y_posttraining_correction_v4_2.py",
+      "scripts/run_method_y_posttraining_selection_flow_v4_2.py",
+      "scripts/run_method_y_posttraining_joint_pairs_v4_2.py",
+      "scripts/run_method_y_posttraining_bootstrap_v4_2.py",
+      "scripts/run_method_y_posttraining_pairwise_v4_2.py",
+      "scripts/run_method_y_posttraining_scanner_v4_2.py",
+      "scripts/run_method_y_posttraining_science_status_v4_2.py",
+      "scripts/run_method_y_local_validation_v5.ps1",
+      "scripts/run_method_y_amyloid_lmo_a4_v2.ps1",
+      "scripts/analyze_method_y_amyloid_lmo_a4_v2.py",
+      "scripts/analyze_method_y_amyloid_lmo_calibration_v1.py",
+      "scripts/review_method_y_after_v5.py",
+      "scripts/audit_method_y_exact_sidecar_sites_v1.py",
+      "scripts/analyze_method_y_remaining_subgroups_v1.py",
+      "scripts/build_method_y_reporting_crosswalk_v1.py"
+    ],
+    "configs": [
+      "configs/method_y_image_factorial_v4.yaml",
+      "configs/method_y_amyloid_lmo_a4_v2.yaml"
+    ],
+    "evidence": [
+      {
+        "path": "results/method_y_local_validation_v5/public_bundle/facts.json",
+        "sha256": "a3988c47ac5e0013d99087e8aa4e4ccd712d635ceca5b05428d655c083bd3ca3",
+        "file_exists_not_full_validity": true
+      },
+      {
+        "path": "results/method_y_post_v5_review_20260929/public_bundle/review.json",
+        "sha256": "3ee484bd4520828f3a8788553ac4bd13820ca6fd5583f7d894433a69fa5d064e",
+        "file_exists_not_full_validity": true
+      }
+    ],
+    "external_validated": false
+  },
+  {
+    "id": "fusion_preprocessing",
+    "role": "REUSED_CACHE_NOT_REUSED_V1_PREDICTIVE_RESULT",
+    "entries": [
+      "scripts/run_xyz_mri_baseline_fast_v1.ps1"
+    ],
+    "configs": [
+      "configs/xyz_mri_baseline_fast_v1.json"
+    ],
+    "evidence": [
+      {
+        "path": "results/xyz_mri_baseline_fast_v1/private/contract.json",
+        "sha256": "bc390866b75d9dd4ee7141ec57951b17b8bee915e61d039b564b58ba94445c1c",
+        "file_exists_not_full_validity": true
+      }
+    ],
+    "external_validated": false
+  },
+  {
+    "id": "fusion",
+    "role": "CURRENT_INTERNAL_PROGNOSTIC_ANALYSIS",
+    "entries": [
+      "scripts/run_xyz_fusion_v2.ps1"
+    ],
+    "configs": [
+      "configs/xyz_fusion_v2.json"
+    ],
+    "evidence": [
+      {
+        "path": "results/xyz_fusion_v2/private/contract.json",
+        "sha256": "6f391128b16a4eaef989ac458af4306772f797ce011a2c988b3c21bdb8e1be93",
+        "file_exists_not_full_validity": true
+      }
+    ],
+    "external_validated": false
+  },
+  {
+    "id": "postfusion",
+    "role": "CORRECTED_COMPUTED_NOT_FINAL_SCIENTIFIC_PROMOTION",
+    "entries": [
+      "scripts/run_xyz_postfusion_final_v1.ps1"
+    ],
+    "configs": [
+      "configs/xyz_fusion_postall_v2.json",
+      "configs/xyz_pet_manufacturer_audit_v1.json",
+      "configs/xyz_regional_evidence_v1.json"
+    ],
+    "evidence": [
+      {
+        "path": "results/xyz_postfusion_final_v1_ram/public/FINAL_VALIDATION_MATRIX.json",
+        "sha256": "533c0da067d57ef78a3714512f8d34c97a9c7b658fa7c34542a9c32ba3b574a7",
+        "file_exists_not_full_validity": true
+      }
+    ],
+    "external_validated": false
+  },
+  {
+    "id": "fp32_sensitivity",
+    "role": "RUNNING_EXCLUDE_ALL_RESULTS_FROM_THIS_RELEASE",
+    "entries": [
+      "scripts/run_xyz_fp32_spatial_v1.ps1"
+    ],
+    "configs": [
+      "configs/xyz_fp32_spatial_sensitivity_v1.json"
+    ],
+    "evidence": [],
+    "external_validated": false
+  },
+  {
+    "id": "xy_spatial",
+    "role": "DIAGNOSTIC_NOT_DISEASE_LOCALIZATION",
+    "entries": [
+      "scripts/run_xy_spatial_validation_v1.ps1"
+    ],
+    "evidence": [
+      {
+        "path": "results/xy_spatial_review_v1/latest.json",
+        "sha256": "e4045cd039b052f180d18b839e67e7fd91ab0c9dcdcb9a121fa07be06fc21b2c",
+        "file_exists_not_full_validity": true
+      }
+    ],
+    "external_validated": false
+  }
+]
