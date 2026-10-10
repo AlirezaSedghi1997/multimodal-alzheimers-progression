@@ -1,0 +1,178 @@
+{
+  "source_id": "fp32_statistical_review",
+  "source_sha256": "c851488295e75a8f096c5d7ee4a82ac2758f7793cc9f0abeee16d70ef8b301b2",
+  "scientific_role": "REVIEWED_INTERNAL_PRECISION_SENSITIVITY",
+  "claim_ceiling": "POST_HOC_INTERNAL_EXPLORATORY",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "status": "PASS_RECOMPUTED_FIXED_PREDICTION_STATISTICS",
+    "training_or_inference_performed": false,
+    "reports": {
+      "mri": {
+        "arms": {
+          "clinical_amyloid": {
+            "n": 1059,
+            "events_before_support_censoring": 239,
+            "events_after_support_censoring": 239,
+            "ibs": 0.04029953389680806,
+            "uno_c_weighted_fold_mean": 0.6855558941646316,
+            "stored_metrics_match": true
+          },
+          "clinical_mri_amyloid": {
+            "n": 1059,
+            "events_before_support_censoring": 239,
+            "events_after_support_censoring": 239,
+            "ibs": 0.04031899616562817,
+            "uno_c_weighted_fold_mean": 0.692129984536438,
+            "stored_metrics_match": true
+          }
+        },
+        "paired_bootstrap_recomputed": {
+          "base": "clinical_amyloid",
+          "augmented": "clinical_mri_amyloid",
+          "delta_ibs_mean": 1.9462268820107116e-05,
+          "delta_uno_mean": 0.006574090371806493,
+          "delta_ibs_ci95": [
+            -0.0002510227368178488,
+            0.0002764733544672791
+          ],
+          "delta_uno_ci95": [
+            -0.004228567083648196,
+            0.017427028561091174
+          ],
+          "valid_ibs_resamples": 2000,
+          "valid_uno_resamples": 2000,
+          "delta_ibs_bonferroni_ci": [
+            -0.0002720672223320272,
+            0.0003072881540261675
+          ],
+          "delta_uno_bonferroni_ci": [
+            -0.005353228247608304,
+            0.01886001072736372
+          ],
+          "resamples": 2000,
+          "resampling": "PAIRED_SUBJECT_WITHIN_OUTER_FOLD",
+          "uncertainty": "CONDITIONAL_ON_FITTED_MODELS_AND_TRAIN_CENSORING_NOT_SELECTION_UNCERTAINTY",
+          "multiplicity": "EXPLORATORY_NO_CONFIRMATORY_SIGNIFICANCE_CLAIM"
+        },
+        "stored_comparison_match": true,
+        "verdict": "INCREMENTAL_VALUE_NOT_DEMONSTRATED"
+      },
+      "pet": {
+        "arms": {
+          "clinical_mri_amyloid": {
+            "n": 544,
+            "events_before_support_censoring": 112,
+            "events_after_support_censoring": 112,
+            "ibs": 0.040620531319935725,
+            "uno_c_weighted_fold_mean": 0.7180222979100059,
+            "stored_metrics_match": true
+          },
+          "clinical_mri_amyloid_pet": {
+            "n": 544,
+            "events_before_support_censoring": 112,
+            "events_after_support_censoring": 112,
+            "ibs": 0.04041816129359123,
+            "uno_c_weighted_fold_mean": 0.7156528424529904,
+            "stored_metrics_match": true
+          }
+        },
+        "paired_bootstrap_recomputed": {
+          "base": "clinical_mri_amyloid",
+          "augmented": "clinical_mri_amyloid_pet",
+          "delta_ibs_mean": -0.00020237002634449825,
+          "delta_uno_mean": -0.002369455457015631,
+          "delta_ibs_ci95": [
+            -0.0007695968760137993,
+            0.0003163932371567883
+          ],
+          "delta_uno_ci95": [
+            -0.01975428175691808,
+            0.013013761626368348
+          ],
+          "valid_ibs_resamples": 2000,
+          "valid_uno_resamples": 2000,
+          "delta_ibs_bonferroni_ci": [
+            -0.0008840176178773621,
+            0.0003813680169531259
+          ],
+          "delta_uno_bonferroni_ci": [
+            -0.02299988221563784,
+            0.014897903485436442
+          ],
+          "resamples": 2000,
+          "resampling": "PAIRED_SUBJECT_WITHIN_OUTER_FOLD",
+          "uncertainty": "CONDITIONAL_ON_FITTED_MODELS_AND_TRAIN_CENSORING_NOT_SELECTION_UNCERTAINTY",
+          "multiplicity": "EXPLORATORY_NO_CONFIRMATORY_SIGNIFICANCE_CLAIM"
+        },
+        "stored_comparison_match": true,
+        "verdict": "INCREMENTAL_VALUE_NOT_DEMONSTRATED"
+      }
+    },
+    "uncertainty": "CONDITIONAL_ON_FIXED_MODELS_AND_TRAIN_CENSORING_NOT_COMPLETE_PIPELINE_UNCERTAINTY",
+    "uno_definition": "SUBJECT_COUNT_WEIGHTED_MEAN_OF_FOLD_SPECIFIC_UNO_NOT_POOLED_C_INDEX",
+    "evaluation_journals": [
+      {
+        "track": "mri",
+        "fold": 0,
+        "state": "COMMITTED",
+        "attempts": 1
+      },
+      {
+        "track": "mri",
+        "fold": 1,
+        "state": "COMMITTED",
+        "attempts": 1
+      },
+      {
+        "track": "mri",
+        "fold": 2,
+        "state": "COMMITTED",
+        "attempts": 1
+      },
+      {
+        "track": "mri",
+        "fold": 3,
+        "state": "COMMITTED",
+        "attempts": 1
+      },
+      {
+        "track": "mri",
+        "fold": 4,
+        "state": "COMMITTED",
+        "attempts": 1
+      },
+      {
+        "track": "pet",
+        "fold": 0,
+        "state": "COMMITTED",
+        "attempts": 1
+      },
+      {
+        "track": "pet",
+        "fold": 1,
+        "state": "COMMITTED",
+        "attempts": 1
+      },
+      {
+        "track": "pet",
+        "fold": 2,
+        "state": "COMMITTED",
+        "attempts": 1
+      },
+      {
+        "track": "pet",
+        "fold": 3,
+        "state": "COMMITTED",
+        "attempts": 1
+      },
+      {
+        "track": "pet",
+        "fold": 4,
+        "state": "COMMITTED",
+        "attempts": 1
+      }
+    ]
+  }
+}

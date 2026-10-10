@@ -19,5 +19,14 @@
     "source_sha256": "afde9b1e0258a46491ca4933f2e77ec4030016d5d5fc3a4e5cbc40d30996159d",
     "visual_review": "REVIEWED_20261008_AGGREGATE_NO_INDIVIDUAL_BRAIN_IMAGE",
     "scope": "INTERNAL_EXPLORATORY_DESCRIPTIVE"
+  },
+  {
+    "file": "fp32_paired_comparisons.svg",
+    "sha256": "ef51cb17b3258abbc9c1e4f49e2d89126a37c3873f6f28176d0a32d4a66c7b29",
+    "source_sha256": "c851488295e75a8f096c5d7ee4a82ac2758f7793cc9f0abeee16d70ef8b301b2",
+    "original_svg_sha256": "49bc810f648ceb844f1a49eee15f9d95e2c6565797c3e6c09d4eceac26e894c9",
+    "presentation_edit": "WHITESPACE_ONLY_SVG_GEOMETRY_UNCHANGED",
+    "visual_review": "REVIEWED_20261009_AGGREGATE",
+    "scope": "INTERNAL_EXPLORATORY_FIXED_MODEL_CONDITIONAL_INTERVALS"
   }
 ]

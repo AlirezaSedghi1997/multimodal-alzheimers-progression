@@ -13,7 +13,7 @@ Selection follows endpoints, contracts and amendments, not modification date or 
 | fusion_preprocessing | REUSED_CACHE_NOT_REUSED_V1_PREDICTIVE_RESULT | `scripts/run_xyz_mri_baseline_fast_v1.ps1` |
 | fusion | CURRENT_INTERNAL_PROGNOSTIC_ANALYSIS | `scripts/run_xyz_fusion_v2.ps1` |
 | postfusion | CORRECTED_COMPUTED_NOT_FINAL_SCIENTIFIC_PROMOTION | `scripts/run_xyz_postfusion_final_v1.ps1` |
-| fp32_sensitivity | RUNNING_EXCLUDE_ALL_RESULTS_FROM_THIS_RELEASE | `scripts/run_xyz_fp32_spatial_v1.ps1` |
+| fp32_sensitivity | REVIEWED_INTERNAL_PRECISION_SENSITIVITY | `scripts/run_xyz_fp32_spatial_v1.ps1` |
 | xy_spatial | DIAGNOSTIC_NOT_DISEASE_LOCALIZATION | `scripts/run_xy_spatial_validation_v1.ps1` |
 
 ## Shared dependencies
@@ -26,4 +26,4 @@ FBP belongs to amyloid and FTP to tau. Pattern-normalized images do not establis
 ## Result selection
 
 The regional paired tau result and the new fusion tau comparison answer different questions in different matched populations. They must not be pooled or substituted for one another.
-Post-fusion computation is complete in the recorded parent dossier; scientific promotion and the running FP32 companion remain separate. See active_routes.json and exclusions.json.
+Post-fusion computation is complete in the recorded parent dossier. The completed FP32 companion has been reviewed for sensitivity and numerical diagnostic reporting; it does not establish positive scientific claims or fully validated attribution. See [FP32 review](FP32_SENSITIVITY.md), active_routes.json and exclusions.json.

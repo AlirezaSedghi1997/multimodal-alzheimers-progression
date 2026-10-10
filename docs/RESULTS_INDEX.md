@@ -205,3 +205,9 @@ All entries are aggregate projections, not final approval of every claim.
 | [PET_MANUFACTURER_AUDIT.82b7f3c6](../results/aggregate/06_fusion/PET_MANUFACTURER_AUDIT.82b7f3c6.json) | corrected_postfusion_with_review_addendum | 0 |
 | [results.37f0c2a8](../results/aggregate/06_fusion/results.37f0c2a8.json) | corrected_postfusion_with_review_addendum | 0 |
 | [REGIONAL_EVIDENCE.d733894a](../results/aggregate/06_fusion/REGIONAL_EVIDENCE.d733894a.json) | corrected_postfusion_with_review_addendum | 0 |
+
+## Reviewed FP32 sensitivity
+
+- [Statistics](../results/aggregate/09_fp32/statistical_review.json)
+- [Spatial controls](../results/aggregate/09_fp32/spatial_review.json)
+- [Interpretation and limits](FP32_SENSITIVITY.md)

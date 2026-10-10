@@ -1,9 +1,19 @@
-# Multimodal neuroimaging and progression research
+# Multimodal Alzheimer's Progression Research
 
-Research software and aggregate evidence for an internal, post-hoc study of MRI,
-amyloid/tau PET, clinical/cognitive predictors and available blood measures.
-This is a **private release candidate**, not a clinical tool or a validated
-Alzheimer disease diagnostic system. No external validation cohort was available.
+Research software for studying future cognitive progression with structural MRI,
+amyloid and tau PET, and clinical/cognitive predictors. The project combines
+cross-fitted survival models with matched comparisons, calibration, scanner audits,
+longitudinal analysis and spatial explanations.
+
+The primary prognostic question is whether imaging adds information about future
+sustained CDR progression beyond baseline clinical and cognitive measures.
+Longitudinal PACC change provides a secondary outcome. Analyses use A4/LEARN data
+under controlled access; each comparison retains its own eligible population and
+prediction time origin.
+
+This private research release contains selected code, configurations, regression
+tests and aggregate evidence. Findings are **internal and exploratory**. No external
+validation cohort was available, and clinical diagnostic use is not supported.
 
 ## Study components
 
@@ -13,12 +23,25 @@ Alzheimer disease diagnostic system. No external validation cohort was available
 | Method Y | Future progression from FBP amyloid or FTP tau; regional and image analyses are separate populations |
 | Prognostic fusion | Baseline MRI, amyloid and clinical/cognitive predictors with ancestry-safe cross-fitting; blood and tau comparisons use their own matched subsets |
 | Post-fusion analyses | Censored metrics, calibration, paired uncertainty, scanner sensitivity, longitudinal PACC and regional evidence |
-| FP32 spatial sensitivity | Separate precision/head-refit analysis in progress at packaging; no result from it is included |
+| FP32 spatial sensitivity | Completed precision/head-refit sensitivity; reviewed aggregate comparisons and numerical map-control findings |
 
 MRI/FBP-image/tau/blood do **not** form one validated four-way model. The four-way
 analysis was not estimable under the recorded support rules. Negative comparisons,
 failed numerical attribution controls and absent external validation remain part
 of the evidence. Brain maps describe model attribution, not proven disease lesions.
+
+## Latest evidence update
+
+The [FP32 sensitivity review](docs/FP32_SENSITIVITY.md) includes matched MRI
+comparisons in 1,059 participants and FBP-image comparisons in 544 participants.
+The paired confidence intervals did not establish incremental value in either
+comparison. Of 66 spatial baselines, 36 passed the numerical criteria; attribution
+remains incompletely validated because the randomized-network control was
+degenerate and label-permutation training was not performed.
+
+These findings accompany the parent fusion analysis. Model precision and refitted
+heads define a separate sensitivity analysis, so its metrics are not interchangeable
+with the parent results.
 
 ## Read first
 
@@ -46,5 +69,10 @@ versions; `results/aggregate/` contains derived aggregate evidence; `docs/` supp
 the versioned route, source and result registries. Filename versions inside the
 implementation are compatibility identifiers, not invitations to run retired analyses.
 
-No author identity, institutional approval, open-source license or permission to
-redistribute data is inferred. Publication remains subject to those checks.
+## Access and citation
+
+Data access is governed by the original study agreements. This repository excludes
+participant-level data, individual brain images and model weights. See
+[data access](docs/DATA_ACCESS.md) for the required inputs and
+[licensing](docs/LICENSING.md) for the current code and third-party status.
+Software citation metadata will be finalized with the research publication.

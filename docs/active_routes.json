@@ -197,15 +197,27 @@
   },
   {
     "id": "fp32_sensitivity",
-    "role": "RUNNING_EXCLUDE_ALL_RESULTS_FROM_THIS_RELEASE",
+    "role": "REVIEWED_INTERNAL_PRECISION_SENSITIVITY",
     "entries": [
       "scripts/run_xyz_fp32_spatial_v1.ps1"
     ],
     "configs": [
       "configs/xyz_fp32_spatial_sensitivity_v1.json"
     ],
-    "evidence": [],
-    "external_validated": false
+    "evidence": [
+      {
+        "path": "results/xyz_fp32_postrun_review_20261009/public/statistical_review.json",
+        "sha256": "c851488295e75a8f096c5d7ee4a82ac2758f7793cc9f0abeee16d70ef8b301b2",
+        "reviewed_for_sensitivity_and_diagnostic_reporting_only": true
+      },
+      {
+        "path": "results/xyz_fp32_postrun_review_20261009/public/spatial_review.json",
+        "sha256": "f2112e3c7092156fe7b2ca30c93b6ea69b8962742e03df6d4b2a3986fd74ba09",
+        "reviewed_for_sensitivity_and_diagnostic_reporting_only": true
+      }
+    ],
+    "external_validated": false,
+    "fully_validated_attribution": false
   },
   {
     "id": "xy_spatial",

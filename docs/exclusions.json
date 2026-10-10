@@ -12,7 +12,7 @@
   "results/xyz_pet_manufacturer_audit_v1": "PREFLIGHT_ONLY_RAM_ROOT_IS_PRODUCTION",
   "results/xyz_postfusion_final_v1": "PREFLIGHT_ONLY_RAM_ROOT_IS_PRODUCTION",
   "BrainIAC": "RETIRED_NOT_CURRENT_METHOD",
-  "results/xyz_fp32_spatial_sensitivity_v1": "RUNNING_PENDING_REVIEW_NO_PARTIAL_EXPORT",
+  "results/xyz_fp32_spatial_sensitivity_v1": "PRIVATE_FULL_ARTIFACTS_EXCLUDED_REVIEWED_AGGREGATES_IN_09_FP32",
   ".git": "PRIVATE_HISTORY_NOT_SHARED",
   ".runtime": "INSTALLED_RUNTIME_NOT_DISTRIBUTED",
   ".venv": "INSTALLED_ENVIRONMENT_NOT_DISTRIBUTED",

@@ -1807,5 +1807,23 @@
     "role": "corrected_postfusion_with_review_addendum",
     "projection_path": "06_fusion/REGIONAL_EVIDENCE.d733894a.json",
     "omitted_fields": 0
+  },
+  {
+    "id": "fp32_statistical_review",
+    "source_path": "results/xyz_fp32_postrun_review_20261009/public/statistical_review.json",
+    "source_sha256": "c851488295e75a8f096c5d7ee4a82ac2758f7793cc9f0abeee16d70ef8b301b2",
+    "section": "09_fp32",
+    "role": "REVIEWED_INTERNAL_PRECISION_SENSITIVITY",
+    "projection_path": "09_fp32/statistical_review.json",
+    "omitted_fields": 0
+  },
+  {
+    "id": "fp32_spatial_review",
+    "source_path": "results/xyz_fp32_postrun_review_20261009/public/spatial_review.json",
+    "source_sha256": "f2112e3c7092156fe7b2ca30c93b6ea69b8962742e03df6d4b2a3986fd74ba09",
+    "section": "09_fp32",
+    "role": "REVIEWED_INTERNAL_PRECISION_SENSITIVITY",
+    "projection_path": "09_fp32/spatial_review.json",
+    "omitted_fields": 0
   }
 ]

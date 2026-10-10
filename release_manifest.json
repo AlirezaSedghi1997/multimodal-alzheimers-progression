@@ -1,5 +1,6 @@
 {
-  "version": "20261008_release_candidate_v2",
+  "version": "20261009_private_repository_v1",
+  "parent_version": "20261008_release_candidate_v2",
   "files": [
     {
       "path": ".gitattributes",
@@ -13,8 +14,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "49f17c2e67a443078613db5de92dcd6feea0100524d8aa2eb1cfb1da4e20a75d",
-      "bytes": 393
+      "sha256": "30d4dc2d15a755f1d64c062128909da6dcf3bb388b156309dc27ac6cdb0dcbfd",
+      "bytes": 733
     },
     {
       "path": "check_package.py",
@@ -173,8 +174,8 @@
     },
     {
       "path": "docs/active_routes.json",
-      "sha256": "d6f2607ef19c36e0808913359d1bfce9b3db196eaef0510ded87d18df8c578d1",
-      "bytes": 7402
+      "sha256": "ee027eb28bd8edd9a583841fc06ec059292c6f786ea0292d541a14742b7e909e",
+      "bytes": 7968
     },
     {
       "path": "docs/DATA_ACCESS.md",
@@ -198,8 +199,13 @@
     },
     {
       "path": "docs/exclusions.json",
-      "sha256": "8c263ef7be53517ac8e78c014ff85a4da2803632bd31d6cea4b931f42dcf1019",
-      "bytes": 1495
+      "sha256": "62f6836b9618fc6a8ce8529ba21180e1ee33ccb52ee39d9248706dc31856b2bb",
+      "bytes": 1517
+    },
+    {
+      "path": "docs/FP32_SENSITIVITY.md",
+      "sha256": "4dddcee77e3a6202bd19b6e350861932356108d656bac654b60a74219cb9ba3c",
+      "bytes": 3008
     },
     {
       "path": "docs/LICENSING.md",
@@ -213,8 +219,8 @@
     },
     {
       "path": "docs/RELEASE_GAPS.md",
-      "sha256": "a083b8c3afccef0488ec1e0cede8f871e83e924420c5f5d1e3e736d5458bca6a",
-      "bytes": 1432
+      "sha256": "67a7fb492e2839d3cafb2a6013a38f4011aee235e4dde23ea440ad70304c8855",
+      "bytes": 1598
     },
     {
       "path": "docs/report_lineage.json",
@@ -233,13 +239,13 @@
     },
     {
       "path": "docs/result_lineage.json",
-      "sha256": "858e6a47ce8b38ed0182625663afc6b6452edf4a50ac16ac561e5e255bf211ad",
-      "bytes": 86181
+      "sha256": "0ed4dd0405b3de74c838ee072e763b3227b90a94ab2d47feb1d7cfa5cceb8a0c",
+      "bytes": 86953
     },
     {
       "path": "docs/RESULTS_INDEX.md",
-      "sha256": "f3a3f13908fb8c5be8393997a7cbbddcbbe9835fe73c5b3712fd3738be5f942a",
-      "bytes": 31117
+      "sha256": "122ded2d0db14b051f2bd7ebaa933e783842b584109a7a226e4e966e16d44452",
+      "bytes": 31339
     },
     {
       "path": "docs/source_binding_audit.json",
@@ -253,8 +259,8 @@
     },
     {
       "path": "docs/STUDY_MAP.md",
-      "sha256": "7e2ccdfea042c8d90df3ff00623769116322477887b255eaf541eb91d25d8335",
-      "bytes": 3260
+      "sha256": "d4123a7e0b81e4179814f47afa025baba0910f9aaab3ed87b71d202c27424b88",
+      "bytes": 3401
     },
     {
       "path": "environment/installed_versions.json",
@@ -263,8 +269,13 @@
     },
     {
       "path": "figures/figure_lineage.json",
-      "sha256": "3e5a97df78e06128f6d85431f2e4bcfa3c4abf60b5fe993a0013649d026ff1d1",
-      "bytes": 1073
+      "sha256": "5e7e29d52cc85df40290b0f19d60f8c2ef20e4b7ef6bee7d86a6c8120f9dc68e",
+      "bytes": 1580
+    },
+    {
+      "path": "figures/fp32_paired_comparisons.svg",
+      "sha256": "ef51cb17b3258abbc9c1e4f49e2d89126a37c3873f6f28176d0a32d4a66c7b29",
+      "bytes": 51184
     },
     {
       "path": "figures/mri_calibration_with_support.svg",
@@ -283,88 +294,88 @@
     },
     {
       "path": "README.md",
-      "sha256": "3c6d76a6827aa96304934e49d7fca03c0024bee3754cd4b812eeeeb78877e783",
-      "bytes": 2866
+      "sha256": "ab2bbaf8af92e6e17f9357c1236b249aca2c87e28b74fe95eeb7ba17af1a55f8",
+      "bytes": 4351
     },
     {
       "path": "reports/03_method_x/extension_mx7_results_limitations_FA.v1.md",
-      "sha256": "0c1c61d8a239597c73a2520e5d59ecea4952fb01a3434254c531c7be1373b142",
-      "bytes": 9933
+      "sha256": "f942775f5a1c13242563142dff05885fa64c31d933241593edc35dafe6dc5bac",
+      "bytes": 10000
     },
     {
       "path": "reports/03_method_x/mx7_quick_discussion_FA.md",
-      "sha256": "e1152f49e817316020bb892e1fb973f29554d41b57062babf899d76093c7abe2",
-      "bytes": 2071
+      "sha256": "c015e850623dfd536c9bac7ad46443dc257f2da47a650b04ad7872a2c9d365af",
+      "bytes": 2138
     },
     {
       "path": "reports/03_method_x/mx7_quick_results_FA.md",
-      "sha256": "72fc41e604d1d4e0a761700063ea97b6f4891a8b1b35f0a5601f696becad819c",
-      "bytes": 5635
+      "sha256": "89406023c67bebc7117aa65725d5320960ca8824540f4ba216e5bb8160e2e746",
+      "bytes": 5702
     },
     {
       "path": "reports/03_method_x/thesis_method_x_v22_discussion_FA.md",
-      "sha256": "88531554f241e2aa784bd0d527e22b33759d615bb7a26f83b63effcc4d402a64",
-      "bytes": 1478
+      "sha256": "580dc41d4e975d832d0540b80674f0b36caa167d2abe2723e53d44ee8c6af32e",
+      "bytes": 1545
     },
     {
       "path": "reports/03_method_x/thesis_method_x_v22_results_FA.md",
-      "sha256": "9feeba5b1a12e54b1ffd756a48a7898f8faf32c93675d89fbdb8b69eec39ef7a",
-      "bytes": 3570
+      "sha256": "99a1244e10f045380092b8a8880c1437e847dd86be738912a59571cf5cf0e808",
+      "bytes": 3637
     },
     {
       "path": "reports/03_method_x/thesis_method_x_v244_control_eligibility_FA.md",
-      "sha256": "57581ff32e20b7de331f20eb7bbdadd0885d01e3cecd51ede5fd2c295e01eb25",
-      "bytes": 1698
+      "sha256": "9c75fd7174207a3a2466ec4b3af83774d45c73a0c962f6679cc6f02a0d1861ab",
+      "bytes": 1765
     },
     {
       "path": "reports/04_method_y/NEGATIVE_RESULTS_V2.md",
-      "sha256": "e560d0300d0c742f92d8560631236af8aac879b49e15610b6759d153bea11cee",
-      "bytes": 763
+      "sha256": "7a989084bd248b62bb29f47b67e1cfd7cbe500083e22e77d3ab94af5a9b2e6df",
+      "bytes": 830
     },
     {
       "path": "reports/04_method_y/README.md",
-      "sha256": "c3606e716ba6069395c01cb32868a91d67f3d425624d642f2b87214c1674c9ef",
-      "bytes": 474
+      "sha256": "68678bcea48ee724361acc5ac893c2e005528e8f45f7d04f9dc13e038d6404df",
+      "bytes": 541
     },
     {
       "path": "reports/04_method_y/REPORTING_CROSSWALK.md",
-      "sha256": "f31905538510668ff631b63dcaa3e7bb8c9cddc867296e982f44177d3057a62b",
-      "bytes": 17964
+      "sha256": "67aa10436f126684d9c88a2dedd42010eb9babf0b79c555df33bace767a0d440",
+      "bytes": 18031
     },
     {
       "path": "reports/06_fusion/CLAIM_POLICY.md",
-      "sha256": "bdce7174529bb9e7541b981510deb26c8bb0cd4702b4c9d9aeec3cfecbdaa506",
-      "bytes": 877
+      "sha256": "4b1d21fb1b1c117b998aaf63f31f374c408afde0302c961e5236ced5ba833c9b",
+      "bytes": 944
     },
     {
       "path": "reports/06_fusion/NEGATIVE_RESULTS.md",
-      "sha256": "cf39a942a2a83cc81cf8244781ac451107e5b4d5c0612b652942c17a560a62cb",
-      "bytes": 5761
+      "sha256": "03015b00ce47f7f6ae0096b6e0f2a8e31fbbd67f117cbc70197fca055806aa8e",
+      "bytes": 5828
     },
     {
       "path": "reports/06_fusion/PET_MANUFACTURER_AUDIT_FA.md",
-      "sha256": "29a02afea9ff5618eee92911f406693a18076a7cd14bee800f8e5ce25d294635",
-      "bytes": 1881
+      "sha256": "589f422bcb0c81d56874a7628ad9e5a38656759e86f5f945b84aa9b141aa0b8d",
+      "bytes": 1948
     },
     {
       "path": "reports/06_fusion/REGIONAL_EVIDENCE_FA.md",
-      "sha256": "1a7543b270c79f66f194df49b8525417198879615e96613f221cc7f1b81dfac6",
-      "bytes": 3648
+      "sha256": "65c1cc71b7837e47c3ca2ced861a55e0ab9baa75aacdcecfe73af2afb1dc3742",
+      "bytes": 3715
     },
     {
       "path": "reports/06_fusion/REPORT.md",
-      "sha256": "510a74203ad12ea553524087f722a6bb147e9e8b988baee9e82caf551b5662ee",
-      "bytes": 11853
+      "sha256": "4f712c99063b8ba361f75eb9fc6226646ef6561a1d321edfd9b7f148ce44aacd",
+      "bytes": 11920
     },
     {
       "path": "reports/06_fusion/REPORTING_ALIGNMENT.md",
-      "sha256": "abb1be67ee9e393eaf4bee67e465a47cbff905307e78529bc2b4c608f9e9f27d",
-      "bytes": 982
+      "sha256": "2dee8b9f72b864c6ae3ddae49ab93a5998ed16b67f90a1b4fb9643804c76c717",
+      "bytes": 1049
     },
     {
       "path": "reports/06_fusion/START_HERE_FA.md",
-      "sha256": "aa12270cc4ef4df42c67f430c2e2337cc274bf1ebd36a5323ccae09fa1804931",
-      "bytes": 2613
+      "sha256": "dd6e8c21e1b57740e96ebd04635a60efdca817a92c9ecadb0f015adb42ac41ba",
+      "bytes": 2680
     },
     {
       "path": "requirements-dev.txt",
@@ -1380,6 +1391,16 @@
       "path": "results/aggregate/07_spatial/review.361f0580.json",
       "sha256": "bd8d5bc8cef97ae5b0928a0acea44621c7927cb8d66a497f21f7dd74fcefd4e4",
       "bytes": 1761
+    },
+    {
+      "path": "results/aggregate/09_fp32/spatial_review.json",
+      "sha256": "0bbda0d17f1b1aa427dff97891ebd2f8fbbc1f3770cd388eb48d05e82bd015f7",
+      "bytes": 2250
+    },
+    {
+      "path": "results/aggregate/09_fp32/statistical_review.json",
+      "sha256": "e1782a1551ed2b92a906e98ad525dcae51429278e189d0c369450f05bdc89664",
+      "bytes": 5485
     },
     {
       "path": "scripts/analyze_method_y_amyloid_lmo_a4_v2.py",

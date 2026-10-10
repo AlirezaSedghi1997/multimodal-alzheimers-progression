@@ -1,8 +1,10 @@
 {
   "status": "PASS_PACKAGE_HASH_SYNTAX_AND_BOUNDED_CONTENT_CHECKS",
-  "files": 645,
-  "bytes": 6970387,
+  "files": 649,
+  "bytes": 7037607,
+  "python_files_syntax_checked": 357,
   "fresh_environment_reproduction": false,
   "full_scientific_review": false,
-  "distribution_permission": false
+  "restricted_data_distribution_permission": false,
+  "private_repository_upload_requested": true
 }

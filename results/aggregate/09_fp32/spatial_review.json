@@ -1,0 +1,65 @@
+{
+  "source_id": "fp32_spatial_review",
+  "source_sha256": "f2112e3c7092156fe7b2ca30c93b6ea69b8962742e03df6d4b2a3986fd74ba09",
+  "scientific_role": "REVIEWED_INTERNAL_PRECISION_SENSITIVITY",
+  "claim_ceiling": "POST_HOC_INTERNAL_EXPLORATORY",
+  "projection_is_not_exact_original": true,
+  "omitted_fields": 0,
+  "aggregate": {
+    "requested_units": 30,
+    "eligible_units": 22,
+    "missing_units": 8,
+    "baselines": 66,
+    "stored_component_numeric_pass": 36,
+    "also_pass_stored_ensemble_completeness": 36,
+    "component_failure_reasons": {
+      "FAIL_COMPLETENESS_FINAL_COMPONENT_NOT_CONVERGED": 103,
+      "PASS_FINAL_COMPONENT_NOT_CONVERGED": 12
+    },
+    "groups": {
+      "mri/mri": {
+        "positive_margin_positive": 11,
+        "positive_tail_at_most_0p05_descriptive": 3,
+        "negative_margin_positive": 9,
+        "negative_tail_at_most_0p05_descriptive": 8,
+        "baselines": 30,
+        "component_numeric_pass": 13,
+        "ensemble_numeric_pass": 13,
+        "all_random_controls_valid": 0
+      },
+      "pet/mri": {
+        "positive_margin_positive": 9,
+        "positive_tail_at_most_0p05_descriptive": 5,
+        "negative_margin_positive": 8,
+        "negative_tail_at_most_0p05_descriptive": 3,
+        "baselines": 18,
+        "component_numeric_pass": 11,
+        "ensemble_numeric_pass": 11,
+        "all_random_controls_valid": 0
+      },
+      "pet/pet": {
+        "positive_margin_positive": 12,
+        "positive_tail_at_most_0p05_descriptive": 7,
+        "negative_margin_positive": 7,
+        "negative_tail_at_most_0p05_descriptive": 2,
+        "baselines": 18,
+        "component_numeric_pass": 12,
+        "ensemble_numeric_pass": 12,
+        "all_random_controls_valid": 0
+      }
+    },
+    "max_full_component_prediction_parity_error": 1.9155316222096985e-11,
+    "random_target_value_counts": {
+      "0.0": 342,
+      "1.0": 246,
+      "4.3865428882268543e-206": 3,
+      "3.2775978776708346e-206": 3
+    },
+    "random_control_numerical_pass": 0,
+    "fully_validated_attribution": false,
+    "fidelity_counts_are_diagnostic_not_population_p_values": true,
+    "panel_units_and_baselines_are_not_independent_subjects": true,
+    "individual_images": 44,
+    "no_new_inference": true
+  }
+}

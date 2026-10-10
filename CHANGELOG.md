@@ -1,5 +1,12 @@
 # Changelog
 
+## 20261009 — private repository edition
+
+- Added a project overview, current study scope and reader navigation.
+- Included reviewed FP32 aggregate statistics and spatial-control findings.
+- Updated the FP32 route from running to completed internal sensitivity.
+- Retained numerical failures, negative comparisons and study limitations.
+
 ## 20261008 — private review candidate
 
 - Selected current computational routes and necessary compatibility dependencies.

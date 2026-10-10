@@ -1,4 +1,4 @@
-> Internal/exploratory evidence snapshot; not external/clinical validation. A completed computation is not a positive science gate. The FP32 companion is excluded pending review.
+> Internal/exploratory evidence snapshot; not external/clinical validation. A completed computation is not a positive science gate. This narrative predates the FP32 review; current sensitivity findings are summarized in docs/FP32_SENSITIVITY.md.
 
 # شواهد ناحیه‌ای اکتشافی؛ نه شناسایی ضایعهٔ آلزایمر
 
