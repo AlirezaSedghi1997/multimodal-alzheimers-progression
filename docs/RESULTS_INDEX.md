@@ -1,5 +1,9 @@
 # Result index
 
+## 11 October 2026 addition
+
+[Aggregate statistical supplement](STATISTICAL_SUPPLEMENT.md) — post-hoc cohort audits, stronger baselines, tau multiplicity, noncognitive PACC sensitivity and sample-size scenarios.
+
 All entries are aggregate projections, not final approval of every claim.
 
 | Artifact | Role | Omitted fields |

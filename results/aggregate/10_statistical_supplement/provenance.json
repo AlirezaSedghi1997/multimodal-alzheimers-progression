@@ -1,0 +1,26 @@
+{
+  "version": "THESIS_STATISTICS_V1_20261011",
+  "scope": "POST_HOC_INTERNAL_EXPLORATORY_SUPPLEMENT",
+  "source_summary_hashes": {
+    "data_audit.json": "7c0dca55e633c8e07c3ef8c36b8e8ee5072b3f382faff95e5b143d2ec7ec7e35",
+    "extra_demographics.json": "dc7fd537cd30b8901d39cc79a92e2e6c91ceb459cb36b827e6e3452cbf3b2f28",
+    "performance_supplement.json": "3024ae01d67472bc1a12b729a9535f70b55d3fdb0e2047e025da7fef01ac023d",
+    "tau_multiplicity.json": "f75af10b6f13812445b9b27682fb4dcbae74bd5f16833b2a25dec9c91db3ff94",
+    "nocognitive_pacc.json": "bed21cb6ab828d1cba0db7ccbf062aa12ec1be571ef38c3aa72ee0056d5fc139",
+    "additional_audit.json": "582f3002122da47e65a6adfda39e5d19c7d0829cffffc4625a406002e12266e4",
+    "riley_full_scenarios.json": "6b4d14243d2d7a0b1366ad5370db6c79367a2dd2634af9d1fa57e9500132cc0b",
+    "tau_training_support.json": "a069057f9d3ffd52603481a6fb65e030af819ac21e399322e70c7aaccda0df75"
+  },
+  "precision_relationship": "Retains original AMP parent identity; FP32 sensitivity remains a distinct analysis.",
+  "excluded_material": [
+    "participant rows",
+    "exact individual event times",
+    "identifiers",
+    "predictions",
+    "MRI/PET images",
+    "model weights",
+    "signed thesis",
+    "data dictionaries"
+  ],
+  "does_not_establish_data_redistribution_permission": true
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "source_role": "data_audit.py",
+    "original_analysis_sha256": "3af0bcec3370d0addb5b62d189839a3a30870d4131ae48c7fe722d8ed3de4453",
+    "packaged_path": "scripts/thesis_statistics_v1/demographics.py",
+    "adaptation": "Explicit roots and private output configuration; statistical expressions preserved.",
+    "packaged_sha256": "f8fb9fa71c9789756463f6b332a5a24cf321c39d81819ab8dd02a04ab20f540f"
+  },
+  {
+    "source_role": "additional_audit.py",
+    "original_analysis_sha256": "659705089ecb43abd301c9d07bd26f89fd850f1fe8dbe5ee0702560c5f26a6dc",
+    "packaged_path": "scripts/thesis_statistics_v1/disposition.py",
+    "adaptation": "Explicit roots and private output configuration; statistical expressions preserved.",
+    "packaged_sha256": "8859838908bfeea8c0fa3d8817e6a32d0accb553b44df69402bfc67e03be89f7"
+  },
+  {
+    "source_role": "supplementary_analysis.py",
+    "original_analysis_sha256": "0cef4b2bbea10681b4f56fcee5b467e4469f01b799a2c8b50ef2e5162f3201cc",
+    "packaged_path": "scripts/thesis_statistics_v1/prediction_sensitivity.py",
+    "adaptation": "Explicit roots and private output configuration; statistical expressions preserved.",
+    "packaged_sha256": "77fd1181a549dae76a8593c77fecf12bb80b657155085befe83a7f17623bb218"
+  },
+  {
+    "source_role": "final_support.py",
+    "original_analysis_sha256": "1e358849a28e50d2c4145065a585d605973df7755ca76162e56eb47d7bbc4add",
+    "packaged_path": "scripts/thesis_statistics_v1/sample_size.py",
+    "adaptation": "Explicit private input/output roots; same Riley expressions extracted to planning.py; effective tau training support computed from the locked meta-training memberships.",
+    "packaged_sha256": "fd2dcc5d09ee6eb4d22a093ca21d87f44b858e994ed0357f96c149d9ce41b879"
+  }
+]

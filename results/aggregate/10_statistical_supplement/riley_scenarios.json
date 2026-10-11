@@ -1,0 +1,162 @@
+{
+  "scope": "RETROSPECTIVE_SCENARIOS_NOT_PROSPECTIVE_DESIGN_NOT_CNN_ADEQUACY",
+  "assumptions": {
+    "rate_per_person_year": 0.06670157312093501,
+    "mean_observed_years": 3.3834975332843413,
+    "constant_hazard_for_planning_only": true,
+    "risk_horizon_years": 3.0,
+    "absolute_risk_margin": 0.05,
+    "maximum_cox_snell_r2": 0.8124037889214888,
+    "expected_r2_is_assumed_not_fitted": true
+  },
+  "rows": [
+    {
+      "parameters": 7,
+      "assumed_cox_snell_r2": 0.05,
+      "n_shrinkage": 1225,
+      "n_optimism": 165,
+      "n_risk_precision": 194,
+      "minimum_for_scenario": 1225,
+      "risk_interval": [
+        0.1618150860637887,
+        0.20043935578268246
+      ]
+    },
+    {
+      "parameters": 7,
+      "assumed_cox_snell_r2": 0.1,
+      "n_shrinkage": 595,
+      "n_optimism": 160,
+      "n_risk_precision": 194,
+      "minimum_for_scenario": 595,
+      "risk_interval": [
+        0.15317310915646754,
+        0.20859897458794496
+      ]
+    },
+    {
+      "parameters": 7,
+      "assumed_cox_snell_r2": 0.15,
+      "n_shrinkage": 384,
+      "n_optimism": 156,
+      "n_risk_precision": 194,
+      "minimum_for_scenario": 384,
+      "risk_interval": [
+        0.14612818782660242,
+        0.2151284768913544
+      ]
+    },
+    {
+      "parameters": 7,
+      "assumed_cox_snell_r2": 0.2,
+      "n_shrinkage": 279,
+      "n_optimism": 151,
+      "n_risk_precision": 194,
+      "minimum_for_scenario": 279,
+      "risk_interval": [
+        0.13987552823071758,
+        0.2208340865113284
+      ]
+    },
+    {
+      "parameters": 8,
+      "assumed_cox_snell_r2": 0.05,
+      "n_shrinkage": 1400,
+      "n_optimism": 188,
+      "n_risk_precision": 194,
+      "minimum_for_scenario": 1400,
+      "risk_interval": [
+        0.16309105326853246,
+        0.19922033050614607
+      ]
+    },
+    {
+      "parameters": 8,
+      "assumed_cox_snell_r2": 0.1,
+      "n_shrinkage": 680,
+      "n_optimism": 183,
+      "n_risk_precision": 194,
+      "minimum_for_scenario": 680,
+      "risk_interval": [
+        0.15502220771744102,
+        0.20686712020004527
+      ]
+    },
+    {
+      "parameters": 8,
+      "assumed_cox_snell_r2": 0.15,
+      "n_shrinkage": 439,
+      "n_optimism": 178,
+      "n_risk_precision": 194,
+      "minimum_for_scenario": 439,
+      "risk_interval": [
+        0.1484538988182874,
+        0.21298486502369252
+      ]
+    },
+    {
+      "parameters": 8,
+      "assumed_cox_snell_r2": 0.2,
+      "n_shrinkage": 319,
+      "n_optimism": 173,
+      "n_risk_precision": 194,
+      "minimum_for_scenario": 319,
+      "risk_interval": [
+        0.14262575651676612,
+        0.21833472972391732
+      ]
+    },
+    {
+      "parameters": 12,
+      "assumed_cox_snell_r2": 0.05,
+      "n_shrinkage": 2100,
+      "n_optimism": 282,
+      "n_risk_precision": 194,
+      "minimum_for_scenario": 2100,
+      "risk_interval": [
+        0.16647280610975046,
+        0.19597143959730667
+      ]
+    },
+    {
+      "parameters": 12,
+      "assumed_cox_snell_r2": 0.1,
+      "n_shrinkage": 1019,
+      "n_optimism": 275,
+      "n_risk_precision": 194,
+      "minimum_for_scenario": 1019,
+      "risk_interval": [
+        0.15990637190436008,
+        0.2022559779684726
+      ]
+    },
+    {
+      "parameters": 12,
+      "assumed_cox_snell_r2": 0.15,
+      "n_shrinkage": 659,
+      "n_optimism": 267,
+      "n_risk_precision": 194,
+      "minimum_for_scenario": 659,
+      "risk_interval": [
+        0.1545992016372345,
+        0.2072639734218743
+      ]
+    },
+    {
+      "parameters": 12,
+      "assumed_cox_snell_r2": 0.2,
+      "n_shrinkage": 478,
+      "n_optimism": 259,
+      "n_risk_precision": 194,
+      "minimum_for_scenario": 478,
+      "risk_interval": [
+        0.14985068895832776,
+        0.21169180395039633
+      ]
+    }
+  ],
+  "references": [
+    "https://doi.org/10.1002/sim.7992",
+    "https://doi.org/10.1002/sim.8409"
+  ]
+}

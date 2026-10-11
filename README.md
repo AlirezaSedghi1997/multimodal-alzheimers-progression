@@ -26,7 +26,7 @@ Training a sophisticated model is only part of the work. The harder part is chec
 | Matched prognostic MRI analysis | **1,059 participants / 239 events** | Assessment of MRI features alongside clinical and amyloid predictors |
 | Matched FBP-image prognostic analysis | **544 participants / 112 events** | Direct evaluation of image-derived PET information on its eligible subset |
 | Focused FP32/post-fusion regression review | **63 tests reported passing** | Focused checks recorded in the precision-sensitivity and corrected evaluation review |
-| Offline repository integrity verification | **649 listed files verified** | A local hash check of the packaged source and aggregate evidence |
+| Offline repository integrity verification | **Versioned file manifest** | A local hash check of the packaged source and aggregate evidence; see the verifier for the current count |
 
 *These numbers describe different eligible analysis populations and checks. They are not a pooled cohort or a single four-modality model.*
 
@@ -62,6 +62,31 @@ The reviewed FP32 sensitivity analysis recomputed imaging scores with frozen CNN
 ![Paired confidence intervals for the FP32 imaging comparisons](figures/fp32_paired_comparisons.svg)
 
 See the [full FP32 sensitivity review](docs/FP32_SENSITIVITY.md) for methods, precision-specific scope, and attribution checks.
+
+## Statistical supplement added during thesis revision
+
+The [11 October statistical supplement](docs/STATISTICAL_SUPPLEMENT.md) adds
+analysis code and aggregate results for questions raised during thesis review:
+
+- participant flow, demographics, availability-subset differences and tau timing;
+- Kaplan–Meier follow-up summaries, a training-only null model and IPA;
+- comparison with clinical baselines fitted on the complete outer training set;
+- all three tau contrasts with multiplicity-adjusted intervals and calibration;
+- a PACC sensitivity analysis using risk scores constructed without PACC or MMSE;
+- retrospective sample-size scenarios and actual support for the tau heads.
+
+The stronger clinical-plus-amyloid baseline reached IPA **5.84%**. Added MRI did
+not establish a stable improvement. The risk–PACC association remained after
+removing cognitive inputs from risk construction (interaction **−0.216 units/year
+per SD risk**, 95% CI **[−0.285, −0.147]**). Tau findings remain exploratory and
+calibration is unstable. These calculations use the original AMP parent and are
+kept separate from the FP32 comparisons above.
+
+See the [results report](reports/07_statistical_supplement/REPORT.md),
+[eight aggregate evidence files](results/aggregate/10_statistical_supplement/), and
+[analysis code](scripts/thesis_statistics_v1/). The guide records the post-hoc
+status, exact reproduction requirements and remaining scientific limitations.
+No participant-level files or signed thesis documents are included.
 
 ## Research workflow
 

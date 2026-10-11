@@ -19,3 +19,11 @@ __pycache__/
 *.npy
 /data/
 /private/
+
+# Restricted statistical intermediates must never be staged.
+**/private_*.json
+**/nocognitive_cells.json
+**/*_expert_outer.json
+**/.analysis_context.json
+*.docx
+**/private/

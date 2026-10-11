@@ -1,0 +1,15 @@
+{
+  "n_fits": 45,
+  "min_n": 79,
+  "max_n": 109,
+  "min_events": 18,
+  "max_events": 29,
+  "median": [
+    95.0,
+    26.0
+  ],
+  "range_events_per_12_parameters": [
+    1.5,
+    2.4166666666666665
+  ]
+}

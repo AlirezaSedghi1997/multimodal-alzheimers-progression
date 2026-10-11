@@ -1,5 +1,9 @@
 # Narrative report index
 
+## 11 October 2026 addition
+
+[Statistical supplement report](STATISTICAL_SUPPLEMENT.md) — post-hoc cohort audits, stronger baselines, tau multiplicity, noncognitive PACC sensitivity and sample-size scenarios.
+
 Reports retain negative findings and restrictions. Source-local links are described rather than left broken.
 
 | Report | Role |

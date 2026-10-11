@@ -1,0 +1,1010 @@
+{
+  "models": {
+    "paired_clinical": {
+      "n": 1059,
+      "events": 239,
+      "ibs": 0.04068747356646733,
+      "uno_c": 0.6686554483238794,
+      "ipa": 0.04929018533287788,
+      "fold_metrics": [
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.039987094311779055,
+          "uno_c_index": 0.718885138456083,
+          "outer_fold": 0,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 200,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 163,
+              "events_by_horizon": 22,
+              "calibration_intercept": 1.3514137367984047,
+              "calibration_slope": 1.625731942423623,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.03952022740731113,
+          "uno_c_index": 0.697780945362788,
+          "outer_fold": 1,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 202,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 159,
+              "events_by_horizon": 20,
+              "calibration_intercept": 1.0084683342734457,
+              "calibration_slope": 1.5041853193022403,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04004644170079445,
+          "uno_c_index": 0.681793873123077,
+          "outer_fold": 2,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 165,
+              "events_by_horizon": 21,
+              "calibration_intercept": 0.7491690944526394,
+              "calibration_slope": 1.3911601824252424,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04351826763735893,
+          "uno_c_index": 0.5580606205042691,
+          "outer_fold": 3,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 21,
+              "calibration_intercept": -1.1675999862529,
+              "calibration_slope": 0.41767177254778276,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 211,
+          "events": 47,
+          "ibs": 0.04036381006044205,
+          "uno_c_index": 0.6868424519260196,
+          "outer_fold": 4,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 190,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 20,
+              "calibration_intercept": 0.4165721328046968,
+              "calibration_slope": 1.2900869762182692,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        }
+      ]
+    },
+    "paired_clinical_amyloid": {
+      "n": 1059,
+      "events": 239,
+      "ibs": 0.040299533896808064,
+      "uno_c": 0.6855558941646316,
+      "ipa": 0.058354843791980415,
+      "fold_metrics": [
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.0386925043075388,
+          "uno_c_index": 0.7434866946136574,
+          "outer_fold": 0,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 200,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 163,
+              "events_by_horizon": 22,
+              "calibration_intercept": 0.5293160296403537,
+              "calibration_slope": 1.2473845057184,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04054135220159235,
+          "uno_c_index": 0.6914985932213661,
+          "outer_fold": 1,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 202,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 159,
+              "events_by_horizon": 20,
+              "calibration_intercept": -0.08708511308110459,
+              "calibration_slope": 0.9143172298088057,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.03838546439151501,
+          "uno_c_index": 0.7190574907143628,
+          "outer_fold": 2,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 165,
+              "events_by_horizon": 21,
+              "calibration_intercept": 0.5418716377739071,
+              "calibration_slope": 1.3268529316210835,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.043390556574823005,
+          "uno_c_index": 0.578402679320214,
+          "outer_fold": 3,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 21,
+              "calibration_intercept": -1.061306282656643,
+              "calibration_slope": 0.46896498921151775,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 211,
+          "events": 47,
+          "ibs": 0.0404886842271103,
+          "uno_c_index": 0.6953803547487656,
+          "outer_fold": 4,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 190,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 20,
+              "calibration_intercept": -0.04620001610070552,
+              "calibration_slope": 1.028564177368735,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        }
+      ]
+    },
+    "deep_mri_amyloid": {
+      "n": 1059,
+      "events": 239,
+      "ibs": 0.040402154848292085,
+      "uno_c": 0.6854348286450931,
+      "ipa": 0.055956986731453884,
+      "fold_metrics": [
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.038811111980838704,
+          "uno_c_index": 0.7453157303566244,
+          "outer_fold": 0,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 200,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 163,
+              "events_by_horizon": 22,
+              "calibration_intercept": 0.4369046808718435,
+              "calibration_slope": 1.1903439458074319,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04052723365831378,
+          "uno_c_index": 0.6933900888773745,
+          "outer_fold": 1,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 202,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 159,
+              "events_by_horizon": 20,
+              "calibration_intercept": -0.11003662917475475,
+              "calibration_slope": 0.9078242538020096,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.038544795796554135,
+          "uno_c_index": 0.7200349728455682,
+          "outer_fold": 2,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 165,
+              "events_by_horizon": 21,
+              "calibration_intercept": 0.4510849427655803,
+              "calibration_slope": 1.2814837040806644,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04365812821220472,
+          "uno_c_index": 0.5705329843498962,
+          "outer_fold": 3,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 21,
+              "calibration_intercept": -1.1570552539763181,
+              "calibration_slope": 0.42272028913402704,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 211,
+          "events": 47,
+          "ibs": 0.04046982378665455,
+          "uno_c_index": 0.6979594451758641,
+          "outer_fold": 4,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 190,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 20,
+              "calibration_intercept": -0.0847446643553227,
+              "calibration_slope": 1.0144531854756564,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        }
+      ]
+    },
+    "deep_volumes_mri_amyloid": {
+      "n": 1059,
+      "events": 239,
+      "ibs": 0.040749956890266156,
+      "uno_c": 0.692481662093371,
+      "ipa": 0.04783019030292046,
+      "fold_metrics": [
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.040121840024855096,
+          "uno_c_index": 0.7442307583892722,
+          "outer_fold": 0,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 200,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 163,
+              "events_by_horizon": 22,
+              "calibration_intercept": 0.13979408352768805,
+              "calibration_slope": 1.0219451831085513,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04074854158319135,
+          "uno_c_index": 0.7145932299325586,
+          "outer_fold": 1,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 202,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 159,
+              "events_by_horizon": 20,
+              "calibration_intercept": -0.15895293644884298,
+              "calibration_slope": 0.8933550931870071,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.038934408086097834,
+          "uno_c_index": 0.7089455482439359,
+          "outer_fold": 2,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 165,
+              "events_by_horizon": 21,
+              "calibration_intercept": 0.1293486937067538,
+              "calibration_slope": 1.0987690425564687,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04352886511101523,
+          "uno_c_index": 0.5865743670061426,
+          "outer_fold": 3,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 21,
+              "calibration_intercept": -1.083415994366254,
+              "calibration_slope": 0.45077885515389127,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 211,
+          "events": 47,
+          "ibs": 0.04041454752653099,
+          "uno_c_index": 0.708138258766043,
+          "outer_fold": 4,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 190,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 20,
+              "calibration_intercept": -0.22289726684576194,
+              "calibration_slope": 0.9548158552076998,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        }
+      ]
+    },
+    "full_clinical": {
+      "n": 1059,
+      "events": 239,
+      "ibs": 0.04060071349622916,
+      "uno_c": 0.6654066401679701,
+      "ipa": 0.051317434583483035,
+      "fold_metrics": [
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.03963860471961429,
+          "uno_c_index": 0.715430882425938,
+          "outer_fold": 0,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 200,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 163,
+              "events_by_horizon": 22,
+              "calibration_intercept": 1.0668881532027368,
+              "calibration_slope": 1.4918635730962504,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.03935915490186282,
+          "uno_c_index": 0.702315806013335,
+          "outer_fold": 1,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 202,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 159,
+              "events_by_horizon": 20,
+              "calibration_intercept": 0.9205176992278347,
+              "calibration_slope": 1.4570236298912504,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.039617524333991135,
+          "uno_c_index": 0.6949630424382989,
+          "outer_fold": 2,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 165,
+              "events_by_horizon": 21,
+              "calibration_intercept": 0.6716001327374559,
+              "calibration_slope": 1.361830477151264,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.044018014018852844,
+          "uno_c_index": 0.537587533292075,
+          "outer_fold": 3,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 21,
+              "calibration_intercept": -1.4636288117554075,
+              "calibration_slope": 0.2778535411755663,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 211,
+          "events": 47,
+          "ibs": 0.040369177355216175,
+          "uno_c_index": 0.6767896300185552,
+          "outer_fold": 4,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 190,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 20,
+              "calibration_intercept": 0.033617141073634345,
+              "calibration_slope": 1.0920491803409766,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        }
+      ]
+    },
+    "full_clinical_amyloid": {
+      "n": 1059,
+      "events": 239,
+      "ibs": 0.04029586829820857,
+      "uno_c": 0.6836196530828519,
+      "ipa": 0.05844049473709201,
+      "fold_metrics": [
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.038478889479492774,
+          "uno_c_index": 0.7502007665747834,
+          "outer_fold": 0,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 200,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 163,
+              "events_by_horizon": 22,
+              "calibration_intercept": 0.5998728304743447,
+              "calibration_slope": 1.278291614914429,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04057758136933747,
+          "uno_c_index": 0.6943179899085187,
+          "outer_fold": 1,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 202,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 159,
+              "events_by_horizon": 20,
+              "calibration_intercept": -0.04732462764479075,
+              "calibration_slope": 0.9251672317914672,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.03802750193359206,
+          "uno_c_index": 0.7242011671329265,
+          "outer_fold": 2,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 165,
+              "events_by_horizon": 21,
+              "calibration_intercept": 0.5755099849642403,
+              "calibration_slope": 1.3434240578550591,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04392398403420671,
+          "uno_c_index": 0.5643378371941444,
+          "outer_fold": 3,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 21,
+              "calibration_intercept": -1.2660947111899845,
+              "calibration_slope": 0.367659176361568,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 211,
+          "events": 47,
+          "ibs": 0.040472216505580666,
+          "uno_c_index": 0.6850472384973512,
+          "outer_fold": 4,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 190,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 20,
+              "calibration_intercept": -0.14653752500347467,
+              "calibration_slope": 0.9684864437320663,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        }
+      ]
+    },
+    "full_clinical_volumes_amyloid": {
+      "n": 1059,
+      "events": 239,
+      "ibs": 0.04071716924514868,
+      "uno_c": 0.687408332811167,
+      "ipa": 0.048596311501428624,
+      "fold_metrics": [
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04008516417949748,
+          "uno_c_index": 0.7458787980505582,
+          "outer_fold": 0,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 200,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 163,
+              "events_by_horizon": 22,
+              "calibration_intercept": 0.19532696325329005,
+              "calibration_slope": 1.0524767404456452,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04083035901723678,
+          "uno_c_index": 0.7238347761238004,
+          "outer_fold": 1,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 202,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 159,
+              "events_by_horizon": 20,
+              "calibration_intercept": -0.07225485957904826,
+              "calibration_slope": 0.9210451279954855,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.03875081009065822,
+          "uno_c_index": 0.7036697594301279,
+          "outer_fold": 2,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 165,
+              "events_by_horizon": 21,
+              "calibration_intercept": 0.15102146962672938,
+              "calibration_slope": 1.0992877614660483,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04390663656653493,
+          "uno_c_index": 0.5719017821374744,
+          "outer_fold": 3,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 21,
+              "calibration_intercept": -1.2279465472096904,
+              "calibration_slope": 0.3791958618201722,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        },
+        {
+          "n": 211,
+          "events": 47,
+          "ibs": 0.04000953849089969,
+          "uno_c_index": 0.6917771559702851,
+          "outer_fold": 4,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 190,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 20,
+              "calibration_intercept": -0.10030942725667447,
+              "calibration_slope": 0.9963347786643023,
+              "calibration_is_descriptive_not_refit": true
+            }
+          }
+        }
+      ]
+    },
+    "null": {
+      "n": 1059,
+      "events": 239,
+      "ibs": 0.04279694280921407,
+      "uno_c": 0.5,
+      "ipa": 0.0,
+      "fold_metrics": [
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04435401316741637,
+          "uno_c_index": 0.5,
+          "outer_fold": 0,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 200,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 163,
+              "events_by_horizon": 22
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.041965833872284884,
+          "uno_c_index": 0.5,
+          "outer_fold": 1,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 202,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 159,
+              "events_by_horizon": 20
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04188266268416468,
+          "uno_c_index": 0.5,
+          "outer_fold": 2,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 0
+            },
+            "1095.75": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 165,
+              "events_by_horizon": 21
+            }
+          }
+        },
+        {
+          "n": 212,
+          "events": 48,
+          "ibs": 0.04302019137454998,
+          "uno_c_index": 0.5,
+          "outer_fold": 3,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 195,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 21
+            }
+          }
+        },
+        {
+          "n": 211,
+          "events": 47,
+          "ibs": 0.04276184740328681,
+          "uno_c_index": 0.5,
+          "outer_fold": 4,
+          "calibration": {
+            "547.875": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 190,
+              "events_by_horizon": 1
+            },
+            "1095.75": {
+              "status": "NOT_ESTIMABLE",
+              "n_at_risk": 161,
+              "events_by_horizon": 20
+            }
+          }
+        }
+      ]
+    }
+  },
+  "comparisons": [
+    {
+      "base": "full_clinical_amyloid",
+      "augmented": "deep_mri_amyloid",
+      "delta_ibs_mean": 0.00010628655008351433,
+      "delta_uno_mean": 0.001815175562241124,
+      "delta_ibs_ci95": [
+        -0.0001978275483331439,
+        0.00039239489645066344
+      ],
+      "delta_uno_ci95": [
+        -0.0081693757094281,
+        0.012373974179550266
+      ],
+      "delta_ibs_bonferroni_ci": [
+        -0.00023448783364101,
+        0.0004372301616690089
+      ],
+      "delta_uno_bonferroni_ci": [
+        -0.00938100841745937,
+        0.014357432140092852
+      ],
+      "valid_ibs_resamples": 2000,
+      "valid_uno_resamples": 2000,
+      "resamples": 2000,
+      "resampling": "PAIRED_SUBJECT_WITHIN_OUTER_FOLD",
+      "uncertainty": "CONDITIONAL_ON_FITTED_MODELS_AND_TRAIN_CENSORING_NOT_SELECTION_UNCERTAINTY",
+      "multiplicity": "EXPLORATORY_NO_CONFIRMATORY_SIGNIFICANCE_CLAIM",
+      "comparisons_per_metric": 2,
+      "family_coverage": 0.95,
+      "joint_coverage_across_metrics_claimed": false,
+      "seed": 20261011
+    },
+    {
+      "base": "full_clinical_volumes_amyloid",
+      "augmented": "deep_volumes_mri_amyloid",
+      "delta_ibs_mean": 3.2787645117479805e-05,
+      "delta_uno_mean": 0.005073329282203915,
+      "delta_ibs_ci95": [
+        -0.0002934463618621467,
+        0.0003701359289262318
+      ],
+      "delta_uno_ci95": [
+        -0.005055486679442887,
+        0.016118998011900424
+      ],
+      "delta_ibs_bonferroni_ci": [
+        -0.0003481694185925162,
+        0.0004156973688543283
+      ],
+      "delta_uno_bonferroni_ci": [
+        -0.006605545399880069,
+        0.017728184719700488
+      ],
+      "valid_ibs_resamples": 2000,
+      "valid_uno_resamples": 2000,
+      "resamples": 2000,
+      "resampling": "PAIRED_SUBJECT_WITHIN_OUTER_FOLD",
+      "uncertainty": "CONDITIONAL_ON_FITTED_MODELS_AND_TRAIN_CENSORING_NOT_SELECTION_UNCERTAINTY",
+      "multiplicity": "EXPLORATORY_NO_CONFIRMATORY_SIGNIFICANCE_CLAIM",
+      "comparisons_per_metric": 2,
+      "family_coverage": 0.95,
+      "joint_coverage_across_metrics_claimed": false,
+      "seed": 20261011
+    }
+  ],
+  "null_fitted_on_outer_train": true,
+  "precision_scope": "ORIGINAL_AMP_PARENT_NOT_FP32_CHILD",
+  "ipa_aggregation": "1 - fold-size-weighted IBS(model) / fold-size-weighted IBS(null)"
+}

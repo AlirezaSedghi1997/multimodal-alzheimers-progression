@@ -38,3 +38,7 @@ preprocessing route. Do not download or redistribute these assets without terms.
 No new environment was installed and no model was rerun while producing this
 package. A clean-machine end-to-end restore and current vulnerability triage remain
 release checks. Do not automatically upgrade dependencies of a frozen study.
+
+## Statistical supplement
+
+The [11 October supplement](STATISTICAL_SUPPLEMENT.md) has explicit input and private-output arguments. It reuses original locked runs; it is separate from the original package-assembly operation described above. Participant-level inputs are not bundled.

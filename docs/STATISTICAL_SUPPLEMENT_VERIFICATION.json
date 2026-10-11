@@ -1,0 +1,24 @@
+{
+  "status": "PASS_SCOPED_STATISTICAL_SUPPLEMENT_CHECKS",
+  "focused_tests_passed": 7,
+  "numerical_replay": {
+    "status": "PASS_NUMERICAL_REPLAY_FOR_FIVE_AGGREGATE_SOURCES",
+    "tolerance": 1e-12,
+    "files": {
+      "data_audit.json": true,
+      "additional_audit.json": true,
+      "riley_full_scenarios.json": true,
+      "extra_demographics.json": true,
+      "tau_training_support.json": true
+    },
+    "cnn_retrained": false,
+    "private_inputs_not_exported": true
+  },
+  "parent_scientific_modules_match_original_analysis": true,
+  "retrained_cnns_during_packaging": false,
+  "full_sensitivity_rerun_during_packaging": false,
+  "aggregate_export_allowlisted": true,
+  "individual_prediction_files_uploaded": false,
+  "full_clean_machine_reconstruction": false,
+  "independent_scientific_validation": false
+}

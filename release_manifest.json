@@ -1,6 +1,6 @@
 {
-  "version": "20261009_private_repository_v1",
-  "parent_version": "20261008_release_candidate_v2",
+  "version": "20261011_private_statistical_supplement_v1",
+  "parent_version": "20261009_private_repository_v1",
   "files": [
     {
       "path": ".gitattributes",
@@ -9,13 +9,13 @@
     },
     {
       "path": ".gitignore",
-      "sha256": "87c23337a7444d3657df0d4fb5a4d3f07325d4ffee3a0dbced0de2a652618d7b",
-      "bytes": 163
+      "sha256": "a4a243ed6d51b824a08f146f8e9e9ed132081be67faa7a06c81ac34fa985e8be",
+      "bytes": 337
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "30d4dc2d15a755f1d64c062128909da6dcf3bb388b156309dc27ac6cdb0dcbfd",
-      "bytes": 733
+      "sha256": "38b6657066b4fabc5c1e45413a4231823a4fbce7d4bb1334dff612237e58208d",
+      "bytes": 1334
     },
     {
       "path": "check_package.py",
@@ -229,13 +229,13 @@
     },
     {
       "path": "docs/REPORTS_INDEX.md",
-      "sha256": "88b7692723cbbd00d6d85d1b462cc19e4a020a65331639a2de48ef865e2cdae0",
-      "bytes": 1932
+      "sha256": "e0e069ce022a185cd8a6da18d4ec5e49abe27a41ef07e449f9a9607e870e5227",
+      "bytes": 2144
     },
     {
       "path": "docs/REPRODUCING.md",
-      "sha256": "463da86c9d0d1db924d8d28383e86e9703d81c3665558c0f5f9e84885f6bb512",
-      "bytes": 2250
+      "sha256": "3d43bb70337cd3eba209d6fd96f4c7193f90e9086093230a9be767b87ca4a22b",
+      "bytes": 2533
     },
     {
       "path": "docs/result_lineage.json",
@@ -244,8 +244,8 @@
     },
     {
       "path": "docs/RESULTS_INDEX.md",
-      "sha256": "122ded2d0db14b051f2bd7ebaa933e783842b584109a7a226e4e966e16d44452",
-      "bytes": 31339
+      "sha256": "7d1f1c5c1abdc1cde8833f9419fb6ccd3f6c77add7c9c381da12495c76a7a1a2",
+      "bytes": 31554
     },
     {
       "path": "docs/source_binding_audit.json",
@@ -256,6 +256,16 @@
       "path": "docs/source_inventory.json",
       "sha256": "fce9a021461fcf37a5a27a183187636aca8948d8ffb5fbade9c57327baffa257",
       "bytes": 92014
+    },
+    {
+      "path": "docs/STATISTICAL_SUPPLEMENT.md",
+      "sha256": "5b207ccdb5d1f7f858e451ddd2fa7cd9591b035d02703a561b5b36acc540c333",
+      "bytes": 8998
+    },
+    {
+      "path": "docs/STATISTICAL_SUPPLEMENT_VERIFICATION.json",
+      "sha256": "d04d92c60d3fc61c0222b416dbed237cc4d51b587e107ec18569f5c6f822d9da",
+      "bytes": 824
     },
     {
       "path": "docs/STUDY_MAP.md",
@@ -294,8 +304,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "ab2bbaf8af92e6e17f9357c1236b249aca2c87e28b74fe95eeb7ba17af1a55f8",
-      "bytes": 4351
+      "sha256": "60c7677644d96f34e12767c11fa2a2476afd851913446b18a9be82a19765f0be",
+      "bytes": 15330
     },
     {
       "path": "reports/03_method_x/extension_mx7_results_limitations_FA.v1.md",
@@ -376,6 +386,11 @@
       "path": "reports/06_fusion/START_HERE_FA.md",
       "sha256": "dd6e8c21e1b57740e96ebd04635a60efdca817a92c9ecadb0f015adb42ac41ba",
       "bytes": 2680
+    },
+    {
+      "path": "reports/07_statistical_supplement/REPORT.md",
+      "sha256": "cb12be89aea89d6453a60fc2692f0a968cc3420543eac1e40b119af758b47ea8",
+      "bytes": 4173
     },
     {
       "path": "requirements-dev.txt",
@@ -1403,6 +1418,46 @@
       "bytes": 5485
     },
     {
+      "path": "results/aggregate/10_statistical_supplement/baseline_and_ipa.json",
+      "sha256": "a0afb4bf83d48f5411ae179cfd500ae4dc8ef6bf2254f743859cd74d3f371160",
+      "bytes": 30436
+    },
+    {
+      "path": "results/aggregate/10_statistical_supplement/cohort_summary.json",
+      "sha256": "62cddd0520bf42c7afef4bc7d8eaeef6a7bf31722bf8f54b6b13641f408fb4dd",
+      "bytes": 30264
+    },
+    {
+      "path": "results/aggregate/10_statistical_supplement/disposition_and_qc.json",
+      "sha256": "af9385d77fa08331df873b8ec7428313b2d729253e2c73de920240fd0735e283",
+      "bytes": 973
+    },
+    {
+      "path": "results/aggregate/10_statistical_supplement/noncognitive_pacc.json",
+      "sha256": "8b6ed6684dd59cce318b1fd64cbbe929f5ff60bef90f48dab34a1f5025142119",
+      "bytes": 12393
+    },
+    {
+      "path": "results/aggregate/10_statistical_supplement/provenance.json",
+      "sha256": "5032830d05e10e2aeb446b0de6ba2da5d94dc806e3bbfe26cbe0475320ab1a91",
+      "bytes": 1315
+    },
+    {
+      "path": "results/aggregate/10_statistical_supplement/riley_scenarios.json",
+      "sha256": "a5441baab6d161c715a329699d98d67681221a802af10ab4a566d6bd460d3df1",
+      "bytes": 3872
+    },
+    {
+      "path": "results/aggregate/10_statistical_supplement/tau_multiplicity.json",
+      "sha256": "0ad1bd510d0d20302e6d7b65974707814405f6e5691666361010680e90523b8c",
+      "bytes": 26116
+    },
+    {
+      "path": "results/aggregate/10_statistical_supplement/tau_training_support.json",
+      "sha256": "52434affcfafab53044ec48954a81072da757bc3b7a11514af54a2d46059d883",
+      "bytes": 203
+    },
+    {
       "path": "scripts/analyze_method_y_amyloid_lmo_a4_v2.py",
       "sha256": "95dd79db909a1dd31ca89edd95e4a582bc79e18f892a63f5cb415c945193a7ec",
       "bytes": 9088
@@ -2056,6 +2111,51 @@
       "path": "scripts/summarize_xy_spatial_validation_v1.py",
       "sha256": "2839e7260fce07ce0c94f2fa4ac59a81a882d29ede842382760d7c803577c395",
       "bytes": 8055
+    },
+    {
+      "path": "scripts/thesis_statistics_v1/__init__.py",
+      "sha256": "65d1c1aee1a73aa58821c70e8ea2e99e08d513d95790e9ab5ad02f15c1c075c4",
+      "bytes": 71
+    },
+    {
+      "path": "scripts/thesis_statistics_v1/demographics.py",
+      "sha256": "f8fb9fa71c9789756463f6b332a5a24cf321c39d81819ab8dd02a04ab20f540f",
+      "bytes": 5585
+    },
+    {
+      "path": "scripts/thesis_statistics_v1/disposition.py",
+      "sha256": "8859838908bfeea8c0fa3d8817e6a32d0accb553b44df69402bfc67e03be89f7",
+      "bytes": 2461
+    },
+    {
+      "path": "scripts/thesis_statistics_v1/export_aggregate.py",
+      "sha256": "b360a5e673075ff490d5e8f4fa6641b950d49a61f206149a9dfd91ac65aee8a4",
+      "bytes": 7244
+    },
+    {
+      "path": "scripts/thesis_statistics_v1/original_analysis_lineage.json",
+      "sha256": "f1a13ff39c5962b949eb56c4034057c8631badc1d9a0c0d86aee4875e8fe0c8c",
+      "bytes": 1753
+    },
+    {
+      "path": "scripts/thesis_statistics_v1/planning.py",
+      "sha256": "cf904c637ae334b74fde0b6c70d1785346ff50b0058c0a56d216c7ddb436bdc2",
+      "bytes": 1804
+    },
+    {
+      "path": "scripts/thesis_statistics_v1/prediction_sensitivity.py",
+      "sha256": "77fd1181a549dae76a8593c77fecf12bb80b657155085befe83a7f17623bb218",
+      "bytes": 8304
+    },
+    {
+      "path": "scripts/thesis_statistics_v1/runtime.py",
+      "sha256": "790ca27cca6d6820b632f887939df8a7cbfb5a3afed66e55bba5137ca1dfe42e",
+      "bytes": 3158
+    },
+    {
+      "path": "scripts/thesis_statistics_v1/sample_size.py",
+      "sha256": "fd2dcc5d09ee6eb4d22a093ca21d87f44b858e994ed0357f96c149d9ce41b879",
+      "bytes": 3581
     },
     {
       "path": "scripts/train_3d_mri.py",
@@ -3221,6 +3321,16 @@
       "path": "tests/test_mx_science_extension_selection.py",
       "sha256": "6da783a252bd4b3b2a8de6750c8f1b3ef695d46dce68b41345430ef87a75d5e9",
       "bytes": 2722
+    },
+    {
+      "path": "tests/thesis_statistics_v1/test_pairing.py",
+      "sha256": "620f742a0109c2ce7adb8b13a42c0a2a6771a5d859da5bacc2632edd5c61ac07",
+      "bytes": 1375
+    },
+    {
+      "path": "tests/thesis_statistics_v1/test_supplement.py",
+      "sha256": "afdf6af304fc0935839646e0b00d7edd99472252ab9853c98f67692860bdda96",
+      "bytes": 2891
     },
     {
       "path": "tests/xyz_fp32_spatial_v1/test_precision_companion.py",
