@@ -27,3 +27,8 @@ FBP belongs to amyloid and FTP to tau. Pattern-normalized images do not establis
 
 The regional paired tau result and the new fusion tau comparison answer different questions in different matched populations. They must not be pooled or substituted for one another.
 Post-fusion computation is complete in the recorded parent dossier. The completed FP32 companion has been reviewed for sensitivity and numerical diagnostic reporting; it does not establish positive scientific claims or fully validated attribution. See [FP32 review](FP32_SENSITIVITY.md), active_routes.json and exclusions.json.
+
+
+## Research update, 14 October 2026
+
+See [completed statistical and OOF work](RESEARCH_UPDATE_20261014.md) and the [CNN/Jacobian pilot decision](CNN_JACOBIAN_PILOT.md). Original results remain historical evidence; the new guide identifies superseded intervals and limits.

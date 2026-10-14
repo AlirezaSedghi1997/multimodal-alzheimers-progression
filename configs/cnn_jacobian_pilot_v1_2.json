@@ -1,0 +1,63 @@
+{
+  "protocol": "BASELINE_T1_LOGJAC_COMPACT_CNN_PILOT_V1_2",
+  "claim_status": "POST_HOC_DEVELOPMENT_PILOT_NOT_VALIDATION",
+  "parent_root": "results/xyz_fusion_v2",
+  "cache_root": "results/xyz_mri_baseline_fast_v1",
+  "template_dir": "data/templates/method_y_mni152nlin2009casym_v1",
+  "output_root": "results/cnn_jacobian_pilot_v1_2",
+  "outer_fold_excluded": 0,
+  "pilot_n": 512,
+  "fit_n": 320,
+  "selection_n": 64,
+  "audit_n": 128,
+  "split_seed": 20261014,
+  "training_seeds": [
+    13,
+    29
+  ],
+  "image_size": 64,
+  "batch_size": 8,
+  "max_epochs": 24,
+  "minimum_epochs": 8,
+  "patience": 6,
+  "learning_rate": 0.001,
+  "weight_decay": 0.001,
+  "max_training_seconds": 3600,
+  "cpu_threads": 2,
+  "preparation_workers": 2,
+  "min_free_disk_gib": 15,
+  "jacobian": {
+    "geometric": true,
+    "warp": "registration_1Warp.nii.gz",
+    "affine_included": false,
+    "log_clip": [
+      -2.0,
+      2.0
+    ],
+    "individual_zscore": false
+  },
+  "arms": [
+    "t1",
+    "t1_logjac"
+  ],
+  "positive_targets": [
+    "age",
+    "hippocampus_icv"
+  ],
+  "gate": {
+    "minimum_audit_3y_events": 10,
+    "minimum_audit_at_risk_3y": 30,
+    "minimum_positive_control_r2": 0.0,
+    "minimum_relative_ibs_gain": 0.01,
+    "minimum_absolute_ibs_gain": 0.0004,
+    "paired_conditional_interval": 0.8,
+    "bootstrap_resamples": 5000,
+    "require_both_seeds_direction": true,
+    "maximum_c_index_drop": 0.02
+  },
+  "full_dataset_run_automatic": false,
+  "pretrained_weights": "NOT_USED_UNTIL_LICENSE_INPUT_PARITY_AND_NONOVERLAP_VERIFIED",
+  "reuse_prepared_scans_from": "results/cnn_jacobian_pilot_v1_1",
+  "cox_tail_policy": "CONSTANT_BASELINE_HAZARD_AFTER_LAST_TRAINING_OBSERVATION_NO_EXTRAPOLATION_OF_1_TO_3_YEAR_METRICS",
+  "pooling_implementation": "EXACT_NONOVERLAPPING_BLOCK_MEAN_DETERMINISTIC_CUDA"
+}

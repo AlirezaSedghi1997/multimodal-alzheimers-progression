@@ -1,0 +1,17 @@
+{
+  "status": "SYNTHETIC_IMPLEMENTATION_CHECK_PASSED",
+  "not_scientific_validation": true,
+  "ibs_metric_error": 2.7755575615628914e-17,
+  "concordance": {
+    "synthetic_bootstrap_comparisons": 100,
+    "max_absolute_error": 3.3306690738754696e-16,
+    "undefined": 0,
+    "risk_and_time_ties_included": true
+  },
+  "network_parameters": 297181,
+  "network_output_shape": [
+    1,
+    9
+  ],
+  "synthetic_only": true
+}

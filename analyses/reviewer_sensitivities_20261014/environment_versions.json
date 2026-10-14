@@ -1,0 +1,22 @@
+{
+  "python": "3.11.15",
+  "observed_versions": {
+    "numpy": "2.3.5",
+    "pandas": "2.3.3",
+    "scipy": "1.15.3",
+    "scikit-learn": "1.8.0",
+    "scikit-survival": "0.27.0",
+    "statsmodels": "0.14.6",
+    "torch": "2.5.1+cu121",
+    "threadpoolctl": "3.6.0",
+    "pyarrow": "25.0.0",
+    "matplotlib": "3.10.9",
+    "h5py": "3.16.0",
+    "nibabel": "5.3.3",
+    "monai": "1.5.2",
+    "antspyx": "0.6.3",
+    "PyYAML": "6.0.3",
+    "Pillow": "12.2.0"
+  },
+  "scope": "Local execution environment; no clean-environment installation is asserted"
+}

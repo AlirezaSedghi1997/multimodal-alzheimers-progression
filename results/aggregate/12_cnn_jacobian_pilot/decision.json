@@ -1,0 +1,29 @@
+{
+  "status": "PILOT_COMPLETED_NO_GO_FULL_DATASET_NOT_RUN",
+  "final_protocol": "BASELINE_T1_LOGJAC_COMPACT_CNN_PILOT_V1_2",
+  "contract_sha256": "02c918dedf5e3e52306c0b10ff97e6f0a80ab7920bcd58854b7657fd204949f4",
+  "results_sha256": "2a2fcaa2bb525bd23f845ed8e283620de2b61246e3e611498a9f2d1949eb56d3",
+  "locked_models": 6,
+  "all_model_hashes_verified": true,
+  "technical_tests": {
+    "passed": 9,
+    "failed": 0
+  },
+  "original_outer_test_excluded": true,
+  "all_failed_or_negative_runs_preserved": true,
+  "runtime": {
+    "torch": "2.5.1+cu121",
+    "antspyx": "0.6.3",
+    "numpy": "2.3.5",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.8.0",
+    "scikit-survival": "0.27.0",
+    "nibabel": "5.3.3"
+  },
+  "python": "3.11.15 (main, Jun 23 2026, 15:20:37) [MSC v.1944 64 bit (AMD64)]",
+  "performance_numbers_distributed": false,
+  "full_cohort_run_performed": false,
+  "scientific_validation": false,
+  "reason": "The locked advancement criteria were not met; this candidate was not scaled to the full cohort.",
+  "status_scope": "Historical execution evidence, not a new run or independent reproduction"
+}

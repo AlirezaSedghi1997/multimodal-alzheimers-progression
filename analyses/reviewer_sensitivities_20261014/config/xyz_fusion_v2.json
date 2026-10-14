@@ -1,0 +1,56 @@
+{
+  "protocol": "XYZ_PAIRED_EXPERT_SURVIVAL_FUSION_V2",
+  "output_root": "results/xyz_fusion_v2",
+  "parent_root": "results/xyz_mri_baseline_fast_v1",
+  "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+  "outer_folds": 5,
+  "components": 3,
+  "seed": 20261003,
+  "training_seeds": [13, 29, 47],
+  "endpoint": {
+    "primary": "confirmation_time",
+    "window_days": 1640.0,
+    "sensitivity": ["legacy_onset", "last_visit_positive", "single_crossing", "last_negative_censor"],
+    "description": "Time to second consecutive distinct-day CDR>=0.5; not dementia diagnosis; no invented minimum persistence duration"
+  },
+  "training": {
+    "backbone": "amuse_x_hybrid3d", "hybrid_variant": "baseline", "latent_dim": 128,
+    "learning_rates": [0.0001, 0.0003], "weight_decay": 0.001,
+    "epochs": 60, "minimum_epochs": 12, "patience": 10,
+    "batch_size": 4, "microbatch_size": 4,
+    "amp": true, "tf32": false, "deterministic": true,
+    "augmentation": "SMALL_TRANSLATION_NOISE_MRI_ONLY",
+    "selection_metric": "IPCW_IBS",
+    "hazard_edges_days": [0, 182.5, 365, 547.875, 730.5, 913.125, 1095.75, 1278.375, 1461, 1640],
+    "cpu_threads": 4, "ram_cache_max_gib": 12,
+    "checkpoint_every_optimizer_steps": 32
+  },
+  "fusion": {
+    "ridge_alpha": 10.0,
+    "score_times_days": [547.875, 821.71875, 1095.75],
+    "horizons_days": [547.875, 1095.75],
+    "ibs_grid_days": [365, 456.34375, 547.6875, 639.03125, 730.375, 821.71875, 913.0625, 1004.40625, 1095.75],
+    "bootstrap_resamples": 2000, "min_at_risk": 20,
+    "component_aggregation": "MEAN_SURVIVAL_CURVES_FROM_SAME_EXPERT_META_PAIRS"
+  },
+  "secondary": {
+    "families": ["cox_ridge", "rsf"],
+    "endpoint_sensitivity_families": ["cox_ridge"],
+    "cox_alpha_grid": [0.1, 1.0, 10.0],
+    "rsf_leaf_grid": [5, 10, 20], "rsf_trees": 150,
+    "min_group_subjects": 30, "min_group_events": 10,
+    "ipw_clip": [0.05, 0.95], "mnar_log_odds_delta": [-1.0, 0.0, 1.0],
+    "power_effect_log_hazard": [0.0, 0.15, 0.3, 0.5], "power_repeats": 500,
+    "tau_regions": ["entorhinal_lh_VOI", "entorhinal_rh_VOI"],
+    "tau_value_column": "suvr_crus",
+    "tau_mapping_policy": "EXACT_SOURCE_REGION_NAMES_NO_BRAAK_OR_CENTAUR_EQUIVALENCE"
+  },
+  "spatial": {
+    "cases_per_fold": 2, "ig_steps": [32, 64, 128, 256],
+    "primary_baseline": "blur", "baseline_sigma": [2.0, 4.0],
+    "random_controls": 99, "max_randomized_correlation": 0.8,
+    "atlas_registry": "results/xyz_fusion_v2_assets/source_registry.json",
+    "no_disease_localization_claim": true
+  },
+  "external": "OUT_OF_SCOPE_NO_EXTERNAL_DATA"
+}

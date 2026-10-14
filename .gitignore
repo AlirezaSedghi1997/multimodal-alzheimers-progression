@@ -27,3 +27,19 @@ __pycache__/
 **/.analysis_context.json
 *.docx
 **/private/
+
+# Restricted caches, model objects and local execution products
+**/_private/
+*.npz
+*.joblib
+*.hdf
+*.mat
+*.rds
+*.RData
+*.sqlite
+*.db
+*.pfx
+*.p12
+*.zip
+*.pdf
+*.pptx

@@ -1,0 +1,120 @@
+{
+  "status": "POST_HOC_CENSORING_MODEL_SENSITIVITY",
+  "censoring_predictors": [
+    "age",
+    "sex_binary",
+    "education_years",
+    "apoe4_carrier",
+    "baseline_pacc_raw",
+    "baseline_mmscore",
+    "treatment_active",
+    "amyloid_centiloid"
+  ],
+  "ridge": 10,
+  "weights_clipped": false,
+  "scope": "Fixed predictions; does not remove unmeasured informative censoring",
+  "models": {
+    "mri": {
+      "ibs_reference": 0.04014404689810254,
+      "ibs_augmented": 0.0402460023229944,
+      "delta_ibs": 0.0001019554248918568,
+      "conditional_nominal_ci95": [
+        -0.00010002561504829304,
+        0.00032043834461159456
+      ],
+      "conditional_two_comparison_ci": [
+        -0.00012686191493357305,
+        0.0003409145389290082
+      ],
+      "resamples": 2000,
+      "diagnostics": [
+        {
+          "fold": 1,
+          "n": 212,
+          "minimum_used_G": 0.8216367873250474,
+          "weight_max": 1.2170827979302616,
+          "weight_q99": 1.2012342554116293
+        },
+        {
+          "fold": 2,
+          "n": 212,
+          "minimum_used_G": 0.8261057370081017,
+          "weight_max": 1.2104987959794218,
+          "weight_q99": 1.1982425299827284
+        },
+        {
+          "fold": 3,
+          "n": 212,
+          "minimum_used_G": 0.8053028534157809,
+          "weight_max": 1.2417688522502928,
+          "weight_q99": 1.217268823487394
+        },
+        {
+          "fold": 4,
+          "n": 212,
+          "minimum_used_G": 0.8135227396921696,
+          "weight_max": 1.2292219396084636,
+          "weight_q99": 1.2043634052488381
+        },
+        {
+          "fold": 5,
+          "n": 211,
+          "minimum_used_G": 0.82485149644115,
+          "weight_max": 1.2123394384498716,
+          "weight_q99": 1.1867457441676452
+        }
+      ]
+    },
+    "tau": {
+      "ibs_reference": 0.049834853994521526,
+      "ibs_augmented": 0.04688197965069486,
+      "delta_ibs": -0.0029528743438266614,
+      "conditional_nominal_ci95": [
+        -0.00535091217942376,
+        -0.0004992693533193881
+      ],
+      "conditional_two_comparison_ci": [
+        -0.005637304486715431,
+        -0.0001671616870835023
+      ],
+      "resamples": 2000,
+      "diagnostics": [
+        {
+          "fold": 1,
+          "n": 67,
+          "minimum_used_G": 0.8558825660883775,
+          "weight_max": 1.1683845887529634,
+          "weight_q99": 1.1485575480334937
+        },
+        {
+          "fold": 2,
+          "n": 70,
+          "minimum_used_G": 0.8310085421607883,
+          "weight_max": 1.2033570646576028,
+          "weight_q99": 1.178408159482267
+        },
+        {
+          "fold": 3,
+          "n": 70,
+          "minimum_used_G": 0.7994903101842041,
+          "weight_max": 1.250796898050707,
+          "weight_q99": 1.1977912742632828
+        },
+        {
+          "fold": 4,
+          "n": 69,
+          "minimum_used_G": 0.7958847430753393,
+          "weight_max": 1.256463336809233,
+          "weight_q99": 1.188515057912885
+        },
+        {
+          "fold": 5,
+          "n": 82,
+          "minimum_used_G": 0.8502903443721284,
+          "weight_max": 1.1760688647339872,
+          "weight_q99": 1.163284879185841
+        }
+      ]
+    }
+  }
+}

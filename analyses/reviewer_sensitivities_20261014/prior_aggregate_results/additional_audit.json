@@ -1,0 +1,111 @@
+{
+  "disposition": {
+    "source": "Derived Data/DS.csv",
+    "window_days": 1640,
+    "n_deaths": 7,
+    "before_observed_endpoint": 0,
+    "among_censored": 6,
+    "after_last_cdr_among_censored": 6,
+    "disposition_counts_nonexclusive": {
+      "COMPLETED": 249,
+      "WITHDRAWAL BY SUBJECT": 127,
+      "ADVERSE EVENT": 37,
+      "OTHER": 22,
+      "SAFETY RISK": 7,
+      "DEATH": 7,
+      "LACK OF EFFICACY": 6,
+      "PHYSICIAN DECISION": 4,
+      "LOST TO FOLLOW UP": 2,
+      "PROTOCOL DEVIATION": 1,
+      "WITHDRAWAL BY PARENT/GUARDIAN": 1
+    },
+    "competing_risk_analysis": "NOT_PERFORMED_EVENT_FREE_INTERVAL_BETWEEN_LAST_CDR_AND_DEATH_NOT_ADJUDICATED"
+  },
+  "APOE": {
+    "raw_missing": 0,
+    "analysis_flag_counts": {
+      "1.0": 626,
+      "0.0": 433
+    },
+    "encoding": "ANALYSIS_CARRIER_FLAG_NOT_ALLELE_COUNT"
+  },
+  "source_mri_safety_reads": {
+    "source_safety_reads_people": 1051,
+    "does_not_validate_processed_registration": true
+  },
+  "riley_shrinkage_scenarios": [
+    {
+      "parameters": 7,
+      "anticipated_cox_snell_r2": 0.05,
+      "target_shrinkage": 0.9,
+      "n_shrinkage_criterion_only": 1225
+    },
+    {
+      "parameters": 7,
+      "anticipated_cox_snell_r2": 0.1,
+      "target_shrinkage": 0.9,
+      "n_shrinkage_criterion_only": 595
+    },
+    {
+      "parameters": 7,
+      "anticipated_cox_snell_r2": 0.15,
+      "target_shrinkage": 0.9,
+      "n_shrinkage_criterion_only": 384
+    },
+    {
+      "parameters": 7,
+      "anticipated_cox_snell_r2": 0.2,
+      "target_shrinkage": 0.9,
+      "n_shrinkage_criterion_only": 279
+    },
+    {
+      "parameters": 8,
+      "anticipated_cox_snell_r2": 0.05,
+      "target_shrinkage": 0.9,
+      "n_shrinkage_criterion_only": 1400
+    },
+    {
+      "parameters": 8,
+      "anticipated_cox_snell_r2": 0.1,
+      "target_shrinkage": 0.9,
+      "n_shrinkage_criterion_only": 680
+    },
+    {
+      "parameters": 8,
+      "anticipated_cox_snell_r2": 0.15,
+      "target_shrinkage": 0.9,
+      "n_shrinkage_criterion_only": 439
+    },
+    {
+      "parameters": 8,
+      "anticipated_cox_snell_r2": 0.2,
+      "target_shrinkage": 0.9,
+      "n_shrinkage_criterion_only": 319
+    },
+    {
+      "parameters": 12,
+      "anticipated_cox_snell_r2": 0.05,
+      "target_shrinkage": 0.9,
+      "n_shrinkage_criterion_only": 2100
+    },
+    {
+      "parameters": 12,
+      "anticipated_cox_snell_r2": 0.1,
+      "target_shrinkage": 0.9,
+      "n_shrinkage_criterion_only": 1019
+    },
+    {
+      "parameters": 12,
+      "anticipated_cox_snell_r2": 0.15,
+      "target_shrinkage": 0.9,
+      "n_shrinkage_criterion_only": 659
+    },
+    {
+      "parameters": 12,
+      "anticipated_cox_snell_r2": 0.2,
+      "target_shrinkage": 0.9,
+      "n_shrinkage_criterion_only": 478
+    }
+  ],
+  "riley_scope": "RETROSPECTIVE_SENSITIVITY_ONE_CRITERION_NOT_FULL_MINIMUM_NOT_CNN_FORMULA"
+}

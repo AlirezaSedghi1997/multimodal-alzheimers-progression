@@ -1,0 +1,14 @@
+{
+  "elapsed_seconds": 33.83922028541565,
+  "date": "2026-10-13",
+  "python": "3.11.15 (main, Jun 23 2026, 15:20:37) [MSC v.1944 64 bit (AMD64)]",
+  "versions": {
+    "numpy": "2.3.5",
+    "pandas": "2.3.3",
+    "scipy": "1.15.3",
+    "sklearn": "1.8.0",
+    "sksurv": "0.27.0",
+    "statsmodels": "0.14.6"
+  },
+  "script_sha256": "1b4e1cfec1ba59b05078ab52fb4abb94fcbf250f089a1cced32e3ab08bd9f5da"
+}

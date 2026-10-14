@@ -1,0 +1,25 @@
+{
+  "n": 1059,
+  "counts": [
+    {
+      "reason": "INCLUDED",
+      "n": 544,
+      "male_n": 159,
+      "female_n": 385
+    },
+    {
+      "reason": "NONFINITE_SOURCE_ARRAY",
+      "n": 288,
+      "male_n": 176,
+      "female_n": 112
+    },
+    {
+      "reason": "NOT_IN_ASSEMBLED_IMAGE_LIST",
+      "n": 227,
+      "male_n": 93,
+      "female_n": 134
+    }
+  ],
+  "scope": "Local input availability and processing; no claim about GRIP inventory or biological cause of sex imbalance",
+  "upstream_status_linked_to_exact_frozen_membership": true
+}

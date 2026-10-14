@@ -1,0 +1,14 @@
+numpy==2.3.5
+pandas==2.3.3
+scipy==1.15.3
+scikit-learn==1.8.0
+scikit-survival==0.27.0
+statsmodels==0.14.6
+threadpoolctl==3.6.0
+pyarrow==25.0.0
+matplotlib==3.10.9
+h5py==3.16.0
+nibabel==5.3.3
+monai==1.5.2
+PyYAML==6.0.3
+Pillow==12.2.0

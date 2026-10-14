@@ -1,0 +1,157 @@
+{
+  "units": {
+    "blood_ptau217": "U/mL (source assay scale)",
+    "tau_temporal": "SUVR, cerebellar crus reference",
+    "volumes": "100 x volume/ICV (%)"
+  },
+  "groups": {
+    "mri": {
+      "blood_ptau217": {
+        "available": 696,
+        "missing": 363,
+        "median": 0.247,
+        "q1": 0.187,
+        "q3": 0.336
+      },
+      "tau_temporal": {
+        "available": 358,
+        "missing": 701,
+        "median": 1.18,
+        "q1": 1.09,
+        "q3": 1.28875
+      },
+      "hippocampus_icv": {
+        "available": 1053,
+        "missing": 6,
+        "median": 0.39944345,
+        "q1": 0.36655605,
+        "q3": 0.42966625
+      },
+      "entorhinal_icv": {
+        "available": 1053,
+        "missing": 6,
+        "median": 0.3454441,
+        "q1": 0.31763131,
+        "q3": 0.37308786
+      },
+      "ventricle_icv": {
+        "available": 1053,
+        "missing": 6,
+        "median": 2.24286147,
+        "q1": 1.64770087,
+        "q3": 2.9917505099999997
+      }
+    },
+    "pet": {
+      "blood_ptau217": {
+        "available": 352,
+        "missing": 192,
+        "median": 0.238,
+        "q1": 0.189,
+        "q3": 0.32475
+      },
+      "tau_temporal": {
+        "available": 179,
+        "missing": 365,
+        "median": 1.18,
+        "q1": 1.085,
+        "q3": 1.2974999999999999
+      },
+      "hippocampus_icv": {
+        "available": 541,
+        "missing": 3,
+        "median": 0.40726975,
+        "q1": 0.37522094,
+        "q3": 0.43385241
+      },
+      "entorhinal_icv": {
+        "available": 541,
+        "missing": 3,
+        "median": 0.34429992,
+        "q1": 0.31634573,
+        "q3": 0.37119525
+      },
+      "ventricle_icv": {
+        "available": 541,
+        "missing": 3,
+        "median": 2.12780579,
+        "q1": 1.58715491,
+        "q3": 2.81883689
+      }
+    },
+    "plasma": {
+      "blood_ptau217": {
+        "available": 696,
+        "missing": 0,
+        "median": 0.247,
+        "q1": 0.187,
+        "q3": 0.336
+      },
+      "tau_temporal": {
+        "available": 220,
+        "missing": 476,
+        "median": 1.1875,
+        "q1": 1.0987500000000001,
+        "q3": 1.29125
+      },
+      "hippocampus_icv": {
+        "available": 692,
+        "missing": 4,
+        "median": 0.39904103999999996,
+        "q1": 0.3631575025,
+        "q3": 0.429745265
+      },
+      "entorhinal_icv": {
+        "available": 692,
+        "missing": 4,
+        "median": 0.34505140999999995,
+        "q1": 0.3163703975,
+        "q3": 0.3722397025
+      },
+      "ventricle_icv": {
+        "available": 692,
+        "missing": 4,
+        "median": 2.24101733,
+        "q1": 1.6482791875,
+        "q3": 3.02994373
+      }
+    },
+    "tau": {
+      "blood_ptau217": {
+        "available": 220,
+        "missing": 138,
+        "median": 0.2375,
+        "q1": 0.175,
+        "q3": 0.32075
+      },
+      "tau_temporal": {
+        "available": 358,
+        "missing": 0,
+        "median": 1.18,
+        "q1": 1.09,
+        "q3": 1.28875
+      },
+      "hippocampus_icv": {
+        "available": 356,
+        "missing": 2,
+        "median": 0.39927723499999995,
+        "q1": 0.3673360225,
+        "q3": 0.432286125
+      },
+      "entorhinal_icv": {
+        "available": 356,
+        "missing": 2,
+        "median": 0.34556094,
+        "q1": 0.3151376425,
+        "q3": 0.37432820499999997
+      },
+      "ventricle_icv": {
+        "available": 356,
+        "missing": 2,
+        "median": 2.2634236899999998,
+        "q1": 1.6744523350000002,
+        "q3": 2.9985846575
+      }
+    }
+  }
+}

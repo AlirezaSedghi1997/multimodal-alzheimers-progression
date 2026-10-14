@@ -1,0 +1,694 @@
+{
+  "n_people": 1049,
+  "n_observations": 8557,
+  "analyses": {
+    "clinical_amyloid": {
+      "risk_scale": {
+        "mean": 0.10930849642844764,
+        "sd": 0.07913598489777371,
+        "unit": "UNIQUE_SUBJECT"
+      },
+      "models": {
+        "base": {
+          "status": "ESTIMATED",
+          "formula": "pacc ~ years * (age_z + education_years_z + baseline_pacc_raw_z + baseline_mmscore_z + sex_binary + apoe4_carrier + treatment_active)",
+          "converged": true,
+          "optimizer_attempts": [
+            {
+              "optimizer": "lbfgs",
+              "converged": true,
+              "log_likelihood": -17051.66679457276,
+              "gradient_per_observation": 1.8331710983586457e-06,
+              "valid": true,
+              "warnings": []
+            },
+            {
+              "optimizer": "bfgs",
+              "converged": true,
+              "log_likelihood": -17051.66679475354,
+              "gradient_per_observation": 4.5921448980438065e-06,
+              "valid": true,
+              "warnings": []
+            }
+          ],
+          "random_effect_covariance_eigenvalues": [
+            0.14593797812953935,
+            4.788893821486143
+          ],
+          "coefficients": {
+            "Intercept": {
+              "estimate": 0.44076247415363984,
+              "ci95": [
+                0.2552503286376435,
+                0.6262746196696362
+              ]
+            },
+            "years": {
+              "estimate": -0.18922447838593295,
+              "ci95": [
+                -0.3022052800106481,
+                -0.07624367676121778
+              ]
+            },
+            "age_z": {
+              "estimate": -0.3429910959859684,
+              "ci95": [
+                -0.4425243353596382,
+                -0.24345785661229857
+              ]
+            },
+            "education_years_z": {
+              "estimate": 0.14367599753702065,
+              "ci95": [
+                0.049633240966842934,
+                0.23771875410719837
+              ]
+            },
+            "baseline_pacc_raw_z": {
+              "estimate": 1.9988791894825235,
+              "ci95": [
+                1.8693366836173675,
+                2.1284216953476793
+              ]
+            },
+            "baseline_mmscore_z": {
+              "estimate": -0.3634852242304626,
+              "ci95": [
+                -0.48447935691907745,
+                -0.24249109154184773
+              ]
+            },
+            "sex_binary": {
+              "estimate": -0.5301203960107084,
+              "ci95": [
+                -0.7242429835200432,
+                -0.33599780850137345
+              ]
+            },
+            "apoe4_carrier": {
+              "estimate": -0.00014383846457312587,
+              "ci95": [
+                -0.1880699870639603,
+                0.18778231013481403
+              ]
+            },
+            "treatment_active": {
+              "estimate": 0.04324324440974837,
+              "ci95": [
+                -0.1386559212264655,
+                0.22514241004596222
+              ]
+            },
+            "years:age_z": {
+              "estimate": -0.09461738286412184,
+              "ci95": [
+                -0.15616785390748641,
+                -0.033066911820757265
+              ]
+            },
+            "years:education_years_z": {
+              "estimate": -0.07439352669768473,
+              "ci95": [
+                -0.13219856452577597,
+                -0.016588488869593486
+              ]
+            },
+            "years:baseline_pacc_raw_z": {
+              "estimate": 0.33360309301968016,
+              "ci95": [
+                0.25483485397240757,
+                0.41237133206695276
+              ]
+            },
+            "years:baseline_mmscore_z": {
+              "estimate": -0.07039071544527364,
+              "ci95": [
+                -0.14443409599833779,
+                0.003652665107790498
+              ]
+            },
+            "years:sex_binary": {
+              "estimate": 0.2858445181957538,
+              "ci95": [
+                0.1675960312053274,
+                0.4040930051861802
+              ]
+            },
+            "years:apoe4_carrier": {
+              "estimate": -0.24997727446124654,
+              "ci95": [
+                -0.36415225711608024,
+                -0.13580229180641282
+              ]
+            },
+            "years:treatment_active": {
+              "estimate": -0.07260789993998536,
+              "ci95": [
+                -0.18314062834250164,
+                0.037924828462530924
+              ]
+            }
+          },
+          "aic": 34143.33358914552,
+          "n": 8557,
+          "random_effects": "INTERCEPT_AND_TIME_SLOPE",
+          "equivalent_random_time_basis_center_years": 2.25,
+          "selected_by": "MAXIMUM_VALID_LIKELIHOOD_NOT_SIGNIFICANCE",
+          "unregularized_ML_same_rows": true
+        },
+        "augmented": {
+          "status": "ESTIMATED",
+          "formula": "pacc ~ years * (age_z + education_years_z + baseline_pacc_raw_z + baseline_mmscore_z + sex_binary + apoe4_carrier + treatment_active + oof_risk_3y_z)",
+          "converged": true,
+          "optimizer_attempts": [
+            {
+              "optimizer": "lbfgs",
+              "converged": true,
+              "log_likelihood": -17004.248383044993,
+              "gradient_per_observation": 5.943990270223234e-07,
+              "valid": true,
+              "warnings": []
+            },
+            {
+              "optimizer": "bfgs",
+              "converged": true,
+              "log_likelihood": -17004.248383635393,
+              "gradient_per_observation": 3.2762371235471106e-06,
+              "valid": true,
+              "warnings": []
+            }
+          ],
+          "random_effect_covariance_eigenvalues": [
+            0.14717744126889165,
+            4.31222081712226
+          ],
+          "coefficients": {
+            "Intercept": {
+              "estimate": 0.3047591059790338,
+              "ci95": [
+                0.10760085209524367,
+                0.5019173598628239
+              ]
+            },
+            "years": {
+              "estimate": -0.3446603377840996,
+              "ci95": [
+                -0.4617893535866862,
+                -0.227531321981513
+              ]
+            },
+            "age_z": {
+              "estimate": -0.28831759522931516,
+              "ci95": [
+                -0.39168192066322716,
+                -0.18495326979540316
+              ]
+            },
+            "education_years_z": {
+              "estimate": 0.15781936916806774,
+              "ci95": [
+                0.06397733278819509,
+                0.25166140554794036
+              ]
+            },
+            "baseline_pacc_raw_z": {
+              "estimate": 1.8413903635663023,
+              "ci95": [
+                1.6890652153513552,
+                1.9937155117812493
+              ]
+            },
+            "baseline_mmscore_z": {
+              "estimate": -0.34481145773038036,
+              "ci95": [
+                -0.4655557417227687,
+                -0.22406717373799204
+              ]
+            },
+            "sex_binary": {
+              "estimate": -0.45328350057555444,
+              "ci95": [
+                -0.6498713242702516,
+                -0.25669567688085726
+              ]
+            },
+            "apoe4_carrier": {
+              "estimate": 0.12036435960558985,
+              "ci95": [
+                -0.07694110449684523,
+                0.31766982370802493
+              ]
+            },
+            "treatment_active": {
+              "estimate": 0.10888330179353468,
+              "ci95": [
+                -0.07512067722185019,
+                0.29288728080891957
+              ]
+            },
+            "oof_risk_3y_z": {
+              "estimate": -0.26153115192981835,
+              "ci95": [
+                -0.3976466834182979,
+                -0.12541562044133878
+              ]
+            },
+            "years:age_z": {
+              "estimate": -0.02628078479317512,
+              "ci95": [
+                -0.08877269705613679,
+                0.03621112746978654
+              ]
+            },
+            "years:education_years_z": {
+              "estimate": -0.05491610377272138,
+              "ci95": [
+                -0.11132392645539696,
+                0.0014917189099541983
+              ]
+            },
+            "years:baseline_pacc_raw_z": {
+              "estimate": 0.149297284337407,
+              "ci95": [
+                0.058805799874160514,
+                0.23978876880065347
+              ]
+            },
+            "years:baseline_mmscore_z": {
+              "estimate": -0.04704960513620729,
+              "ci95": [
+                -0.11928338718482435,
+                0.025184176912409775
+              ]
+            },
+            "years:sex_binary": {
+              "estimate": 0.37079551632749247,
+              "ci95": [
+                0.25381200299493106,
+                0.4877790296600539
+              ]
+            },
+            "years:apoe4_carrier": {
+              "estimate": -0.1064525271086374,
+              "ci95": [
+                -0.22364135948441205,
+                0.010736305267137258
+              ]
+            },
+            "years:treatment_active": {
+              "estimate": 0.001989313296261365,
+              "ci95": [
+                -0.10718251060879276,
+                0.1111611372013155
+              ]
+            },
+            "years:oof_risk_3y_z": {
+              "estimate": -0.30881957733641174,
+              "ci95": [
+                -0.3897827841819671,
+                -0.22785637049085639
+              ]
+            }
+          },
+          "aic": 34052.496766089986,
+          "n": 8557,
+          "random_effects": "INTERCEPT_AND_TIME_SLOPE",
+          "equivalent_random_time_basis_center_years": 2.25,
+          "selected_by": "MAXIMUM_VALID_LIKELIHOOD_NOT_SIGNIFICANCE",
+          "unregularized_ML_same_rows": true
+        }
+      }
+    },
+    "mri_augmented": {
+      "risk_scale": {
+        "mean": 0.10954238147622627,
+        "sd": 0.08087282546542103,
+        "unit": "UNIQUE_SUBJECT"
+      },
+      "models": {
+        "base": {
+          "status": "ESTIMATED",
+          "formula": "pacc ~ years * (age_z + education_years_z + baseline_pacc_raw_z + baseline_mmscore_z + sex_binary + apoe4_carrier + treatment_active)",
+          "converged": true,
+          "optimizer_attempts": [
+            {
+              "optimizer": "lbfgs",
+              "converged": true,
+              "log_likelihood": -17051.66679457276,
+              "gradient_per_observation": 1.8331710983586457e-06,
+              "valid": true,
+              "warnings": []
+            },
+            {
+              "optimizer": "bfgs",
+              "converged": true,
+              "log_likelihood": -17051.66679475354,
+              "gradient_per_observation": 4.5921448980438065e-06,
+              "valid": true,
+              "warnings": []
+            }
+          ],
+          "random_effect_covariance_eigenvalues": [
+            0.14593797812953935,
+            4.788893821486143
+          ],
+          "coefficients": {
+            "Intercept": {
+              "estimate": 0.44076247415363984,
+              "ci95": [
+                0.2552503286376435,
+                0.6262746196696362
+              ]
+            },
+            "years": {
+              "estimate": -0.18922447838593295,
+              "ci95": [
+                -0.3022052800106481,
+                -0.07624367676121778
+              ]
+            },
+            "age_z": {
+              "estimate": -0.3429910959859684,
+              "ci95": [
+                -0.4425243353596382,
+                -0.24345785661229857
+              ]
+            },
+            "education_years_z": {
+              "estimate": 0.14367599753702065,
+              "ci95": [
+                0.049633240966842934,
+                0.23771875410719837
+              ]
+            },
+            "baseline_pacc_raw_z": {
+              "estimate": 1.9988791894825235,
+              "ci95": [
+                1.8693366836173675,
+                2.1284216953476793
+              ]
+            },
+            "baseline_mmscore_z": {
+              "estimate": -0.3634852242304626,
+              "ci95": [
+                -0.48447935691907745,
+                -0.24249109154184773
+              ]
+            },
+            "sex_binary": {
+              "estimate": -0.5301203960107084,
+              "ci95": [
+                -0.7242429835200432,
+                -0.33599780850137345
+              ]
+            },
+            "apoe4_carrier": {
+              "estimate": -0.00014383846457312587,
+              "ci95": [
+                -0.1880699870639603,
+                0.18778231013481403
+              ]
+            },
+            "treatment_active": {
+              "estimate": 0.04324324440974837,
+              "ci95": [
+                -0.1386559212264655,
+                0.22514241004596222
+              ]
+            },
+            "years:age_z": {
+              "estimate": -0.09461738286412184,
+              "ci95": [
+                -0.15616785390748641,
+                -0.033066911820757265
+              ]
+            },
+            "years:education_years_z": {
+              "estimate": -0.07439352669768473,
+              "ci95": [
+                -0.13219856452577597,
+                -0.016588488869593486
+              ]
+            },
+            "years:baseline_pacc_raw_z": {
+              "estimate": 0.33360309301968016,
+              "ci95": [
+                0.25483485397240757,
+                0.41237133206695276
+              ]
+            },
+            "years:baseline_mmscore_z": {
+              "estimate": -0.07039071544527364,
+              "ci95": [
+                -0.14443409599833779,
+                0.003652665107790498
+              ]
+            },
+            "years:sex_binary": {
+              "estimate": 0.2858445181957538,
+              "ci95": [
+                0.1675960312053274,
+                0.4040930051861802
+              ]
+            },
+            "years:apoe4_carrier": {
+              "estimate": -0.24997727446124654,
+              "ci95": [
+                -0.36415225711608024,
+                -0.13580229180641282
+              ]
+            },
+            "years:treatment_active": {
+              "estimate": -0.07260789993998536,
+              "ci95": [
+                -0.18314062834250164,
+                0.037924828462530924
+              ]
+            }
+          },
+          "aic": 34143.33358914552,
+          "n": 8557,
+          "random_effects": "INTERCEPT_AND_TIME_SLOPE",
+          "equivalent_random_time_basis_center_years": 2.25,
+          "selected_by": "MAXIMUM_VALID_LIKELIHOOD_NOT_SIGNIFICANCE",
+          "unregularized_ML_same_rows": true
+        },
+        "augmented": {
+          "status": "ESTIMATED",
+          "formula": "pacc ~ years * (age_z + education_years_z + baseline_pacc_raw_z + baseline_mmscore_z + sex_binary + apoe4_carrier + treatment_active + oof_risk_3y_z)",
+          "converged": true,
+          "optimizer_attempts": [
+            {
+              "optimizer": "lbfgs",
+              "converged": true,
+              "log_likelihood": -17006.23429316459,
+              "gradient_per_observation": 6.706640302629356e-06,
+              "valid": true,
+              "warnings": []
+            },
+            {
+              "optimizer": "bfgs",
+              "converged": true,
+              "log_likelihood": -17006.234293756337,
+              "gradient_per_observation": 4.021196910729109e-06,
+              "valid": true,
+              "warnings": []
+            }
+          ],
+          "random_effect_covariance_eigenvalues": [
+            0.14713238612263313,
+            4.333215148845163
+          ],
+          "coefficients": {
+            "Intercept": {
+              "estimate": 0.3074727984745109,
+              "ci95": [
+                0.11116350612170989,
+                0.503782090827312
+              ]
+            },
+            "years": {
+              "estimate": -0.3342372640920316,
+              "ci95": [
+                -0.45111330459928856,
+                -0.2173612235847746
+              ]
+            },
+            "age_z": {
+              "estimate": -0.28604203327965644,
+              "ci95": [
+                -0.38950839023585254,
+                -0.18257567632346033
+              ]
+            },
+            "education_years_z": {
+              "estimate": 0.15716365659825546,
+              "ci95": [
+                0.06338672607188685,
+                0.2509405871246241
+              ]
+            },
+            "baseline_pacc_raw_z": {
+              "estimate": 1.8458498280345068,
+              "ci95": [
+                1.6954185449711827,
+                1.996281111097831
+              ]
+            },
+            "baseline_mmscore_z": {
+              "estimate": -0.3446035934307288,
+              "ci95": [
+                -0.4652948737354295,
+                -0.22391231312602816
+              ]
+            },
+            "sex_binary": {
+              "estimate": -0.45214365240832755,
+              "ci95": [
+                -0.6487003921449379,
+                -0.25558691267171724
+              ]
+            },
+            "apoe4_carrier": {
+              "estimate": 0.1177780207004824,
+              "ci95": [
+                -0.0787710587953398,
+                0.3143271001963046
+              ]
+            },
+            "treatment_active": {
+              "estimate": 0.10539229030246651,
+              "ci95": [
+                -0.0781943075758469,
+                0.28897888818077994
+              ]
+            },
+            "oof_risk_3y_z": {
+              "estimate": -0.2609926407380179,
+              "ci95": [
+                -0.3947561641939417,
+                -0.12722911728209413
+              ]
+            },
+            "years:age_z": {
+              "estimate": -0.027422967574513776,
+              "ci95": [
+                -0.09011034586303401,
+                0.03526441071400646
+              ]
+            },
+            "years:education_years_z": {
+              "estimate": -0.056797722856822275,
+              "ci95": [
+                -0.11329247566008882,
+                -0.00030297005355573586
+              ]
+            },
+            "years:baseline_pacc_raw_z": {
+              "estimate": 0.1631177264878625,
+              "ci95": [
+                0.07355925190302297,
+                0.252676201072702
+              ]
+            },
+            "years:baseline_mmscore_z": {
+              "estimate": -0.04834805665445142,
+              "ci95": [
+                -0.1207140602174861,
+                0.02401794690858327
+              ]
+            },
+            "years:sex_binary": {
+              "estimate": 0.36758019045058665,
+              "ci95": [
+                0.250374405411687,
+                0.4847859754894863
+              ]
+            },
+            "years:apoe4_carrier": {
+              "estimate": -0.11625378845767484,
+              "ci95": [
+                -0.23324846243557548,
+                0.0007408855202258036
+              ]
+            },
+            "years:treatment_active": {
+              "estimate": -0.0045681775348456796,
+              "ci95": [
+                -0.11377213491038986,
+                0.10463577984069851
+              ]
+            },
+            "years:oof_risk_3y_z": {
+              "estimate": -0.2932964122459369,
+              "ci95": [
+                -0.3729427170850109,
+                -0.21365010740686288
+              ]
+            }
+          },
+          "aic": 34056.46858632918,
+          "n": 8557,
+          "random_effects": "INTERCEPT_AND_TIME_SLOPE",
+          "equivalent_random_time_basis_center_years": 2.25,
+          "selected_by": "MAXIMUM_VALID_LIKELIHOOD_NOT_SIGNIFICANCE",
+          "unregularized_ML_same_rows": true
+        }
+      }
+    },
+    "clinical_amyloid_fold_adjusted": {
+      "status": "ESTIMATED",
+      "attempts": [
+        {
+          "optimizer": "lbfgs",
+          "valid": true,
+          "log_likelihood": -17000.043397616217,
+          "gradient_per_observation": 1.5964156860757453e-06,
+          "warnings": []
+        },
+        {
+          "optimizer": "bfgs",
+          "valid": true,
+          "log_likelihood": -17000.04339759791,
+          "gradient_per_observation": 1.5482648894967027e-06,
+          "warnings": []
+        }
+      ],
+      "formula": "pacc ~ years * (age_z + education_years_z + baseline_pacc_raw_z + baseline_mmscore_z + sex_binary + apoe4_carrier + treatment_active + risk_z + C(fold))",
+      "risk_scale": "WITHIN_OUTER_FOLD_UNIQUE_SUBJECTS",
+      "estimate": -0.3160259793642119,
+      "ci95": [
+        -0.3971045320584653,
+        -0.23494742666995852
+      ],
+      "aic": 34060.08679519582
+    },
+    "mri_augmented_fold_adjusted": {
+      "status": "ESTIMATED",
+      "attempts": [
+        {
+          "optimizer": "lbfgs",
+          "valid": true,
+          "log_likelihood": -17002.00242326196,
+          "gradient_per_observation": 1.1637121690657433e-06,
+          "warnings": []
+        },
+        {
+          "optimizer": "bfgs",
+          "valid": true,
+          "log_likelihood": -17002.002424027356,
+          "gradient_per_observation": 3.899546808216786e-06,
+          "warnings": []
+        }
+      ],
+      "formula": "pacc ~ years * (age_z + education_years_z + baseline_pacc_raw_z + baseline_mmscore_z + sex_binary + apoe4_carrier + treatment_active + risk_z + C(fold))",
+      "risk_scale": "WITHIN_OUTER_FOLD_UNIQUE_SUBJECTS",
+      "estimate": -0.29986621037504707,
+      "ci95": [
+        -0.37956816591092035,
+        -0.22016425483917382
+      ],
+      "aic": 34064.00484652392
+    }
+  }
+}

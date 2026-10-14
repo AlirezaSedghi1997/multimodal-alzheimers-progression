@@ -1,0 +1,5 @@
+{
+  "source_sha256": "f6e60177e2ae59274b575cb966718e5bc11f06bae11287c06ed29be07c226127",
+  "distributed_sha256": "0b6a5f2ed2a18b1c844bf67cf25e3047684d4c4ccfebbb4bd26cb005556402ae",
+  "change": "Resolve the bundled aggregate comparison manifest; numerical logic unchanged"
+}

@@ -1,0 +1,16 @@
+{
+  "protocol": "INDEPENDENT_POSTALL_REPAIR_V2_20261007",
+  "output_root": "results/xyz_fusion_postall_v2",
+  "parent_root": "results/xyz_fusion_v2",
+  "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+  "spatial_parity_absolute_tolerance": 0.0005,
+  "spatial_gradient_scale": 1024.0,
+  "minimum_matched_meta_subjects": 30,
+  "minimum_matched_meta_events": 10,
+  "support_policy_is_not_power_proof": true,
+  "production_is_manual": true,
+  "allow_new_cnn_training": false,
+  "external_data_available": false,
+  "permutation_control": "FULL_ENSEMBLE_CONTROL_UNAVAILABLE_WITHOUT_NEW_TRAINING_REPORT_PENDING",
+  "pet_lmo_policy": "FEASIBILITY_ONLY_NEW_CNN_TRAINING_EXCLUDED_FROM_POST_FUSION_RECALCULATION"
+}

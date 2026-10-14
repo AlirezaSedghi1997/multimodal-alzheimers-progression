@@ -1,0 +1,19 @@
+{
+  "protocol": "POOLED_CROSSFIT_SURVIVAL_STACKING_V1",
+  "claim_status": "POST_HOC_INTERNAL_EXPLORATORY",
+  "parent_root": "results/xyz_fusion_v2",
+  "score_root": "results/xyz_fp32_spatial_sensitivity_v1",
+  "tau_frame": "thesis-workspace/supervisor_revision_20261011/private_tau_frame.parquet",
+  "output_root": "results/xyz_oof_stacking_v1",
+  "smoke_root": "results/xyz_oof_stacking_smoke_v1",
+  "tracks": ["mri", "pet", "blood", "tau"],
+  "ridge_alpha": 10.0,
+  "cpu_threads": 2,
+  "bootstrap_resamples": 40000,
+  "bootstrap_seed": 20261014,
+  "precision": "FP32_CNN_SCORES_FLOAT64_COX",
+  "allow_new_cnn_training": false,
+  "allow_outer_model_selection": false,
+  "tune_head_on_pooled_oof": false,
+  "aggregation": "MEAN_COMPONENT_SURVIVAL_THEN_MEAN_SEED_SURVIVAL"
+}

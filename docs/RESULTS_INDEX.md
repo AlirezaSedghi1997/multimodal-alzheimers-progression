@@ -215,3 +215,8 @@ All entries are aggregate projections, not final approval of every claim.
 - [Statistics](../results/aggregate/09_fp32/statistical_review.json)
 - [Spatial controls](../results/aggregate/09_fp32/spatial_review.json)
 - [Interpretation and limits](FP32_SENSITIVITY.md)
+
+
+## Research update, 14 October 2026
+
+See [completed statistical and OOF work](RESEARCH_UPDATE_20261014.md) and the [CNN/Jacobian pilot decision](CNN_JACOBIAN_PILOT.md). Original results remain historical evidence; the new guide identifies superseded intervals and limits.

@@ -1,0 +1,23 @@
+{
+  "status": "FRESH_TAU_COX_RECONSTRUCTION_PASSED",
+  "checked_at_utc": "2026-10-14T03:21:58.878340+00:00",
+  "folds": 5,
+  "arms": 2,
+  "curves_compared": 716,
+  "max_abs_curve_difference": 0.0,
+  "aggregate": {
+    "cox_ridge": {
+      "clinical_amyloid": {
+        "ibs": 0.049564395144863306,
+        "n": 358,
+        "uno": 0.704159479208027
+      },
+      "clinical_amyloid_tau": {
+        "ibs": 0.0467989831938369,
+        "n": 358,
+        "uno": 0.7771182446145738
+      }
+    }
+  },
+  "scope": "Original tabular inner tuning and fitting from prepared authorized inputs, not full image training"
+}

@@ -2,8 +2,9 @@
 
 No project LICENSE or confirmed software citation metadata was located at the
 study root during packaging. No license or author list has been invented.
-Until the rights holder makes a license decision, this is a private review
-candidate, not an open-source release. Obtain permission before redistribution.
+The repository is now publicly visible at the owner's request. No open-source
+license has been selected or granted by this update. Public visibility does not
+replace a license decision; obtain permission for reuse beyond existing rights.
 
 Third-party dependencies are not vendored. Their licenses and notices still apply.
 Individual source notices are retained. Raw data, templates, atlas masks, downloaded

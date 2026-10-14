@@ -1,0 +1,67 @@
+{
+  "status": "PASS_RESEARCH_CODE_AGGREGATE_PUBLICATION_CHECKS",
+  "date": "2026-10-14",
+  "destination_repository": "AlirezaSedghi1997/multimodal-alzheimers-progression",
+  "destination_branch": "main",
+  "observed_visibility": "public",
+  "visibility_changed": false,
+  "scope_scan": {
+    "status": "PASS_SCOPED_RESEARCH_PUBLICATION_CHECK",
+    "files_checked": 247,
+    "source_files_accounted_for": 239,
+    "covered_final_result_instances": 29,
+    "absolute_concordance_primary_models": 13,
+    "absolute_concordance_oof_entries": 16,
+    "original_training_histories": 405,
+    "oof_contrasts": 7,
+    "participant_artifacts_included": false,
+    "manuscript_files_included": false,
+    "pilot_performance_included": false,
+    "scientific_validation": false,
+    "scope": "Allowlist, hashes, prohibited extensions/keys, identifier/credential patterns and aggregate structure; not a legal or scientific approval"
+  },
+  "oof_tests": {
+    "passed": 19,
+    "failed": 0,
+    "seconds": 53.98
+  },
+  "cnn_jacobian_tests": {
+    "passed": 9,
+    "failed": 0,
+    "seconds": 19.8,
+    "cuda_test_executed": true
+  },
+  "test_setup_note": "Initial runs used a missing external temporary parent; after creating it, both full suites passed with no model-code change.",
+  "synthetic_metrics": {
+    "status": "SYNTHETIC_IMPLEMENTATION_CHECK_PASSED",
+    "not_scientific_validation": true,
+    "ibs_metric_error": 2.7755575615628914e-17,
+    "concordance": {
+      "synthetic_bootstrap_comparisons": 100,
+      "max_absolute_error": 3.3306690738754696e-16,
+      "undefined": 0,
+      "risk_and_time_ties_included": true
+    },
+    "network_parameters": 297181,
+    "network_output_shape": [
+      1,
+      9
+    ],
+    "synthetic_only": true
+  },
+  "frozen_pilot_source_files_verified": 7,
+  "original_pilot_dependency_files_verified": 6,
+  "oof_execution_snapshot": {
+    "checked_units": 327,
+    "elapsed_seconds": 3.6025776863098145,
+    "head_count": 180,
+    "new_cnn_training": false,
+    "status": "OOF_EXECUTION_VERIFIED_NOT_SCIENTIFIC_VALIDATION"
+  },
+  "fresh_environment_installation": false,
+  "full_cohort_cnn_jacobian_run": false,
+  "participant_data_reexecution_in_this_publication_task": false,
+  "scientific_validation": false,
+  "new_software_license_granted": false,
+  "manuscript_editorial_content_published": false
+}

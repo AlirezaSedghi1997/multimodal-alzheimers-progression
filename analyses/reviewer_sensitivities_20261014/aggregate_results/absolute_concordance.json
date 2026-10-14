@@ -1,0 +1,504 @@
+{
+  "status": "POST_HOC_CONDITIONAL_ABSOLUTE_PRECISION",
+  "resamples": 2000,
+  "seed": 20261014,
+  "horizon_days": 1095.75,
+  "intervals": "NOMINAL_95_PERCENT_NOT_MULTIPLICITY_ADJUSTED",
+  "scope": "Fixed predictions, outer folds and training censoring distributions. No CNN/head retraining. Not intervals for paired incremental differences.",
+  "undefined_policy": "Omit a draw if any fold has zero IPCW comparable-pair support.",
+  "metric_validation": {
+    "synthetic_bootstrap_comparisons": 100,
+    "max_absolute_error": 3.3306690738754696e-16,
+    "undefined": 0,
+    "risk_and_time_ties_included": true
+  },
+  "table2": {
+    "mri:clinical": {
+      "n": 1059,
+      "uno_c": 0.6686554483238796,
+      "nominal_ci95": [
+        0.6162345387753086,
+        0.7234029612640389
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "mri:clinical_amyloid": {
+      "n": 1059,
+      "uno_c": 0.6855558941646321,
+      "nominal_ci95": [
+        0.6323245043524225,
+        0.739259037088556
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "mri:clinical_mri_amyloid": {
+      "n": 1059,
+      "uno_c": 0.6854348286450934,
+      "nominal_ci95": [
+        0.6330065440447765,
+        0.7396767165628085
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "mri:clinical_volumes_amyloid": {
+      "n": 1059,
+      "uno_c": 0.6963344755190769,
+      "nominal_ci95": [
+        0.6480067382077915,
+        0.747700977956251
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "mri:clinical_volumes_mri_amyloid": {
+      "n": 1059,
+      "uno_c": 0.6924816620933714,
+      "nominal_ci95": [
+        0.6444569495072168,
+        0.744138337331453
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "mri:mri_only": {
+      "n": 1059,
+      "uno_c": 0.5712684794949299,
+      "nominal_ci95": [
+        0.5134270624421775,
+        0.6277325171509757
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "mri:blood_clinical_amyloid": {
+      "n": 696,
+      "uno_c": 0.6977490855607166,
+      "nominal_ci95": [
+        0.6333701873779785,
+        0.756220969429976
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "mri:blood_clinical_amyloid_blood": {
+      "n": 696,
+      "uno_c": 0.707494913316386,
+      "nominal_ci95": [
+        0.6439225449009012,
+        0.7631096590737766
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "mri:blood_clinical_mri_amyloid_blood": {
+      "n": 696,
+      "uno_c": 0.7089774876473046,
+      "nominal_ci95": [
+        0.6488104964363582,
+        0.7650125513189299
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "pet:clinical_amyloid": {
+      "n": 544,
+      "uno_c": 0.7063647669483906,
+      "nominal_ci95": [
+        0.635721010350202,
+        0.7729045205586543
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "pet:clinical_mri_amyloid": {
+      "n": 544,
+      "uno_c": 0.7187130345101004,
+      "nominal_ci95": [
+        0.6525556788719442,
+        0.7812308469906692
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "pet:clinical_mri_amyloid_pet": {
+      "n": 544,
+      "uno_c": 0.7059805889605119,
+      "nominal_ci95": [
+        0.6383544811345702,
+        0.768523433776545
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "mri:null": {
+      "n": 1059,
+      "uno_c": 0.5,
+      "nominal_ci95": [
+        0.5,
+        0.5
+      ],
+      "scope": "All participants within each fold share the same KM risk; C is 0.5 whenever comparable pairs exist."
+    }
+  },
+  "pooled_oof": {
+    "mri:clinical_amyloid": {
+      "n": 1059,
+      "uno_c": 0.6836196530828524,
+      "nominal_ci95": [
+        0.6310196294649665,
+        0.7381807024333226
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "mri:clinical_mri_amyloid": {
+      "n": 1059,
+      "uno_c": 0.6836470854975158,
+      "nominal_ci95": [
+        0.6308905498285973,
+        0.7382689067396112
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "mri:split_clinical_amyloid": {
+      "n": 1059,
+      "uno_c": 0.6855558941646321,
+      "nominal_ci95": [
+        0.6323245043524225,
+        0.739259037088556
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "mri:split_clinical_mri_amyloid": {
+      "n": 1059,
+      "uno_c": 0.6921299845364386,
+      "nominal_ci95": [
+        0.6414495803083817,
+        0.7452969173307508
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "pet:clinical_amyloid": {
+      "n": 544,
+      "uno_c": 0.7024897737488989,
+      "nominal_ci95": [
+        0.630545354574862,
+        0.7672452764442677
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "pet:clinical_mri_amyloid": {
+      "n": 544,
+      "uno_c": 0.7019067911926775,
+      "nominal_ci95": [
+        0.6290892795466146,
+        0.7676102263938555
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "pet:clinical_mri_amyloid_pet": {
+      "n": 544,
+      "uno_c": 0.7017023440035818,
+      "nominal_ci95": [
+        0.6290323663398881,
+        0.7673084150910761
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "pet:split_clinical_mri_amyloid": {
+      "n": 544,
+      "uno_c": 0.7180222979100058,
+      "nominal_ci95": [
+        0.6510191582999894,
+        0.7812783789601688
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "pet:split_clinical_mri_amyloid_pet": {
+      "n": 544,
+      "uno_c": 0.7156528424529903,
+      "nominal_ci95": [
+        0.6471083477556259,
+        0.7791454595820124
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "blood:clinical_amyloid": {
+      "n": 696,
+      "uno_c": 0.6941725022414399,
+      "nominal_ci95": [
+        0.6302055792373228,
+        0.7508410161562824
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "blood:clinical_amyloid_blood": {
+      "n": 696,
+      "uno_c": 0.7064284876244306,
+      "nominal_ci95": [
+        0.6432556301460947,
+        0.76129874684643
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "blood:clinical_mri_amyloid_blood": {
+      "n": 696,
+      "uno_c": 0.7076939671686392,
+      "nominal_ci95": [
+        0.6444782527822791,
+        0.762106622557647
+      ],
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "undefined_by_fold": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "tau:clinical_amyloid": {
+      "n": 358,
+      "uno_c": 0.704159479208027,
+      "nominal_ci95": [
+        0.6294595902551107,
+        0.78632184491313
+      ],
+      "resamples": 2000,
+      "valid_resamples": 1969,
+      "undefined_by_fold": {
+        "1": 1,
+        "2": 30,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "tau:clinical_amyloid_tau": {
+      "n": 358,
+      "uno_c": 0.7771182446145739,
+      "nominal_ci95": [
+        0.7104074996209848,
+        0.8424690605996455
+      ],
+      "resamples": 2000,
+      "valid_resamples": 1969,
+      "undefined_by_fold": {
+        "1": 1,
+        "2": 30,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "tau:clinical_mri_amyloid": {
+      "n": 358,
+      "uno_c": 0.7038839687719523,
+      "nominal_ci95": [
+        0.6277401590443764,
+        0.7857203171410627
+      ],
+      "resamples": 2000,
+      "valid_resamples": 1969,
+      "undefined_by_fold": {
+        "1": 1,
+        "2": 30,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    "tau:clinical_mri_amyloid_tau": {
+      "n": 358,
+      "uno_c": 0.7785320647040247,
+      "nominal_ci95": [
+        0.7124509717210358,
+        0.8440842819287674
+      ],
+      "resamples": 2000,
+      "valid_resamples": 1969,
+      "undefined_by_fold": {
+        "1": 1,
+        "2": 30,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    }
+  }
+}

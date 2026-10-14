@@ -1,3 +1,12 @@
+# Research update 2026-10-14
+
+- Published both scientific review rounds' statistical implementations and aggregate outputs, including 40,000-draw multiplicity sensitivities, calibration, cognition, clinical comparators, selection and censoring analyses.
+- Added completed pooled-OOF source/tests, all seven contrasts and the training-score variance diagnostic.
+- Added absolute concordance precision and 405 original aggregate training histories.
+- Added the versioned compact-CNN/log-Jacobian implementation, tests and a nonnumerical no-go decision. No full-cohort pilot extension was run.
+- Preserved original outputs and historical intervals, marking superseded tau intervals explicitly.
+- Added file provenance, privacy scope and reproduction instructions. Manuscript/editorial files and restricted participant artifacts are excluded.
+
 # Changelog
 
 ## 20261011 — post-hoc statistical supplement

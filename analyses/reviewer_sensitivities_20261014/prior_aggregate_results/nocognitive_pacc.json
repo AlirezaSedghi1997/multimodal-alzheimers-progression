@@ -1,0 +1,606 @@
+{
+  "models": {
+    "base": {
+      "status": "ESTIMATED",
+      "formula": "pacc ~ years * (age_z + education_years_z + baseline_pacc_raw_z + baseline_mmscore_z + sex_binary + apoe4_carrier + treatment_active)",
+      "converged": true,
+      "optimizer_attempts": [
+        {
+          "optimizer": "lbfgs",
+          "converged": true,
+          "log_likelihood": -17051.66679457276,
+          "gradient_per_observation": 1.8331710983586457e-06,
+          "valid": true,
+          "warnings": []
+        },
+        {
+          "optimizer": "bfgs",
+          "converged": true,
+          "log_likelihood": -17051.66679475354,
+          "gradient_per_observation": 4.5921448980438065e-06,
+          "valid": true,
+          "warnings": []
+        }
+      ],
+      "random_effect_covariance_eigenvalues": [
+        0.14593797812953935,
+        4.788893821486143
+      ],
+      "coefficients": {
+        "Intercept": {
+          "estimate": 0.44076247415363984,
+          "ci95": [
+            0.2552503286376435,
+            0.6262746196696362
+          ]
+        },
+        "years": {
+          "estimate": -0.18922447838593295,
+          "ci95": [
+            -0.3022052800106481,
+            -0.07624367676121778
+          ]
+        },
+        "age_z": {
+          "estimate": -0.3429910959859684,
+          "ci95": [
+            -0.4425243353596382,
+            -0.24345785661229857
+          ]
+        },
+        "education_years_z": {
+          "estimate": 0.14367599753702065,
+          "ci95": [
+            0.049633240966842934,
+            0.23771875410719837
+          ]
+        },
+        "baseline_pacc_raw_z": {
+          "estimate": 1.9988791894825235,
+          "ci95": [
+            1.8693366836173675,
+            2.1284216953476793
+          ]
+        },
+        "baseline_mmscore_z": {
+          "estimate": -0.3634852242304626,
+          "ci95": [
+            -0.48447935691907745,
+            -0.24249109154184773
+          ]
+        },
+        "sex_binary": {
+          "estimate": -0.5301203960107084,
+          "ci95": [
+            -0.7242429835200432,
+            -0.33599780850137345
+          ]
+        },
+        "apoe4_carrier": {
+          "estimate": -0.00014383846457312587,
+          "ci95": [
+            -0.1880699870639603,
+            0.18778231013481403
+          ]
+        },
+        "treatment_active": {
+          "estimate": 0.04324324440974837,
+          "ci95": [
+            -0.1386559212264655,
+            0.22514241004596222
+          ]
+        },
+        "years:age_z": {
+          "estimate": -0.09461738286412184,
+          "ci95": [
+            -0.15616785390748641,
+            -0.033066911820757265
+          ]
+        },
+        "years:education_years_z": {
+          "estimate": -0.07439352669768473,
+          "ci95": [
+            -0.13219856452577597,
+            -0.016588488869593486
+          ]
+        },
+        "years:baseline_pacc_raw_z": {
+          "estimate": 0.33360309301968016,
+          "ci95": [
+            0.25483485397240757,
+            0.41237133206695276
+          ]
+        },
+        "years:baseline_mmscore_z": {
+          "estimate": -0.07039071544527364,
+          "ci95": [
+            -0.14443409599833779,
+            0.003652665107790498
+          ]
+        },
+        "years:sex_binary": {
+          "estimate": 0.2858445181957538,
+          "ci95": [
+            0.1675960312053274,
+            0.4040930051861802
+          ]
+        },
+        "years:apoe4_carrier": {
+          "estimate": -0.24997727446124654,
+          "ci95": [
+            -0.36415225711608024,
+            -0.13580229180641282
+          ]
+        },
+        "years:treatment_active": {
+          "estimate": -0.07260789993998536,
+          "ci95": [
+            -0.18314062834250164,
+            0.037924828462530924
+          ]
+        }
+      },
+      "aic": 34143.33358914552,
+      "n": 8557,
+      "random_effects": "INTERCEPT_AND_TIME_SLOPE",
+      "equivalent_random_time_basis_center_years": 2.25,
+      "selected_by": "MAXIMUM_VALID_LIKELIHOOD_NOT_SIGNIFICANCE",
+      "unregularized_ML_same_rows": true
+    },
+    "augmented": {
+      "status": "ESTIMATED",
+      "formula": "pacc ~ years * (age_z + education_years_z + baseline_pacc_raw_z + baseline_mmscore_z + sex_binary + apoe4_carrier + treatment_active + oof_risk_3y_z)",
+      "converged": true,
+      "optimizer_attempts": [
+        {
+          "optimizer": "lbfgs",
+          "converged": true,
+          "log_likelihood": -17019.803233104758,
+          "gradient_per_observation": 1.2386185944292003e-06,
+          "valid": true,
+          "warnings": []
+        },
+        {
+          "optimizer": "bfgs",
+          "converged": true,
+          "log_likelihood": -17019.803234581188,
+          "gradient_per_observation": 5.118165432083699e-06,
+          "valid": true,
+          "warnings": []
+        }
+      ],
+      "random_effect_covariance_eigenvalues": [
+        0.14665998317763518,
+        4.465135905630267
+      ],
+      "coefficients": {
+        "Intercept": {
+          "estimate": 0.31685234163090914,
+          "ci95": [
+            0.11639668137700238,
+            0.517308001884816
+          ]
+        },
+        "years": {
+          "estimate": -0.3333367113149061,
+          "ci95": [
+            -0.45323816544258777,
+            -0.21343525718722445
+          ]
+        },
+        "age_z": {
+          "estimate": -0.2726071805033073,
+          "ci95": [
+            -0.38177355843289,
+            -0.16344080257372456
+          ]
+        },
+        "education_years_z": {
+          "estimate": 0.14091239428967847,
+          "ci95": [
+            0.04721280379231296,
+            0.23461198478704398
+          ]
+        },
+        "baseline_pacc_raw_z": {
+          "estimate": 1.9707005008172074,
+          "ci95": [
+            1.8405034974773558,
+            2.100897504157059
+          ]
+        },
+        "baseline_mmscore_z": {
+          "estimate": -0.3565638408479414,
+          "ci95": [
+            -0.47718883539775764,
+            -0.23593884629812517
+          ]
+        },
+        "sex_binary": {
+          "estimate": -0.4345522702396621,
+          "ci95": [
+            -0.6366721511638432,
+            -0.2324323893154809
+          ]
+        },
+        "apoe4_carrier": {
+          "estimate": 0.101477637422993,
+          "ci95": [
+            -0.09649386538520995,
+            0.29944914023119595
+          ]
+        },
+        "treatment_active": {
+          "estimate": 0.09199213378718275,
+          "ci95": [
+            -0.09185614999962778,
+            0.2758404175739933
+          ]
+        },
+        "oof_risk_3y_z": {
+          "estimate": -0.18158583165783623,
+          "ci95": [
+            -0.2973017827853668,
+            -0.06586988053030571
+          ]
+        },
+        "years:age_z": {
+          "estimate": -0.008036669966454928,
+          "ci95": [
+            -0.0743933801245694,
+            0.05832004019165955
+          ]
+        },
+        "years:education_years_z": {
+          "estimate": -0.07801338752070062,
+          "ci95": [
+            -0.1347256233845759,
+            -0.021301151656825376
+          ]
+        },
+        "years:baseline_pacc_raw_z": {
+          "estimate": 0.300303964430872,
+          "ci95": [
+            0.22234649679863983,
+            0.37826143206310414
+          ]
+        },
+        "years:baseline_mmscore_z": {
+          "estimate": -0.0602144723294409,
+          "ci95": [
+            -0.1329148103050886,
+            0.012485865646206788
+          ]
+        },
+        "years:sex_binary": {
+          "estimate": 0.39721551474454814,
+          "ci95": [
+            0.2760391707432538,
+            0.5183918587458425
+          ]
+        },
+        "years:apoe4_carrier": {
+          "estimate": -0.129025142737303,
+          "ci95": [
+            -0.24740280034856693,
+            -0.010647485126039094
+          ]
+        },
+        "years:treatment_active": {
+          "estimate": -0.01594164559312265,
+          "ci95": [
+            -0.12584064997995623,
+            0.09395735879371094
+          ]
+        },
+        "years:oof_risk_3y_z": {
+          "estimate": -0.21629985694711062,
+          "ci95": [
+            -0.28516873017469613,
+            -0.14743098371952515
+          ]
+        }
+      },
+      "aic": 34083.606466209516,
+      "n": 8557,
+      "random_effects": "INTERCEPT_AND_TIME_SLOPE",
+      "equivalent_random_time_basis_center_years": 2.25,
+      "selected_by": "MAXIMUM_VALID_LIKELIHOOD_NOT_SIGNIFICANCE",
+      "unregularized_ML_same_rows": true
+    }
+  },
+  "risk_scale": {
+    "mean": 0.10949536801365406,
+    "sd": 0.0691099236958127,
+    "unit": "UNIQUE_SUBJECT"
+  },
+  "n_people": 1049,
+  "n_observations": 8557,
+  "risk_features_exclude": [
+    "baseline_pacc_raw",
+    "baseline_mmscore"
+  ],
+  "longitudinal_adjustment_includes_baseline_cognition": true,
+  "prediction": {
+    "no_cognitive": {
+      "n": 1059,
+      "events": 239,
+      "ibs": 0.041731237895276,
+      "uno_c": 0.6455710815922798,
+      "fold_metrics": [
+        {
+          "ibs": 0.041479022078785,
+          "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+          "grid_days": [
+            365,
+            456.34375,
+            547.6875,
+            639.03125,
+            730.375,
+            821.71875,
+            913.0625,
+            1004.40625,
+            1095.75
+          ],
+          "administrative_cutoff_days": 1638.9999999999998,
+          "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+          "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+          "n": 212,
+          "events": 48,
+          "horizons": {
+            "547.875": {
+              "n_at_risk": 200,
+              "events_by_horizon": 0,
+              "status": "NOT_ESTIMABLE"
+            },
+            "1095.75": {
+              "n_at_risk": 163,
+              "events_by_horizon": 22,
+              "status": "ESTIMABLE",
+              "dynamic_auc": 0.7093721946659419,
+              "calibration_intercept": 0.16512466228282127,
+              "calibration_slope": 1.0475328373497261,
+              "calibration_is_descriptive_not_refit": true,
+              "calibration_bins": [
+                {
+                  "n": 62,
+                  "predicted_risk": 0.0493566885945769,
+                  "ipcw_observed_fraction": 0.04598574754112667
+                },
+                {
+                  "n": 62,
+                  "predicted_risk": 0.0830074034594633,
+                  "ipcw_observed_fraction": 0.07794554859914476
+                },
+                {
+                  "n": 61,
+                  "predicted_risk": 0.18986959240628024,
+                  "ipcw_observed_fraction": 0.21885841596301325
+                }
+              ]
+            }
+          },
+          "uno_c_index": 0.7114020742016739
+        },
+        {
+          "ibs": 0.041299429969318464,
+          "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+          "grid_days": [
+            365,
+            456.34375,
+            547.6875,
+            639.03125,
+            730.375,
+            821.71875,
+            913.0625,
+            1004.40625,
+            1095.75
+          ],
+          "administrative_cutoff_days": 1638.9999999999998,
+          "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+          "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+          "n": 212,
+          "events": 48,
+          "horizons": {
+            "547.875": {
+              "n_at_risk": 202,
+              "events_by_horizon": 1,
+              "status": "NOT_ESTIMABLE"
+            },
+            "1095.75": {
+              "n_at_risk": 159,
+              "events_by_horizon": 20,
+              "status": "ESTIMABLE",
+              "dynamic_auc": 0.6850768581534923,
+              "calibration_intercept": -0.14691515807016048,
+              "calibration_slope": 0.9056417219443176,
+              "calibration_is_descriptive_not_refit": true,
+              "calibration_bins": [
+                {
+                  "n": 60,
+                  "predicted_risk": 0.05276106927462679,
+                  "ipcw_observed_fraction": 0.031976643793509466
+                },
+                {
+                  "n": 60,
+                  "predicted_risk": 0.08810387611938923,
+                  "ipcw_observed_fraction": 0.16106832881275265
+                },
+                {
+                  "n": 59,
+                  "predicted_risk": 0.17080031857945674,
+                  "ipcw_observed_fraction": 0.13053819895058463
+                }
+              ]
+            }
+          },
+          "uno_c_index": 0.6729334700679707
+        },
+        {
+          "ibs": 0.040538486854956556,
+          "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+          "grid_days": [
+            365,
+            456.34375,
+            547.6875,
+            639.03125,
+            730.375,
+            821.71875,
+            913.0625,
+            1004.40625,
+            1095.75
+          ],
+          "administrative_cutoff_days": 1638.9999999999998,
+          "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+          "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+          "n": 212,
+          "events": 48,
+          "horizons": {
+            "547.875": {
+              "n_at_risk": 195,
+              "events_by_horizon": 0,
+              "status": "NOT_ESTIMABLE"
+            },
+            "1095.75": {
+              "n_at_risk": 165,
+              "events_by_horizon": 21,
+              "status": "ESTIMABLE",
+              "dynamic_auc": 0.68873063097365,
+              "calibration_intercept": -0.13246709394910242,
+              "calibration_slope": 0.9644742827034112,
+              "calibration_is_descriptive_not_refit": true,
+              "calibration_bins": [
+                {
+                  "n": 62,
+                  "predicted_risk": 0.05823673343131031,
+                  "ipcw_observed_fraction": 0.06190898040817509
+                },
+                {
+                  "n": 62,
+                  "predicted_risk": 0.09565176748769594,
+                  "ipcw_observed_fraction": 0.0761564541901608
+                },
+                {
+                  "n": 62,
+                  "predicted_risk": 0.18703100834171668,
+                  "ipcw_observed_fraction": 0.18488278739256175
+                }
+              ]
+            }
+          },
+          "uno_c_index": 0.6817345019079311
+        },
+        {
+          "ibs": 0.044526493163670466,
+          "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+          "grid_days": [
+            365,
+            456.34375,
+            547.6875,
+            639.03125,
+            730.375,
+            821.71875,
+            913.0625,
+            1004.40625,
+            1095.75
+          ],
+          "administrative_cutoff_days": 1638.9999999999998,
+          "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+          "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+          "n": 212,
+          "events": 48,
+          "horizons": {
+            "547.875": {
+              "n_at_risk": 195,
+              "events_by_horizon": 1,
+              "status": "NOT_ESTIMABLE"
+            },
+            "1095.75": {
+              "n_at_risk": 161,
+              "events_by_horizon": 21,
+              "status": "ESTIMABLE",
+              "dynamic_auc": 0.4875536996948212,
+              "calibration_intercept": -1.8993813902098529,
+              "calibration_slope": 0.08534003708135786,
+              "calibration_is_descriptive_not_refit": true,
+              "calibration_bins": [
+                {
+                  "n": 61,
+                  "predicted_risk": 0.057377079122077554,
+                  "ipcw_observed_fraction": 0.1411410207468147
+                },
+                {
+                  "n": 61,
+                  "predicted_risk": 0.09370067801429505,
+                  "ipcw_observed_fraction": 0.07776464522319915
+                },
+                {
+                  "n": 60,
+                  "predicted_risk": 0.18153515934274164,
+                  "ipcw_observed_fraction": 0.11203690819259084
+                }
+              ]
+            }
+          },
+          "uno_c_index": 0.4973455197173561
+        },
+        {
+          "ibs": 0.04080840442156595,
+          "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+          "grid_days": [
+            365,
+            456.34375,
+            547.6875,
+            639.03125,
+            730.375,
+            821.71875,
+            913.0625,
+            1004.40625,
+            1095.75
+          ],
+          "administrative_cutoff_days": 1637.9999999999998,
+          "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+          "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+          "n": 211,
+          "events": 47,
+          "horizons": {
+            "547.875": {
+              "n_at_risk": 190,
+              "events_by_horizon": 1,
+              "status": "NOT_ESTIMABLE"
+            },
+            "1095.75": {
+              "n_at_risk": 161,
+              "events_by_horizon": 20,
+              "status": "ESTIMABLE",
+              "dynamic_auc": 0.6694293804189656,
+              "calibration_intercept": 0.08277785588635739,
+              "calibration_slope": 1.0870498989788697,
+              "calibration_is_descriptive_not_refit": true,
+              "calibration_bins": [
+                {
+                  "n": 61,
+                  "predicted_risk": 0.05919638981621029,
+                  "ipcw_observed_fraction": 0.07798361016353757
+                },
+                {
+                  "n": 60,
+                  "predicted_risk": 0.09453256213743844,
+                  "ipcw_observed_fraction": 0.04714643288213815
+                },
+                {
+                  "n": 60,
+                  "predicted_risk": 0.18605618315908368,
+                  "ipcw_observed_fraction": 0.19093996368388672
+                }
+              ]
+            }
+          },
+          "uno_c_index": 0.6645292674715587
+        }
+      ]
+    }
+  },
+  "new_fits": 45,
+  "frozen_cnn": true
+}

@@ -1,0 +1,16 @@
+{
+  "status": "RESTRICTED_STATISTICAL_REPLAY_PASSED",
+  "checked_at_utc": "2026-10-14T03:21:58.761497+00:00",
+  "analyses": [
+    "tau_bootstrap",
+    "calibration",
+    "ipa",
+    "pacc",
+    "tabular_sensitivities",
+    "cohort_audit",
+    "censoring_sensitivity"
+  ],
+  "numeric_values_compared": 2311,
+  "maximum_absolute_difference": 0.0,
+  "not_full_image_retraining": true
+}

@@ -1,0 +1,591 @@
+{
+  "scope": "POST_HOC_DIAGNOSTIC_NO_REFITTING_OR_SELECTION",
+  "feature": "cumulative_hazard_at_1095_75_days",
+  "rows": [
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 13,
+      "fold": 0,
+      "between_component_variance_fraction": 0.9931655739473552,
+      "pooled_sd": 0.002822599581359996,
+      "within_component_sd": [
+        0.000277433314873614,
+        0.00018797628584449824,
+        0.00022575835959762498
+      ]
+    },
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 13,
+      "fold": 1,
+      "between_component_variance_fraction": 0.9997776481386144,
+      "pooled_sd": 0.008521145732268883,
+      "within_component_sd": [
+        0.0001551173472046134,
+        7.195166336947901e-05,
+        0.00013844981010242046
+      ]
+    },
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 13,
+      "fold": 2,
+      "between_component_variance_fraction": 0.9998907822559464,
+      "pooled_sd": 0.00769457049354023,
+      "within_component_sd": [
+        6.0002875758011295e-05,
+        0.00011586215945935301,
+        4.8835964770630446e-05
+      ]
+    },
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 13,
+      "fold": 3,
+      "between_component_variance_fraction": 0.9999738039808818,
+      "pooled_sd": 0.017239866557288017,
+      "within_component_sd": [
+        7.816654106985308e-05,
+        1.9422520646903847e-05,
+        0.00012990801464481908
+      ]
+    },
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 13,
+      "fold": 4,
+      "between_component_variance_fraction": 0.9999953641485954,
+      "pooled_sd": 0.007013619906984574,
+      "within_component_sd": [
+        1.1353622889894889e-05,
+        1.8220929524135022e-05,
+        1.4939895565253467e-05
+      ]
+    },
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 29,
+      "fold": 0,
+      "between_component_variance_fraction": 0.9883343835914739,
+      "pooled_sd": 0.001262100491299005,
+      "within_component_sd": [
+        8.419434828497608e-05,
+        0.00021716957879749468,
+        3.918981438396867e-05
+      ]
+    },
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 29,
+      "fold": 1,
+      "between_component_variance_fraction": 0.9999953913644022,
+      "pooled_sd": 0.010409293246401474,
+      "within_component_sd": [
+        2.6317642764784325e-05,
+        2.7528747397330272e-05,
+        6.851879399921715e-06
+      ]
+    },
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 29,
+      "fold": 2,
+      "between_component_variance_fraction": 0.9997085066127263,
+      "pooled_sd": 0.007769612314592884,
+      "within_component_sd": [
+        6.51147221638053e-05,
+        0.00022003697821996313,
+        1.3446194213681563e-05
+      ]
+    },
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 29,
+      "fold": 3,
+      "between_component_variance_fraction": 0.9999871869808239,
+      "pooled_sd": 0.01589974106534965,
+      "within_component_sd": [
+        1.0714267460275676e-05,
+        6.7121632226361265e-06,
+        9.781969252830355e-05
+      ]
+    },
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 29,
+      "fold": 4,
+      "between_component_variance_fraction": 0.9992382973808659,
+      "pooled_sd": 0.00437117142392593,
+      "within_component_sd": [
+        0.00012438687156228587,
+        4.316489072297889e-05,
+        0.00016238325075412045
+      ]
+    },
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 47,
+      "fold": 0,
+      "between_component_variance_fraction": 0.9999499362856954,
+      "pooled_sd": 0.01261943645137596,
+      "within_component_sd": [
+        0.00012405524757216576,
+        1.3007834805521098e-05,
+        9.128393169732656e-05
+      ]
+    },
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 47,
+      "fold": 1,
+      "between_component_variance_fraction": 0.9997831761299545,
+      "pooled_sd": 0.010596988195699038,
+      "within_component_sd": [
+        0.00026836979736480387,
+        1.6612067093435296e-05,
+        2.4043670413525825e-05
+      ]
+    },
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 47,
+      "fold": 2,
+      "between_component_variance_fraction": 0.9999037793671344,
+      "pooled_sd": 0.007758201543484615,
+      "within_component_sd": [
+        0.0001050183771316431,
+        2.2083020507590484e-05,
+        7.641582933491683e-05
+      ]
+    },
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 47,
+      "fold": 3,
+      "between_component_variance_fraction": 0.9997694488773508,
+      "pooled_sd": 0.017156096665988538,
+      "within_component_sd": [
+        0.0004485393503418636,
+        4.1071718334040444e-05,
+        1.5107813856413251e-05
+      ]
+    },
+    {
+      "track": "mri",
+      "modality": "mri",
+      "seed": 47,
+      "fold": 4,
+      "between_component_variance_fraction": 0.9857686144096722,
+      "pooled_sd": 0.004454142171716219,
+      "within_component_sd": [
+        0.0009169549474530718,
+        4.155192772819628e-05,
+        5.922404171075261e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 13,
+      "fold": 0,
+      "between_component_variance_fraction": 0.9999590234793042,
+      "pooled_sd": 0.00588939102875235,
+      "within_component_sd": [
+        8.139045457354828e-06,
+        6.28623450694233e-05,
+        1.5416384056096285e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 13,
+      "fold": 1,
+      "between_component_variance_fraction": 0.9999447147795946,
+      "pooled_sd": 0.004703784607534515,
+      "within_component_sd": [
+        2.5539371510029446e-05,
+        1.053792440580862e-05,
+        5.391054582529039e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 13,
+      "fold": 2,
+      "between_component_variance_fraction": 0.9999976223722868,
+      "pooled_sd": 0.024829285565909024,
+      "within_component_sd": [
+        7.735813896106945e-06,
+        6.330745746190726e-05,
+        1.8419088573726943e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 13,
+      "fold": 3,
+      "between_component_variance_fraction": 0.9998715603095196,
+      "pooled_sd": 0.004284145747603162,
+      "within_component_sd": [
+        1.5918655637057926e-05,
+        1.1983103727900029e-05,
+        8.18885428894211e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 13,
+      "fold": 4,
+      "between_component_variance_fraction": 0.9999931790494995,
+      "pooled_sd": 0.005426086180182253,
+      "within_component_sd": [
+        1.2847092592846455e-05,
+        1.0305453108231508e-05,
+        1.8224123841868184e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 29,
+      "fold": 0,
+      "between_component_variance_fraction": 0.9999966974948576,
+      "pooled_sd": 0.01458907980690567,
+      "within_component_sd": [
+        1.6280288764555494e-05,
+        3.874413071469496e-05,
+        1.844051679828361e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 29,
+      "fold": 1,
+      "between_component_variance_fraction": 0.9999480521773887,
+      "pooled_sd": 0.004390530326362555,
+      "within_component_sd": [
+        2.5138628539419712e-05,
+        3.813036060754919e-05,
+        3.0303160626838542e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 29,
+      "fold": 2,
+      "between_component_variance_fraction": 0.9999793046772252,
+      "pooled_sd": 0.03929902017308407,
+      "within_component_sd": [
+        2.7204665915483992e-05,
+        0.00030762035055136006,
+        2.6988823815210378e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 29,
+      "fold": 3,
+      "between_component_variance_fraction": 0.9999437477779508,
+      "pooled_sd": 0.006326071726914908,
+      "within_component_sd": [
+        7.70139276771581e-05,
+        1.4947926430381619e-05,
+        2.4232217090376343e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 29,
+      "fold": 4,
+      "between_component_variance_fraction": 0.9999801835609425,
+      "pooled_sd": 0.010500625314554984,
+      "within_component_sd": [
+        5.3800211903031546e-05,
+        4.545241918414602e-05,
+        3.98828192538694e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 47,
+      "fold": 0,
+      "between_component_variance_fraction": 0.9999359486855615,
+      "pooled_sd": 0.005573931758110578,
+      "within_component_sd": [
+        4.7424607158590533e-05,
+        5.927728031017113e-05,
+        1.395058975841274e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 47,
+      "fold": 1,
+      "between_component_variance_fraction": 0.9999828716710204,
+      "pooled_sd": 0.004481422365566315,
+      "within_component_sd": [
+        2.486668801087516e-05,
+        9.868904891046896e-06,
+        1.778270958397354e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 47,
+      "fold": 2,
+      "between_component_variance_fraction": 0.9999884734148388,
+      "pooled_sd": 0.024477243551594537,
+      "within_component_sd": [
+        2.4292845201634518e-05,
+        0.0001394412155560177,
+        2.696159166810875e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 47,
+      "fold": 3,
+      "between_component_variance_fraction": 0.9999335513810889,
+      "pooled_sd": 0.014612047878401627,
+      "within_component_sd": [
+        0.00014678369150862672,
+        4.0248337730906465e-05,
+        0.00013940691933702788
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "mri",
+      "seed": 47,
+      "fold": 4,
+      "between_component_variance_fraction": 0.9999979650391592,
+      "pooled_sd": 0.007601341222487223,
+      "within_component_sd": [
+        1.3393582746212258e-05,
+        5.892066273711015e-06,
+        1.1780585995552842e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 13,
+      "fold": 0,
+      "between_component_variance_fraction": 0.9770613541812445,
+      "pooled_sd": 0.019627086248220196,
+      "within_component_sd": [
+        0.0004066027730241904,
+        8.54427394731654e-05,
+        0.005143850910549408
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 13,
+      "fold": 1,
+      "between_component_variance_fraction": 0.9998125822762597,
+      "pooled_sd": 0.010239161839355991,
+      "within_component_sd": [
+        5.309979596542206e-05,
+        5.54531242646636e-05,
+        0.0002303306966635644
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 13,
+      "fold": 2,
+      "between_component_variance_fraction": 0.9994888817052664,
+      "pooled_sd": 0.022659590431166114,
+      "within_component_sd": [
+        3.361017257106463e-05,
+        0.0008822921880047479,
+        9.757208677483022e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 13,
+      "fold": 3,
+      "between_component_variance_fraction": 0.3310504208397288,
+      "pooled_sd": 0.011543456343482777,
+      "within_component_sd": [
+        6.283345029045534e-05,
+        0.01633083712101729,
+        0.0002967624016802296
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 13,
+      "fold": 4,
+      "between_component_variance_fraction": 0.9995980362767346,
+      "pooled_sd": 0.00538135038169862,
+      "within_component_sd": [
+        1.6650361643648582e-05,
+        7.336742312530676e-05,
+        0.0001714117786271175
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 29,
+      "fold": 0,
+      "between_component_variance_fraction": 0.9296255117102585,
+      "pooled_sd": 0.020449236019981373,
+      "within_component_sd": [
+        0.00013362892040872564,
+        8.982855433409109e-05,
+        0.009416541058016812
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 29,
+      "fold": 1,
+      "between_component_variance_fraction": 0.9992078881344324,
+      "pooled_sd": 0.00296220345884389,
+      "within_component_sd": [
+        2.0646521093804024e-05,
+        8.082070926447392e-05,
+        0.00011786961303083006
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 29,
+      "fold": 2,
+      "between_component_variance_fraction": 0.9999961176684125,
+      "pooled_sd": 0.027624621582949357,
+      "within_component_sd": [
+        3.032667497081124e-05,
+        4.4323235106189294e-05,
+        7.757378918282117e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 29,
+      "fold": 3,
+      "between_component_variance_fraction": 0.9990533242120048,
+      "pooled_sd": 0.005381203293009081,
+      "within_component_sd": [
+        0.0002307930517745207,
+        0.00015869765353396722,
+        6.0180890494992594e-05
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 29,
+      "fold": 4,
+      "between_component_variance_fraction": 0.999874833916676,
+      "pooled_sd": 0.009800904798679804,
+      "within_component_sd": [
+        0.00012655659214558677,
+        4.3394649615369884e-05,
+        0.00013495164029674633
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 47,
+      "fold": 0,
+      "between_component_variance_fraction": 0.9805380905681491,
+      "pooled_sd": 0.008698174104953944,
+      "within_component_sd": [
+        9.602581985579326e-05,
+        0.00015913453999047577,
+        0.00209837280941288
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 47,
+      "fold": 1,
+      "between_component_variance_fraction": 0.999434924610458,
+      "pooled_sd": 0.004523190450857712,
+      "within_component_sd": [
+        7.869995642946827e-05,
+        5.755591973479452e-05,
+        0.00015867164868328492
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 47,
+      "fold": 2,
+      "between_component_variance_fraction": 0.9997784189623508,
+      "pooled_sd": 0.02449152490021703,
+      "within_component_sd": [
+        0.00011955843018093696,
+        0.0006000301553944874,
+        0.00015878464985076711
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 47,
+      "fold": 3,
+      "between_component_variance_fraction": 0.9995327462922622,
+      "pooled_sd": 0.008920792896610685,
+      "within_component_sd": [
+        0.00012995324898146677,
+        6.698870037600315e-05,
+        0.00030092095533524205
+      ]
+    },
+    {
+      "track": "pet",
+      "modality": "pet",
+      "seed": 47,
+      "fold": 4,
+      "between_component_variance_fraction": 0.9999416825212056,
+      "pooled_sd": 0.009629842528049137,
+      "within_component_sd": [
+        8.81592328629844e-05,
+        7.215641422941252e-05,
+        5.683841384871413e-05
+      ]
+    }
+  ]
+}

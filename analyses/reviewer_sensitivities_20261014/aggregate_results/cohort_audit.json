@@ -1,0 +1,184 @@
+{
+  "landmark_minus_randomization_days": {
+    "n": 1059,
+    "missing": 0,
+    "min": 0.0,
+    "median": 0.0,
+    "q1": 0.0,
+    "q3": 0.0,
+    "max": 0.0
+  },
+  "groups": {
+    "mri": {
+      "n": 1059,
+      "events_full": 239,
+      "events_by_year": {
+        "1": 0,
+        "2": 5,
+        "3": 104
+      },
+      "at_risk_by_year": {
+        "1": 1000,
+        "2": 961,
+        "3": 809
+      },
+      "reported_white": 1000,
+      "race_unknown_or_missing": 5,
+      "reported_hispanic_latino": 31,
+      "ethnicity_unknown_or_missing": 11,
+      "mri_manufacturer": {
+        "SIEMENS": 708,
+        "GE": 237,
+        "PHILIPS": 114
+      }
+    },
+    "pet": {
+      "n": 544,
+      "events_full": 112,
+      "events_by_year": {
+        "1": 0,
+        "2": 4,
+        "3": 50
+      },
+      "at_risk_by_year": {
+        "1": 508,
+        "2": 482,
+        "3": 405
+      },
+      "reported_white": 505,
+      "race_unknown_or_missing": 3,
+      "reported_hispanic_latino": 13,
+      "ethnicity_unknown_or_missing": 7,
+      "mri_manufacturer": {
+        "SIEMENS": 316,
+        "GE": 143,
+        "PHILIPS": 85
+      }
+    },
+    "plasma": {
+      "n": 696,
+      "events_full": 166,
+      "events_by_year": {
+        "1": 0,
+        "2": 3,
+        "3": 69
+      },
+      "at_risk_by_year": {
+        "1": 654,
+        "2": 632,
+        "3": 528
+      },
+      "reported_white": 666,
+      "race_unknown_or_missing": 3,
+      "reported_hispanic_latino": 22,
+      "ethnicity_unknown_or_missing": 5,
+      "mri_manufacturer": {
+        "SIEMENS": 477,
+        "GE": 131,
+        "PHILIPS": 88
+      }
+    },
+    "tau": {
+      "n": 358,
+      "events_full": 92,
+      "events_by_year": {
+        "1": 0,
+        "2": 1,
+        "3": 47
+      },
+      "at_risk_by_year": {
+        "1": 346,
+        "2": 337,
+        "3": 273
+      },
+      "reported_white": 327,
+      "race_unknown_or_missing": 1,
+      "reported_hispanic_latino": 9,
+      "ethnicity_unknown_or_missing": 6,
+      "mri_manufacturer": {
+        "SIEMENS": 267,
+        "GE": 67,
+        "PHILIPS": 24
+      }
+    }
+  },
+  "demographic_coding": {
+    "source": "SUBJINFO and derived data dictionary",
+    "white": 1,
+    "hispanic_latino": 50,
+    "unknown_or_not_reported": 97,
+    "not_inferred_from_names_or_images": true
+  },
+  "upstream_exclusions": {
+    "source_a4": 1169,
+    "first_eligible_amyloid_scan": 1169,
+    "rebuilt_endpoint_n": 1106,
+    "endpoint_membership_matches_saved": true,
+    "audit": {
+      "status": "COMPLETED",
+      "tracer": "FBP",
+      "development_cohort": "A4",
+      "internal_transport_cohort": "LEARN",
+      "eligible_rows": 1106,
+      "events": 240,
+      "cohort_counts": {
+        "A4": 1106
+      },
+      "event_counts_by_cohort": {
+        "A4": 240
+      },
+      "exclusions": {
+        "no_post_index_cdr_followup": 63
+      },
+      "excluded_cohorts": {},
+      "forbidden_label_sources_not_used": [
+        "CDEVENT",
+        "CDOLEEVENT"
+      ],
+      "same_pet_derived_target_used": false,
+      "treatment_structure": "active_vs_placebo_covariate"
+    }
+  },
+  "included_vs_all_source_exclusions": {
+    "included": 1059,
+    "excluded": 110,
+    "source_baseline_values_not_redefined_landmark_predictors": true,
+    "continuous": {
+      "AGEYR": {
+        "included_n": 1059,
+        "excluded_n": 110,
+        "included_mean": 71.87529745042494,
+        "excluded_mean": 72.37772727272727,
+        "smd_included_minus_excluded": -0.10371808284200122
+      },
+      "EDCCNTU": {
+        "included_n": 1059,
+        "excluded_n": 110,
+        "included_mean": 16.55996222851747,
+        "excluded_mean": 16.636363636363637,
+        "smd_included_minus_excluded": -0.027020327841792032
+      },
+      "AMYLCENT": {
+        "included_n": 1059,
+        "excluded_n": 110,
+        "included_mean": 66.0156552407932,
+        "excluded_mean": 66.52266909090909,
+        "smd_included_minus_excluded": -0.015305551737712485
+      },
+      "MMSETSV6": {
+        "included_n": 1059,
+        "excluded_n": 106,
+        "included_mean": 28.80169971671388,
+        "excluded_mean": 28.566037735849058,
+        "smd_included_minus_excluded": 0.180597423066119
+      },
+      "PACCV6": {
+        "included_n": 1059,
+        "excluded_n": 110,
+        "included_mean": 0.07427879225684607,
+        "excluded_mean": -0.7151023363636363,
+        "smd_included_minus_excluded": 0.2964512256893715
+      }
+    }
+  }
+}

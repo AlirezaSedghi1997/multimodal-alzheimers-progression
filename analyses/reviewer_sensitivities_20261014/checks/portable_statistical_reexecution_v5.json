@@ -1,0 +1,13 @@
+{
+  "status": "EXACT_MATCH",
+  "result_files": [
+    "baseline_biomarkers",
+    "brier_3year",
+    "calibration_curves",
+    "expert_support",
+    "pet_selection",
+    "table2_precision"
+  ],
+  "numeric_values_compared": 2846,
+  "scope": "New v5 analyses rerun from distributed portable source with authorized local inputs. No CNN refit or external validation."
+}

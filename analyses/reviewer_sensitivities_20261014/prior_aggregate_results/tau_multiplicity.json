@@ -1,0 +1,1766 @@
+{
+  "cox": {
+    "difference": {
+      "base": "clinical_amyloid",
+      "augmented": "clinical_amyloid_tau",
+      "delta_ibs_mean": -0.002765411951026417,
+      "delta_uno_mean": 0.07295876540654694,
+      "delta_ibs_ci95": [
+        -0.005709118690957388,
+        0.0003745807942336681
+      ],
+      "delta_uno_ci95": [
+        0.031964615539697344,
+        0.12055533469575481
+      ],
+      "valid_ibs_resamples": 2000,
+      "valid_uno_resamples": 1965,
+      "delta_ibs_bonferroni_ci": [
+        -0.006381156075278988,
+        0.0012351463766659624
+      ],
+      "delta_uno_bonferroni_ci": [
+        0.022698503687837303,
+        0.13513643092208782
+      ],
+      "resamples": 2000,
+      "resampling": "PAIRED_SUBJECT_WITHIN_OUTER_FOLD",
+      "uncertainty": "CONDITIONAL_ON_FITTED_MODELS_AND_TRAIN_CENSORING_NOT_SELECTION_UNCERTAINTY",
+      "multiplicity": "EXPLORATORY_NO_CONFIRMATORY_SIGNIFICANCE_CLAIM"
+    },
+    "models": {
+      "clinical_amyloid": {
+        "n": 358,
+        "events": 92,
+        "ibs": 0.049564395144863306,
+        "uno_c": 0.704159479208027,
+        "fold_metrics": [
+          {
+            "ibs": 0.05192042509277841,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 67,
+            "events": 19,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 63,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 48,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.7137727956236719,
+                "calibration_intercept": 0.6183700659681263,
+                "calibration_slope": 1.3360315090007253,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.06656116346350835,
+                    "ipcw_observed_fraction": 0.0954453730351677
+                  },
+                  {
+                    "n": 19,
+                    "predicted_risk": 0.13182058653433407,
+                    "ipcw_observed_fraction": 0.1503303378742203
+                  },
+                  {
+                    "n": 19,
+                    "predicted_risk": 0.2615988521146155,
+                    "ipcw_observed_fraction": 0.25132076958942273
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.7178987882822694
+          },
+          {
+            "ibs": 0.029340737686828426,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 70,
+            "events": 14,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 68,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 58,
+                "events_by_horizon": 4,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.7419841116074715,
+                "calibration_intercept": -1.090732996668374,
+                "calibration_slope": 0.9001945197858119,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.06991650825829737,
+                    "ipcw_observed_fraction": 0.0
+                  },
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.12399151324549222,
+                    "ipcw_observed_fraction": 0.09145211098118539
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.222273215387928,
+                    "ipcw_observed_fraction": 0.09622565079261428
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.7172464418910529
+          },
+          {
+            "ibs": 0.05244743047258174,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 70,
+            "events": 19,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 68,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 56,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.6941378506200967,
+                "calibration_intercept": 0.45624899388391915,
+                "calibration_slope": 1.2866853213059821,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.0704552381819982,
+                    "ipcw_observed_fraction": 0.04353932584269663
+                  },
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.13048612447043803,
+                    "ipcw_observed_fraction": 0.1722494935853981
+                  },
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.23409789670506762,
+                    "ipcw_observed_fraction": 0.21669134907186244
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.6837485592672964
+          },
+          {
+            "ibs": 0.06679674118703133,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 69,
+            "events": 20,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 66,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 48,
+                "events_by_horizon": 13,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.7156429108221555,
+                "calibration_intercept": 1.1934691738705387,
+                "calibration_slope": 1.231502379649882,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.052296076193191814,
+                    "ipcw_observed_fraction": 0.09076063943472022
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.09334118135203305,
+                    "ipcw_observed_fraction": 0.2416953250926502
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.20415852677444438,
+                    "ipcw_observed_fraction": 0.2908957340652503
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.6917835585020167
+          },
+          {
+            "ibs": 0.047941927653427314,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1625.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 82,
+            "events": 20,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 79,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 63,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.7207274216432622,
+                "calibration_intercept": -0.16793891342418993,
+                "calibration_slope": 1.0443450928698232,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 25,
+                    "predicted_risk": 0.07980674537130279,
+                    "ipcw_observed_fraction": 0.0
+                  },
+                  {
+                    "n": 24,
+                    "predicted_risk": 0.13973403726476485,
+                    "ipcw_observed_fraction": 0.19998566935578801
+                  },
+                  {
+                    "n": 24,
+                    "predicted_risk": 0.25972753446435803,
+                    "ipcw_observed_fraction": 0.20011475768694637
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.7095995015102198
+          }
+        ]
+      },
+      "clinical_amyloid_tau": {
+        "n": 358,
+        "events": 92,
+        "ibs": 0.0467989831938369,
+        "uno_c": 0.7771182446145738,
+        "fold_metrics": [
+          {
+            "ibs": 0.05073564131696163,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 67,
+            "events": 19,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 63,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 48,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.8247275374965525,
+                "calibration_intercept": 0.13516668615570665,
+                "calibration_slope": 1.0754046852966375,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.059043722156601794,
+                    "ipcw_observed_fraction": 0.0
+                  },
+                  {
+                    "n": 19,
+                    "predicted_risk": 0.11648722295729601,
+                    "ipcw_observed_fraction": 0.20146384075767645
+                  },
+                  {
+                    "n": 19,
+                    "predicted_risk": 0.3161444267415034,
+                    "ipcw_observed_fraction": 0.302775928874741
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.8157773892927673
+          },
+          {
+            "ibs": 0.028992396267180344,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 70,
+            "events": 14,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 68,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 58,
+                "events_by_horizon": 4,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.8150695775570218,
+                "calibration_intercept": -0.8303866150171789,
+                "calibration_slope": 1.1405325872668632,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.06718895527904438,
+                    "ipcw_observed_fraction": 0.0
+                  },
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.12838395764156563,
+                    "ipcw_observed_fraction": 0.045630584696351284
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.2517361064772157,
+                    "ipcw_observed_fraction": 0.1445560228205988
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.7946077360563621
+          },
+          {
+            "ibs": 0.049509179023530435,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 70,
+            "events": 19,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 68,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 56,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.784837746934716,
+                "calibration_intercept": 0.29202529253969556,
+                "calibration_slope": 1.2396303917070164,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.05349258067310201,
+                    "ipcw_observed_fraction": 0.04353932584269663
+                  },
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.11994230912665332,
+                    "ipcw_observed_fraction": 0.08608435636288131
+                  },
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.28009489509710395,
+                    "ipcw_observed_fraction": 0.3044167488773139
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.7729444642008243
+          },
+          {
+            "ibs": 0.06539862959829808,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 69,
+            "events": 20,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 66,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 48,
+                "events_by_horizon": 13,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.6933996342743717,
+                "calibration_intercept": 1.177244382981533,
+                "calibration_slope": 1.1523452841950994,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.041341566659482964,
+                    "ipcw_observed_fraction": 0.136706317107104
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.08506683329906954,
+                    "ipcw_observed_fraction": 0.19302680498440358
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.1935065079330824,
+                    "ipcw_observed_fraction": 0.29089573406525027
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.6694140615127144
+          },
+          {
+            "ibs": 0.04081868661615682,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1625.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 82,
+            "events": 20,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 79,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 63,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.8412545495623939,
+                "calibration_intercept": 0.9962587996802428,
+                "calibration_slope": 1.8564186635430655,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 25,
+                    "predicted_risk": 0.06881351124603687,
+                    "ipcw_observed_fraction": 0.0
+                  },
+                  {
+                    "n": 24,
+                    "predicted_risk": 0.12903443205826054,
+                    "ipcw_observed_fraction": 0.07939126902716015
+                  },
+                  {
+                    "n": 24,
+                    "predicted_risk": 0.26940013587356165,
+                    "ipcw_observed_fraction": 0.32219905157674483
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.8247929539880697
+          }
+        ]
+      }
+    }
+  },
+  "rsf": {
+    "difference": {
+      "base": "clinical_amyloid",
+      "augmented": "clinical_amyloid_tau",
+      "delta_ibs_mean": -0.0014182669355662515,
+      "delta_uno_mean": 0.054924819146826814,
+      "delta_ibs_ci95": [
+        -0.003851965377505704,
+        0.000837268406299488
+      ],
+      "delta_uno_ci95": [
+        -0.011017278866570659,
+        0.13105533079130283
+      ],
+      "valid_ibs_resamples": 2000,
+      "valid_uno_resamples": 1965,
+      "delta_ibs_bonferroni_ci": [
+        -0.0045067542305137435,
+        0.0013345008104205113
+      ],
+      "delta_uno_bonferroni_ci": [
+        -0.025502886684682053,
+        0.15053908755828888
+      ],
+      "resamples": 2000,
+      "resampling": "PAIRED_SUBJECT_WITHIN_OUTER_FOLD",
+      "uncertainty": "CONDITIONAL_ON_FITTED_MODELS_AND_TRAIN_CENSORING_NOT_SELECTION_UNCERTAINTY",
+      "multiplicity": "EXPLORATORY_NO_CONFIRMATORY_SIGNIFICANCE_CLAIM"
+    },
+    "models": {
+      "clinical_amyloid": {
+        "n": 358,
+        "events": 92,
+        "ibs": 0.05113331655353648,
+        "uno_c": 0.6548380595317449,
+        "fold_metrics": [
+          {
+            "ibs": 0.0560772260197609,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 67,
+            "events": 19,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 63,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 48,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.6934646374689845,
+                "calibration_intercept": 0.5031514647174901,
+                "calibration_slope": 1.190719778128009,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.0691589915729211,
+                    "ipcw_observed_fraction": 0.14306725341708254
+                  },
+                  {
+                    "n": 19,
+                    "predicted_risk": 0.1337392818093197,
+                    "ipcw_observed_fraction": 0.04955128388136681
+                  },
+                  {
+                    "n": 19,
+                    "predicted_risk": 0.22647603631723,
+                    "ipcw_observed_fraction": 0.3030656948331076
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.6930239141967208
+          },
+          {
+            "ibs": 0.0297071434077823,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 70,
+            "events": 14,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 68,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 58,
+                "events_by_horizon": 4,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.5524898807061466,
+                "calibration_intercept": -2.2819012973383486,
+                "calibration_slope": 0.2069903372407053,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.051288798220581674,
+                    "ipcw_observed_fraction": 0.045630584696351284
+                  },
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.11080914286455204,
+                    "ipcw_observed_fraction": 0.09145211098118539
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.21063580112700878,
+                    "ipcw_observed_fraction": 0.04810716603655411
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.538481463826728
+          },
+          {
+            "ibs": 0.05581258789943699,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 70,
+            "events": 19,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 68,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 56,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.6200016425895171,
+                "calibration_intercept": -0.23766792878302828,
+                "calibration_slope": 0.8984290435798677,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.07398273469145321,
+                    "ipcw_observed_fraction": 0.04284389180422497
+                  },
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.15026604389630788,
+                    "ipcw_observed_fraction": 0.26006292276033816
+                  },
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.2346286792705739,
+                    "ipcw_observed_fraction": 0.1300759223106178
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.6166683648606988
+          },
+          {
+            "ibs": 0.06982660620953823,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 69,
+            "events": 20,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 66,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 48,
+                "events_by_horizon": 13,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.6559577649708764,
+                "calibration_intercept": 0.689680355635704,
+                "calibration_slope": 0.9902328276402832,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.05609365214000739,
+                    "ipcw_observed_fraction": 0.13719842510774538
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.10280887825464975,
+                    "ipcw_observed_fraction": 0.14407242401705606
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.19418068840463387,
+                    "ipcw_observed_fraction": 0.34000130485722824
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.6348285639937895
+          },
+          {
+            "ibs": 0.04566019710827555,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1625.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 82,
+            "events": 20,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 79,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 63,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.8033622623537381,
+                "calibration_intercept": 2.310260817081564,
+                "calibration_slope": 2.649974236373016,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 25,
+                    "predicted_risk": 0.09342482349483464,
+                    "ipcw_observed_fraction": 0.0
+                  },
+                  {
+                    "n": 24,
+                    "predicted_risk": 0.1483571872969551,
+                    "ipcw_observed_fraction": 0.07939126902716015
+                  },
+                  {
+                    "n": 24,
+                    "predicted_risk": 0.2250914510488775,
+                    "ipcw_observed_fraction": 0.32219905157674483
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.7723873675304026
+          }
+        ]
+      },
+      "clinical_amyloid_tau": {
+        "n": 358,
+        "events": 92,
+        "ibs": 0.04971504961797024,
+        "uno_c": 0.7097628786785716,
+        "fold_metrics": [
+          {
+            "ibs": 0.05247115858657716,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 67,
+            "events": 19,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 63,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 48,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.7916759269898193,
+                "calibration_intercept": 1.4912388620863835,
+                "calibration_slope": 1.7956760049036211,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.061016378986128585,
+                    "ipcw_observed_fraction": 0.046900538051148646
+                  },
+                  {
+                    "n": 19,
+                    "predicted_risk": 0.1266587665532845,
+                    "ipcw_observed_fraction": 0.10033333160788012
+                  },
+                  {
+                    "n": 19,
+                    "predicted_risk": 0.2347207020963635,
+                    "ipcw_observed_fraction": 0.35480030458222295
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.7753715669702144
+          },
+          {
+            "ibs": 0.03445568623076844,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 70,
+            "events": 14,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 68,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 58,
+                "events_by_horizon": 4,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.5779284963812031,
+                "calibration_intercept": -2.2797907793733865,
+                "calibration_slope": 0.22995518118041774,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.05253920254538475,
+                    "ipcw_observed_fraction": 0.045630584696351284
+                  },
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.12624815123588198,
+                    "ipcw_observed_fraction": 0.045630584696351284
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.2799175782098707,
+                    "ipcw_observed_fraction": 0.09622565079261428
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.5648427577094718
+          },
+          {
+            "ibs": 0.05009395203916674,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 70,
+            "events": 19,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 68,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 56,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.737118482014197,
+                "calibration_intercept": 0.13699891749647475,
+                "calibration_slope": 1.1478690871969994,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.04912173108768905,
+                    "ipcw_observed_fraction": 0.04353932584269663
+                  },
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.13025779471142043,
+                    "ipcw_observed_fraction": 0.08561704644839908
+                  },
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.2803581250387423,
+                    "ipcw_observed_fraction": 0.3047773130336675
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.7249173066122493
+          },
+          {
+            "ibs": 0.0712915427477572,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 69,
+            "events": 20,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 66,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 48,
+                "events_by_horizon": 13,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.6159690916056819,
+                "calibration_intercept": -0.3020382897675294,
+                "calibration_slope": 0.4636885624918092,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.03223321515675278,
+                    "ipcw_observed_fraction": 0.18347440468018242
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.08940365847052004,
+                    "ipcw_observed_fraction": 0.1439059809417947
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.22149785410573686,
+                    "ipcw_observed_fraction": 0.29089573406525027
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.6028515246420011
+          },
+          {
+            "ibs": 0.0420101098712435,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1625.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 82,
+            "events": 20,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 79,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 63,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.8889068406528658,
+                "calibration_intercept": 3.1583060072694478,
+                "calibration_slope": 3.368193895196359,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 25,
+                    "predicted_risk": 0.07981665348926943,
+                    "ipcw_observed_fraction": 0.0
+                  },
+                  {
+                    "n": 24,
+                    "predicted_risk": 0.1380004744243623,
+                    "ipcw_observed_fraction": 0.03953360581183289
+                  },
+                  {
+                    "n": 24,
+                    "predicted_risk": 0.24215924512972273,
+                    "ipcw_observed_fraction": 0.36322719988964736
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.8568933643549481
+          }
+        ]
+      }
+    }
+  },
+  "mri": {
+    "difference": {
+      "base": "base",
+      "augmented": "plus_tau",
+      "delta_ibs_mean": -0.002979315991996438,
+      "delta_uno_mean": 0.0824645063137252,
+      "delta_ibs_ci95": [
+        -0.005618189802236411,
+        -0.00045735223871052244
+      ],
+      "delta_uno_ci95": [
+        0.040037509064516405,
+        0.1317573581174459
+      ],
+      "valid_ibs_resamples": 2000,
+      "valid_uno_resamples": 1965,
+      "delta_ibs_bonferroni_ci": [
+        -0.006157320506221412,
+        -3.379747586562975e-05
+      ],
+      "delta_uno_bonferroni_ci": [
+        0.0329575681588338,
+        0.14442790677686174
+      ],
+      "resamples": 2000,
+      "resampling": "PAIRED_SUBJECT_WITHIN_OUTER_FOLD",
+      "uncertainty": "CONDITIONAL_ON_FITTED_MODELS_AND_TRAIN_CENSORING_NOT_SELECTION_UNCERTAINTY",
+      "multiplicity": "EXPLORATORY_NO_CONFIRMATORY_SIGNIFICANCE_CLAIM"
+    },
+    "models": {
+      "base": {
+        "n": 358,
+        "events": 92,
+        "ibs": 0.05023870500631994,
+        "uno_c": 0.6875526019581221,
+        "fold_metrics": [
+          {
+            "ibs": 0.055400313889954055,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 67,
+            "events": 19,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 63,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 48,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.7034275377834814,
+                "calibration_intercept": 0.5574960389674295,
+                "calibration_slope": 1.2586112044055178,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.07527456095181921,
+                    "ipcw_observed_fraction": 0.04741715434583505
+                  },
+                  {
+                    "n": 19,
+                    "predicted_risk": 0.13443366829169182,
+                    "ipcw_observed_fraction": 0.20146384075767645
+                  },
+                  {
+                    "n": 19,
+                    "predicted_risk": 0.23645411927863008,
+                    "ipcw_observed_fraction": 0.25132076958942273
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.7087242058965025
+          },
+          {
+            "ibs": 0.029263698122089513,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 70,
+            "events": 14,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 68,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 58,
+                "events_by_horizon": 4,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.6814289819779389,
+                "calibration_intercept": -1.4264589184342975,
+                "calibration_slope": 0.6782168937231166,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.07440107421879516,
+                    "ipcw_observed_fraction": 0.0
+                  },
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.11544603852721938,
+                    "ipcw_observed_fraction": 0.09145211098118539
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.2065773814029148,
+                    "ipcw_observed_fraction": 0.09622565079261428
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.6701175689177086
+          },
+          {
+            "ibs": 0.05268283611585427,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 70,
+            "events": 19,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 68,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 56,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.6763233189429144,
+                "calibration_intercept": 1.092829959160975,
+                "calibration_slope": 1.6320583328542404,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.0780936904978889,
+                    "ipcw_observed_fraction": 0.04353932584269663
+                  },
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.13239593790140539,
+                    "ipcw_observed_fraction": 0.17238395079899682
+                  },
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.21119297217013755,
+                    "ipcw_observed_fraction": 0.2165638180382466
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.6706474674231366
+          },
+          {
+            "ibs": 0.06768269620075734,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 69,
+            "events": 20,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 66,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 48,
+                "events_by_horizon": 13,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.696589823949801,
+                "calibration_intercept": 1.6761856172379939,
+                "calibration_slope": 1.5217555920433294,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.06544109388480392,
+                    "ipcw_observed_fraction": 0.09076063943472022
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.10656437035585828,
+                    "ipcw_observed_fraction": 0.19286960988689997
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.18945797722758825,
+                    "ipcw_observed_fraction": 0.34013066897760696
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.670694055097913
+          },
+          {
+            "ibs": 0.047161852769845074,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1625.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 82,
+            "events": 20,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 79,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 63,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.7302139990578919,
+                "calibration_intercept": 0.34088129119217475,
+                "calibration_slope": 1.2933956611944917,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 25,
+                    "predicted_risk": 0.08409957145948899,
+                    "ipcw_observed_fraction": 0.0
+                  },
+                  {
+                    "n": 24,
+                    "predicted_risk": 0.13297091609018266,
+                    "ipcw_observed_fraction": 0.19998566935578804
+                  },
+                  {
+                    "n": 24,
+                    "predicted_risk": 0.2267098763814551,
+                    "ipcw_observed_fraction": 0.20011475768694637
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.7137544800039863
+          }
+        ]
+      },
+      "plus_tau": {
+        "n": 358,
+        "events": 92,
+        "ibs": 0.047259389014323507,
+        "uno_c": 0.7700171082718473,
+        "fold_metrics": [
+          {
+            "ibs": 0.05257965155759301,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 67,
+            "events": 19,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 63,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 48,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.7872531119802152,
+                "calibration_intercept": 0.6963105868109936,
+                "calibration_slope": 1.3883122415141467,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.07024145776932197,
+                    "ipcw_observed_fraction": 0.0
+                  },
+                  {
+                    "n": 19,
+                    "predicted_risk": 0.1266229688930137,
+                    "ipcw_observed_fraction": 0.20146384075767648
+                  },
+                  {
+                    "n": 19,
+                    "predicted_risk": 0.2658263443721676,
+                    "ipcw_observed_fraction": 0.302775928874741
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.778634799254781
+          },
+          {
+            "ibs": 0.029455047299168872,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 70,
+            "events": 14,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 68,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 58,
+                "events_by_horizon": 4,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.7717379619598949,
+                "calibration_intercept": -1.0833167108569368,
+                "calibration_slope": 0.9288775757697213,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.06901088976486014,
+                    "ipcw_observed_fraction": 0.0
+                  },
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.12110012837111163,
+                    "ipcw_observed_fraction": 0.09145211098118539
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.2379776357424941,
+                    "ipcw_observed_fraction": 0.09622565079261428
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.7591975003413937
+          },
+          {
+            "ibs": 0.04781066059263442,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 70,
+            "events": 19,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 68,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 56,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.7937398573242133,
+                "calibration_intercept": 0.5441913068519324,
+                "calibration_slope": 1.4651501140795051,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.06466016171975761,
+                    "ipcw_observed_fraction": 0.04353932584269663
+                  },
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.12242438385035884,
+                    "ipcw_observed_fraction": 0.08561704644839908
+                  },
+                  {
+                    "n": 22,
+                    "predicted_risk": 0.28434183229254634,
+                    "ipcw_observed_fraction": 0.30477731303366745
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.7746534743060934
+          },
+          {
+            "ibs": 0.06671613303192912,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1638.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 69,
+            "events": 20,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 66,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 48,
+                "events_by_horizon": 13,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.6917868259426149,
+                "calibration_intercept": 1.6767788895976399,
+                "calibration_slope": 1.4445692654833007,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 21,
+                    "predicted_risk": 0.053612201223576426,
+                    "ipcw_observed_fraction": 0.09076063943472022
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.09866080038737043,
+                    "ipcw_observed_fraction": 0.1931790101032912
+                  },
+                  {
+                    "n": 20,
+                    "predicted_risk": 0.18065933074637042,
+                    "ipcw_observed_fraction": 0.33987595084945427
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.6666725203814826
+          },
+          {
+            "ibs": 0.041268437574874924,
+            "metric_name": "IPCW_INTEGRATED_BRIER_SCORE",
+            "grid_days": [
+              365,
+              456.34375,
+              547.6875,
+              639.03125,
+              730.375,
+              821.71875,
+              913.0625,
+              1004.40625,
+              1095.75
+            ],
+            "administrative_cutoff_days": 1625.9999999999998,
+            "ipcw_ibs_ties": "SCIKIT_SURVIVAL_REVERSE_KM_LIBRARY_CONVENTION",
+            "calibration_ties": "EVENT_LEFT_LIMIT_HORIZON_RIGHT_LIMIT",
+            "n": 82,
+            "events": 20,
+            "horizons": {
+              "547.875": {
+                "n_at_risk": 79,
+                "events_by_horizon": 0,
+                "status": "NOT_ESTIMABLE"
+              },
+              "1095.75": {
+                "n_at_risk": 63,
+                "events_by_horizon": 10,
+                "status": "ESTIMABLE",
+                "dynamic_auc": 0.8697166075469477,
+                "calibration_intercept": 1.9462347573957257,
+                "calibration_slope": 2.3292513908694588,
+                "calibration_is_descriptive_not_refit": true,
+                "calibration_bins": [
+                  {
+                    "n": 25,
+                    "predicted_risk": 0.07461865481472876,
+                    "ipcw_observed_fraction": 0.0
+                  },
+                  {
+                    "n": 24,
+                    "predicted_risk": 0.12412064703699094,
+                    "ipcw_observed_fraction": 0.07939126902716015
+                  },
+                  {
+                    "n": 24,
+                    "predicted_risk": 0.2333497850827211,
+                    "ipcw_observed_fraction": 0.32219905157674483
+                  }
+                ]
+              }
+            },
+            "uno_c_index": 0.8552148912146904
+          }
+        ]
+      }
+    }
+  }
+}

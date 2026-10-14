@@ -15,7 +15,7 @@ Training a sophisticated model is only part of the work. The harder part is chec
 - **More than a collection of models.** MRI, amyloid PET (FBP), tau PET (FTP), and prognostic fusion each have their own research track, backed by shared quality checks, evaluation tools, and reporting. The result is a connected research codebase rather than an isolated experiment.
 - **A focus on what happens next.** The primary prognostic target is *sustained* CDR progression over time—not a one-time disease label. Survival models handle censoring explicitly; longitudinal PACC change is examined as a separate, secondary outcome.
 - **A fair test for complex models.** Subject-grouped folds, inner-model selection, cross-fitted imaging predictions, and matched clinical baselines are used to ask a direct question: does adding imaging actually help?
-- **Uncertainty is part of the analysis.** Beyond headline metrics, the study examines IPCW integrated Brier score, Uno's C-index, calibration, 2,000-resample paired bootstrap comparisons, scanner/manufacturer sensitivity, alternative endpoint definitions, and spatial attribution controls.
+- **Uncertainty is part of the analysis.** Beyond headline metrics, the study examines IPCW integrated Brier score, Uno's C-index, calibration, paired bootstrap comparisons (2,000 historically; 40,000 for the revised tau, three-year Brier and OOF analyses), scanner/manufacturer sensitivity, alternative endpoint definitions, and spatial attribution controls.
 - **Results with a paper trail.** Source hashes, experiment contracts, result lineage, recorded exclusions, aggregate evidence, and an offline integrity checker make findings traceable without exposing participant-level information.
 
 ### By the numbers
@@ -88,6 +88,37 @@ See the [results report](reports/07_statistical_supplement/REPORT.md),
 status, exact reproduction requirements and remaining scientific limitations.
 No participant-level files or signed thesis documents are included.
 
+## Research update — 14 October 2026
+
+The [cumulative analysis bundle](analyses/reviewer_sensitivities_20261014/README.md)
+adds the completed statistical work from the scientific review rounds, the
+pooled OOF-stacking experiment and later precision/training-history audits.
+It contains executable code, fixed aggregate outputs, dependency versions and
+reproduction instructions. Manuscript text and editorial revisions are excluded.
+
+| Research addition | What is now available |
+|---|---|
+| Statistical robustness | 40,000-draw tau and three-year Brier comparisons; calibration bands; IBS/IPA precision; longitudinal cognition; stronger clinical comparators; measured-censoring and modality-selection analyses |
+| Pooled OOF stacking | Frozen-FP32-feature implementation, tests, all seven locked contrasts and a between-expert score-distribution diagnostic; 180 heads, no CNN retraining in this experiment |
+| Concordance and training audit | Nominal absolute Uno-C intervals for 13 primary and 16 OOF/comparator entries; 405 original aggregate epoch histories |
+| Compact CNN/Jacobian pilot | Equal-parameter T1 versus T1/log-Jacobian code, geometric and deterministic-GPU checks, versioned protocols and a no-go decision; no full-cohort experiment or numerical pilot results released |
+
+**Updated interpretation:** all revised adjusted tau IBS intervals, all 20
+adjusted three-year Brier intervals and all seven adjusted OOF IBS intervals
+include zero. The two Cox-based tau ranking signals remain exploratory.
+OOF score heterogeneity limits attributing changes to the head's training size.
+Absolute concordance intervals are descriptive, not new paired tests of benefit.
+These fixed-prediction analyses do not include model-development uncertainty or
+independent-cohort validation. The CNN/Jacobian pilot failed its locked
+advancement gate; it was not scaled to the full cohort.
+
+The [analysis guide](docs/RESEARCH_UPDATE_20261014.md),
+[pilot protocol and execution status](docs/CNN_JACOBIAN_PILOT.md), and
+[file-level inventory](docs/RESEARCH_UPDATE_INVENTORY_20261014.json) distinguish
+completed work, historical results and unperformed full-cohort work.
+The 40,000-draw tau intervals supersede the 11 October supplement's older
+2,000-draw intervals; that historical record is retained.
+
 ## Research workflow
 
 | Research component | Implementation | Purpose |
@@ -113,6 +144,7 @@ Spatial attribution is treated as a **diagnostic of model behavior**, not proof 
 ## Repository structure
 
 ```text
+analyses/          Frozen statistical/OOF implementation and aggregate evidence
 configs/           Versioned experiment and analysis configurations
 docs/              Study map, evidence lineage, data access, reproduction, and limits
 figures/           Aggregate, privacy-safe evaluation figures

@@ -1,3 +1,5 @@
+> Update 14 October 2026: [new statistical analyses](../analyses/reviewer_sensitivities_20261014/README.md) supersede historical tau confidence intervals with 40,000-draw estimates. This document preserves the earlier record.
+
 # Statistical supplement — 11 October 2026
 
 This supplement addresses methodological questions raised during thesis review.
