@@ -1,0 +1,43 @@
+{
+  "revision": "FINAL_DEEPREVIEW_AMENDMENTS_20261025",
+  "status": "POST_HOC_INTERNAL_EXPLORATORY_SPECIFIED_BEFORE_NEW_EXECUTION",
+  "parent_results_preserved": true,
+  "new_CNN_training": false,
+  "analysis_families": [
+    {
+      "id": "A10",
+      "question": "Does restricting IBS integration to days 730–1095.75 alter the original matched comparisons?",
+      "input": "Frozen original predictions, original outer assignments, original training-derived censoring distributions.",
+      "integration_grid": "730 plus each original nine-point grid time strictly greater than 730, through 1095.75; survival at 730 linearly interpolated from frozen original-grid survival.",
+      "contrasts": "All original 20: eight MRI/plasma, seven PET, three tau, two stronger clinical comparisons.",
+      "resamples": 40000,
+      "seed": 20261025,
+      "adjustment": "A separate Bonferroni family of 20 for the new late-window IBS contrasts only.",
+      "no_relabel_as_primary": true,
+      "claim_limit": "A changed averaging interval, not first-onset prediction, external validation or repetition of model development."
+    },
+    {
+      "id": "A11",
+      "question": "Reconstruct subset-specific training Kaplan–Meier null IBS and tau IPA from the frozen evaluation populations.",
+      "inputs": "Original per-fold training outcomes and evaluated participants/predictions; no model refit.",
+      "ipa": "100*(1 - fold-size-weighted IBS_model/fold-size-weighted IBS_null), before display rounding.",
+      "validation": "Reconcile existing MRI null and all already-reported IPA values; exact denominator and scales recorded."
+    },
+    {
+      "id": "A12",
+      "question": "Assess the claim that pre-standardizing a single expert’s inputs before its already-standardizing component Cox pipeline changes scaling.",
+      "scope": "Deterministic preprocessing invariance on actual frozen feature frames, across source components and eligible modality subsets.",
+      "transforms": "Compare imputation+StandardScaler on raw inputs against component-affine-standardized inputs followed by the same training-only imputation+StandardScaler.",
+      "outcomes_used": false,
+      "new_hyperparameter_selection": false,
+      "claim_limit": "Does not test jointly tuned pooled OOF fusion and does not establish performance equivalence across different feature representations."
+    }
+  ],
+  "reporting_reconciliations": [
+    "Extract exact within-fold pair-weighted concordance point estimates and intervals already computed for tau and the 220-person overlap; verify every draw remains estimable.",
+    "Expose existing sex-specific paired IBS diagnostics with nominal 95% intervals and no claim of sex equivalence or a tested interaction.",
+    "Verify actual current Word/PDF equation visibility, native superscript footnotes, repeating table headers and figure placement before accepting extraction-based complaints.",
+    "Correct reference metadata against primary records without changing source identity or target-journal citations."
+  ],
+  "publication_scope": "Aggregate-only outputs and source code; no subject records, predictions, weights or private membership digests leave the authorized research root."
+}

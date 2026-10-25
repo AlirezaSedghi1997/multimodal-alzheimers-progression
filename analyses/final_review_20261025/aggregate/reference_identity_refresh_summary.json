@@ -1,0 +1,358 @@
+{
+  "existing_sources": 42,
+  "all_existing_dois_resolved": true,
+  "identity_check": "Every canonical Crossref title matched the existing reference after punctuation/case normalization. Primary bylines override known unsplit/incomplete author fields; Riley2025 volume388 comes from BMJ/PubMed.",
+  "records": [
+    {
+      "doi": "10.1016/j.media.2007.06.004",
+      "http_status": 200,
+      "title": "Symmetric diffeomorphic image registration with cross-correlation: Evaluating automated labeling of elderly and neurodegenerative brain",
+      "volume": "12",
+      "retrieved_utc": "2026-10-25T09:53:10.900574+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1093/brain/awy150",
+      "http_status": 200,
+      "title": "Effects of amyloid pathology and neurodegeneration on cognitive change in cognitively normal adults",
+      "volume": "141",
+      "retrieved_utc": "2026-10-25T09:53:11.929309+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1038/s41592-022-01681-2",
+      "http_status": 200,
+      "title": "TemplateFlow: FAIR-sharing of multi-scale, multi-species brain models",
+      "volume": "19",
+      "retrieved_utc": "2026-10-25T09:53:12.861080+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1136/bmj-2023-078378",
+      "http_status": 200,
+      "title": "TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods",
+      "volume": "385",
+      "retrieved_utc": "2026-10-25T09:53:13.763887+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1111/j.2517-6161.1972.tb00899.x",
+      "http_status": 200,
+      "title": "Regression Models and Life-Tables",
+      "volume": "34",
+      "retrieved_utc": "2026-10-25T09:53:14.675521+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1002/alz.70702",
+      "http_status": 200,
+      "title": "Multimodal prognostic modeling of individual cognitive trajectories to enhance trial efficiency in preclinical Alzheimer's disease",
+      "volume": "21",
+      "retrieved_utc": "2026-10-25T09:53:15.561821+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1001/jamaneurol.2014.803",
+      "http_status": 200,
+      "title": "The Preclinical Alzheimer Cognitive Composite",
+      "volume": "71",
+      "retrieved_utc": "2026-10-25T09:53:16.516197+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.7717/peerj.6257",
+      "http_status": 200,
+      "title": "A scalable discrete-time survival model for neural networks",
+      "volume": "7",
+      "retrieved_utc": "2026-10-25T09:53:17.427974+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1002/(sici)1097-0258(19990915/30)18:17/18<2529::aid-sim274>3.0.co;2-5",
+      "http_status": 200,
+      "title": "Assessment and comparison of prognostic classification schemes for survival data",
+      "volume": "18",
+      "retrieved_utc": "2026-10-25T09:53:18.370408+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1214/08-aoas169",
+      "http_status": 200,
+      "title": "Random survival forests",
+      "volume": "2",
+      "retrieved_utc": "2026-10-25T09:53:19.294196+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1016/j.jalz.2018.02.018",
+      "http_status": 200,
+      "title": "NIA‐AA Research Framework: Toward a biological definition of Alzheimer's disease",
+      "volume": "14",
+      "retrieved_utc": "2026-10-25T09:53:20.215586+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1002/alz.13859",
+      "http_status": 200,
+      "title": "Revised criteria for diagnosis and staging of Alzheimer's disease: Alzheimer's Association Workgroup",
+      "volume": "20",
+      "retrieved_utc": "2026-10-25T09:53:21.109210+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1001/jama.2015.4668",
+      "http_status": 200,
+      "title": "Prevalence of Cerebral Amyloid Pathology in Persons Without Dementia",
+      "volume": "313",
+      "retrieved_utc": "2026-10-25T09:53:23.838708+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1016/j.patter.2023.100804",
+      "http_status": 200,
+      "title": "Leakage and the reproducibility crisis in machine-learning-based science",
+      "volume": "4",
+      "retrieved_utc": "2026-10-25T09:53:25.097289+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1186/s41512-018-0029-2",
+      "http_status": 200,
+      "title": "The index of prediction accuracy: an intuitive measure useful for evaluating risk prediction models",
+      "volume": "2",
+      "retrieved_utc": "2026-10-25T09:53:26.136946+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1002/dad2.70321",
+      "http_status": 200,
+      "title": "Incremental value of plasma biomarkers in predicting clinical decline among cognitively unimpaired older adults: Results from the A4 trial",
+      "volume": "18",
+      "retrieved_utc": "2026-10-25T09:53:27.240789+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1016/j.jalz.2014.07.003",
+      "http_status": 200,
+      "title": "The Centiloid Project: Standardizing quantitative amyloid plaque estimation by PET",
+      "volume": "11",
+      "retrieved_utc": "2026-10-25T09:53:28.504236+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1016/j.neurobiolaging.2022.10.005",
+      "http_status": 200,
+      "title": "Predicting time-to-conversion for dementia of Alzheimer's type using multi-modal deep survival analysis",
+      "volume": "121",
+      "retrieved_utc": "2026-10-25T09:53:31.965915+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1136/bmj-2024-082505",
+      "http_status": 200,
+      "title": "PROBAST+AI: an updated quality, risk of bias, and applicability assessment tool for prediction models using regression or artificial intelligence methods",
+      "volume": "388",
+      "retrieved_utc": "2026-10-25T09:53:33.255527+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1212/wnl.43.11.2412-a",
+      "http_status": 200,
+      "title": "The Clinical Dementia Rating (CDR)",
+      "volume": "43",
+      "retrieved_utc": "2026-10-25T09:53:34.396261+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1093/braincomms/fcaa057",
+      "http_status": 200,
+      "title": "Prediction of conversion to Alzheimer’s disease using deep survival analysis of MRI images",
+      "volume": "2",
+      "retrieved_utc": "2026-10-25T09:53:35.612937+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1038/s41591-022-02049-x",
+      "http_status": 200,
+      "title": "Amyloid and tau PET-positive cognitively unimpaired individuals are at high risk for future cognitive decline",
+      "volume": "28",
+      "retrieved_utc": "2026-10-25T09:53:36.935670+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1038/s43587-025-00835-z",
+      "http_status": 200,
+      "title": "Plasma p-tau217 and tau-PET predict future cognitive decline among cognitively unimpaired individuals: implications for clinical trials",
+      "volume": "5",
+      "retrieved_utc": "2026-10-25T09:53:38.187625+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1002/sim.8409",
+      "http_status": 200,
+      "title": "Correction to: Minimum sample size for developing a multivariable prediction model: Part II‐binary and time‐to‐event outcomes by Riley RD, Snell KI, Ensor J, et al.",
+      "volume": "38",
+      "retrieved_utc": "2026-10-25T09:53:39.149185+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1002/sim.7992",
+      "http_status": 200,
+      "title": "Minimum sample size for developing a multivariable prediction model: PART II ‐ binary and time‐to‐event outcomes",
+      "volume": "38",
+      "retrieved_utc": "2026-10-25T09:53:40.106623+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1136/bmj-2024-080749",
+      "http_status": 200,
+      "title": "Uncertainty of risk estimates from clinical prediction models: rationale, challenges, and approaches",
+      "volume": null,
+      "retrieved_utc": "2026-10-25T09:53:41.012296+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1016/0197-2456(96)00075-x",
+      "http_status": 200,
+      "title": "A note on quantifying follow-up in studies of failure time",
+      "volume": "17",
+      "retrieved_utc": "2026-10-25T09:53:41.947857+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1056/nejmoa2305032",
+      "http_status": 200,
+      "title": "Trial of Solanezumab in Preclinical Alzheimer’s Disease",
+      "volume": "389",
+      "retrieved_utc": "2026-10-25T09:53:42.898900+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.14283/jpad.2024.122",
+      "http_status": 200,
+      "title": "Amyloid and Tau Prediction of Cognitive and Functional Decline in Unimpaired Older Individuals: Longitudinal Data from the A4 and LEARN Studies",
+      "volume": "11",
+      "retrieved_utc": "2026-10-25T09:53:43.839367+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1109/tmi.2010.2046908",
+      "http_status": 200,
+      "title": "N4ITK: Improved N3 Bias Correction",
+      "volume": "29",
+      "retrieved_utc": "2026-10-25T09:53:44.778831+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1002/sim.4154",
+      "http_status": 200,
+      "title": "On the C‐statistics for evaluating overall adequacy of risk prediction procedures with censored survival data",
+      "volume": "30",
+      "retrieved_utc": "2026-10-25T09:53:45.719118+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1186/s12916-019-1466-7",
+      "http_status": 200,
+      "title": "Calibration: the Achilles heel of predictive analytics",
+      "volume": "17",
+      "retrieved_utc": "2026-10-25T09:53:46.651297+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1016/j.archger.2025.106033",
+      "http_status": 200,
+      "title": "Time-stratified modeling of cognitive impairment risk in rural aging populations: Nomogram development (2011) and external validation (2013) using CHARLS",
+      "volume": "140",
+      "retrieved_utc": "2026-10-25T09:53:47.611349+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1002/alz.14492",
+      "http_status": 200,
+      "title": "A multi‐cohort study of longitudinal and cross‐sectional Alzheimer's disease biomarkers in cognitively unimpaired older adults",
+      "volume": "21",
+      "retrieved_utc": "2026-10-25T09:53:48.576528+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1093/gerona/glaf113",
+      "http_status": 200,
+      "title": "Cognitive Stability Among Plasma p-tau 181 Negative Individuals: A 5-year Analysis of the Multidomain Alzheimer Prevention Trial Study",
+      "volume": "80",
+      "retrieved_utc": "2026-10-25T09:53:49.492815+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1007/s11682-018-0019-6",
+      "http_status": 200,
+      "title": "Modifying the minimum criteria for diagnosing amnestic MCI to improve prediction of brain atrophy and progression to Alzheimer’s disease",
+      "volume": "14",
+      "retrieved_utc": "2026-10-25T09:53:50.479829+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1109/jbhi.2025.3546020",
+      "http_status": 200,
+      "title": "Self-Organized Prediction-Classification- Superposition of Longitudinal Cognitive Decline in Alzheimer's Disease: An Application to Novel Clinical Research Methodology",
+      "volume": "29",
+      "retrieved_utc": "2026-10-25T09:53:51.405225+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.3233/jad-200821",
+      "http_status": 200,
+      "title": "Improved Prediction of Imminent Progression to Clinically Significant Memory Decline Using Surface Multivariate Morphometry Statistics and Sparse Coding",
+      "volume": "81",
+      "retrieved_utc": "2026-10-25T09:53:52.343775+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1109/access.2021.3121609",
+      "http_status": 200,
+      "title": "Longitudinal Brain MR Image Modeling Using Personalized Memory for Alzheimer’s Disease",
+      "volume": "9",
+      "retrieved_utc": "2026-10-25T09:53:53.400021+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.3390/biomedicines12061232",
+      "http_status": 200,
+      "title": "Predictive Models for the Transition from Mild Neurocognitive Disorder to Major Neurocognitive Disorder: Insights from Clinical, Demographic, and Neuropsychological Data",
+      "volume": "12",
+      "retrieved_utc": "2026-10-25T09:53:54.341520+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.3389/fnagi.2021.688478",
+      "http_status": 200,
+      "title": "Validity Evidence for the Research Category, “Cognitively Unimpaired – Declining,” as a Risk Marker for Mild Cognitive Impairment and Alzheimer’s Disease",
+      "volume": "13",
+      "retrieved_utc": "2026-10-25T09:53:55.294586+00:00",
+      "matched_existing_title": true
+    },
+    {
+      "doi": "10.1038/s41598-026-47047-y",
+      "http_status": 200,
+      "title": "Imaging-genetics-based dementia risk prediction using deep survival neural networks in the Rotterdam Study",
+      "volume": "16",
+      "retrieved_utc": "2026-10-25T09:53:56.241278+00:00",
+      "matched_existing_title": true
+    }
+  ],
+  "new_sources": [
+    {
+      "doi": "10.2967/jnumed.116.174615",
+      "primary": "https://jnm.snmjournals.org/content/57/8/1316",
+      "verified_fulltext": "Official SNMMI/EANM procedure-standard PDF.",
+      "scope": "Complete cerebral/cerebellar coverage and positioning; not a cause of this cohort’s exclusions."
+    },
+    {
+      "doi": "10.1002/bimj.202300245",
+      "primary": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12859537/fullTextXML",
+      "verified_fulltext": "EuropePMC full text, actual downloaded XML.",
+      "scope": "Penalized logistic prediction and tuning; adjacent evidence, not a causal Cox-pipeline result."
+    }
+  ],
+  "retraction_check_limit": "No retraction update appeared in retrieved Crossref metadata. Riley2019 is an explicitly cited correction. Metadata checks do not guarantee a complete retraction search or entailment of every manuscript claim."
+}

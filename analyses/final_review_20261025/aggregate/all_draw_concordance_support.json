@@ -1,0 +1,75 @@
+{
+  "status": "ORIGINAL_AGGREGATE_INTERVALS_RECONCILED_AND_DRAW_SUPPORT_RECHECKED",
+  "warning": "Pair weighting changes the aggregation estimand; all-draw estimability is not proof of unbiased inference or conservative coverage. No cross-fold pairs used.",
+  "models": [
+    {
+      "model": "tau_cox",
+      "resamples": 40000,
+      "seed": 20261011,
+      "all_fold_estimable": 39361,
+      "at_least_one_fold_estimable": 40000,
+      "pair_weighted_valid_draws": 40000,
+      "fold_size_weighted_delta_uno": 0.07295876540654694,
+      "conditional_interval": [
+        0.02107701863185608,
+        0.13147138536842445
+      ],
+      "pair_weighted_delta_uno": 0.06699479292924948,
+      "pair_weighted_interval": [
+        0.014821662266663437,
+        0.12446778056484015
+      ],
+      "family_size": 3,
+      "pair_weighted_K40_interval": [
+        -0.004643056247260917,
+        0.14804912771457965
+      ]
+    },
+    {
+      "model": "tau_mri",
+      "resamples": 40000,
+      "seed": 20261011,
+      "all_fold_estimable": 39361,
+      "at_least_one_fold_estimable": 40000,
+      "pair_weighted_valid_draws": 40000,
+      "fold_size_weighted_delta_uno": 0.08246450631372518,
+      "conditional_interval": [
+        0.02813444597582506,
+        0.1422768888312669
+      ],
+      "pair_weighted_delta_uno": 0.07750401934531467,
+      "pair_weighted_interval": [
+        0.02130051785897111,
+        0.1392789012761174
+      ],
+      "family_size": 3,
+      "pair_weighted_K40_interval": [
+        0.003922411724137539,
+        0.16436342301017912
+      ]
+    },
+    {
+      "model": "overlap",
+      "resamples": 40000,
+      "seed": 20261024,
+      "all_fold_estimable": 25085,
+      "at_least_one_fold_estimable": 40000,
+      "pair_weighted_valid_draws": 40000,
+      "fold_size_weighted_delta_uno": -0.012951964091431617,
+      "conditional_interval": [
+        -0.08639623589087116,
+        0.05906599960994779
+      ],
+      "pair_weighted_delta_uno": -0.011976519293258063,
+      "pair_weighted_interval": [
+        -0.09239113680063481,
+        0.06597600357964072
+      ],
+      "family_size": 4,
+      "pair_weighted_K40_interval": [
+        -0.12128190181224666,
+        0.09138529526620924
+      ]
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "status": "EXISTING_AGGREGATES_REPORTED_MORE_EXPLICITLY",
+  "intervals": "Nominal conditional 95% intervals; no new correction and no interaction/equivalence claim.",
+  "censoring": "Original outer-training censoring distribution; not a subgroup-specific refit or population-selection adjustment.",
+  "records": [
+    {
+      "track": "mri",
+      "sex": "women",
+      "n": 631,
+      "all_followup_events": 120,
+      "contrast": "clinical_amyloid__clinical_mri_amyloid",
+      "conditional_ci95": [
+        -0.00010920691651142872,
+        0.0003676435676733797
+      ],
+      "delta_ibs": 0.0001207203197632203
+    },
+    {
+      "track": "mri",
+      "sex": "men",
+      "n": 428,
+      "all_followup_events": 119,
+      "contrast": "clinical_amyloid__clinical_mri_amyloid",
+      "conditional_ci95": [
+        -0.00028585882353040316,
+        0.0004183381490737746
+      ],
+      "delta_ibs": 7.593706974529582e-05
+    },
+    {
+      "track": "pet",
+      "sex": "women",
+      "n": 385,
+      "all_followup_events": 70,
+      "contrast": "clinical_mri_amyloid__clinical_mri_amyloid_pet",
+      "conditional_ci95": [
+        -0.0006522599113818971,
+        0.0004447837570212271
+      ],
+      "delta_ibs": -8.39947577822192e-05
+    },
+    {
+      "track": "pet",
+      "sex": "men",
+      "n": 159,
+      "all_followup_events": 42,
+      "contrast": "clinical_mri_amyloid__clinical_mri_amyloid_pet",
+      "conditional_ci95": [
+        -0.0009211398473378351,
+        0.001028991392808107
+      ],
+      "delta_ibs": 4.9929032033930754e-05
+    }
+  ]
+}

@@ -1,0 +1,912 @@
+{
+  "status": "EXECUTED_DETERMINISTIC_PREPROCESSING_CHECK",
+  "component_count": 90,
+  "tolerance": 1e-08,
+  "new_model_fits": 0,
+  "outer_outcomes_used": false,
+  "max_training_difference": 2.631894702176396e-12,
+  "max_test_difference": 2.631894702176396e-12,
+  "interpretation": "For a separate component head with its own training StandardScaler, a preceding fixed nondegenerate component-affine transform cancels in the second standardization, up to floating-point error. This does not apply to pooling rows from multiple experts into one head; jointly standardized and leakage-safe tuned pooled fusion was not evaluated.",
+  "records": [
+    {
+      "source": "mri",
+      "fold": 1,
+      "seed": 13,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 3.375077994860476e-14,
+      "maxabs_test_standardized_difference": 3.375077994860476e-14
+    },
+    {
+      "source": "mri",
+      "fold": 1,
+      "seed": 13,
+      "component": 2,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 1.092459456231154e-13,
+      "maxabs_test_standardized_difference": 1.092459456231154e-13
+    },
+    {
+      "source": "mri",
+      "fold": 1,
+      "seed": 13,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 4.440892098500626e-14,
+      "maxabs_test_standardized_difference": 4.440892098500626e-14
+    },
+    {
+      "source": "mri",
+      "fold": 1,
+      "seed": 29,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 2.0472512574087887e-13,
+      "maxabs_test_standardized_difference": 2.0472512574087887e-13
+    },
+    {
+      "source": "mri",
+      "fold": 1,
+      "seed": 29,
+      "component": 2,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 1.0702549957386509e-13,
+      "maxabs_test_standardized_difference": 1.0702549957386509e-13
+    },
+    {
+      "source": "mri",
+      "fold": 1,
+      "seed": 29,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 2.473576898864849e-13,
+      "maxabs_test_standardized_difference": 2.473576898864849e-13
+    },
+    {
+      "source": "mri",
+      "fold": 1,
+      "seed": 47,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 9.769962616701378e-14,
+      "maxabs_test_standardized_difference": 9.731104810839497e-14
+    },
+    {
+      "source": "mri",
+      "fold": 1,
+      "seed": 47,
+      "component": 2,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 8.588685318500211e-13,
+      "maxabs_test_standardized_difference": 8.588685318500211e-13
+    },
+    {
+      "source": "mri",
+      "fold": 1,
+      "seed": 47,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 1.0480505352461478e-13,
+      "maxabs_test_standardized_difference": 1.0480505352461478e-13
+    },
+    {
+      "source": "mri",
+      "fold": 2,
+      "seed": 13,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 1.432187701766452e-14,
+      "maxabs_test_standardized_difference": 1.432187701766452e-14
+    },
+    {
+      "source": "mri",
+      "fold": 2,
+      "seed": 13,
+      "component": 2,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 4.112335472150619e-13,
+      "maxabs_test_standardized_difference": 4.112335472150619e-13
+    },
+    {
+      "source": "mri",
+      "fold": 2,
+      "seed": 13,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 2.309610835915521e-14,
+      "maxabs_test_standardized_difference": 2.309610835915521e-14
+    },
+    {
+      "source": "mri",
+      "fold": 2,
+      "seed": 29,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 3.4017233474514796e-13,
+      "maxabs_test_standardized_difference": 3.4017233474514796e-13
+    },
+    {
+      "source": "mri",
+      "fold": 2,
+      "seed": 29,
+      "component": 2,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 4.4875214655348827e-13,
+      "maxabs_test_standardized_difference": 4.4875214655348827e-13
+    },
+    {
+      "source": "mri",
+      "fold": 2,
+      "seed": 29,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 7.212008767965017e-13,
+      "maxabs_test_standardized_difference": 7.212008767965017e-13
+    },
+    {
+      "source": "mri",
+      "fold": 2,
+      "seed": 47,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 9.192646643896296e-14,
+      "maxabs_test_standardized_difference": 9.192646643896296e-14
+    },
+    {
+      "source": "mri",
+      "fold": 2,
+      "seed": 47,
+      "component": 2,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 3.7625458304546555e-13,
+      "maxabs_test_standardized_difference": 3.7625458304546555e-13
+    },
+    {
+      "source": "mri",
+      "fold": 2,
+      "seed": 47,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 3.2440716779547074e-13,
+      "maxabs_test_standardized_difference": 3.2440716779547074e-13
+    },
+    {
+      "source": "mri",
+      "fold": 3,
+      "seed": 13,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 1.5298873279334657e-13,
+      "maxabs_test_standardized_difference": 1.5298873279334657e-13
+    },
+    {
+      "source": "mri",
+      "fold": 3,
+      "seed": 13,
+      "component": 2,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 8.326672684688674e-14,
+      "maxabs_test_standardized_difference": 8.326672684688674e-14
+    },
+    {
+      "source": "mri",
+      "fold": 3,
+      "seed": 13,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 3.1752378504279477e-13,
+      "maxabs_test_standardized_difference": 3.1752378504279477e-13
+    },
+    {
+      "source": "mri",
+      "fold": 3,
+      "seed": 29,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 3.118061364659752e-13,
+      "maxabs_test_standardized_difference": 3.118061364659752e-13
+    },
+    {
+      "source": "mri",
+      "fold": 3,
+      "seed": 29,
+      "component": 2,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 3.907985046680551e-14,
+      "maxabs_test_standardized_difference": 3.907985046680551e-14
+    },
+    {
+      "source": "mri",
+      "fold": 3,
+      "seed": 29,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 1.0542677841840487e-12,
+      "maxabs_test_standardized_difference": 1.0542677841840487e-12
+    },
+    {
+      "source": "mri",
+      "fold": 3,
+      "seed": 47,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 9.636735853746359e-14,
+      "maxabs_test_standardized_difference": 9.636735853746359e-14
+    },
+    {
+      "source": "mri",
+      "fold": 3,
+      "seed": 47,
+      "component": 2,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 6.761258219967203e-14,
+      "maxabs_test_standardized_difference": 6.761258219967203e-14
+    },
+    {
+      "source": "mri",
+      "fold": 3,
+      "seed": 47,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 1.8385293287792592e-13,
+      "maxabs_test_standardized_difference": 1.8474111129762605e-13
+    },
+    {
+      "source": "mri",
+      "fold": 4,
+      "seed": 13,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 4.445332990599127e-13,
+      "maxabs_test_standardized_difference": 4.445332990599127e-13
+    },
+    {
+      "source": "mri",
+      "fold": 4,
+      "seed": 13,
+      "component": 2,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 2.567113188689518e-13,
+      "maxabs_test_standardized_difference": 2.567113188689518e-13
+    },
+    {
+      "source": "mri",
+      "fold": 4,
+      "seed": 13,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 1.270095140171179e-13,
+      "maxabs_test_standardized_difference": 1.2656542480726785e-13
+    },
+    {
+      "source": "mri",
+      "fold": 4,
+      "seed": 29,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 3.5771385853422544e-13,
+      "maxabs_test_standardized_difference": 3.5793590313915047e-13
+    },
+    {
+      "source": "mri",
+      "fold": 4,
+      "seed": 29,
+      "component": 2,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 9.814371537686384e-13,
+      "maxabs_test_standardized_difference": 9.814371537686384e-13
+    },
+    {
+      "source": "mri",
+      "fold": 4,
+      "seed": 29,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 1.5498713423767185e-13,
+      "maxabs_test_standardized_difference": 1.5498713423767185e-13
+    },
+    {
+      "source": "mri",
+      "fold": 4,
+      "seed": 47,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 3.3861802251067274e-14,
+      "maxabs_test_standardized_difference": 3.3861802251067274e-14
+    },
+    {
+      "source": "mri",
+      "fold": 4,
+      "seed": 47,
+      "component": 2,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 1.4621637234313312e-13,
+      "maxabs_test_standardized_difference": 1.4621637234313312e-13
+    },
+    {
+      "source": "mri",
+      "fold": 4,
+      "seed": 47,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 212,
+      "maxabs_training_standardized_difference": 6.355471704466709e-13,
+      "maxabs_test_standardized_difference": 6.355471704466709e-13
+    },
+    {
+      "source": "mri",
+      "fold": 5,
+      "seed": 13,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 211,
+      "maxabs_training_standardized_difference": 6.741274205523951e-13,
+      "maxabs_test_standardized_difference": 6.737943536450075e-13
+    },
+    {
+      "source": "mri",
+      "fold": 5,
+      "seed": 13,
+      "component": 2,
+      "meta_n": 283,
+      "held_n": 211,
+      "maxabs_training_standardized_difference": 1.1653455977977956e-12,
+      "maxabs_test_standardized_difference": 1.1653455977977956e-12
+    },
+    {
+      "source": "mri",
+      "fold": 5,
+      "seed": 13,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 211,
+      "maxabs_training_standardized_difference": 5.311306949806749e-13,
+      "maxabs_test_standardized_difference": 5.311306949806749e-13
+    },
+    {
+      "source": "mri",
+      "fold": 5,
+      "seed": 29,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 211,
+      "maxabs_training_standardized_difference": 1.305622276959184e-13,
+      "maxabs_test_standardized_difference": 1.305622276959184e-13
+    },
+    {
+      "source": "mri",
+      "fold": 5,
+      "seed": 29,
+      "component": 2,
+      "meta_n": 283,
+      "held_n": 211,
+      "maxabs_training_standardized_difference": 2.9543034685275416e-13,
+      "maxabs_test_standardized_difference": 2.9543034685275416e-13
+    },
+    {
+      "source": "mri",
+      "fold": 5,
+      "seed": 29,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 211,
+      "maxabs_training_standardized_difference": 9.792167077193881e-14,
+      "maxabs_test_standardized_difference": 9.792167077193881e-14
+    },
+    {
+      "source": "mri",
+      "fold": 5,
+      "seed": 47,
+      "component": 1,
+      "meta_n": 283,
+      "held_n": 211,
+      "maxabs_training_standardized_difference": 2.90878432451791e-14,
+      "maxabs_test_standardized_difference": 2.90878432451791e-14
+    },
+    {
+      "source": "mri",
+      "fold": 5,
+      "seed": 47,
+      "component": 2,
+      "meta_n": 283,
+      "held_n": 211,
+      "maxabs_training_standardized_difference": 2.3314683517128287e-13,
+      "maxabs_test_standardized_difference": 2.3314683517128287e-13
+    },
+    {
+      "source": "mri",
+      "fold": 5,
+      "seed": 47,
+      "component": 3,
+      "meta_n": 282,
+      "held_n": 211,
+      "maxabs_training_standardized_difference": 8.659739592076221e-14,
+      "maxabs_test_standardized_difference": 8.659739592076221e-14
+    },
+    {
+      "source": "pet",
+      "fold": 1,
+      "seed": 13,
+      "component": 1,
+      "meta_n": 144,
+      "held_n": 113,
+      "maxabs_training_standardized_difference": 2.233768725545815e-12,
+      "maxabs_test_standardized_difference": 2.233768725545815e-12
+    },
+    {
+      "source": "pet",
+      "fold": 1,
+      "seed": 13,
+      "component": 2,
+      "meta_n": 144,
+      "held_n": 113,
+      "maxabs_training_standardized_difference": 1.8074430840897548e-13,
+      "maxabs_test_standardized_difference": 1.8074430840897548e-13
+    },
+    {
+      "source": "pet",
+      "fold": 1,
+      "seed": 13,
+      "component": 3,
+      "meta_n": 143,
+      "held_n": 113,
+      "maxabs_training_standardized_difference": 2.3705482021796342e-12,
+      "maxabs_test_standardized_difference": 2.3709922913894843e-12
+    },
+    {
+      "source": "pet",
+      "fold": 1,
+      "seed": 29,
+      "component": 1,
+      "meta_n": 144,
+      "held_n": 113,
+      "maxabs_training_standardized_difference": 8.761880110341735e-13,
+      "maxabs_test_standardized_difference": 8.761880110341735e-13
+    },
+    {
+      "source": "pet",
+      "fold": 1,
+      "seed": 29,
+      "component": 2,
+      "meta_n": 144,
+      "held_n": 113,
+      "maxabs_training_standardized_difference": 2.4558133304708463e-13,
+      "maxabs_test_standardized_difference": 2.4558133304708463e-13
+    },
+    {
+      "source": "pet",
+      "fold": 1,
+      "seed": 29,
+      "component": 3,
+      "meta_n": 143,
+      "held_n": 113,
+      "maxabs_training_standardized_difference": 1.7266188478970435e-12,
+      "maxabs_test_standardized_difference": 1.7266188478970435e-12
+    },
+    {
+      "source": "pet",
+      "fold": 1,
+      "seed": 47,
+      "component": 1,
+      "meta_n": 144,
+      "held_n": 113,
+      "maxabs_training_standardized_difference": 5.38680211548126e-13,
+      "maxabs_test_standardized_difference": 5.38680211548126e-13
+    },
+    {
+      "source": "pet",
+      "fold": 1,
+      "seed": 47,
+      "component": 2,
+      "meta_n": 144,
+      "held_n": 113,
+      "maxabs_training_standardized_difference": 3.8413716652030416e-13,
+      "maxabs_test_standardized_difference": 3.8413716652030416e-13
+    },
+    {
+      "source": "pet",
+      "fold": 1,
+      "seed": 47,
+      "component": 3,
+      "meta_n": 143,
+      "held_n": 113,
+      "maxabs_training_standardized_difference": 1.4810375148499588e-12,
+      "maxabs_test_standardized_difference": 1.4810375148499588e-12
+    },
+    {
+      "source": "pet",
+      "fold": 2,
+      "seed": 13,
+      "component": 1,
+      "meta_n": 146,
+      "held_n": 106,
+      "maxabs_training_standardized_difference": 1.135314064981685e-12,
+      "maxabs_test_standardized_difference": 1.1355361095866101e-12
+    },
+    {
+      "source": "pet",
+      "fold": 2,
+      "seed": 13,
+      "component": 2,
+      "meta_n": 146,
+      "held_n": 106,
+      "maxabs_training_standardized_difference": 1.8756107778017395e-12,
+      "maxabs_test_standardized_difference": 1.8756107778017395e-12
+    },
+    {
+      "source": "pet",
+      "fold": 2,
+      "seed": 13,
+      "component": 3,
+      "meta_n": 146,
+      "held_n": 106,
+      "maxabs_training_standardized_difference": 3.8835601401387976e-13,
+      "maxabs_test_standardized_difference": 3.8835601401387976e-13
+    },
+    {
+      "source": "pet",
+      "fold": 2,
+      "seed": 29,
+      "component": 1,
+      "meta_n": 146,
+      "held_n": 106,
+      "maxabs_training_standardized_difference": 7.380762667708041e-13,
+      "maxabs_test_standardized_difference": 7.37854222165879e-13
+    },
+    {
+      "source": "pet",
+      "fold": 2,
+      "seed": 29,
+      "component": 2,
+      "meta_n": 146,
+      "held_n": 106,
+      "maxabs_training_standardized_difference": 2.227107387398064e-13,
+      "maxabs_test_standardized_difference": 2.227107387398064e-13
+    },
+    {
+      "source": "pet",
+      "fold": 2,
+      "seed": 29,
+      "component": 3,
+      "meta_n": 146,
+      "held_n": 106,
+      "maxabs_training_standardized_difference": 5.74207348336131e-13,
+      "maxabs_test_standardized_difference": 5.74207348336131e-13
+    },
+    {
+      "source": "pet",
+      "fold": 2,
+      "seed": 47,
+      "component": 1,
+      "meta_n": 146,
+      "held_n": 106,
+      "maxabs_training_standardized_difference": 1.0118572646433677e-12,
+      "maxabs_test_standardized_difference": 1.0118572646433677e-12
+    },
+    {
+      "source": "pet",
+      "fold": 2,
+      "seed": 47,
+      "component": 2,
+      "meta_n": 146,
+      "held_n": 106,
+      "maxabs_training_standardized_difference": 6.261657858885883e-13,
+      "maxabs_test_standardized_difference": 6.261657858885883e-13
+    },
+    {
+      "source": "pet",
+      "fold": 2,
+      "seed": 47,
+      "component": 3,
+      "meta_n": 146,
+      "held_n": 106,
+      "maxabs_training_standardized_difference": 9.734435479913373e-13,
+      "maxabs_test_standardized_difference": 9.734435479913373e-13
+    },
+    {
+      "source": "pet",
+      "fold": 3,
+      "seed": 13,
+      "component": 1,
+      "meta_n": 148,
+      "held_n": 102,
+      "maxabs_training_standardized_difference": 9.939826739469027e-13,
+      "maxabs_test_standardized_difference": 9.939826739469027e-13
+    },
+    {
+      "source": "pet",
+      "fold": 3,
+      "seed": 13,
+      "component": 2,
+      "meta_n": 147,
+      "held_n": 102,
+      "maxabs_training_standardized_difference": 5.720979245893432e-13,
+      "maxabs_test_standardized_difference": 5.720979245893432e-13
+    },
+    {
+      "source": "pet",
+      "fold": 3,
+      "seed": 13,
+      "component": 3,
+      "meta_n": 147,
+      "held_n": 102,
+      "maxabs_training_standardized_difference": 4.82280881897168e-13,
+      "maxabs_test_standardized_difference": 4.82280881897168e-13
+    },
+    {
+      "source": "pet",
+      "fold": 3,
+      "seed": 29,
+      "component": 1,
+      "meta_n": 148,
+      "held_n": 102,
+      "maxabs_training_standardized_difference": 9.312550730555813e-13,
+      "maxabs_test_standardized_difference": 9.312550730555813e-13
+    },
+    {
+      "source": "pet",
+      "fold": 3,
+      "seed": 29,
+      "component": 2,
+      "meta_n": 147,
+      "held_n": 102,
+      "maxabs_training_standardized_difference": 7.51620987671231e-13,
+      "maxabs_test_standardized_difference": 7.51620987671231e-13
+    },
+    {
+      "source": "pet",
+      "fold": 3,
+      "seed": 29,
+      "component": 3,
+      "meta_n": 147,
+      "held_n": 102,
+      "maxabs_training_standardized_difference": 1.2256862191861728e-13,
+      "maxabs_test_standardized_difference": 1.2256862191861728e-13
+    },
+    {
+      "source": "pet",
+      "fold": 3,
+      "seed": 47,
+      "component": 1,
+      "meta_n": 148,
+      "held_n": 102,
+      "maxabs_training_standardized_difference": 6.794564910705958e-13,
+      "maxabs_test_standardized_difference": 6.794564910705958e-13
+    },
+    {
+      "source": "pet",
+      "fold": 3,
+      "seed": 47,
+      "component": 2,
+      "meta_n": 147,
+      "held_n": 102,
+      "maxabs_training_standardized_difference": 9.192646643896296e-14,
+      "maxabs_test_standardized_difference": 9.192646643896296e-14
+    },
+    {
+      "source": "pet",
+      "fold": 3,
+      "seed": 47,
+      "component": 3,
+      "meta_n": 147,
+      "held_n": 102,
+      "maxabs_training_standardized_difference": 4.747313653297169e-13,
+      "maxabs_test_standardized_difference": 4.747313653297169e-13
+    },
+    {
+      "source": "pet",
+      "fold": 4,
+      "seed": 13,
+      "component": 1,
+      "meta_n": 142,
+      "held_n": 119,
+      "maxabs_training_standardized_difference": 9.765521724602877e-13,
+      "maxabs_test_standardized_difference": 9.769962616701378e-13
+    },
+    {
+      "source": "pet",
+      "fold": 4,
+      "seed": 13,
+      "component": 2,
+      "meta_n": 142,
+      "held_n": 119,
+      "maxabs_training_standardized_difference": 1.2736478538499796e-12,
+      "maxabs_test_standardized_difference": 1.2736478538499796e-12
+    },
+    {
+      "source": "pet",
+      "fold": 4,
+      "seed": 13,
+      "component": 3,
+      "meta_n": 141,
+      "held_n": 119,
+      "maxabs_training_standardized_difference": 1.056266185628374e-12,
+      "maxabs_test_standardized_difference": 1.056266185628374e-12
+    },
+    {
+      "source": "pet",
+      "fold": 4,
+      "seed": 29,
+      "component": 1,
+      "meta_n": 142,
+      "held_n": 119,
+      "maxabs_training_standardized_difference": 2.41140440948584e-13,
+      "maxabs_test_standardized_difference": 2.41140440948584e-13
+    },
+    {
+      "source": "pet",
+      "fold": 4,
+      "seed": 29,
+      "component": 2,
+      "meta_n": 142,
+      "held_n": 119,
+      "maxabs_training_standardized_difference": 2.013944566670034e-12,
+      "maxabs_test_standardized_difference": 2.013944566670034e-12
+    },
+    {
+      "source": "pet",
+      "fold": 4,
+      "seed": 29,
+      "component": 3,
+      "meta_n": 141,
+      "held_n": 119,
+      "maxabs_training_standardized_difference": 2.1938006966593093e-13,
+      "maxabs_test_standardized_difference": 2.1938006966593093e-13
+    },
+    {
+      "source": "pet",
+      "fold": 4,
+      "seed": 47,
+      "component": 1,
+      "meta_n": 142,
+      "held_n": 119,
+      "maxabs_training_standardized_difference": 1.305622276959184e-13,
+      "maxabs_test_standardized_difference": 1.3034018309099338e-13
+    },
+    {
+      "source": "pet",
+      "fold": 4,
+      "seed": 47,
+      "component": 2,
+      "meta_n": 142,
+      "held_n": 119,
+      "maxabs_training_standardized_difference": 3.994582442601313e-13,
+      "maxabs_test_standardized_difference": 3.994582442601313e-13
+    },
+    {
+      "source": "pet",
+      "fold": 4,
+      "seed": 47,
+      "component": 3,
+      "meta_n": 141,
+      "held_n": 119,
+      "maxabs_training_standardized_difference": 1.9773072068574038e-13,
+      "maxabs_test_standardized_difference": 1.9773072068574038e-13
+    },
+    {
+      "source": "pet",
+      "fold": 5,
+      "seed": 13,
+      "component": 1,
+      "meta_n": 147,
+      "held_n": 104,
+      "maxabs_training_standardized_difference": 2.631894702176396e-12,
+      "maxabs_test_standardized_difference": 2.631894702176396e-12
+    },
+    {
+      "source": "pet",
+      "fold": 5,
+      "seed": 13,
+      "component": 2,
+      "meta_n": 147,
+      "held_n": 104,
+      "maxabs_training_standardized_difference": 1.5685230891904212e-12,
+      "maxabs_test_standardized_difference": 1.5685230891904212e-12
+    },
+    {
+      "source": "pet",
+      "fold": 5,
+      "seed": 13,
+      "component": 3,
+      "meta_n": 146,
+      "held_n": 104,
+      "maxabs_training_standardized_difference": 1.7763568394002505e-13,
+      "maxabs_test_standardized_difference": 1.7763568394002505e-13
+    },
+    {
+      "source": "pet",
+      "fold": 5,
+      "seed": 29,
+      "component": 1,
+      "meta_n": 147,
+      "held_n": 104,
+      "maxabs_training_standardized_difference": 4.884981308350689e-13,
+      "maxabs_test_standardized_difference": 4.884981308350689e-13
+    },
+    {
+      "source": "pet",
+      "fold": 5,
+      "seed": 29,
+      "component": 2,
+      "meta_n": 147,
+      "held_n": 104,
+      "maxabs_training_standardized_difference": 2.7536306568265445e-13,
+      "maxabs_test_standardized_difference": 2.7536306568265445e-13
+    },
+    {
+      "source": "pet",
+      "fold": 5,
+      "seed": 29,
+      "component": 3,
+      "meta_n": 146,
+      "held_n": 104,
+      "maxabs_training_standardized_difference": 2.1227464230832993e-13,
+      "maxabs_test_standardized_difference": 2.1227464230832993e-13
+    },
+    {
+      "source": "pet",
+      "fold": 5,
+      "seed": 47,
+      "component": 1,
+      "meta_n": 147,
+      "held_n": 104,
+      "maxabs_training_standardized_difference": 9.486855745421963e-13,
+      "maxabs_test_standardized_difference": 9.486855745421963e-13
+    },
+    {
+      "source": "pet",
+      "fold": 5,
+      "seed": 47,
+      "component": 2,
+      "meta_n": 147,
+      "held_n": 104,
+      "maxabs_training_standardized_difference": 1.752376022068347e-12,
+      "maxabs_test_standardized_difference": 1.752376022068347e-12
+    },
+    {
+      "source": "pet",
+      "fold": 5,
+      "seed": 47,
+      "component": 3,
+      "meta_n": 146,
+      "held_n": 104,
+      "maxabs_training_standardized_difference": 1.4286349880876514e-12,
+      "maxabs_test_standardized_difference": 1.4286349880876514e-12
+    }
+  ]
+}

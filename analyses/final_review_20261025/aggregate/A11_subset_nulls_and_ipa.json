@@ -1,0 +1,867 @@
+{
+  "status": "EXECUTED_FROZEN_PREDICTION_RECONSTRUCTION",
+  "definition": "IPA percent = 100*(1 - participant-weighted IBS_model / participant-weighted IBS_null), calculated before display rounding.",
+  "nulls": {
+    "mri": {
+      "n": 1059,
+      "ibs": 0.042796942809214054
+    },
+    "pet": {
+      "n": 544,
+      "ibs": 0.0428165087867178
+    },
+    "plasma": {
+      "n": 696,
+      "ibs": 0.042481020706561304
+    },
+    "tau": {
+      "n": 358,
+      "ibs": 0.05348972978765414
+    }
+  },
+  "models": {
+    "mri:clinical": {
+      "n": 1059,
+      "ibs_model": 0.04068747356646733,
+      "ibs_training_km_null": 0.042796942809214054,
+      "ipa_percent": 4.9290185332877545,
+      "fold_training_support": [
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 848,
+          "events": 192
+        }
+      ],
+      "fold_evaluation_sizes": [
+        212,
+        212,
+        212,
+        212,
+        211
+      ]
+    },
+    "mri:clinical_amyloid": {
+      "n": 1059,
+      "ibs_model": 0.04029953389680806,
+      "ibs_training_km_null": 0.042796942809214054,
+      "ipa_percent": 5.83548437919802,
+      "fold_training_support": [
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 848,
+          "events": 192
+        }
+      ],
+      "fold_evaluation_sizes": [
+        212,
+        212,
+        212,
+        212,
+        211
+      ]
+    },
+    "mri:clinical_volumes": {
+      "n": 1059,
+      "ibs_model": 0.040776999577609024,
+      "ibs_training_km_null": 0.042796942809214054,
+      "ipa_percent": 4.719830667834857,
+      "fold_training_support": [
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 848,
+          "events": 192
+        }
+      ],
+      "fold_evaluation_sizes": [
+        212,
+        212,
+        212,
+        212,
+        211
+      ]
+    },
+    "mri:clinical_volumes_amyloid": {
+      "n": 1059,
+      "ibs_model": 0.040627981413079224,
+      "ibs_training_km_null": 0.042796942809214054,
+      "ipa_percent": 5.06802882113313,
+      "fold_training_support": [
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 848,
+          "events": 192
+        }
+      ],
+      "fold_evaluation_sizes": [
+        212,
+        212,
+        212,
+        212,
+        211
+      ]
+    },
+    "mri:clinical_mri": {
+      "n": 1059,
+      "ibs_model": 0.040761566495999185,
+      "ibs_training_km_null": 0.042796942809214054,
+      "ipa_percent": 4.755891845565796,
+      "fold_training_support": [
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 848,
+          "events": 192
+        }
+      ],
+      "fold_evaluation_sizes": [
+        212,
+        212,
+        212,
+        212,
+        211
+      ]
+    },
+    "mri:clinical_mri_amyloid": {
+      "n": 1059,
+      "ibs_model": 0.04040215484829208,
+      "ibs_training_km_null": 0.042796942809214054,
+      "ipa_percent": 5.595698673145377,
+      "fold_training_support": [
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 848,
+          "events": 192
+        }
+      ],
+      "fold_evaluation_sizes": [
+        212,
+        212,
+        212,
+        212,
+        211
+      ]
+    },
+    "mri:clinical_volumes_mri_amyloid": {
+      "n": 1059,
+      "ibs_model": 0.040749956890266156,
+      "ibs_training_km_null": 0.042796942809214054,
+      "ipa_percent": 4.783019030292013,
+      "fold_training_support": [
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 847,
+          "events": 191
+        },
+        {
+          "n": 848,
+          "events": 192
+        }
+      ],
+      "fold_evaluation_sizes": [
+        212,
+        212,
+        212,
+        212,
+        211
+      ]
+    },
+    "mri:blood_clinical_amyloid": {
+      "n": 696,
+      "ibs_model": 0.04052827020939616,
+      "ibs_training_km_null": 0.042481020706561304,
+      "ipa_percent": 4.596759834594888,
+      "fold_training_support": [
+        {
+          "n": 555,
+          "events": 132
+        },
+        {
+          "n": 567,
+          "events": 135
+        },
+        {
+          "n": 549,
+          "events": 127
+        },
+        {
+          "n": 554,
+          "events": 134
+        },
+        {
+          "n": 559,
+          "events": 136
+        }
+      ],
+      "fold_evaluation_sizes": [
+        141,
+        129,
+        147,
+        142,
+        137
+      ]
+    },
+    "mri:blood_clinical_amyloid_blood": {
+      "n": 696,
+      "ibs_model": 0.04015489072035541,
+      "ibs_training_km_null": 0.042481020706561304,
+      "ipa_percent": 5.475692315101588,
+      "fold_training_support": [
+        {
+          "n": 555,
+          "events": 132
+        },
+        {
+          "n": 567,
+          "events": 135
+        },
+        {
+          "n": 549,
+          "events": 127
+        },
+        {
+          "n": 554,
+          "events": 134
+        },
+        {
+          "n": 559,
+          "events": 136
+        }
+      ],
+      "fold_evaluation_sizes": [
+        141,
+        129,
+        147,
+        142,
+        137
+      ]
+    },
+    "mri:blood_clinical_mri_amyloid_blood": {
+      "n": 696,
+      "ibs_model": 0.04011117163905968,
+      "ibs_training_km_null": 0.042481020706561304,
+      "ipa_percent": 5.578606700322508,
+      "fold_training_support": [
+        {
+          "n": 555,
+          "events": 132
+        },
+        {
+          "n": 567,
+          "events": 135
+        },
+        {
+          "n": 549,
+          "events": 127
+        },
+        {
+          "n": 554,
+          "events": 134
+        },
+        {
+          "n": 559,
+          "events": 136
+        }
+      ],
+      "fold_evaluation_sizes": [
+        141,
+        129,
+        147,
+        142,
+        137
+      ]
+    },
+    "pet:clinical": {
+      "n": 544,
+      "ibs_model": 0.040641031466743076,
+      "ibs_training_km_null": 0.0428165087867178,
+      "ipa_percent": 5.080931121244481,
+      "fold_training_support": [
+        {
+          "n": 431,
+          "events": 90
+        },
+        {
+          "n": 438,
+          "events": 87
+        },
+        {
+          "n": 442,
+          "events": 94
+        },
+        {
+          "n": 425,
+          "events": 86
+        },
+        {
+          "n": 440,
+          "events": 91
+        }
+      ],
+      "fold_evaluation_sizes": [
+        113,
+        106,
+        102,
+        119,
+        104
+      ]
+    },
+    "pet:clinical_amyloid": {
+      "n": 544,
+      "ibs_model": 0.04054738841509648,
+      "ibs_training_km_null": 0.0428165087867178,
+      "ipa_percent": 5.299638938159356,
+      "fold_training_support": [
+        {
+          "n": 431,
+          "events": 90
+        },
+        {
+          "n": 438,
+          "events": 87
+        },
+        {
+          "n": 442,
+          "events": 94
+        },
+        {
+          "n": 425,
+          "events": 86
+        },
+        {
+          "n": 440,
+          "events": 91
+        }
+      ],
+      "fold_evaluation_sizes": [
+        113,
+        106,
+        102,
+        119,
+        104
+      ]
+    },
+    "pet:clinical_volumes": {
+      "n": 544,
+      "ibs_model": 0.03998154155917585,
+      "ibs_training_km_null": 0.0428165087867178,
+      "ipa_percent": 6.621201279309796,
+      "fold_training_support": [
+        {
+          "n": 431,
+          "events": 90
+        },
+        {
+          "n": 438,
+          "events": 87
+        },
+        {
+          "n": 442,
+          "events": 94
+        },
+        {
+          "n": 425,
+          "events": 86
+        },
+        {
+          "n": 440,
+          "events": 91
+        }
+      ],
+      "fold_evaluation_sizes": [
+        113,
+        106,
+        102,
+        119,
+        104
+      ]
+    },
+    "pet:clinical_volumes_amyloid": {
+      "n": 544,
+      "ibs_model": 0.04039517897652883,
+      "ibs_training_km_null": 0.0428165087867178,
+      "ipa_percent": 5.655131347234221,
+      "fold_training_support": [
+        {
+          "n": 431,
+          "events": 90
+        },
+        {
+          "n": 438,
+          "events": 87
+        },
+        {
+          "n": 442,
+          "events": 94
+        },
+        {
+          "n": 425,
+          "events": 86
+        },
+        {
+          "n": 440,
+          "events": 91
+        }
+      ],
+      "fold_evaluation_sizes": [
+        113,
+        106,
+        102,
+        119,
+        104
+      ]
+    },
+    "pet:clinical_mri": {
+      "n": 544,
+      "ibs_model": 0.04076973087198519,
+      "ibs_training_km_null": 0.0428165087867178,
+      "ipa_percent": 4.7803475171883765,
+      "fold_training_support": [
+        {
+          "n": 431,
+          "events": 90
+        },
+        {
+          "n": 438,
+          "events": 87
+        },
+        {
+          "n": 442,
+          "events": 94
+        },
+        {
+          "n": 425,
+          "events": 86
+        },
+        {
+          "n": 440,
+          "events": 91
+        }
+      ],
+      "fold_evaluation_sizes": [
+        113,
+        106,
+        102,
+        119,
+        104
+      ]
+    },
+    "pet:clinical_mri_amyloid": {
+      "n": 544,
+      "ibs_model": 0.04063687916019525,
+      "ibs_training_km_null": 0.0428165087867178,
+      "ipa_percent": 5.090629031385896,
+      "fold_training_support": [
+        {
+          "n": 431,
+          "events": 90
+        },
+        {
+          "n": 438,
+          "events": 87
+        },
+        {
+          "n": 442,
+          "events": 94
+        },
+        {
+          "n": 425,
+          "events": 86
+        },
+        {
+          "n": 440,
+          "events": 91
+        }
+      ],
+      "fold_evaluation_sizes": [
+        113,
+        106,
+        102,
+        119,
+        104
+      ]
+    },
+    "pet:clinical_volumes_mri_amyloid": {
+      "n": 544,
+      "ibs_model": 0.04072196520187054,
+      "ibs_training_km_null": 0.0428165087867178,
+      "ipa_percent": 4.891906519704403,
+      "fold_training_support": [
+        {
+          "n": 431,
+          "events": 90
+        },
+        {
+          "n": 438,
+          "events": 87
+        },
+        {
+          "n": 442,
+          "events": 94
+        },
+        {
+          "n": 425,
+          "events": 86
+        },
+        {
+          "n": 440,
+          "events": 91
+        }
+      ],
+      "fold_evaluation_sizes": [
+        113,
+        106,
+        102,
+        119,
+        104
+      ]
+    },
+    "pet:clinical_mri_amyloid_pet": {
+      "n": 544,
+      "ibs_model": 0.040592027568921794,
+      "ibs_training_km_null": 0.0428165087867178,
+      "ipa_percent": 5.195382063672749,
+      "fold_training_support": [
+        {
+          "n": 431,
+          "events": 90
+        },
+        {
+          "n": 438,
+          "events": 87
+        },
+        {
+          "n": 442,
+          "events": 94
+        },
+        {
+          "n": 425,
+          "events": 86
+        },
+        {
+          "n": 440,
+          "events": 91
+        }
+      ],
+      "fold_evaluation_sizes": [
+        113,
+        106,
+        102,
+        119,
+        104
+      ]
+    },
+    "tau_cox:clinical_amyloid": {
+      "n": 358,
+      "ibs_model": 0.049564395144863306,
+      "ibs_training_km_null": 0.05348972978765414,
+      "ipa_percent": 7.3384828421713895,
+      "fold_training_support": [
+        {
+          "n": 291,
+          "events": 73
+        },
+        {
+          "n": 288,
+          "events": 78
+        },
+        {
+          "n": 288,
+          "events": 73
+        },
+        {
+          "n": 289,
+          "events": 72
+        },
+        {
+          "n": 276,
+          "events": 72
+        }
+      ],
+      "fold_evaluation_sizes": [
+        67,
+        70,
+        70,
+        69,
+        82
+      ]
+    },
+    "tau_cox:clinical_amyloid_tau": {
+      "n": 358,
+      "ibs_model": 0.046798983193836886,
+      "ibs_training_km_null": 0.05348972978765414,
+      "ipa_percent": 12.508469607863926,
+      "fold_training_support": [
+        {
+          "n": 291,
+          "events": 73
+        },
+        {
+          "n": 288,
+          "events": 78
+        },
+        {
+          "n": 288,
+          "events": 73
+        },
+        {
+          "n": 289,
+          "events": 72
+        },
+        {
+          "n": 276,
+          "events": 72
+        }
+      ],
+      "fold_evaluation_sizes": [
+        67,
+        70,
+        70,
+        69,
+        82
+      ]
+    },
+    "tau_rsf:clinical_amyloid": {
+      "n": 358,
+      "ibs_model": 0.05113331655353648,
+      "ibs_training_km_null": 0.05348972978765414,
+      "ipa_percent": 4.405356399204585,
+      "fold_training_support": [
+        {
+          "n": 291,
+          "events": 73
+        },
+        {
+          "n": 288,
+          "events": 78
+        },
+        {
+          "n": 288,
+          "events": 73
+        },
+        {
+          "n": 289,
+          "events": 72
+        },
+        {
+          "n": 276,
+          "events": 72
+        }
+      ],
+      "fold_evaluation_sizes": [
+        67,
+        70,
+        70,
+        69,
+        82
+      ]
+    },
+    "tau_rsf:clinical_amyloid_tau": {
+      "n": 358,
+      "ibs_model": 0.049715049617970235,
+      "ibs_training_km_null": 0.05348972978765414,
+      "ipa_percent": 7.056831628555238,
+      "fold_training_support": [
+        {
+          "n": 291,
+          "events": 73
+        },
+        {
+          "n": 288,
+          "events": 78
+        },
+        {
+          "n": 288,
+          "events": 73
+        },
+        {
+          "n": 289,
+          "events": 72
+        },
+        {
+          "n": 276,
+          "events": 72
+        }
+      ],
+      "fold_evaluation_sizes": [
+        67,
+        70,
+        70,
+        69,
+        82
+      ]
+    },
+    "tau_mri:base": {
+      "n": 358,
+      "ibs_model": 0.050238705006319946,
+      "ibs_training_km_null": 0.05348972978765414,
+      "ipa_percent": 6.077848578110712,
+      "fold_training_support": [
+        {
+          "n": 291,
+          "events": 73
+        },
+        {
+          "n": 288,
+          "events": 78
+        },
+        {
+          "n": 288,
+          "events": 73
+        },
+        {
+          "n": 289,
+          "events": 72
+        },
+        {
+          "n": 276,
+          "events": 72
+        }
+      ],
+      "fold_evaluation_sizes": [
+        67,
+        70,
+        70,
+        69,
+        82
+      ]
+    },
+    "tau_mri:plus_tau": {
+      "n": 358,
+      "ibs_model": 0.047259389014323507,
+      "ibs_training_km_null": 0.05348972978765414,
+      "ipa_percent": 11.647732748069794,
+      "fold_training_support": [
+        {
+          "n": 291,
+          "events": 73
+        },
+        {
+          "n": 288,
+          "events": 78
+        },
+        {
+          "n": 288,
+          "events": 73
+        },
+        {
+          "n": 289,
+          "events": 72
+        },
+        {
+          "n": 276,
+          "events": 72
+        }
+      ],
+      "fold_evaluation_sizes": [
+        67,
+        70,
+        70,
+        69,
+        82
+      ]
+    }
+  },
+  "existing_table2_values_reconciled": true,
+  "maximum_prior_absolute_error": 0.0,
+  "tau_ipa_status": "Additional descriptive point estimates, not new significance tests or a comparison of modalities."
+}

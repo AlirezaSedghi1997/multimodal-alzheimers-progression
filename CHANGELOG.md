@@ -1,5 +1,13 @@
 # Research update 2026-10-24
 
+## 2026-10-25 — final-review fixed-prediction addendum
+
+- Added 20 late-window IBS contrasts with 40,000 paired draws and a separate K=20 family; no adjusted interval excludes zero.
+- Reconstructed subset KM null/IPA, rechecked all-draw within-fold concordance support and exposed existing sex diagnostics.
+- Verified affine-transform cancellation in 90 separately standardized component pipelines; no new model fitting or pooled tuning claimed.
+- Added verified source scopes and an offline aggregate/hash checker; original models and primary estimates retained.
+
+
 - Added the dated executed post-hoc review bundle: resampling policies, standardized OOF heads, paired tau C, 220-person matched biomarkers, original-head EDF/nested tuning, timing/provenance audits, synthetic trainer execution and four fixed deformation summaries.
 - Retained negative/uncertain imaging increments and the adverse deformation-summary probability-error result. Qualified broad tau robustness when fold aggregation changes.
 - Preserved original primary estimates and the separate historical compact CNN/Jacobian pilot no-go record.

@@ -10,6 +10,19 @@ Training a sophisticated model is only part of the work. The harder part is chec
 
 > **Research status:** Internal, exploratory analyses using restricted A4/LEARN study data. This is research software, not a clinical diagnostic or decision-support system. No independent external validation has been completed.
 
+## Latest fixed-prediction review checks (25 October 2026)
+
+The [new addendum](analyses/final_review_20261025/README.md) retains the primary
+results and adds a day 730–1095.75 error window for all 20 original matched
+contrasts. All 20 adjusted intervals include zero. It also reconstructs subset
+Kaplan–Meier nulls and IPA, exposes existing sex-specific diagnostics, verifies
+all-draw within-fold concordance support, and checks preprocessing invariance
+in 90 original component heads. These internal post-hoc checks do not establish
+equivalence, external validity or a causal explanation of PET selection or tau
+calibration. Jointly standardized and safely tuned pooled fusion remains
+unevaluated. The addendum contains aggregate data and exact executed sources,
+with an offline consistency checker and explicit restricted-data requirements.
+
 ## What this project delivers
 
 - **More than a collection of models.** MRI, amyloid PET (FBP), tau PET (FTP), and prognostic fusion each have their own research track, backed by shared quality checks, evaluation tools, and reporting. The result is a connected research codebase rather than an isolated experiment.

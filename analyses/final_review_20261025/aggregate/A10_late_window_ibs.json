@@ -1,0 +1,433 @@
+{
+  "status": "EXECUTED_POST_HOC_FIXED_PREDICTIONS",
+  "original_grid_days": [
+    365.0,
+    456.34375,
+    547.6875,
+    639.03125,
+    730.375,
+    821.71875,
+    913.0625,
+    1004.40625,
+    1095.75
+  ],
+  "new_grid_days": [
+    730.0,
+    730.375,
+    821.71875,
+    913.0625,
+    1004.40625,
+    1095.75
+  ],
+  "new_grid_boundary_interpolation": "Survival at day 730 linearly interpolated only between frozen original prediction times.",
+  "resamples": 40000,
+  "seed": 20261025,
+  "sampling": "Paired participant multinomial multiplicities within each original outer fold; stream SeedSequence([20261025, fold_index, fold_size]).",
+  "family_size": 20,
+  "uncertainty": "Conditional on original predictions, outer partitions and training censoring distributions; no refitting or selection uncertainty.",
+  "original_results_unchanged": true,
+  "comparisons": [
+    {
+      "track": "mri",
+      "reference": "clinical",
+      "augmented": "clinical_amyloid",
+      "n": 1059,
+      "late_ibs_reference": 0.07889708170076688,
+      "late_ibs_augmented": 0.07811624604829624,
+      "late_delta_ibs": -0.000780835652470641,
+      "nominal_ci95": [
+        -0.0029239239958774167,
+        0.0013651668550818728
+      ],
+      "adjusted_20_ci": [
+        -0.004116177355492378,
+        0.0025155085051031044
+      ],
+      "original_full_window_delta_ibs": -0.00038793966965927336,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "mri",
+      "reference": "clinical",
+      "augmented": "clinical_volumes",
+      "n": 1059,
+      "late_ibs_reference": 0.07889708170076688,
+      "late_ibs_augmented": 0.0790740438557464,
+      "late_delta_ibs": 0.00017696215497951955,
+      "nominal_ci95": [
+        -0.001431588661762063,
+        0.0016825057245561563
+      ],
+      "adjusted_20_ci": [
+        -0.0023570399702891034,
+        0.0024763102376274626
+      ],
+      "original_full_window_delta_ibs": 8.952601114169593e-05,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "mri",
+      "reference": "clinical_amyloid",
+      "augmented": "clinical_volumes_amyloid",
+      "n": 1059,
+      "late_ibs_reference": 0.07811624604829624,
+      "late_ibs_augmented": 0.07877012602108342,
+      "late_delta_ibs": 0.0006538799727871687,
+      "nominal_ci95": [
+        -0.0007697160638583784,
+        0.002030133896496488
+      ],
+      "adjusted_20_ci": [
+        -0.001587735123174233,
+        0.0027619702112794448
+      ],
+      "original_full_window_delta_ibs": 0.0003284475162711672,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "mri",
+      "reference": "clinical",
+      "augmented": "clinical_mri",
+      "n": 1059,
+      "late_ibs_reference": 0.07889708170076688,
+      "late_ibs_augmented": 0.07904433086532106,
+      "late_delta_ibs": 0.0001472491645541656,
+      "nominal_ci95": [
+        -0.00021960717628319995,
+        0.0005102132710445993
+      ],
+      "adjusted_20_ci": [
+        -0.0004110089321126599,
+        0.0007111587022936301
+      ],
+      "original_full_window_delta_ibs": 7.409292953184716e-05,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "mri",
+      "reference": "clinical_amyloid",
+      "augmented": "clinical_mri_amyloid",
+      "n": 1059,
+      "late_ibs_reference": 0.07811624604829624,
+      "late_ibs_augmented": 0.07831965717591025,
+      "late_delta_ibs": 0.0002034111276140056,
+      "nominal_ci95": [
+        -0.0002043540419494547,
+        0.0006155351649558523
+      ],
+      "adjusted_20_ci": [
+        -0.0004172080108551073,
+        0.0008480361373974965
+      ],
+      "original_full_window_delta_ibs": 0.00010262095148402035,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "mri",
+      "reference": "clinical_volumes_amyloid",
+      "augmented": "clinical_volumes_mri_amyloid",
+      "n": 1059,
+      "late_ibs_reference": 0.07877012602108342,
+      "late_ibs_augmented": 0.07901246932072956,
+      "late_delta_ibs": 0.00024234329964613764,
+      "nominal_ci95": [
+        -0.00010510348085518344,
+        0.0005946561154021189
+      ],
+      "adjusted_20_ci": [
+        -0.0002902751195537726,
+        0.0007805363519026355
+      ],
+      "original_full_window_delta_ibs": 0.00012197547718692711,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "mri",
+      "reference": "blood_clinical_amyloid",
+      "augmented": "blood_clinical_amyloid_blood",
+      "n": 696,
+      "late_ibs_reference": 0.07884781318201857,
+      "late_ibs_augmented": 0.07810294922655893,
+      "late_delta_ibs": -0.0007448639554596335,
+      "nominal_ci95": [
+        -0.003029690005193163,
+        0.0014247422724849776
+      ],
+      "adjusted_20_ci": [
+        -0.00432588737478217,
+        0.0025086890990793295
+      ],
+      "original_full_window_delta_ibs": -0.00037337948904075236,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "mri",
+      "reference": "blood_clinical_amyloid_blood",
+      "augmented": "blood_clinical_mri_amyloid_blood",
+      "n": 696,
+      "late_ibs_reference": 0.07810294922655893,
+      "late_ibs_augmented": 0.0780123558376632,
+      "late_delta_ibs": -9.059338889573642e-05,
+      "nominal_ci95": [
+        -0.0008540182378209072,
+        0.0006916922860213676
+      ],
+      "adjusted_20_ci": [
+        -0.0012747990226997415,
+        0.0011063207678411971
+      ],
+      "original_full_window_delta_ibs": -4.3719081295723875e-05,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "pet",
+      "reference": "clinical",
+      "augmented": "clinical_amyloid",
+      "n": 544,
+      "late_ibs_reference": 0.07676161608254552,
+      "late_ibs_augmented": 0.07655379256070752,
+      "late_delta_ibs": -0.00020782352183800005,
+      "nominal_ci95": [
+        -0.0029331598216443175,
+        0.0025929376860897757
+      ],
+      "adjusted_20_ci": [
+        -0.004389753283152145,
+        0.004259301508998346
+      ],
+      "original_full_window_delta_ibs": -9.364305164658103e-05,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "pet",
+      "reference": "clinical",
+      "augmented": "clinical_volumes",
+      "n": 544,
+      "late_ibs_reference": 0.07676161608254552,
+      "late_ibs_augmented": 0.07542335021909473,
+      "late_delta_ibs": -0.0013382658634507882,
+      "nominal_ci95": [
+        -0.00459448435046743,
+        0.0017737258857990416
+      ],
+      "adjusted_20_ci": [
+        -0.0065834990251767605,
+        0.003378536108709248
+      ],
+      "original_full_window_delta_ibs": -0.0006594899075672211,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "pet",
+      "reference": "clinical_amyloid",
+      "augmented": "clinical_volumes_amyloid",
+      "n": 544,
+      "late_ibs_reference": 0.07655379256070752,
+      "late_ibs_augmented": 0.07621914323362661,
+      "late_delta_ibs": -0.0003346493270809102,
+      "nominal_ci95": [
+        -0.003372681438137053,
+        0.0027072445640793537
+      ],
+      "adjusted_20_ci": [
+        -0.005091110581655799,
+        0.00446295614480742
+      ],
+      "original_full_window_delta_ibs": -0.0001522094385676628,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "pet",
+      "reference": "clinical",
+      "augmented": "clinical_mri",
+      "n": 544,
+      "late_ibs_reference": 0.07676161608254552,
+      "late_ibs_augmented": 0.07701622944682865,
+      "late_delta_ibs": 0.0002546133642831224,
+      "nominal_ci95": [
+        -0.0003349800570175026,
+        0.0008706477166608116
+      ],
+      "adjusted_20_ci": [
+        -0.0006314755384601216,
+        0.0012034766901297983
+      ],
+      "original_full_window_delta_ibs": 0.00012869940524212563,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "pet",
+      "reference": "clinical_amyloid",
+      "augmented": "clinical_mri_amyloid",
+      "n": 544,
+      "late_ibs_reference": 0.07655379256070752,
+      "late_ibs_augmented": 0.07672885699891674,
+      "late_delta_ibs": 0.00017506443820923702,
+      "nominal_ci95": [
+        -0.0004796656036934589,
+        0.0008680446636792652
+      ],
+      "adjusted_20_ci": [
+        -0.0008310908082111458,
+        0.0012658972788674263
+      ],
+      "original_full_window_delta_ibs": 8.949074509875503e-05,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "pet",
+      "reference": "clinical_volumes_amyloid",
+      "augmented": "clinical_volumes_mri_amyloid",
+      "n": 544,
+      "late_ibs_reference": 0.07621914323362661,
+      "late_ibs_augmented": 0.07686572738003117,
+      "late_delta_ibs": 0.0006465841464045612,
+      "nominal_ci95": [
+        -0.0001324218087260046,
+        0.0014903235596743513
+      ],
+      "adjusted_20_ci": [
+        -0.0005508857654995808,
+        0.001984306999676152
+      ],
+      "original_full_window_delta_ibs": 0.00032678622534171726,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "pet",
+      "reference": "clinical_mri_amyloid",
+      "augmented": "clinical_mri_amyloid_pet",
+      "n": 544,
+      "late_ibs_reference": 0.07672885699891674,
+      "late_ibs_augmented": 0.07663530924329255,
+      "late_delta_ibs": -9.35477556241989e-05,
+      "nominal_ci95": [
+        -0.0010955451028575502,
+        0.000871913354444685
+      ],
+      "adjusted_20_ci": [
+        -0.0017087176876917152,
+        0.0013887831205908635
+      ],
+      "original_full_window_delta_ibs": -4.4851591273453594e-05,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "tau_cox",
+      "reference": "clinical_amyloid",
+      "augmented": "clinical_amyloid_tau",
+      "n": 358,
+      "late_ibs_reference": 0.09866303327878094,
+      "late_ibs_augmented": 0.09313767859097015,
+      "late_delta_ibs": -0.0055253546878107785,
+      "nominal_ci95": [
+        -0.011581518567637353,
+        0.0006160281763611351
+      ],
+      "adjusted_20_ci": [
+        -0.014804632151218482,
+        0.003991268757559956
+      ],
+      "original_full_window_delta_ibs": -0.002765411951026417,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "tau_rsf",
+      "reference": "clinical_amyloid",
+      "augmented": "clinical_amyloid_tau",
+      "n": 358,
+      "late_ibs_reference": 0.10179452274651671,
+      "late_ibs_augmented": 0.09896259678910156,
+      "late_delta_ibs": -0.0028319259574151423,
+      "nominal_ci95": [
+        -0.007527220161178734,
+        0.0016584273728360163
+      ],
+      "adjusted_20_ci": [
+        -0.010206443611377658,
+        0.003871323044022515
+      ],
+      "original_full_window_delta_ibs": -0.00141826693556625,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "tau_mri",
+      "reference": "base",
+      "augmented": "plus_tau",
+      "n": 358,
+      "late_ibs_reference": 0.1000106511695209,
+      "late_ibs_augmented": 0.09405802362704171,
+      "late_delta_ibs": -0.005952627542479196,
+      "nominal_ci95": [
+        -0.011112658439189153,
+        -0.0010486709060293592
+      ],
+      "adjusted_20_ci": [
+        -0.014199018132024668,
+        0.001568384363549644
+      ],
+      "original_full_window_delta_ibs": -0.0029793159919964353,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "stronger",
+      "reference": "full_clinical_amyloid",
+      "augmented": "deep_mri_amyloid",
+      "n": 1059,
+      "late_ibs_reference": 0.07810945971568518,
+      "late_ibs_augmented": 0.07831965717591025,
+      "late_delta_ibs": 0.00021019746022505253,
+      "nominal_ci95": [
+        -0.0004261389644337101,
+        0.0008185928241160097
+      ],
+      "adjusted_20_ci": [
+        -0.0007678132427619283,
+        0.0011313249264111576
+      ],
+      "original_full_window_delta_ibs": 0.00010628655008351364,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    },
+    {
+      "track": "stronger",
+      "reference": "full_clinical_volumes_amyloid",
+      "augmented": "deep_volumes_mri_amyloid",
+      "n": 1059,
+      "late_ibs_reference": 0.0789495599858924,
+      "late_ibs_augmented": 0.07901246932072956,
+      "late_delta_ibs": 6.290933483714704e-05,
+      "nominal_ci95": [
+        -0.0006163170405592567,
+        0.0007210136619629471
+      ],
+      "adjusted_20_ci": [
+        -0.0010157996615095576,
+        0.0010664602511175924
+      ],
+      "original_full_window_delta_ibs": 3.278764511747964e-05,
+      "resamples": 40000,
+      "all_resamples_finite": true
+    }
+  ],
+  "library_reconciliation_calls": 400,
+  "max_library_absolute_error": 5.551115123125783e-17
+}

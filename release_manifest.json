@@ -1,8 +1,8 @@
 {
-  "version": "20261024_post_hoc_review_analyses_v1",
-  "parent_version": "20261014_research_statistics_oof_pilot_update",
-  "parent_commit": "0d0bd68306cf0b1c4c29f3e931f40dbf1d2bfa48",
-  "scope": "Source, dated plans, aggregate internal research evidence and reproduction documentation; no manuscript or restricted participant objects",
+  "version": "20261025_final_review_fixed_prediction_addendum",
+  "parent_version": "20261024_post_hoc_review_analyses_v1",
+  "parent_commit": "5d9ee34845700709e4fab8ee65ace9b6f64f1504",
+  "scope": "Append-only aggregate internal sensitivities, exact executed sources and documentation; no manuscripts or restricted participant objects",
   "files": [
     {
       "path": ".gitattributes",
@@ -173,6 +173,61 @@
       "path": "analyses/deepreview_revision_20261024/verify_aggregate.py",
       "sha256": "081fcb37f82d30c87f625384a096b7d7afb005ce2a64113598d7f1f91ce7c41a",
       "bytes": 2278
+    },
+    {
+      "path": "analyses/final_review_20261025/aggregate/A10_late_window_ibs.json",
+      "sha256": "bed8a96f58edcff72a63a70213d3b0dc9735704cde08ae117f296fe125dd407d",
+      "bytes": 13308
+    },
+    {
+      "path": "analyses/final_review_20261025/aggregate/A11_subset_nulls_and_ipa.json",
+      "sha256": "758e804b9957b3c150f265024885ea76df66f7261c85782e2081c29dd7ab9153",
+      "bytes": 17310
+    },
+    {
+      "path": "analyses/final_review_20261025/aggregate/A12_component_standardization_invariance.json",
+      "sha256": "c4daf8c29cd6ffd46ade6123a990a446d5e944f0b59488ce031f88f7f0bbfc5d",
+      "bytes": 26281
+    },
+    {
+      "path": "analyses/final_review_20261025/aggregate/all_draw_concordance_support.json",
+      "sha256": "1ebfe835dd1633a4aec24c78d868b9dc83fc7848195f3a81ae59fb55718b41d0",
+      "bytes": 2303
+    },
+    {
+      "path": "analyses/final_review_20261025/aggregate/reference_identity_refresh_summary.json",
+      "sha256": "fbb9cf8eb6ade78dbf2a930ea11c7bab6e3d3b83255d509519d07e6a64992c17",
+      "bytes": 15031
+    },
+    {
+      "path": "analyses/final_review_20261025/aggregate/reported_sex_diagnostics.json",
+      "sha256": "a2764ea58ac03a250ea7e42bdbf73dfaec298bde1cfa9a9078d1da95ee12c9d9",
+      "bytes": 1616
+    },
+    {
+      "path": "analyses/final_review_20261025/executed_source/amendment_plan.json",
+      "sha256": "1b354ba0be51d51f6a6ed5726e3dcbaabd58adf21fb86b71f38f8167f9946942",
+      "bytes": 3267
+    },
+    {
+      "path": "analyses/final_review_20261025/executed_source/review_analyses.py",
+      "sha256": "74e331aa8975f0aa5f57e63c574b2868b3f858d948b448a5e2661f869e3189de",
+      "bytes": 15961
+    },
+    {
+      "path": "analyses/final_review_20261025/manifest.json",
+      "sha256": "a9fd2f7c8e26c0fadf7741eac51c059114840dd04593287e1aa9a8cbd889d9ff",
+      "bytes": 1246
+    },
+    {
+      "path": "analyses/final_review_20261025/README.md",
+      "sha256": "11e6e412078679d213cdc8e4fd0217f8faa17484bf2744b41aaa2df5edda8f64",
+      "bytes": 3454
+    },
+    {
+      "path": "analyses/final_review_20261025/verify_aggregate.py",
+      "sha256": "e29c3d87fe21841d79cf6909ffc43a95bc75b8fd5b880ea4330bfbd2f7f15111",
+      "bytes": 2081
     },
     {
       "path": "analyses/reviewer_sensitivities_20261014/aggregate_results/absolute_concordance.json",
@@ -1346,8 +1401,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "f98d0a8901318d1c9378c178c3d7b3e841f2273086e6903c7b89ec91ec78a223",
-      "bytes": 3104
+      "sha256": "7e8e3d3eb9a788ccb55767d8569be899686d51535e784297c02ac62ecdc19650",
+      "bytes": 3680
     },
     {
       "path": "check_package.py",
@@ -1600,6 +1655,11 @@
       "bytes": 2888
     },
     {
+      "path": "docs/RESEARCH_UPDATE_20261025.md",
+      "sha256": "11e6e412078679d213cdc8e4fd0217f8faa17484bf2744b41aaa2df5edda8f64",
+      "bytes": 3454
+    },
+    {
       "path": "docs/RESEARCH_UPDATE_CHECKS_20261014.json",
       "sha256": "7b6cdc002a2c42ce77810599a31828a7affa95610445ebabf6abbf0fdb9dab43",
       "bytes": 2339
@@ -1681,8 +1741,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "c22130f769265ccd3a3ce6541d394f232d84e6f5eaf7538b2a49be621495c555",
-      "bytes": 19263
+      "sha256": "a710e6812d873e93fb2a9928c85f3fe409e7e8ae6fb8e5ccfcdb081b1d154b39",
+      "bytes": 20124
     },
     {
       "path": "reports/03_method_x/extension_mx7_results_limitations_FA.v1.md",
