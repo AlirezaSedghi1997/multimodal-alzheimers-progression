@@ -1,0 +1,130 @@
+{
+  "date": "2026-10-24",
+  "scope": "Exact executed source and aggregate-only evidence; PET descriptions stripped; no private data",
+  "files": {
+    "aggregate/A01_tau_omission_robustness.json": {
+      "sha256": "052420ee5c682a9bb36be87deda44f019267edd52d3866cc0ddc540783e11bf2",
+      "bytes": 12785
+    },
+    "aggregate/A02_raw_pooled_tau_paired.json": {
+      "sha256": "9999d4962fd2506b9a0ab5d6f2a958a1e9fc9f0bf6ffb1c2b52b9039960c981f",
+      "bytes": 8670
+    },
+    "aggregate/A03_harmonized_pooled_results.json": {
+      "sha256": "c6321709973134c3e38f02897dbd94cb37ee88ff6d988832484841139fb157f6",
+      "bytes": 30330
+    },
+    "aggregate/A03_transform_diagnostics.json": {
+      "sha256": "79b44447c486d577859f652b6ff69322389f41d2921e442ea358192db95ad70f",
+      "bytes": 39765
+    },
+    "aggregate/A04_matched_biomarker_overlap.json": {
+      "sha256": "e9c6448c4a75e03ac97444848b2b2b05a9ebdb976059fec073215fc3e85a59ac",
+      "bytes": 27041
+    },
+    "aggregate/A05_component_edf.json": {
+      "sha256": "5c055d9aa53684d4fa62a5f3cc4b247aeb4231e23c070ccd44d12d34ccf3fee8",
+      "bytes": 65996
+    },
+    "aggregate/A05_component_tuning_choices.json": {
+      "sha256": "3b8810f6f0a9cf9e20d84e60fd12ccb969264fee0ecc388e368def4fcf0a2f53",
+      "bytes": 135861
+    },
+    "aggregate/A05_component_tuning_results.json": {
+      "sha256": "3f412832cb46f77267146fc08f49e96f4fcf45c440287e46ee69166d460ff202",
+      "bytes": 16789
+    },
+    "aggregate/A05_original_fitted_head_edf.json": {
+      "sha256": "256fa8f15c0e1a4abeb343fe91db2b4cf1041387a1cc4cc043b9dbbb95366648",
+      "bytes": 88720
+    },
+    "aggregate/A05_pooled_edf.json": {
+      "sha256": "5add15ef4ddce9d906e382098fb5aecbf68283fba06b4fa9728e4b7e668adbf4",
+      "bytes": 42199
+    },
+    "aggregate/A06_timing_and_denominators.json": {
+      "sha256": "dfe7a147eed35d432ef5eefc9ece2aa15259bbcf7f405c42c636a76afc2492c2",
+      "bytes": 2237
+    },
+    "aggregate/A07_pet_provenance_audit.json": {
+      "sha256": "2be1e3d55bc0f3b136f9e037eff9ab89af1f49b95169b8cf25e326693e31b022",
+      "bytes": 8582
+    },
+    "aggregate/A08_partition_assertions.json": {
+      "sha256": "9eb180ada9b5e5395909e200322168c6d8ddcf01905750c713443a59a1ef230c",
+      "bytes": 33965
+    },
+    "aggregate/A08_synthetic_training.json": {
+      "sha256": "3421f1d25ad81a3e5c8c3ae702470a470a368e4ec3e33a3d80cced483d441f6a",
+      "bytes": 834
+    },
+    "aggregate/A09_deformation_control.json": {
+      "sha256": "9ec3c032ef692aaf023dbf94ec9a05c74f0a4843c62849479cfef7364aae8478",
+      "bytes": 19143
+    },
+    "aggregate/NUMERICAL_VERIFICATION.json": {
+      "sha256": "6fee55e27b3cf2e2fff296a584ee3e706b2abd72133222ede0a71e92ac665075",
+      "bytes": 1114
+    },
+    "aggregate/REFERENCE_BYLINE_CORRECTIONS.json": {
+      "sha256": "cb491b3ae783e2bc4093d6962d68903d94354f9033dfd114c148f7933a653b7e",
+      "bytes": 1474
+    },
+    "aggregate/REFERENCE_CLAIM_CONTEXTS.json": {
+      "sha256": "3ccac33bf68efaf9ecfe1704fed3bf24ae70ec70a24f0a39d0b556078047de4d",
+      "bytes": 90729
+    },
+    "aggregate/REFERENCE_IDENTITY_AUDIT.json": {
+      "sha256": "14489886ea2c6e3349247b53fcec29a5c97b31c2da21e3f68f5068da21a9a3da",
+      "bytes": 84494
+    },
+    "executed_source/A09_deformation_control_plan.json": {
+      "sha256": "121a56a80631682936055be3951a5bad7271679670c828e77c96fe1c01305a60",
+      "bytes": 1568
+    },
+    "executed_source/additional_audits.py": {
+      "sha256": "e596a5f2212b039d37b8b519dcb63dc935061f7cfb0549fc3d2b1427504c7bbd",
+      "bytes": 5730
+    },
+    "executed_source/amendment_A04_inner_grid.json": {
+      "sha256": "9d656feacaf2b800050b0407e95c02cb57239fff265a85af45c1858c7dee5e4b",
+      "bytes": 716
+    },
+    "executed_source/analyses.py": {
+      "sha256": "61a35c25562dad6ed93b0edae33caf9ccee960a06db45357f93107be5ff863b6",
+      "bytes": 20558
+    },
+    "executed_source/analysis_plan.json": {
+      "sha256": "d12062bc31ee20b78e901a89c7e16b6de00ac7baeaf6bf1d3e172ab2edfeb279",
+      "bytes": 3721
+    },
+    "executed_source/audits.py": {
+      "sha256": "1a1d747eb8c301bbd2ca4f46fd07be2df384410ec350e5c75e4589815b6bee83",
+      "bytes": 5803
+    },
+    "executed_source/deformation_control.py": {
+      "sha256": "c7e844932e60f7f2610c248780a11bc90cdcec72b5dcc8e5d89219cb9762a152",
+      "bytes": 4968
+    },
+    "executed_source/original_head_edf.py": {
+      "sha256": "779ef7b80ca1f5389e47beaa36820c15d6c1c3620ee1a085b5f31a7f656dd588",
+      "bytes": 3488
+    },
+    "executed_source/reference_audit.py": {
+      "sha256": "544135c1094d82015f88dd041542f6a46f04f30fc0a79449d324e576234b7252",
+      "bytes": 4035
+    },
+    "executed_source/synthetic_training.py": {
+      "sha256": "be2e132a51099a76ddec0297203db09731528766661cb999aaf0a7866f2da32b",
+      "bytes": 3069
+    },
+    "README.md": {
+      "sha256": "cafa2f92c3cdb7457eef95003f1821228bcd878ba6aa81ea9f83487b1521176c",
+      "bytes": 6453
+    },
+    "verify_aggregate.py": {
+      "sha256": "081fcb37f82d30c87f625384a096b7d7afb005ce2a64113598d7f1f91ce7c41a",
+      "bytes": 2278
+    }
+  }
+}

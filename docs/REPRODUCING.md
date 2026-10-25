@@ -42,3 +42,8 @@ release checks. Do not automatically upgrade dependencies of a frozen study.
 ## Statistical supplement
 
 The [11 October supplement](STATISTICAL_SUPPLEMENT.md) has explicit input and private-output arguments. It reuses original locked runs; it is separate from the original package-assembly operation described above. Participant-level inputs are not bundled.
+
+
+## Post-hoc review extension — 24 October 2026
+
+See [the extension guide](../analyses/deepreview_revision_20261024/README.md) for the exact executed-source roots, prerequisites, estimands and safe offline verifier. It preserves environment-specific runners without claiming arbitrary clean-machine reproduction. The bounded synthetic trainer execution and numerical reconciliation do not replace a complete A4 rebuild.

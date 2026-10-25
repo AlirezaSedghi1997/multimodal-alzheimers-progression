@@ -1,0 +1,20 @@
+{
+  "status": "NUMERICAL_IMPLEMENTATIONS_RECONCILED",
+  "edf_explicit": 7.531121488881064,
+  "edf_library_hessian": 7.531121488881065,
+  "edf_absolute_error": 8.881784197001252e-16,
+  "ibs_explicit": 0.03847888947949277,
+  "ibs_library": 0.038478889479492774,
+  "ibs_absolute_error": 6.938893903907228e-18,
+  "concordance_duplicate_resample_check": {
+    "synthetic_bootstrap_comparisons": 100,
+    "max_absolute_error": 3.3306690738754696e-16,
+    "undefined": 0,
+    "risk_and_time_ties_included": true
+  },
+  "zero_event_probability_70_draws_4_events": 0.016263450303179022,
+  "zero_event_probability_percent": 1.6263450303179021,
+  "reviewer_probability_correction": "(66/70)^70 is about 1.63 percent, not 1.55 percent. Observed omission remains 639/40000=1.5975 percent.",
+  "penalty_objective": "Library minimizes [-partial_loglik + alpha*||beta||^2/2]/n. Multiplying by n gives the unnormalized partial likelihood penalty alpha/2; alpha=10 does not keep effective shrinkage constant across sample sizes.",
+  "installed_cox_source_sha256": "72465261397a7bf3480731a2d16bdb17d0327d9caf677d31d555fe1e91ddcdb5"
+}

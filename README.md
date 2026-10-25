@@ -88,6 +88,26 @@ See the [results report](reports/07_statistical_supplement/REPORT.md),
 status, exact reproduction requirements and remaining scientific limitations.
 No participant-level files or signed thesis documents are included.
 
+## Research update — 24 October 2026
+
+The [new post-hoc analysis bundle](analyses/deepreview_revision_20261024/README.md)
+adds training-only expert-score standardization, paired OOF tau concordance,
+same-sample plasma/tau comparisons, nested frozen-component head tuning,
+original fitted-head effective degrees of freedom, sparse-resampling policies,
+and a four-summary deformation control in all 1,059 participants.
+
+The score/tuning checks did not establish improved imaging prediction. The
+220-person common sample did not establish tau or plasma superiority. The
+deformation-summary control increased IBS relative to clinical-plus-amyloid
+(ΔIBS +0.000531; K=2 adjusted interval +0.000074 to +0.001022).
+Original primary estimates are retained, including null and adverse findings.
+The [current result guide](docs/RESEARCH_UPDATE_20261024.md) explains estimands,
+conditional intervals, changed aggregation sensitivity and reproduction limits.
+
+The historical CNN/Jacobian pilot below remains a separate no-go experiment;
+the new analysis is not a full-channel CNN or pretrained-encoder evaluation.
+No external validation or complete A4 image-training reproduction is claimed.
+
 ## Research update — 14 October 2026
 
 The [cumulative analysis bundle](analyses/reviewer_sensitivities_20261014/README.md)
@@ -107,7 +127,7 @@ reproduction instructions. Manuscript text and editorial revisions are excluded.
 adjusted three-year Brier intervals and all seven adjusted OOF IBS intervals
 include zero. The two Cox-based tau ranking signals remain exploratory.
 OOF score heterogeneity limits attributing changes to the head's training size.
-Absolute concordance intervals are descriptive, not new paired tests of benefit.
+The 14 October absolute concordance intervals are descriptive. The separate 24 October update adds paired tau-increment intervals and preserves their conditional scope.
 These fixed-prediction analyses do not include model-development uncertainty or
 independent-cohort validation. The CNN/Jacobian pilot failed its locked
 advancement gate; it was not scaled to the full cohort.

@@ -1,8 +1,8 @@
 {
-  "version": "20261014_research_statistics_oof_pilot_update",
-  "parent_version": "20261011_private_statistical_supplement_v1",
-  "parent_commit": "c9676c9921e67d8d718764ca386e291aef82265a",
-  "scope": "Source, aggregate research evidence and documentation; no manuscript or restricted participant objects",
+  "version": "20261024_post_hoc_review_analyses_v1",
+  "parent_version": "20261014_research_statistics_oof_pilot_update",
+  "parent_commit": "0d0bd68306cf0b1c4c29f3e931f40dbf1d2bfa48",
+  "scope": "Source, dated plans, aggregate internal research evidence and reproduction documentation; no manuscript or restricted participant objects",
   "files": [
     {
       "path": ".gitattributes",
@@ -13,6 +13,166 @@
       "path": ".gitignore",
       "sha256": "18e537bfd1f9deafd47aa31801ebc049aee1c689a873f1fedc5ae3ef106f6a11",
       "bytes": 501
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A01_tau_omission_robustness.json",
+      "sha256": "052420ee5c682a9bb36be87deda44f019267edd52d3866cc0ddc540783e11bf2",
+      "bytes": 12785
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A02_raw_pooled_tau_paired.json",
+      "sha256": "9999d4962fd2506b9a0ab5d6f2a958a1e9fc9f0bf6ffb1c2b52b9039960c981f",
+      "bytes": 8670
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A03_harmonized_pooled_results.json",
+      "sha256": "c6321709973134c3e38f02897dbd94cb37ee88ff6d988832484841139fb157f6",
+      "bytes": 30330
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A03_transform_diagnostics.json",
+      "sha256": "79b44447c486d577859f652b6ff69322389f41d2921e442ea358192db95ad70f",
+      "bytes": 39765
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A04_matched_biomarker_overlap.json",
+      "sha256": "e9c6448c4a75e03ac97444848b2b2b05a9ebdb976059fec073215fc3e85a59ac",
+      "bytes": 27041
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A05_component_edf.json",
+      "sha256": "5c055d9aa53684d4fa62a5f3cc4b247aeb4231e23c070ccd44d12d34ccf3fee8",
+      "bytes": 65996
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A05_component_tuning_choices.json",
+      "sha256": "3b8810f6f0a9cf9e20d84e60fd12ccb969264fee0ecc388e368def4fcf0a2f53",
+      "bytes": 135861
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A05_component_tuning_results.json",
+      "sha256": "3f412832cb46f77267146fc08f49e96f4fcf45c440287e46ee69166d460ff202",
+      "bytes": 16789
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A05_original_fitted_head_edf.json",
+      "sha256": "256fa8f15c0e1a4abeb343fe91db2b4cf1041387a1cc4cc043b9dbbb95366648",
+      "bytes": 88720
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A05_pooled_edf.json",
+      "sha256": "5add15ef4ddce9d906e382098fb5aecbf68283fba06b4fa9728e4b7e668adbf4",
+      "bytes": 42199
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A06_timing_and_denominators.json",
+      "sha256": "dfe7a147eed35d432ef5eefc9ece2aa15259bbcf7f405c42c636a76afc2492c2",
+      "bytes": 2237
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A07_pet_provenance_audit.json",
+      "sha256": "2be1e3d55bc0f3b136f9e037eff9ab89af1f49b95169b8cf25e326693e31b022",
+      "bytes": 8582
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A08_partition_assertions.json",
+      "sha256": "9eb180ada9b5e5395909e200322168c6d8ddcf01905750c713443a59a1ef230c",
+      "bytes": 33965
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A08_synthetic_training.json",
+      "sha256": "3421f1d25ad81a3e5c8c3ae702470a470a368e4ec3e33a3d80cced483d441f6a",
+      "bytes": 834
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/A09_deformation_control.json",
+      "sha256": "9ec3c032ef692aaf023dbf94ec9a05c74f0a4843c62849479cfef7364aae8478",
+      "bytes": 19143
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/NUMERICAL_VERIFICATION.json",
+      "sha256": "6fee55e27b3cf2e2fff296a584ee3e706b2abd72133222ede0a71e92ac665075",
+      "bytes": 1114
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/REFERENCE_BYLINE_CORRECTIONS.json",
+      "sha256": "cb491b3ae783e2bc4093d6962d68903d94354f9033dfd114c148f7933a653b7e",
+      "bytes": 1474
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/REFERENCE_CLAIM_CONTEXTS.json",
+      "sha256": "3ccac33bf68efaf9ecfe1704fed3bf24ae70ec70a24f0a39d0b556078047de4d",
+      "bytes": 90729
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/aggregate/REFERENCE_IDENTITY_AUDIT.json",
+      "sha256": "14489886ea2c6e3349247b53fcec29a5c97b31c2da21e3f68f5068da21a9a3da",
+      "bytes": 84494
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/executed_source/A09_deformation_control_plan.json",
+      "sha256": "121a56a80631682936055be3951a5bad7271679670c828e77c96fe1c01305a60",
+      "bytes": 1568
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/executed_source/additional_audits.py",
+      "sha256": "e596a5f2212b039d37b8b519dcb63dc935061f7cfb0549fc3d2b1427504c7bbd",
+      "bytes": 5730
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/executed_source/amendment_A04_inner_grid.json",
+      "sha256": "9d656feacaf2b800050b0407e95c02cb57239fff265a85af45c1858c7dee5e4b",
+      "bytes": 716
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/executed_source/analyses.py",
+      "sha256": "61a35c25562dad6ed93b0edae33caf9ccee960a06db45357f93107be5ff863b6",
+      "bytes": 20558
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/executed_source/analysis_plan.json",
+      "sha256": "d12062bc31ee20b78e901a89c7e16b6de00ac7baeaf6bf1d3e172ab2edfeb279",
+      "bytes": 3721
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/executed_source/audits.py",
+      "sha256": "1a1d747eb8c301bbd2ca4f46fd07be2df384410ec350e5c75e4589815b6bee83",
+      "bytes": 5803
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/executed_source/deformation_control.py",
+      "sha256": "c7e844932e60f7f2610c248780a11bc90cdcec72b5dcc8e5d89219cb9762a152",
+      "bytes": 4968
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/executed_source/original_head_edf.py",
+      "sha256": "779ef7b80ca1f5389e47beaa36820c15d6c1c3620ee1a085b5f31a7f656dd588",
+      "bytes": 3488
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/executed_source/reference_audit.py",
+      "sha256": "544135c1094d82015f88dd041542f6a46f04f30fc0a79449d324e576234b7252",
+      "bytes": 4035
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/executed_source/synthetic_training.py",
+      "sha256": "be2e132a51099a76ddec0297203db09731528766661cb999aaf0a7866f2da32b",
+      "bytes": 3069
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/manifest.json",
+      "sha256": "345bd2611834c25ff20931f2795ddb2ddf57177dc4fe7691e805574be6852712",
+      "bytes": 5186
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/README.md",
+      "sha256": "cafa2f92c3cdb7457eef95003f1821228bcd878ba6aa81ea9f83487b1521176c",
+      "bytes": 6453
+    },
+    {
+      "path": "analyses/deepreview_revision_20261024/verify_aggregate.py",
+      "sha256": "081fcb37f82d30c87f625384a096b7d7afb005ce2a64113598d7f1f91ce7c41a",
+      "bytes": 2278
     },
     {
       "path": "analyses/reviewer_sensitivities_20261014/aggregate_results/absolute_concordance.json",
@@ -1186,8 +1346,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "fd00c0978ebce244596ea137d381685f349776ab8bb25af1e80623f6fea86a02",
-      "bytes": 2174
+      "sha256": "f98d0a8901318d1c9378c178c3d7b3e841f2273086e6903c7b89ec91ec78a223",
+      "bytes": 3104
     },
     {
       "path": "check_package.py",
@@ -1426,8 +1586,8 @@
     },
     {
       "path": "docs/REPRODUCING.md",
-      "sha256": "3d43bb70337cd3eba209d6fd96f4c7193f90e9086093230a9be767b87ca4a22b",
-      "bytes": 2533
+      "sha256": "df5429b3265b6188c4f1d52b5dc92ec22bb69df321167de9c6613bfc6d55def6",
+      "bytes": 3005
     },
     {
       "path": "docs/RESEARCH_UPDATE_20261014.md",
@@ -1435,9 +1595,19 @@
       "bytes": 3369
     },
     {
+      "path": "docs/RESEARCH_UPDATE_20261024.md",
+      "sha256": "f454a520a0146efe8fba006dbeac3a71bea085504d2c200b4b73cf2dfcba1d82",
+      "bytes": 2888
+    },
+    {
       "path": "docs/RESEARCH_UPDATE_CHECKS_20261014.json",
       "sha256": "7b6cdc002a2c42ce77810599a31828a7affa95610445ebabf6abbf0fdb9dab43",
       "bytes": 2339
+    },
+    {
+      "path": "docs/RESEARCH_UPDATE_CHECKS_20261024.json",
+      "sha256": "72b8efd4bf160759976696b28e1ba2aaa39cb25248f4a50e0e33c5e402fefefc",
+      "bytes": 1047
     },
     {
       "path": "docs/RESEARCH_UPDATE_INVENTORY_20261014.json",
@@ -1511,8 +1681,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "312abf1de16712c3dd0d500bacf2372430b8210dd23876461ecf639a4ec6c9aa",
-      "bytes": 17775
+      "sha256": "c22130f769265ccd3a3ce6541d394f232d84e6f5eaf7538b2a49be621495c555",
+      "bytes": 19263
     },
     {
       "path": "reports/03_method_x/extension_mx7_results_limitations_FA.v1.md",

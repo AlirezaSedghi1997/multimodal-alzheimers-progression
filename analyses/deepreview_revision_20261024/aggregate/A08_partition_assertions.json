@@ -1,0 +1,2072 @@
+[
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 1,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 564,
+        "events": 127,
+        "events3y": 52
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 30
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 22
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 1,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 54
+      },
+      "meta": {
+        "n": 282,
+        "events": 63,
+        "events3y": 28
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 22
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 1,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 127,
+        "events3y": 58
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 24
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 22
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 2,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 564,
+        "events": 127,
+        "events3y": 63
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 21
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 2,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 55
+      },
+      "meta": {
+        "n": 282,
+        "events": 63,
+        "events3y": 29
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 2,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 127,
+        "events3y": 50
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 34
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 3,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 564,
+        "events": 127,
+        "events3y": 51
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 32
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 3,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 127,
+        "events3y": 55
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 28
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 3,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 60
+      },
+      "meta": {
+        "n": 282,
+        "events": 63,
+        "events3y": 23
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 4,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 564,
+        "events": 127,
+        "events3y": 54
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 29
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 4,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 49
+      },
+      "meta": {
+        "n": 282,
+        "events": 63,
+        "events3y": 34
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 4,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 127,
+        "events3y": 63
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 20
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 5,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 57
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 27
+      },
+      "outer": {
+        "n": 211,
+        "events": 47,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 5,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 58
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 26
+      },
+      "outer": {
+        "n": 211,
+        "events": 47,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 13,
+    "outer_fold": 5,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 566,
+        "events": 128,
+        "events3y": 53
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 31
+      },
+      "outer": {
+        "n": 211,
+        "events": 47,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 1,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 564,
+        "events": 127,
+        "events3y": 52
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 30
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 22
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 1,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 54
+      },
+      "meta": {
+        "n": 282,
+        "events": 63,
+        "events3y": 28
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 22
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 1,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 127,
+        "events3y": 58
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 24
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 22
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 2,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 564,
+        "events": 127,
+        "events3y": 63
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 21
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 2,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 55
+      },
+      "meta": {
+        "n": 282,
+        "events": 63,
+        "events3y": 29
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 2,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 127,
+        "events3y": 50
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 34
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 3,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 564,
+        "events": 127,
+        "events3y": 51
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 32
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 3,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 127,
+        "events3y": 55
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 28
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 3,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 60
+      },
+      "meta": {
+        "n": 282,
+        "events": 63,
+        "events3y": 23
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 4,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 564,
+        "events": 127,
+        "events3y": 54
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 29
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 4,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 49
+      },
+      "meta": {
+        "n": 282,
+        "events": 63,
+        "events3y": 34
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 4,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 127,
+        "events3y": 63
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 20
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 5,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 57
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 27
+      },
+      "outer": {
+        "n": 211,
+        "events": 47,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 5,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 58
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 26
+      },
+      "outer": {
+        "n": 211,
+        "events": 47,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 29,
+    "outer_fold": 5,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 566,
+        "events": 128,
+        "events3y": 53
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 31
+      },
+      "outer": {
+        "n": 211,
+        "events": 47,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 1,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 564,
+        "events": 127,
+        "events3y": 52
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 30
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 22
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 1,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 54
+      },
+      "meta": {
+        "n": 282,
+        "events": 63,
+        "events3y": 28
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 22
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 1,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 127,
+        "events3y": 58
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 24
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 22
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 2,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 564,
+        "events": 127,
+        "events3y": 63
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 21
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 2,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 55
+      },
+      "meta": {
+        "n": 282,
+        "events": 63,
+        "events3y": 29
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 2,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 127,
+        "events3y": 50
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 34
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 3,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 564,
+        "events": 127,
+        "events3y": 51
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 32
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 3,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 127,
+        "events3y": 55
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 28
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 3,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 60
+      },
+      "meta": {
+        "n": 282,
+        "events": 63,
+        "events3y": 23
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 4,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 564,
+        "events": 127,
+        "events3y": 54
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 29
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 4,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 49
+      },
+      "meta": {
+        "n": 282,
+        "events": 63,
+        "events3y": 34
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 4,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 127,
+        "events3y": 63
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 20
+      },
+      "outer": {
+        "n": 212,
+        "events": 48,
+        "events3y": 21
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 5,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 57
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 27
+      },
+      "outer": {
+        "n": 211,
+        "events": 47,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 5,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 565,
+        "events": 128,
+        "events3y": 58
+      },
+      "meta": {
+        "n": 283,
+        "events": 64,
+        "events3y": 26
+      },
+      "outer": {
+        "n": 211,
+        "events": 47,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "mri",
+    "seed": 47,
+    "outer_fold": 5,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 566,
+        "events": 128,
+        "events3y": 53
+      },
+      "meta": {
+        "n": 282,
+        "events": 64,
+        "events3y": 31
+      },
+      "outer": {
+        "n": 211,
+        "events": 47,
+        "events3y": 20
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 1,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 287,
+        "events": 60,
+        "events3y": 29
+      },
+      "meta": {
+        "n": 144,
+        "events": 30,
+        "events3y": 11
+      },
+      "outer": {
+        "n": 113,
+        "events": 22,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 1,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 287,
+        "events": 60,
+        "events3y": 22
+      },
+      "meta": {
+        "n": 144,
+        "events": 30,
+        "events3y": 18
+      },
+      "outer": {
+        "n": 113,
+        "events": 22,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 1,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 288,
+        "events": 60,
+        "events3y": 29
+      },
+      "meta": {
+        "n": 143,
+        "events": 30,
+        "events3y": 11
+      },
+      "outer": {
+        "n": 113,
+        "events": 22,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 2,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 292,
+        "events": 58,
+        "events3y": 28
+      },
+      "meta": {
+        "n": 146,
+        "events": 29,
+        "events3y": 13
+      },
+      "outer": {
+        "n": 106,
+        "events": 25,
+        "events3y": 9
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 2,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 292,
+        "events": 58,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 146,
+        "events": 29,
+        "events3y": 14
+      },
+      "outer": {
+        "n": 106,
+        "events": 25,
+        "events3y": 9
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 2,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 292,
+        "events": 58,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 146,
+        "events": 29,
+        "events3y": 14
+      },
+      "outer": {
+        "n": 106,
+        "events": 25,
+        "events3y": 9
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 3,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 294,
+        "events": 62,
+        "events3y": 25
+      },
+      "meta": {
+        "n": 148,
+        "events": 32,
+        "events3y": 14
+      },
+      "outer": {
+        "n": 102,
+        "events": 18,
+        "events3y": 11
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 3,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 295,
+        "events": 63,
+        "events3y": 33
+      },
+      "meta": {
+        "n": 147,
+        "events": 31,
+        "events3y": 6
+      },
+      "outer": {
+        "n": 102,
+        "events": 18,
+        "events3y": 11
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 3,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 295,
+        "events": 63,
+        "events3y": 20
+      },
+      "meta": {
+        "n": 147,
+        "events": 31,
+        "events3y": 19
+      },
+      "outer": {
+        "n": 102,
+        "events": 18,
+        "events3y": 11
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 4,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 283,
+        "events": 58,
+        "events3y": 26
+      },
+      "meta": {
+        "n": 142,
+        "events": 28,
+        "events3y": 14
+      },
+      "outer": {
+        "n": 119,
+        "events": 26,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 4,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 283,
+        "events": 57,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 142,
+        "events": 29,
+        "events3y": 13
+      },
+      "outer": {
+        "n": 119,
+        "events": 26,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 4,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 284,
+        "events": 57,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 141,
+        "events": 29,
+        "events3y": 13
+      },
+      "outer": {
+        "n": 119,
+        "events": 26,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 5,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 293,
+        "events": 61,
+        "events3y": 28
+      },
+      "meta": {
+        "n": 147,
+        "events": 30,
+        "events3y": 12
+      },
+      "outer": {
+        "n": 104,
+        "events": 21,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 5,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 293,
+        "events": 60,
+        "events3y": 25
+      },
+      "meta": {
+        "n": 147,
+        "events": 31,
+        "events3y": 15
+      },
+      "outer": {
+        "n": 104,
+        "events": 21,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 13,
+    "outer_fold": 5,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 294,
+        "events": 61,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 146,
+        "events": 30,
+        "events3y": 13
+      },
+      "outer": {
+        "n": 104,
+        "events": 21,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 1,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 287,
+        "events": 60,
+        "events3y": 29
+      },
+      "meta": {
+        "n": 144,
+        "events": 30,
+        "events3y": 11
+      },
+      "outer": {
+        "n": 113,
+        "events": 22,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 1,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 287,
+        "events": 60,
+        "events3y": 22
+      },
+      "meta": {
+        "n": 144,
+        "events": 30,
+        "events3y": 18
+      },
+      "outer": {
+        "n": 113,
+        "events": 22,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 1,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 288,
+        "events": 60,
+        "events3y": 29
+      },
+      "meta": {
+        "n": 143,
+        "events": 30,
+        "events3y": 11
+      },
+      "outer": {
+        "n": 113,
+        "events": 22,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 2,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 292,
+        "events": 58,
+        "events3y": 28
+      },
+      "meta": {
+        "n": 146,
+        "events": 29,
+        "events3y": 13
+      },
+      "outer": {
+        "n": 106,
+        "events": 25,
+        "events3y": 9
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 2,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 292,
+        "events": 58,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 146,
+        "events": 29,
+        "events3y": 14
+      },
+      "outer": {
+        "n": 106,
+        "events": 25,
+        "events3y": 9
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 2,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 292,
+        "events": 58,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 146,
+        "events": 29,
+        "events3y": 14
+      },
+      "outer": {
+        "n": 106,
+        "events": 25,
+        "events3y": 9
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 3,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 294,
+        "events": 62,
+        "events3y": 25
+      },
+      "meta": {
+        "n": 148,
+        "events": 32,
+        "events3y": 14
+      },
+      "outer": {
+        "n": 102,
+        "events": 18,
+        "events3y": 11
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 3,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 295,
+        "events": 63,
+        "events3y": 33
+      },
+      "meta": {
+        "n": 147,
+        "events": 31,
+        "events3y": 6
+      },
+      "outer": {
+        "n": 102,
+        "events": 18,
+        "events3y": 11
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 3,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 295,
+        "events": 63,
+        "events3y": 20
+      },
+      "meta": {
+        "n": 147,
+        "events": 31,
+        "events3y": 19
+      },
+      "outer": {
+        "n": 102,
+        "events": 18,
+        "events3y": 11
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 4,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 283,
+        "events": 58,
+        "events3y": 26
+      },
+      "meta": {
+        "n": 142,
+        "events": 28,
+        "events3y": 14
+      },
+      "outer": {
+        "n": 119,
+        "events": 26,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 4,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 283,
+        "events": 57,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 142,
+        "events": 29,
+        "events3y": 13
+      },
+      "outer": {
+        "n": 119,
+        "events": 26,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 4,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 284,
+        "events": 57,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 141,
+        "events": 29,
+        "events3y": 13
+      },
+      "outer": {
+        "n": 119,
+        "events": 26,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 5,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 293,
+        "events": 61,
+        "events3y": 28
+      },
+      "meta": {
+        "n": 147,
+        "events": 30,
+        "events3y": 12
+      },
+      "outer": {
+        "n": 104,
+        "events": 21,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 5,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 293,
+        "events": 60,
+        "events3y": 25
+      },
+      "meta": {
+        "n": 147,
+        "events": 31,
+        "events3y": 15
+      },
+      "outer": {
+        "n": 104,
+        "events": 21,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 29,
+    "outer_fold": 5,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 294,
+        "events": 61,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 146,
+        "events": 30,
+        "events3y": 13
+      },
+      "outer": {
+        "n": 104,
+        "events": 21,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 1,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 287,
+        "events": 60,
+        "events3y": 29
+      },
+      "meta": {
+        "n": 144,
+        "events": 30,
+        "events3y": 11
+      },
+      "outer": {
+        "n": 113,
+        "events": 22,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 1,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 287,
+        "events": 60,
+        "events3y": 22
+      },
+      "meta": {
+        "n": 144,
+        "events": 30,
+        "events3y": 18
+      },
+      "outer": {
+        "n": 113,
+        "events": 22,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 1,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 288,
+        "events": 60,
+        "events3y": 29
+      },
+      "meta": {
+        "n": 143,
+        "events": 30,
+        "events3y": 11
+      },
+      "outer": {
+        "n": 113,
+        "events": 22,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 2,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 292,
+        "events": 58,
+        "events3y": 28
+      },
+      "meta": {
+        "n": 146,
+        "events": 29,
+        "events3y": 13
+      },
+      "outer": {
+        "n": 106,
+        "events": 25,
+        "events3y": 9
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 2,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 292,
+        "events": 58,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 146,
+        "events": 29,
+        "events3y": 14
+      },
+      "outer": {
+        "n": 106,
+        "events": 25,
+        "events3y": 9
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 2,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 292,
+        "events": 58,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 146,
+        "events": 29,
+        "events3y": 14
+      },
+      "outer": {
+        "n": 106,
+        "events": 25,
+        "events3y": 9
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 3,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 294,
+        "events": 62,
+        "events3y": 25
+      },
+      "meta": {
+        "n": 148,
+        "events": 32,
+        "events3y": 14
+      },
+      "outer": {
+        "n": 102,
+        "events": 18,
+        "events3y": 11
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 3,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 295,
+        "events": 63,
+        "events3y": 33
+      },
+      "meta": {
+        "n": 147,
+        "events": 31,
+        "events3y": 6
+      },
+      "outer": {
+        "n": 102,
+        "events": 18,
+        "events3y": 11
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 3,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 295,
+        "events": 63,
+        "events3y": 20
+      },
+      "meta": {
+        "n": 147,
+        "events": 31,
+        "events3y": 19
+      },
+      "outer": {
+        "n": 102,
+        "events": 18,
+        "events3y": 11
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 4,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 283,
+        "events": 58,
+        "events3y": 26
+      },
+      "meta": {
+        "n": 142,
+        "events": 28,
+        "events3y": 14
+      },
+      "outer": {
+        "n": 119,
+        "events": 26,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 4,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 283,
+        "events": 57,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 142,
+        "events": 29,
+        "events3y": 13
+      },
+      "outer": {
+        "n": 119,
+        "events": 26,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 4,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 284,
+        "events": 57,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 141,
+        "events": 29,
+        "events3y": 13
+      },
+      "outer": {
+        "n": 119,
+        "events": 26,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 5,
+    "component": 1,
+    "counts": {
+      "expert": {
+        "n": 293,
+        "events": 61,
+        "events3y": 28
+      },
+      "meta": {
+        "n": 147,
+        "events": 30,
+        "events3y": 12
+      },
+      "outer": {
+        "n": 104,
+        "events": 21,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 5,
+    "component": 2,
+    "counts": {
+      "expert": {
+        "n": 293,
+        "events": 60,
+        "events3y": 25
+      },
+      "meta": {
+        "n": 147,
+        "events": 31,
+        "events3y": 15
+      },
+      "outer": {
+        "n": 104,
+        "events": 21,
+        "events3y": 10
+      }
+    }
+  },
+  {
+    "modality": "pet",
+    "seed": 47,
+    "outer_fold": 5,
+    "component": 3,
+    "counts": {
+      "expert": {
+        "n": 294,
+        "events": 61,
+        "events3y": 27
+      },
+      "meta": {
+        "n": 146,
+        "events": 30,
+        "events3y": 13
+      },
+      "outer": {
+        "n": 104,
+        "events": 21,
+        "events3y": 10
+      }
+    }
+  }
+]

@@ -1,0 +1,423 @@
+{
+  "status": "EXECUTED_BOUNDED_PET_PROVENANCE_AUDIT",
+  "retained_subset_n": 544,
+  "manifest_rows": 5661,
+  "manifest_columns": [
+    "pet_file_hash",
+    "raw_path_private",
+    "substudy",
+    "bid",
+    "visit_code",
+    "pet_day",
+    "pet_t1_gap_days",
+    "tracer",
+    "frame",
+    "scanner",
+    "source",
+    "patient_hash",
+    "sample_hash",
+    "t1_path"
+  ],
+  "explicit_mask_reference_or_chain_columns": [],
+  "header_sample_n": 8,
+  "sampled_headers": [
+    {
+      "shape": [
+        128,
+        128,
+        47,
+        4
+      ],
+      "axis_codes": [
+        "L",
+        "A",
+        "S"
+      ],
+      "xyzt_units": [
+        "mm",
+        "sec"
+      ],
+      "spatial_sform_code": 1,
+      "spatial_qform_code": 1
+    },
+    {
+      "shape": [
+        128,
+        128,
+        47,
+        4
+      ],
+      "axis_codes": [
+        "L",
+        "A",
+        "S"
+      ],
+      "xyzt_units": [
+        "mm",
+        "sec"
+      ],
+      "spatial_sform_code": 1,
+      "spatial_qform_code": 1
+    },
+    {
+      "shape": [
+        128,
+        128,
+        148,
+        4
+      ],
+      "axis_codes": [
+        "L",
+        "A",
+        "S"
+      ],
+      "xyzt_units": [
+        "mm",
+        "sec"
+      ],
+      "spatial_sform_code": 1,
+      "spatial_qform_code": 1
+    },
+    {
+      "shape": [
+        128,
+        128,
+        47,
+        4
+      ],
+      "axis_codes": [
+        "L",
+        "A",
+        "S"
+      ],
+      "xyzt_units": [
+        "mm",
+        "sec"
+      ],
+      "spatial_sform_code": 1,
+      "spatial_qform_code": 1
+    },
+    {
+      "shape": [
+        128,
+        128,
+        47,
+        4
+      ],
+      "axis_codes": [
+        "L",
+        "A",
+        "S"
+      ],
+      "xyzt_units": [
+        "mm",
+        "sec"
+      ],
+      "spatial_sform_code": 1,
+      "spatial_qform_code": 1
+    },
+    {
+      "shape": [
+        128,
+        128,
+        63,
+        4
+      ],
+      "axis_codes": [
+        "L",
+        "A",
+        "S"
+      ],
+      "xyzt_units": [
+        "mm",
+        "sec"
+      ],
+      "spatial_sform_code": 1,
+      "spatial_qform_code": 1
+    },
+    {
+      "shape": [
+        128,
+        128,
+        63,
+        4
+      ],
+      "axis_codes": [
+        "L",
+        "A",
+        "S"
+      ],
+      "xyzt_units": [
+        "mm",
+        "sec"
+      ],
+      "spatial_sform_code": 1,
+      "spatial_qform_code": 1
+    },
+    {
+      "shape": [
+        128,
+        128,
+        148,
+        4
+      ],
+      "axis_codes": [
+        "L",
+        "A",
+        "S"
+      ],
+      "xyzt_units": [
+        "mm",
+        "sec"
+      ],
+      "spatial_sform_code": 1,
+      "spatial_qform_code": 1
+    }
+  ],
+  "sampled_cache_attribute_schemas": [
+    {
+      "root_attribute_names": [
+        "branch",
+        "claim_status",
+        "per_scan_zscore_used",
+        "reference_template_sha256",
+        "run_contract_sha256",
+        "shape_only_resampling_used",
+        "tracer"
+      ],
+      "group_attribute_names": [
+        "cohort",
+        "finite_fraction",
+        "output_nonzero_median",
+        "scanner",
+        "source_nonzero_median",
+        "source_orientation",
+        "source_sha256",
+        "source_shape",
+        "status",
+        "suvr_global",
+        "tracer"
+      ],
+      "shape": [
+        1,
+        128,
+        128,
+        128
+      ]
+    },
+    {
+      "root_attribute_names": [
+        "branch",
+        "claim_status",
+        "per_scan_zscore_used",
+        "reference_template_sha256",
+        "run_contract_sha256",
+        "shape_only_resampling_used",
+        "tracer"
+      ],
+      "group_attribute_names": [
+        "cohort",
+        "finite_fraction",
+        "output_nonzero_median",
+        "scanner",
+        "source_nonzero_median",
+        "source_orientation",
+        "source_sha256",
+        "source_shape",
+        "status",
+        "suvr_global",
+        "tracer"
+      ],
+      "shape": [
+        1,
+        128,
+        128,
+        128
+      ]
+    },
+    {
+      "root_attribute_names": [
+        "branch",
+        "claim_status",
+        "per_scan_zscore_used",
+        "reference_template_sha256",
+        "run_contract_sha256",
+        "shape_only_resampling_used",
+        "tracer"
+      ],
+      "group_attribute_names": [
+        "cohort",
+        "finite_fraction",
+        "output_nonzero_median",
+        "scanner",
+        "source_nonzero_median",
+        "source_orientation",
+        "source_sha256",
+        "source_shape",
+        "status",
+        "suvr_global",
+        "tracer"
+      ],
+      "shape": [
+        1,
+        128,
+        128,
+        128
+      ]
+    },
+    {
+      "root_attribute_names": [
+        "branch",
+        "claim_status",
+        "per_scan_zscore_used",
+        "reference_template_sha256",
+        "run_contract_sha256",
+        "shape_only_resampling_used",
+        "tracer"
+      ],
+      "group_attribute_names": [
+        "cohort",
+        "finite_fraction",
+        "output_nonzero_median",
+        "scanner",
+        "source_nonzero_median",
+        "source_orientation",
+        "source_sha256",
+        "source_shape",
+        "status",
+        "suvr_global",
+        "tracer"
+      ],
+      "shape": [
+        1,
+        128,
+        128,
+        128
+      ]
+    },
+    {
+      "root_attribute_names": [
+        "branch",
+        "claim_status",
+        "per_scan_zscore_used",
+        "reference_template_sha256",
+        "run_contract_sha256",
+        "shape_only_resampling_used",
+        "tracer"
+      ],
+      "group_attribute_names": [
+        "cohort",
+        "finite_fraction",
+        "output_nonzero_median",
+        "scanner",
+        "source_nonzero_median",
+        "source_orientation",
+        "source_sha256",
+        "source_shape",
+        "status",
+        "suvr_global",
+        "tracer"
+      ],
+      "shape": [
+        1,
+        128,
+        128,
+        128
+      ]
+    },
+    {
+      "root_attribute_names": [
+        "branch",
+        "claim_status",
+        "per_scan_zscore_used",
+        "reference_template_sha256",
+        "run_contract_sha256",
+        "shape_only_resampling_used",
+        "tracer"
+      ],
+      "group_attribute_names": [
+        "cohort",
+        "finite_fraction",
+        "output_nonzero_median",
+        "scanner",
+        "source_nonzero_median",
+        "source_orientation",
+        "source_sha256",
+        "source_shape",
+        "status",
+        "suvr_global",
+        "tracer"
+      ],
+      "shape": [
+        1,
+        128,
+        128,
+        128
+      ]
+    },
+    {
+      "root_attribute_names": [
+        "branch",
+        "claim_status",
+        "per_scan_zscore_used",
+        "reference_template_sha256",
+        "run_contract_sha256",
+        "shape_only_resampling_used",
+        "tracer"
+      ],
+      "group_attribute_names": [
+        "cohort",
+        "finite_fraction",
+        "output_nonzero_median",
+        "scanner",
+        "source_nonzero_median",
+        "source_orientation",
+        "source_sha256",
+        "source_shape",
+        "status",
+        "suvr_global",
+        "tracer"
+      ],
+      "shape": [
+        1,
+        128,
+        128,
+        128
+      ]
+    },
+    {
+      "root_attribute_names": [
+        "branch",
+        "claim_status",
+        "per_scan_zscore_used",
+        "reference_template_sha256",
+        "run_contract_sha256",
+        "shape_only_resampling_used",
+        "tracer"
+      ],
+      "group_attribute_names": [
+        "cohort",
+        "finite_fraction",
+        "output_nonzero_median",
+        "scanner",
+        "source_nonzero_median",
+        "source_orientation",
+        "source_sha256",
+        "source_shape",
+        "status",
+        "suvr_global",
+        "tracer"
+      ],
+      "shape": [
+        1,
+        128,
+        128,
+        128
+      ]
+    }
+  ],
+  "voxel_intensity_units": "NOT_ESTABLISHED_AS_CALIBRATED_SUVR_OR_RAW_ACTIVITY_BY_THESE_RECORDS",
+  "brain_mask_source_space": "NOT_ESTABLISHED_BY_THE_SUPPLIED_PET_MANIFEST_OR_CACHE_ATTRIBUTE_SCHEMA",
+  "scope": "Eight retained-scan headers were inspected, plus complete manifest/cache schema. This is not an exhaustive source-space investigation of 288 excluded scans.",
+  "decision": "No automatic background-NaN replacement or source-brain-mask substitution. A template-space T1 mask is not itself proof of a PET-source-space mask. Retain exclusions and explicitly limit selected-subset and uncalibrated-pattern conclusions. Full recovery requires documented source PET-to-T1 geometry, brain coverage and quantitative normalization, followed by a new versioned image analysis."
+}

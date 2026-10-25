@@ -1,0 +1,63 @@
+{
+  "status": "EXECUTED_SOURCE_AND_TIMING_AUDIT",
+  "source_hashes": {
+    "pacc": "e22ff9b4f78eabbc3bf1cf5afba1af0347cfe63419a0942a95d3940509625dcf",
+    "visits": "ea4727d4f242f8ae9c95aebb7c7dc9e5110f5fe1e41cc8832c7e06f73dd4faae",
+    "cdr": "102b01a7d8a7805998faf8b8a13c8613873e00def41c7147fbdd994bf3cf27e4",
+    "tau": "bd58d602281d131675aa1ff5d72b898b2db57f16f120a3ced78e68ef77a76513"
+  },
+  "pacc": {
+    "cohort_n": 1059,
+    "participants_no_eligible_postlandmark_scores": 0,
+    "participants_one_eligible_postlandmark_score": 10,
+    "participants_at_least_two_scores": 1049,
+    "observations": 8557,
+    "saved_analysis_membership_reconciled": true,
+    "eligibility": "At least two nonconflicting dated post-landmark PACC observations in (0,4.5] years, with complete model variables."
+  },
+  "cdr_intervals": {
+    "distinct_day_intervals": 2682,
+    "median_days": 418.0,
+    "q25_q75_days": [
+      266.0,
+      425.0
+    ],
+    "confirmation_pairs_within_window": 239,
+    "confirmation_pair_median_days": 417.0,
+    "interpretation": "Observed visit-schedule lag, not a mathematically fixed delay for every subject; endpoint date remains the second qualifying assessment."
+  },
+  "tau_frame_metadata_columns": [
+    "blood_day",
+    "blood_log_ptau217",
+    "blood_ptau217",
+    "cognition_day",
+    "confirmation_time_time_days",
+    "date_evidence",
+    "fbp_day",
+    "ftp_image_available_not_yet_chronology_validated",
+    "landmark_days_t0",
+    "last_negative_censor_time_days",
+    "last_visit_positive_time_days",
+    "legacy_onset_time_days",
+    "mri_day",
+    "single_crossing_time_days",
+    "time_days",
+    "tau_temporal"
+  ],
+  "partition_assertions": {
+    "rows": 90,
+    "no_public_membership_or_weights": true,
+    "summary_file": "A08_partition_assertions.json",
+    "hash_policy": "Participant-membership digests remain private; data-use approval is needed before sharing even hashed membership."
+  },
+  "tau_timing": {
+    "n": 358,
+    "same_day": 18,
+    "earlier": 340,
+    "lead_days_median": 12.0,
+    "lead_days_min": 0.0,
+    "lead_days_max": 77.0,
+    "all_within_183_days": true,
+    "source": "Previously locked eligibility records, reconciled with the dated source-selection code."
+  }
+}

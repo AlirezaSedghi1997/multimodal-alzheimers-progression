@@ -1,0 +1,21 @@
+{
+  "version": "DEEPREVIEW_REVISION_V1_20261024",
+  "status": "POST_HOC_INTERNAL_EXPLORATORY",
+  "authorization": "User requested new scientific and technical analyses on 2026-10-24; original results remain immutable.",
+  "source_repo": "H:/New project",
+  "output_policy": "Private participant-level intermediates remain here; only aggregate results and checked manuscript revisions may be delivered to C:/desktop.",
+  "analyses": [
+    {"id":"A01", "question":"Are original tau conclusions sensitive to omitted concordance resamples?", "resamples":40000, "seed":20261011, "policies":["original all-fold estimable", "IBS restricted to same draws", "zero increment only for undefined folds, labelled altered statistic", "renormalized estimable folds, labelled altered statistic", "sum of within-fold IPCW pair numerators and denominators, labelled pair-weighted estimand"], "multiplicity_families":[3,40]},
+    {"id":"A02", "question":"What are paired discrimination increments in the existing raw pooled OOF tau models?", "resamples":40000,"seed":20261014,"comparisons":2,"family_per_metric":3},
+    {"id":"A03", "question":"Does training-only component score standardization alter pooled OOF imaging and tau comparisons?", "source":"frozen FP32 expert scores", "transform":"per component, per feature mean and population SD learned only from its disjoint outer-training meta rows; no outcomes; same transform on that expert's outer-test rows", "ridge_alpha":10,"tracks":["mri","pet","blood","tau"],"outer_folds":5,"seeds":[13,29,47],"no_new_CNN_training":true,"ordinary_CV_on_pooled_features_forbidden":true},
+    {"id":"A04", "question":"How do plasma and tau compare in the same dual-measured participants?", "models":["C+A","C+A+plasma","C+A+tau","C+A+plasma+tau"],"comparisons":[["C+A","C+A+plasma"],["C+A","C+A+tau"],["C+A+plasma","C+A+tau"],["C+A+tau","C+A+plasma+tau"]],"family_per_metric":4,"outer_partitions":"original locked assignments","hyperparameters":"3 inner event/treatment stratified folds; candidates 0.1,1,10; one-standard-error rule favoring stronger regularization","no_modality_superiority_from_unmatched_subsets":true},
+    {"id":"A05", "question":"What does penalty 10 mean, and what are the ridge effective degrees of freedom?", "source":"exact scikit-survival implementation and reconstructed fixed-FP32 component heads","edf":"trace of I(beta) [I(beta)+alpha*Identity]^-1 under checked library scaling","tuning_sensitivity":"within each disjoint expert-specific meta pool only, where the frozen expert has seen no validation outcomes"},
+    {"id":"A06", "question":"Reconcile PACC exclusions, tau timing and CDR assessment intervals.","source":"dated original tables and saved longitudinal analysis frames"},
+    {"id":"A07", "question":"Audit PET nonfinite exclusions and intensity/mask coordinate provenance.","policy":"Recover scans only with verified source-space geometry and brain coverage; no guessed mask equivalence or invented intensity units."},
+    {"id":"A08", "question":"Execute the supplied 3D image training code on synthetic inputs and publish only aggregate partition assertions.", "claim_ceiling":"Execution test, not reconstruction of real image-training performance."},
+    {"id":"A09", "question":"Assess feasible deformation-aware/pretrained controls using actual available inputs.","policy":"No result from unavailable maps or weights; document identification limits and retain representation-specific conclusions."}
+  ],
+  "selection_policy":"Report all specified analyses; no outer-outcome selection or replacement of original primary estimates.",
+  "review_source":"User-supplied DeepReview report; no new service run requested.",
+  "author_approval":"pending"
+}

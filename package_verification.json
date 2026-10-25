@@ -1,18 +1,20 @@
 {
-  "status": "PASS_PACKAGE_HASH_SYNTAX_AND_SCOPED_RESEARCH_CHECKS",
-  "files": 920,
-  "bytes": 12156515,
-  "python_files_syntax_checked": 559,
-  "oof_tests_passed": 19,
-  "cnn_jacobian_tests_passed": 9,
-  "synthetic_metric_check_passed": true,
-  "publication_audit": "docs/RESEARCH_UPDATE_CHECKS_20261014.json",
+  "date": "2026-10-24",
+  "status": "PASS_PACKAGE_INTEGRITY_AND_BOUNDED_AGGREGATE_CHECKS",
   "integrity": {
     "status": "PASS_PACKAGE_INTEGRITY_ONLY",
-    "files": 920,
+    "files": 954,
     "scientific_approval": false,
     "data_transfer_permission": false
   },
+  "post_hoc_bundle": {
+    "status": "PASS_BUNDLE_INTEGRITY_AND_AGGREGATE_CONSISTENCY_ONLY",
+    "files": 31,
+    "external_validation": false,
+    "recomputed_restricted_data_results": false,
+    "scientific_approval": false
+  },
+  "publication_audit": "docs/RESEARCH_UPDATE_CHECKS_20261024.json",
   "fresh_environment_reproduction": false,
   "scientific_validation": false,
   "participant_level_data_in_update": false,

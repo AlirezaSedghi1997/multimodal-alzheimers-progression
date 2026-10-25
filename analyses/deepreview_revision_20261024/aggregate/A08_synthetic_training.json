@@ -1,0 +1,26 @@
+{
+  "status": "SYNTHETIC_TRAIN_CHECKPOINT_RELOAD_AND_INFERENCE_EXECUTED",
+  "training_subjects": 8,
+  "validation_subjects": 4,
+  "volume_geometry": [
+    1,
+    128,
+    128,
+    128
+  ],
+  "epochs": 1,
+  "device": "cuda:0",
+  "torch": "2.5.1+cu121",
+  "source_training_sha256": "5526c4083380c0fb2dcb48d0a1e38c1d758d96bd91f5f153688e69aed5f1e271",
+  "checkpoint_sha256": "6f212f9c0a501d5e8e5b2deef9f39f847929e2862ea157f7b27ecff78017131b",
+  "reload_max_abs_error": 0.0,
+  "seconds": 39.089195728302,
+  "history": [
+    {
+      "epoch": 1,
+      "train_nll": 1.4240342490375042,
+      "inner_ipcw_ibs": 0.12914725106688893
+    }
+  ],
+  "scope": "Synthetic execution of the supplied 3D trainer, validation, saved weights and inference. Not real-data training reproduction, external validation, or a new scientific performance result."
+}

@@ -1,3 +1,11 @@
+# Research update 2026-10-24
+
+- Added the dated executed post-hoc review bundle: resampling policies, standardized OOF heads, paired tau C, 220-person matched biomarkers, original-head EDF/nested tuning, timing/provenance audits, synthetic trainer execution and four fixed deformation summaries.
+- Retained negative/uncertain imaging increments and the adverse deformation-summary probability-error result. Qualified broad tau robustness when fold aggregation changes.
+- Preserved original primary estimates and the separate historical compact CNN/Jacobian pilot no-go record.
+- Updated README, reproduction documentation and complete release hashes. No participant-level data, scans, individual predictions, membership digests, fitted weights or manuscript documents are released.
+- Verification remains package/aggregate consistency, not external validation or author/journal approval.
+
 # Research update 2026-10-14
 
 - Published both scientific review rounds' statistical implementations and aggregate outputs, including 40,000-draw multiplicity sensitivities, calibration, cognition, clinical comparators, selection and censoring analyses.

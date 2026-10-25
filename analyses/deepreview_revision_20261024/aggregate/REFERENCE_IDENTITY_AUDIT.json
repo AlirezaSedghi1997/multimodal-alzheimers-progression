@@ -1,0 +1,2944 @@
+{
+  "retrieved_on": "2026-10-24",
+  "source": "Crossref official DOI registry API; live retrieval",
+  "reference_count": 43,
+  "scientific_doi_count": 42,
+  "identity_verified": 42,
+  "unresolved_or_review": [],
+  "references": [
+    {
+      "key": "1",
+      "doi": "10.1001/jama.2015.4668",
+      "url": "https://api.crossref.org/works/10.1001%2Fjama.2015.4668",
+      "publisher_url": "https://doi.org/10.1001/jama.2015.4668",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Prevalence of Cerebral Amyloid Pathology in Persons Without Dementia: A Meta-analysis",
+      "registered_title": "Prevalence of Cerebral Amyloid Pathology in Persons Without Dementia",
+      "registered_subtitle": "A Meta-analysis",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2015,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2015,
+              5,
+              19
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2015,
+              5,
+              19
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2015,
+              5,
+              19
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "JAMA",
+      "registered_journal": [
+        "JAMA"
+      ],
+      "registered_authors": [
+        "Jansen",
+        "Ossenkoppele",
+        "Knol",
+        "Tijms",
+        "Scheltens",
+        "Verhey",
+        "Visser",
+        "Aalten",
+        "Aarsland",
+        "Alcolea",
+        "Alexander",
+        "Almdahl",
+        "Arnold",
+        "Baldeiras",
+        "Barthel",
+        "van Berckel",
+        "Bibeau",
+        "Blennow",
+        "Brooks",
+        "van Buchem",
+        "Camus",
+        "Cavedo",
+        "Chen",
+        "Chetelat",
+        "Cohen",
+        "Drzezga",
+        "Engelborghs",
+        "Fagan",
+        "Fladby",
+        "Fleisher",
+        "van der Flier",
+        "Ford",
+        "Förster",
+        "Fortea",
+        "Foskett",
+        "Frederiksen",
+        "Freund-Levi",
+        "Frisoni",
+        "Froelich",
+        "Gabryelewicz",
+        "Gill",
+        "Gkatzima",
+        "Gómez-Tortosa",
+        "Gordon",
+        "Grimmer",
+        "Hampel",
+        "Hausner",
+        "Hellwig",
+        "Herukka",
+        "Hildebrandt",
+        "Ishihara",
+        "Ivanoiu",
+        "Jagust",
+        "Johannsen",
+        "Kandimalla",
+        "Kapaki",
+        "Klimkowicz-Mrowiec",
+        "Klunk",
+        "Köhler",
+        "Koglin",
+        "Kornhuber",
+        "Kramberger",
+        "Van Laere",
+        "Landau",
+        "Lee",
+        "de Leon",
+        "Lisetti",
+        "Lleó",
+        "Madsen",
+        "Maier",
+        "Marcusson",
+        "Mattsson",
+        "de Mendonça",
+        "Meulenbroek",
+        "Meyer",
+        "Mintun",
+        "Mok",
+        "Molinuevo",
+        "Møllergård",
+        "Morris",
+        "Mroczko",
+        "Van der Mussele",
+        "Na",
+        "Newberg",
+        "Nordberg",
+        "Nordlund",
+        "Novak",
+        "Paraskevas",
+        "Parnetti",
+        "Perera",
+        "Peters",
+        "Popp",
+        "Prabhakar",
+        "Rabinovici",
+        "Ramakers",
+        "Rami",
+        "Resende de Oliveira",
+        "Rinne",
+        "Rodrigue",
+        "Rodríguez-Rodríguez",
+        "Roe",
+        "Rot",
+        "Rowe",
+        "Rüther",
+        "Sabri",
+        "Sanchez-Juan",
+        "Santana",
+        "Sarazin",
+        "Schröder",
+        "Schütte",
+        "Seo",
+        "Soetewey",
+        "Soininen",
+        "Spiru",
+        "Struyfs",
+        "Teunissen",
+        "Tsolaki",
+        "Vandenberghe",
+        "Verbeek",
+        "Villemagne",
+        "Vos",
+        "van Waalwijk van Doorn",
+        "Waldemar",
+        "Wallin",
+        "Wallin",
+        "Wiltfang",
+        "Wolk",
+        "Zboch",
+        "Zetterberg"
+      ],
+      "crossref_record_sha256": "7fab60908b9b12b608362e9d480eb0489552557f78a2549b1ff5a9e3bb70ee76",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "2",
+      "doi": "10.1016/j.jalz.2018.02.018",
+      "url": "https://api.crossref.org/works/10.1016%2Fj.jalz.2018.02.018",
+      "publisher_url": "https://doi.org/10.1016/j.jalz.2018.02.018",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "NIA‐AA Research Framework: Toward a biological definition of Alzheimer's disease",
+      "registered_title": "NIA‐AA Research Framework: Toward a biological definition of Alzheimer's disease",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2018,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2018,
+              4
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2018,
+              4
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2018,
+              4
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2018,
+              4
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Alzheimer's & Dementia",
+      "registered_journal": [
+        "Alzheimer's &amp; Dementia"
+      ],
+      "registered_authors": [
+        "Jack",
+        "Bennett",
+        "Blennow",
+        "Carrillo",
+        "Dunn",
+        "Haeberlein",
+        "Holtzman",
+        "Jagust",
+        "Jessen",
+        "Karlawish",
+        "Liu",
+        "Molinuevo",
+        "Montine",
+        "Phelps",
+        "Rankin",
+        "Rowe",
+        "Scheltens",
+        "Siemers",
+        "Snyder",
+        "Sperling",
+        "Contributors",
+        "Elliott",
+        "Masliah",
+        "Ryan",
+        "Silverberg"
+      ],
+      "crossref_record_sha256": "8b5c3f3684232a370b83d3af99dc0a2fc96615fd346eb63f0fb1eedf202d44b6",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "3",
+      "doi": "10.1002/alz.13859",
+      "url": "https://api.crossref.org/works/10.1002%2Falz.13859",
+      "publisher_url": "https://doi.org/10.1002/alz.13859",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Revised criteria for diagnosis and staging of Alzheimer's disease: Alzheimer's Association Workgroup",
+      "registered_title": "Revised criteria for diagnosis and staging of Alzheimer's disease: Alzheimer's Association Workgroup",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2024,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2024,
+              6,
+              27
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2024,
+              8
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2024,
+              6,
+              27
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2024,
+              6,
+              27
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Alzheimer's & Dementia",
+      "registered_journal": [
+        "Alzheimer's &amp; Dementia"
+      ],
+      "registered_authors": [
+        "Jack",
+        "Andrews",
+        "Beach",
+        "Buracchio",
+        "Dunn",
+        "Graf",
+        "Hansson",
+        "Ho",
+        "Jagust",
+        "McDade",
+        "Molinuevo",
+        "Okonkwo",
+        "Pani",
+        "Rafii",
+        "Scheltens",
+        "Siemers",
+        "Snyder",
+        "Sperling",
+        "Teunissen",
+        "Carrillo"
+      ],
+      "crossref_record_sha256": "0dd8a173ce16c4bd32bbcbd5f4844302f211c32c45b1a3bca0d7897b7b724828",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "5",
+      "doi": "10.1038/s41591-022-02049-x",
+      "url": "https://api.crossref.org/works/10.1038%2Fs41591-022-02049-x",
+      "publisher_url": "https://doi.org/10.1038/s41591-022-02049-x",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Amyloid and tau PET-positive cognitively unimpaired individuals are at high risk for future cognitive decline",
+      "registered_title": "Amyloid and tau PET-positive cognitively unimpaired individuals are at high risk for future cognitive decline",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2022,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2022,
+              11
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2022,
+              11
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2022,
+              11,
+              10
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2022,
+              11
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Nature Medicine",
+      "registered_journal": [
+        "Nature Medicine"
+      ],
+      "registered_authors": [
+        "Ossenkoppele",
+        "Pichet Binette",
+        "Groot",
+        "Smith",
+        "Strandberg",
+        "Palmqvist",
+        "Stomrud",
+        "Tideman",
+        "Ohlsson",
+        "Jögi",
+        "Johnson",
+        "Sperling",
+        "Dore",
+        "Masters",
+        "Rowe",
+        "Visser",
+        "van Berckel",
+        "van der Flier",
+        "Baker",
+        "Jagust",
+        "Wiste",
+        "Petersen",
+        "Jack",
+        "Hansson"
+      ],
+      "crossref_record_sha256": "fe04aa42d5001e4f841b6fff9863e8e376d4006a3713d9ccaf184e2a06153a99",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "6",
+      "doi": "10.1093/brain/awy150",
+      "url": "https://api.crossref.org/works/10.1093%2Fbrain%2Fawy150",
+      "publisher_url": "https://doi.org/10.1093/brain/awy150",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Effects of amyloid pathology and neurodegeneration on cognitive change in cognitively normal adults",
+      "registered_title": "Effects of amyloid pathology and neurodegeneration on cognitive change in cognitively normal adults",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2018,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2018,
+              6,
+              12
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2018,
+              8,
+              1
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2018,
+              6,
+              12
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2018,
+              6,
+              12
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Brain",
+      "registered_journal": [
+        "Brain"
+      ],
+      "registered_authors": [
+        "Bilgel",
+        "An",
+        "Helphrey",
+        "Elkins",
+        "Gomez",
+        "Wong",
+        "Davatzikos",
+        "Ferrucci",
+        "Resnick"
+      ],
+      "crossref_record_sha256": "dbc029f7543159f14178759df1bebcb119a94bdd34b5245fbd701473afbf289c",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "8",
+      "doi": "10.1002/alz.14492",
+      "url": "https://api.crossref.org/works/10.1002%2Falz.14492",
+      "publisher_url": "https://doi.org/10.1002/alz.14492",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "A multi‐cohort study of longitudinal and cross‐sectional Alzheimer's disease biomarkers in cognitively unimpaired older adults",
+      "registered_title": "A multi‐cohort study of longitudinal and cross‐sectional Alzheimer's disease biomarkers in cognitively unimpaired older adults",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2025,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              1,
+              27
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2025,
+              2
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2025,
+              1,
+              27
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2025,
+              1,
+              27
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Alzheimer's & Dementia",
+      "registered_journal": [
+        "Alzheimer's &amp; Dementia"
+      ],
+      "registered_authors": [
+        "Xie",
+        "Das",
+        "Li",
+        "Wisse",
+        "McGrew",
+        "Lyu",
+        "DiCalogero",
+        "Shah",
+        "Ilesanmi",
+        "Denning",
+        "Brown",
+        "Cohen",
+        "Sreepada",
+        "Dong",
+        "Sadeghpour",
+        "Khandelwal",
+        "Ittyerah",
+        "Ravikumar",
+        "Sadaghiani",
+        "Hrybouski",
+        "de Flores",
+        "Gibson",
+        "Yushkevich",
+        "Wolk",
+        "for the Alzheimer's Disease Neuroimaging Initiative"
+      ],
+      "crossref_record_sha256": "5ee07545698af20d665f6865d36b54207dfbc3c1679f52a2ad2940c4ac46c2bf",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "10",
+      "doi": "10.1038/s43587-025-00835-z",
+      "url": "https://api.crossref.org/works/10.1038%2Fs43587-025-00835-z",
+      "publisher_url": "https://doi.org/10.1038/s43587-025-00835-z",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Plasma p-tau217 and tau-PET predict future cognitive decline among cognitively unimpaired individuals: implications for clinical trials",
+      "registered_title": "Plasma p-tau217 and tau-PET predict future cognitive decline among cognitively unimpaired individuals: implications for clinical trials",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2025,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              3,
+              28
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2025,
+              3,
+              28
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2025,
+              3,
+              28
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Nature Aging",
+      "registered_journal": [
+        "Nature Aging"
+      ],
+      "registered_authors": [
+        "Ossenkoppele",
+        "Salvadó",
+        "Janelidze",
+        "Pichet Binette",
+        "Bali",
+        "Karlsson",
+        "Palmqvist",
+        "Mattsson-Carlgren",
+        "Stomrud",
+        "Therriault",
+        "Rahmouni",
+        "Rosa-Neto",
+        "Coomans",
+        "van de Giessen",
+        "van der Flier",
+        "Teunissen",
+        "Jonaitis",
+        "Johnson",
+        "Villeneuve",
+        "PREVENT-AD Research Group",
+        "Benzinger",
+        "Schindler",
+        "Bateman",
+        "Doecke",
+        "Doré",
+        "Feizpour",
+        "Masters",
+        "Rowe",
+        "Wiste",
+        "Petersen",
+        "Jack",
+        "Hansson"
+      ],
+      "crossref_record_sha256": "531de7d11923cc3a3039885dbec7d0dcf4645ce1630ad43eaf94e25f06b35726",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "12",
+      "doi": "10.1056/nejmoa2305032",
+      "url": "https://api.crossref.org/works/10.1056%2Fnejmoa2305032",
+      "publisher_url": "https://doi.org/10.1056/nejmoa2305032",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Trial of Solanezumab in Preclinical Alzheimer’s Disease",
+      "registered_title": "Trial of Solanezumab in Preclinical Alzheimer’s Disease",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2023,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2023,
+              9,
+              21
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2023,
+              9,
+              21
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2023,
+              9,
+              21
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "New England Journal of Medicine",
+      "registered_journal": [
+        "New England Journal of Medicine"
+      ],
+      "registered_authors": [
+        "Sperling",
+        "Donohue",
+        "Raman",
+        "Rafii",
+        "Johnson",
+        "Masters",
+        "van Dyck",
+        "Iwatsubo",
+        "Marshall",
+        "Yaari",
+        "Mancini",
+        "Holdridge",
+        "Case",
+        "Sims",
+        "Aisen"
+      ],
+      "crossref_record_sha256": "647f98ef854d7cc660c0bf7a2493248670225b8150e2ed57fee2d340e3f312f0",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "13",
+      "doi": "10.14283/jpad.2024.122",
+      "url": "https://api.crossref.org/works/10.14283%2Fjpad.2024.122",
+      "publisher_url": "https://doi.org/10.14283/jpad.2024.122",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Amyloid and Tau Prediction of Cognitive and Functional Decline in Unimpaired Older Individuals: Longitudinal Data from the A4 and LEARN Studies",
+      "registered_title": "Amyloid and Tau Prediction of Cognitive and Functional Decline in Unimpaired Older Individuals: Longitudinal Data from the A4 and LEARN Studies",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2024,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2024,
+              8
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2024,
+              8
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2024,
+              8
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "The Journal of Prevention of Alzheimer's Disease",
+      "registered_journal": [
+        "The Journal of Prevention of Alzheimer's Disease"
+      ],
+      "registered_authors": [
+        "Sperling",
+        "Donohue",
+        "Rissman",
+        "Johnson",
+        "Rentz",
+        "Grill",
+        "Heidebrink",
+        "Jenkins",
+        "Jimenez-Maggiora",
+        "Langford",
+        "Liu",
+        "Raman",
+        "Yaari",
+        "Holdridge",
+        "Sims",
+        "Aisen"
+      ],
+      "crossref_record_sha256": "27f7c294314378c52541618aa1c7c435fe2775a2441123afae142faab277fbc2",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "14",
+      "doi": "10.1002/alz.70702",
+      "url": "https://api.crossref.org/works/10.1002%2Falz.70702",
+      "publisher_url": "https://doi.org/10.1002/alz.70702",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Multimodal prognostic modeling of individual cognitive trajectories to enhance trial efficiency in preclinical Alzheimer's disease",
+      "registered_title": "Multimodal prognostic modeling of individual cognitive trajectories to enhance trial efficiency in preclinical Alzheimer's disease",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2025,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              9
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2025,
+              9
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2025,
+              9,
+              24
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2025,
+              9
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Alzheimer's & Dementia",
+      "registered_journal": [
+        "Alzheimer's &amp; Dementia"
+      ],
+      "registered_authors": [
+        "Devanarayan",
+        "Donohue",
+        "Sperling",
+        "Johnson",
+        "Ye",
+        "Charil",
+        "Doherty",
+        "Tian",
+        "Raman",
+        "Aisen",
+        "Kramer",
+        "Irizarry",
+        "Dhadda"
+      ],
+      "crossref_record_sha256": "1cb8e4125c0cfee34cad8ff48d52f2980c339cc58da2b542cc7c690356a8dd0c",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "15",
+      "doi": "10.1002/dad2.70321",
+      "url": "https://api.crossref.org/works/10.1002%2Fdad2.70321",
+      "publisher_url": "https://doi.org/10.1002/dad2.70321",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Incremental value of plasma biomarkers in predicting clinical decline among cognitively unimpaired older adults: Results from the A4 trial",
+      "registered_title": "Incremental value of plasma biomarkers in predicting clinical decline among cognitively unimpaired older adults: Results from the A4 trial",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2026,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2026,
+              4
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2026,
+              4
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2026,
+              4,
+              3
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2026,
+              4
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Alzheimer's & Dementia: Diagnosis, Assessment & Disease Monitoring",
+      "registered_journal": [
+        "Alzheimer's &amp; Dementia: Diagnosis, Assessment &amp; Disease Monitoring"
+      ],
+      "registered_authors": [
+        "Khorsand",
+        "Ghanbarian",
+        "Rabin",
+        "Sajjadi",
+        "Ezzati"
+      ],
+      "crossref_record_sha256": "d8f8c8dbb053474dac0715e8481d4530e417fe75775eb57e90f6432aafdac2d2",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "16",
+      "doi": "10.1093/braincomms/fcaa057",
+      "url": "https://api.crossref.org/works/10.1093%2Fbraincomms%2Ffcaa057",
+      "publisher_url": "https://doi.org/10.1093/braincomms/fcaa057",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Prediction of conversion to Alzheimer’s disease using deep survival analysis of MRI images",
+      "registered_title": "Prediction of conversion to Alzheimer’s disease using deep survival analysis of MRI images",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2020,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2020,
+              1,
+              1
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2020,
+              1,
+              1
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2020,
+              5,
+              27
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2020,
+              1,
+              1
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Brain Communications",
+      "registered_journal": [
+        "Brain Communications"
+      ],
+      "registered_authors": [
+        "Nakagawa",
+        "Ishida",
+        "Naito",
+        "Nagai",
+        "Yamaguchi",
+        "Onoda",
+        "on behalf of the Alzheimer’s Disease Neuroimaging Initiative"
+      ],
+      "crossref_record_sha256": "636f7c5b67ca7a453f51b5835d0751d961376bfb378c7fe34e472512e37130e9",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "17",
+      "doi": "10.1016/j.neurobiolaging.2022.10.005",
+      "url": "https://api.crossref.org/works/10.1016%2Fj.neurobiolaging.2022.10.005",
+      "publisher_url": "https://doi.org/10.1016/j.neurobiolaging.2022.10.005",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Predicting time-to-conversion for dementia of Alzheimer's type using multi-modal deep survival analysis",
+      "registered_title": "Predicting time-to-conversion for dementia of Alzheimer's type using multi-modal deep survival analysis",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2023,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2023,
+              1
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2023,
+              1
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2023,
+              1
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Neurobiology of Aging",
+      "registered_journal": [
+        "Neurobiology of Aging"
+      ],
+      "registered_authors": [
+        "Mirabnahrazam",
+        "Ma",
+        "Beaulac",
+        "Lee",
+        "Popuri",
+        "Lee",
+        "Cao",
+        "Galvin",
+        "Wang",
+        "Beg"
+      ],
+      "crossref_record_sha256": "58b77ed7afd710e7285384c872b38127dd2dcc54588974e74c5631041375ddb0",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "18",
+      "doi": "10.1016/j.patter.2023.100804",
+      "url": "https://api.crossref.org/works/10.1016%2Fj.patter.2023.100804",
+      "publisher_url": "https://doi.org/10.1016/j.patter.2023.100804",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Leakage and the reproducibility crisis in machine-learning-based science",
+      "registered_title": "Leakage and the reproducibility crisis in machine-learning-based science",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2023,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2023,
+              9
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2023,
+              9
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2023,
+              9
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Patterns",
+      "registered_journal": [
+        "Patterns"
+      ],
+      "registered_authors": [
+        "Kapoor",
+        "Narayanan"
+      ],
+      "crossref_record_sha256": "860f89748340a2ffa398f373b733ab8633263197531da26efd180bd15e03692b",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "19",
+      "doi": "10.1186/s12916-019-1466-7",
+      "url": "https://api.crossref.org/works/10.1186%2Fs12916-019-1466-7",
+      "publisher_url": "https://doi.org/10.1186/s12916-019-1466-7",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Calibration: the Achilles heel of predictive analytics",
+      "registered_title": "Calibration: the Achilles heel of predictive analytics",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2019,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2019,
+              12
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2019,
+              12
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2019,
+              12,
+              16
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2019,
+              12
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "BMC Medicine",
+      "registered_journal": [
+        "BMC Medicine"
+      ],
+      "registered_authors": [
+        "On behalf of Topic Group ‘Evaluating diagnostic tests and prediction models’ of the STRATOS initiative",
+        "Van Calster",
+        "McLernon",
+        "van Smeden",
+        "Wynants",
+        "Steyerberg"
+      ],
+      "crossref_record_sha256": "a6670339af14d4903634b5f2514fdbc0a41b4e395a52ddab744d7ef62ada8c65",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "20",
+      "doi": "10.1136/bmj-2023-078378",
+      "url": "https://api.crossref.org/works/10.1136%2Fbmj-2023-078378",
+      "publisher_url": "https://doi.org/10.1136/bmj-2023-078378",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods",
+      "registered_title": "TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2024,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2024,
+              4,
+              16
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2024,
+              4,
+              16
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2024,
+              4,
+              16
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "BMJ",
+      "registered_journal": [
+        "BMJ"
+      ],
+      "registered_authors": [
+        "Collins",
+        "Moons",
+        "Dhiman",
+        "Riley",
+        "Beam",
+        "Van Calster",
+        "Ghassemi",
+        "Liu",
+        "Reitsma",
+        "van Smeden",
+        "Boulesteix",
+        "Camaradou",
+        "Celi",
+        "Denaxas",
+        "Denniston",
+        "Glocker",
+        "Golub",
+        "Harvey",
+        "Heinze",
+        "Hoffman",
+        "Kengne",
+        "Lam",
+        "Lee",
+        "Loder",
+        "Maier-Hein",
+        "Mateen",
+        "McCradden",
+        "Oakden-Rayner",
+        "Ordish",
+        "Parnell",
+        "Rose",
+        "Singh",
+        "Wynants",
+        "Logullo"
+      ],
+      "crossref_record_sha256": "3abf3df86710fbc4b5be0affea3289891561c6756ccbb6076edab637930f7ae0",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "21",
+      "doi": "10.1212/wnl.43.11.2412-a",
+      "url": "https://api.crossref.org/works/10.1212%2Fwnl.43.11.2412-a",
+      "publisher_url": "https://doi.org/10.1212/wnl.43.11.2412-a",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "The Clinical Dementia Rating (CDR): Current version and scoring rules",
+      "registered_title": "The Clinical Dementia Rating (CDR)",
+      "registered_subtitle": "Current version and scoring rules",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 1993,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              1993,
+              11
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              1993,
+              11
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              1993,
+              11
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Neurology",
+      "registered_journal": [
+        "Neurology"
+      ],
+      "registered_authors": [
+        "Morris"
+      ],
+      "crossref_record_sha256": "4d0d2dd52bf0d8d11945425ee074e2beb0e74fcafb8b8a69972f79b107c6fe8f",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "22",
+      "doi": "10.1016/0197-2456(96)00075-x",
+      "url": "https://api.crossref.org/works/10.1016%2F0197-2456%2896%2900075-x",
+      "publisher_url": "https://doi.org/10.1016/0197-2456(96)00075-x",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "A note on quantifying follow-up in studies of failure time",
+      "registered_title": "A note on quantifying follow-up in studies of failure time",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 1996,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              1996,
+              8
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              1996,
+              8
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              1996,
+              8
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Controlled Clinical Trials",
+      "registered_journal": [
+        "Controlled Clinical Trials"
+      ],
+      "registered_authors": [
+        "Schemper",
+        "Smith"
+      ],
+      "crossref_record_sha256": "0bcd289047e8da3f3cfa7c76c835e64929d02949261271410eb38dc93e6b7ab3",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "23",
+      "doi": "10.1001/jamaneurol.2014.803",
+      "url": "https://api.crossref.org/works/10.1001%2Fjamaneurol.2014.803",
+      "publisher_url": "https://doi.org/10.1001/jamaneurol.2014.803",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "The Preclinical Alzheimer Cognitive Composite: Measuring Amyloid-Related Decline",
+      "registered_title": "The Preclinical Alzheimer Cognitive Composite",
+      "registered_subtitle": "Measuring Amyloid-Related Decline",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2014,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2014,
+              8,
+              1
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2014,
+              8,
+              1
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2014,
+              8,
+              1
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "JAMA Neurology",
+      "registered_journal": [
+        "JAMA Neurology"
+      ],
+      "registered_authors": [
+        "Donohue",
+        "Sperling",
+        "Salmon",
+        "Rentz",
+        "Raman",
+        "Thomas",
+        "Weiner",
+        "Aisen"
+      ],
+      "crossref_record_sha256": "cb6cd7fc99643cffa953652c41414aa97a9ae6c0525d41d06162c30276ffe5cd",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "24",
+      "doi": "10.1016/j.jalz.2014.07.003",
+      "url": "https://api.crossref.org/works/10.1016%2Fj.jalz.2014.07.003",
+      "publisher_url": "https://doi.org/10.1016/j.jalz.2014.07.003",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "The Centiloid Project: Standardizing quantitative amyloid plaque estimation by PET",
+      "registered_title": "The Centiloid Project: Standardizing quantitative amyloid plaque estimation by PET",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2015,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2014,
+              10,
+              28
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2015,
+              1
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2014,
+              10,
+              28
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2014,
+              10,
+              28
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Alzheimer's & Dementia",
+      "registered_journal": [
+        "Alzheimer's &amp; Dementia"
+      ],
+      "registered_authors": [
+        "Klunk",
+        "Koeppe",
+        "Price",
+        "Benzinger",
+        "Devous",
+        "Jagust",
+        "Johnson",
+        "Mathis",
+        "Minhas",
+        "Pontecorvo",
+        "Rowe",
+        "Skovronsky",
+        "Mintun"
+      ],
+      "crossref_record_sha256": "0e526d40d29ed99813150b0705d72052b0977867a16469fa388364e5c03d0bf6",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "25",
+      "doi": "10.1109/tmi.2010.2046908",
+      "url": "https://api.crossref.org/works/10.1109%2Ftmi.2010.2046908",
+      "publisher_url": "https://doi.org/10.1109/tmi.2010.2046908",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "N4ITK: Improved N3 Bias Correction",
+      "registered_title": "N4ITK: Improved N3 Bias Correction",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2010,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2010,
+              6
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2010,
+              6
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2010,
+              6
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "IEEE Transactions on Medical Imaging",
+      "registered_journal": [
+        "IEEE Transactions on Medical Imaging"
+      ],
+      "registered_authors": [
+        "Tustison",
+        "Avants",
+        "Cook",
+        "Yuanjie Zheng",
+        "Egan",
+        "Yushkevich",
+        "Gee"
+      ],
+      "crossref_record_sha256": "1aec74d318ded4061d386e8c82c0c330391e724fd814bd46022a05deacb73a9c",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "26",
+      "doi": "10.1016/j.media.2007.06.004",
+      "url": "https://api.crossref.org/works/10.1016%2Fj.media.2007.06.004",
+      "publisher_url": "https://doi.org/10.1016/j.media.2007.06.004",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Symmetric diffeomorphic image registration with cross-correlation: Evaluating automated labeling of elderly and neurodegenerative brain",
+      "registered_title": "Symmetric diffeomorphic image registration with cross-correlation: Evaluating automated labeling of elderly and neurodegenerative brain",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2008,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2008,
+              2
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2008,
+              2
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2008,
+              2
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Medical Image Analysis",
+      "registered_journal": [
+        "Medical Image Analysis"
+      ],
+      "registered_authors": [
+        "AVANTS",
+        "EPSTEIN",
+        "GROSSMAN",
+        "GEE"
+      ],
+      "crossref_record_sha256": "83d4a7cfba219a4958e474d9dcebb7f1fa1acb6add10d5553721dc8e82bf0c27",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "27",
+      "doi": "10.1038/s41592-022-01681-2",
+      "url": "https://api.crossref.org/works/10.1038%2Fs41592-022-01681-2",
+      "publisher_url": "https://doi.org/10.1038/s41592-022-01681-2",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "TemplateFlow: FAIR-sharing of multi-scale, multi-species brain models",
+      "registered_title": "TemplateFlow: FAIR-sharing of multi-scale, multi-species brain models",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2022,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2022,
+              12
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2022,
+              12
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2022,
+              12,
+              1
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2022,
+              12
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Nature Methods",
+      "registered_journal": [
+        "Nature Methods"
+      ],
+      "registered_authors": [
+        "Ciric",
+        "Thompson",
+        "Lorenz",
+        "Goncalves",
+        "MacNicol",
+        "Markiewicz",
+        "Halchenko",
+        "Ghosh",
+        "Gorgolewski",
+        "Poldrack",
+        "Esteban"
+      ],
+      "crossref_record_sha256": "10b4e6f2d9b152458e862f2b78042ef8cee9b4588993d5dd2f21a41fda29dc42",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "28",
+      "doi": "10.7717/peerj.6257",
+      "url": "https://api.crossref.org/works/10.7717%2Fpeerj.6257",
+      "publisher_url": "https://doi.org/10.7717/peerj.6257",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "A scalable discrete-time survival model for neural networks",
+      "registered_title": "A scalable discrete-time survival model for neural networks",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2019,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2019,
+              1,
+              25
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2019,
+              1,
+              25
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2019,
+              1,
+              25
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "PeerJ",
+      "registered_journal": [
+        "PeerJ"
+      ],
+      "registered_authors": [
+        "Gensheimer",
+        "Narasimhan"
+      ],
+      "crossref_record_sha256": "138b6c90e4170560a04f11063a565b63f256807bf4529b589d870c9e37a3dff8",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "29",
+      "doi": "10.1111/j.2517-6161.1972.tb00899.x",
+      "url": "https://api.crossref.org/works/10.1111%2Fj.2517-6161.1972.tb00899.x",
+      "publisher_url": "https://doi.org/10.1111/j.2517-6161.1972.tb00899.x",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Regression Models and Life-Tables",
+      "registered_title": "Regression Models and Life-Tables",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 1972,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              1972,
+              1,
+              1
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              1972,
+              1,
+              1
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2018,
+              12,
+              5
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              1972,
+              1,
+              1
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Journal of the Royal Statistical Society Series B: Statistical Methodology",
+      "registered_journal": [
+        "Journal of the Royal Statistical Society Series B: Statistical Methodology"
+      ],
+      "registered_authors": [
+        "Cox"
+      ],
+      "crossref_record_sha256": "4b76de56fded89a6439cfa4a7cdade05ceeb959d64b1472e6bd6a6c215d60e9f",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "30",
+      "doi": "10.1214/08-aoas169",
+      "url": "https://api.crossref.org/works/10.1214%2F08-aoas169",
+      "publisher_url": "https://doi.org/10.1214/08-aoas169",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Random survival forests",
+      "registered_title": "Random survival forests",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2008,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2008,
+              9,
+              1
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2008,
+              9,
+              1
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2008,
+              9,
+              1
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "The Annals of Applied Statistics",
+      "registered_journal": [
+        "The Annals of Applied Statistics"
+      ],
+      "registered_authors": [
+        "Ishwaran",
+        "Kogalur",
+        "Blackstone",
+        "Lauer"
+      ],
+      "crossref_record_sha256": "5b686c4a0bc8abc7218551ff83934316805b4b8b55c9c3e41d3d533aa8b74c50",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "31",
+      "doi": "10.1002/(sici)1097-0258(19990915/30)18:17/18<2529::aid-sim274>3.0.co;2-5",
+      "url": "https://api.crossref.org/works/10.1002%2F%28sici%291097-0258%2819990915%2F30%2918%3A17%2F18%3C2529%3A%3Aaid-sim274%3E3.0.co%3B2-5",
+      "publisher_url": "https://doi.org/10.1002/(sici)1097-0258(19990915/30)18:17/18<2529::aid-sim274>3.0.co;2-5",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Assessment and comparison of prognostic classification schemes for survival data",
+      "registered_title": "Assessment and comparison of prognostic classification schemes for survival data",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 1999,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              1999,
+              9,
+              15
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              1999,
+              9,
+              15
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              1999,
+              9,
+              15
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Statistics in Medicine",
+      "registered_journal": [
+        "Statistics in Medicine"
+      ],
+      "registered_authors": [
+        "Graf",
+        "Schmoor",
+        "Sauerbrei",
+        "Schumacher"
+      ],
+      "crossref_record_sha256": "97057a9a602de33f16e8a1412126bd5f7e950e20cfa7d26fa86abfbcdaeef9c7",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "32",
+      "doi": "10.1002/sim.4154",
+      "url": "https://api.crossref.org/works/10.1002%2Fsim.4154",
+      "publisher_url": "https://doi.org/10.1002/sim.4154",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "On the C‐statistics for evaluating overall adequacy of risk prediction procedures with censored survival data",
+      "registered_title": "On the C‐statistics for evaluating overall adequacy of risk prediction procedures with censored survival data",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2011,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2011,
+              1,
+              13
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2011,
+              5,
+              10
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2011,
+              1,
+              13
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2011,
+              1,
+              13
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Statistics in Medicine",
+      "registered_journal": [
+        "Statistics in Medicine"
+      ],
+      "registered_authors": [
+        "Uno",
+        "Cai",
+        "Pencina",
+        "D'Agostino",
+        "Wei"
+      ],
+      "crossref_record_sha256": "5c9b3f61f5ab05c192e645e90009e610209dff4e165c536103cbd88b0738f440",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "33",
+      "doi": "10.1186/s41512-018-0029-2",
+      "url": "https://api.crossref.org/works/10.1186%2Fs41512-018-0029-2",
+      "publisher_url": "https://doi.org/10.1186/s41512-018-0029-2",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "The index of prediction accuracy: an intuitive measure useful for evaluating risk prediction models",
+      "registered_title": "The index of prediction accuracy: an intuitive measure useful for evaluating risk prediction models",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2018,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2018,
+              5,
+              4
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2018,
+              12
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2018,
+              5,
+              4
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2018,
+              5,
+              4
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Diagnostic and Prognostic Research",
+      "registered_journal": [
+        "Diagnostic and Prognostic Research"
+      ],
+      "registered_authors": [
+        "Kattan",
+        "Gerds"
+      ],
+      "crossref_record_sha256": "069841726df55f48df3fff861b7ba629017b01457223980b8b82b3be2015dedf",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "34",
+      "doi": "10.1136/bmj-2024-080749",
+      "url": "https://api.crossref.org/works/10.1136%2Fbmj-2024-080749",
+      "publisher_url": "https://doi.org/10.1136/bmj-2024-080749",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Uncertainty of risk estimates from clinical prediction models: rationale, challenges, and approaches",
+      "registered_title": "Uncertainty of risk estimates from clinical prediction models: rationale, challenges, and approaches",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2025,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              2,
+              13
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2025,
+              2,
+              13
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2025,
+              2,
+              13
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "BMJ",
+      "registered_journal": [
+        "BMJ"
+      ],
+      "registered_authors": [
+        "Riley",
+        "Collins",
+        "Kirton",
+        "Snell",
+        "Ensor",
+        "Whittle",
+        "Dhiman",
+        "van Smeden",
+        "Liu",
+        "Alderman",
+        "Nirantharakumar",
+        "Manson-Whitton",
+        "Westwood",
+        "Cazier",
+        "Moons",
+        "Martin",
+        "Sperrin",
+        "Denniston",
+        "Harrell",
+        "Archer"
+      ],
+      "crossref_record_sha256": "ece091d22f711f46dd86cb0310a5e556b90b33e40732fdd5a3ed34aa3e6ba709",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "35",
+      "doi": "10.1002/sim.7992",
+      "url": "https://api.crossref.org/works/10.1002%2Fsim.7992",
+      "publisher_url": "https://doi.org/10.1002/sim.7992",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Minimum sample size for developing a multivariable prediction model: PART II ‐ binary and time‐to‐event outcomes",
+      "registered_title": "Minimum sample size for developing a multivariable prediction model: PART II ‐ binary and time‐to‐event outcomes",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2019,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2018,
+              10,
+              24
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2019,
+              3,
+              30
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2018,
+              10,
+              24
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2018,
+              10,
+              24
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Statistics in Medicine",
+      "registered_journal": [
+        "Statistics in Medicine"
+      ],
+      "registered_authors": [
+        "Riley",
+        "Snell",
+        "Ensor",
+        "Burke",
+        "Harrell Jr",
+        "Moons",
+        "Collins"
+      ],
+      "crossref_record_sha256": "47b0fea4bc3503aadd58f5a43c0fa0325e2eda398f783817526830f6bcff8195",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "36",
+      "doi": "10.1002/sim.8409",
+      "url": "https://api.crossref.org/works/10.1002%2Fsim.8409",
+      "publisher_url": "https://doi.org/10.1002/sim.8409",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Correction to: Minimum sample size for developing a multivariable prediction model: Part II‐binary and time‐to‐event outcomes by Riley RD, Snell KI, Ensor J, et al.",
+      "registered_title": "Correction to: Minimum sample size for developing a multivariable prediction model: Part II‐binary and time‐to‐event outcomes by Riley RD, Snell KI, Ensor J, et al.",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2019,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2019,
+              10,
+              29
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2019,
+              12,
+              30
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2019,
+              10,
+              29
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2019,
+              10,
+              29
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Statistics in Medicine",
+      "registered_journal": [
+        "Statistics in Medicine"
+      ],
+      "registered_authors": [
+        "Riley"
+      ],
+      "crossref_record_sha256": "601d78ddebfc67b1cc251300c6fba9d4e4d47edbdd2fb7a358e3275208619653",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "38",
+      "doi": "10.1136/bmj-2024-082505",
+      "url": "https://api.crossref.org/works/10.1136%2Fbmj-2024-082505",
+      "publisher_url": "https://doi.org/10.1136/bmj-2024-082505",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "PROBAST+AI: an updated quality, risk of bias, and applicability assessment tool for prediction models using regression or artificial intelligence methods",
+      "registered_title": "PROBAST+AI: an updated quality, risk of bias, and applicability assessment tool for prediction models using regression or artificial intelligence methods",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2025,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              3,
+              24
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2025,
+              3,
+              24
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2025,
+              3,
+              24
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "BMJ",
+      "registered_journal": [
+        "BMJ"
+      ],
+      "registered_authors": [
+        "Moons",
+        "Damen",
+        "Kaul",
+        "Hooft",
+        "Andaur Navarro",
+        "Dhiman",
+        "Beam",
+        "Van Calster",
+        "Celi",
+        "Denaxas",
+        "Denniston",
+        "Ghassemi",
+        "Heinze",
+        "Kengne",
+        "Maier-Hein",
+        "Liu",
+        "Logullo",
+        "McCradden",
+        "Liu",
+        "Oakden-Rayner",
+        "Singh",
+        "Ting",
+        "Wynants",
+        "Yang",
+        "Reitsma",
+        "Riley",
+        "Collins",
+        "van Smeden"
+      ],
+      "crossref_record_sha256": "24cc9284b9e2ed41ff0621f6640204518af875c6a5518058911c9c998d4f6445",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "J2",
+      "doi": "10.1016/j.archger.2025.106033",
+      "url": "https://api.crossref.org/works/10.1016%2Fj.archger.2025.106033",
+      "publisher_url": "https://doi.org/10.1016/j.archger.2025.106033",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Time-stratified modeling of cognitive impairment risk in rural aging populations: Nomogram development (2011) and external validation (2013) using CHARLS",
+      "registered_title": "Time-stratified modeling of cognitive impairment risk in rural aging populations: Nomogram development (2011) and external validation (2013) using CHARLS",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2026,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2026,
+              1
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2026,
+              1
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2026,
+              1
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Archives of Gerontology and Geriatrics",
+      "registered_journal": [
+        "Archives of Gerontology and Geriatrics"
+      ],
+      "registered_authors": [
+        "Wang",
+        "Shang",
+        "Li",
+        "Wang",
+        "Li"
+      ],
+      "crossref_record_sha256": "8be9ff136a37177e920380df4702e9beb956afeb7a422f2ac39ed72db3b5608b",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "J3",
+      "doi": "10.1093/gerona/glaf113",
+      "url": "https://api.crossref.org/works/10.1093%2Fgerona%2Fglaf113",
+      "publisher_url": "https://doi.org/10.1093/gerona/glaf113",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Cognitive Stability Among Plasma p-tau 181 Negative Individuals: A 5-year Analysis of the Multidomain Alzheimer Prevention Trial Study",
+      "registered_title": "Cognitive Stability Among Plasma p-tau 181 Negative Individuals: A 5-year Analysis of the Multidomain Alzheimer Prevention Trial Study",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2025,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              5,
+              19
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2025,
+              6,
+              10
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2025,
+              5,
+              19
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2025,
+              5,
+              19
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "The Journals of Gerontology, Series A: Biological Sciences and Medical Sciences",
+      "registered_journal": [
+        "The Journals of Gerontology, Series A: Biological Sciences and Medical Sciences"
+      ],
+      "registered_authors": [
+        "Bellelli",
+        "Barreto",
+        "Cantet",
+        "Ousset",
+        "Blennow",
+        "Vellas",
+        "Angioni",
+        "for the MAPT/DSA Study Group",
+        "Guyonnet",
+        "Carrié",
+        "Brigitte",
+        "Faisant",
+        "Lala",
+        "Delrieu",
+        "Villars",
+        "Combrouze",
+        "Badufle",
+        "Zueras",
+        "Andrieu",
+        "Cantet",
+        "Morin",
+        "Abellan Van Kan",
+        "Dupuy",
+        "Rolland",
+        "Caillaud",
+        "Ousset",
+        "Lala",
+        "Belleville",
+        "Gilbert",
+        "Fontaine",
+        "Dartigues",
+        "Marcet",
+        "Delva",
+        "Foubert",
+        "Cerda",
+        "Costes",
+        "Rouaud",
+        "Manckoundia",
+        "Quipourt",
+        "Marilier",
+        "Franon",
+        "Bories",
+        "Pader",
+        "Basset",
+        "Lapoujade",
+        "Faure",
+        "Li Yung Tong",
+        "Malick-Loiseau",
+        "Cazaban-Campistron",
+        "Desclaux",
+        "Blatge",
+        "Dantoine",
+        "Laubarie-Mouret",
+        "Saulnier",
+        "Clément",
+        "Picat",
+        "Bernard-Bourzeix",
+        "Willebois",
+        "Désormais",
+        "Cardinaud",
+        "Bonnefoy",
+        "Livet",
+        "Rebaudet",
+        "Gédéon",
+        "Burdet",
+        "Terracol",
+        "Pesce",
+        "Roth",
+        "Chaillou",
+        "Louchart",
+        "Sudres",
+        "Lebrun",
+        "Barro-Belaygues",
+        "Touchon",
+        "Bennys",
+        "Gabelle",
+        "Romano",
+        "Touati",
+        "Marelli",
+        "Pays",
+        "Robert",
+        "Le Duff",
+        "Gervais",
+        "Gonfrier",
+        "Gasnier",
+        "Bordes",
+        "Begorre",
+        "Carpuat",
+        "Khales",
+        "Lefebvre",
+        "Misbah El Idrissi",
+        "Skolil",
+        "Salles",
+        "Dufouil",
+        "Chupin",
+        "Mangin",
+        "Bouhayia",
+        "Allard",
+        "Ricolfi",
+        "Dubois",
+        "Paule Bonceour Martel",
+        "Cotton",
+        "Bonafé",
+        "Chanalet",
+        "Hugon",
+        "Bonneville",
+        "Cognard",
+        "Chollet",
+        "Payoux",
+        "Voisin",
+        "Delrieu",
+        "Peiffer",
+        "Hitzel",
+        "Allard",
+        "Zanca",
+        "Monteil",
+        "Darcourt",
+        "Molinier",
+        "Derumeaux",
+        "Costa",
+        "Perret",
+        "Vinel",
+        "Caspar-Bauguil",
+        "Olivier-Abbal",
+        "Andrieu",
+        "Cantet",
+        "Coley"
+      ],
+      "crossref_record_sha256": "18172c850c1455fa681e8bea376a97e205fbe61223ab561ce641bfbc384dd827",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "J5",
+      "doi": "10.1007/s11682-018-0019-6",
+      "url": "https://api.crossref.org/works/10.1007%2Fs11682-018-0019-6",
+      "publisher_url": "https://doi.org/10.1007/s11682-018-0019-6",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Modifying the minimum criteria for diagnosing amnestic MCI to improve prediction of brain atrophy and progression to Alzheimer’s disease",
+      "registered_title": "Modifying the minimum criteria for diagnosing amnestic MCI to improve prediction of brain atrophy and progression to Alzheimer’s disease",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2020,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2018,
+              12,
+              4
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2020,
+              6
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2018,
+              12,
+              4
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2018,
+              12,
+              4
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Brain Imaging and Behavior",
+      "registered_journal": [
+        "Brain Imaging and Behavior"
+      ],
+      "registered_authors": [
+        "for the Alzheimer’s Disease Neuroimaging Initiative",
+        "Vuoksimaa",
+        "McEvoy",
+        "Holland",
+        "Franz",
+        "Kremen"
+      ],
+      "crossref_record_sha256": "d4c8c2f17a069e0b5ea7cfee406900c21c296785ffeb6f85f99ccc1e3453d5cb",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "J8",
+      "doi": "10.1109/jbhi.2025.3546020",
+      "url": "https://api.crossref.org/works/10.1109%2Fjbhi.2025.3546020",
+      "publisher_url": "https://doi.org/10.1109/jbhi.2025.3546020",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Self-Organized Prediction-Classification- Superposition of Longitudinal Cognitive Decline in Alzheimer's Disease: An Application to Novel Clinical Research Methodology",
+      "registered_title": "Self-Organized Prediction-Classification- Superposition of Longitudinal Cognitive Decline in Alzheimer's Disease: An Application to Novel Clinical Research Methodology",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2025,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2025,
+              8
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2025,
+              8
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2025,
+              8
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "IEEE Journal of Biomedical and Health Informatics",
+      "registered_journal": [
+        "IEEE Journal of Biomedical and Health Informatics"
+      ],
+      "registered_authors": [
+        "Sato",
+        "Hanazawa",
+        "Suzuki",
+        "Hashizume",
+        "Hirakawa"
+      ],
+      "crossref_record_sha256": "e2bbcc8856b06679cf8360bbb0c4f864fc38a173be10b205dd312c165185bd42",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "J9",
+      "doi": "10.3233/jad-200821",
+      "url": "https://api.crossref.org/works/10.3233%2Fjad-200821",
+      "publisher_url": "https://doi.org/10.3233/jad-200821",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Improved Prediction of Imminent Progression to Clinically Significant Memory Decline Using Surface Multivariate Morphometry Statistics and Sparse Coding",
+      "registered_title": "Improved Prediction of Imminent Progression to Clinically Significant Memory Decline Using Surface Multivariate Morphometry Statistics and Sparse Coding",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2021,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2021,
+              5,
+              4
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2021,
+              5,
+              4
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2021,
+              5,
+              4
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Journal of Alzheimer's Disease",
+      "registered_journal": [
+        "Journal of Alzheimer's Disease"
+      ],
+      "registered_authors": [
+        "Stonnington",
+        "for the Alzheimer’s Disease Neuroimaging Initiative",
+        "Wu",
+        "Zhang",
+        "Shi",
+        "Bauer III",
+        "Devadas",
+        "Su",
+        "Locke",
+        "Reiman",
+        "Caselli",
+        "Chen",
+        "Wang"
+      ],
+      "crossref_record_sha256": "5ad4b2e73a71ea0caae47eccefd6e5599cf9159c930607869d788d52ba2176c9",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "J10",
+      "doi": "10.1109/access.2021.3121609",
+      "url": "https://api.crossref.org/works/10.1109%2Faccess.2021.3121609",
+      "publisher_url": "https://doi.org/10.1109/access.2021.3121609",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Longitudinal Brain MR Image Modeling Using Personalized Memory for Alzheimer’s Disease",
+      "registered_title": "Longitudinal Brain MR Image Modeling Using Personalized Memory for Alzheimer’s Disease",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2021,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2021
+            ]
+          ]
+        },
+        "published-print": {
+          "date-parts": [
+            [
+              2021
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2021
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "IEEE Access",
+      "registered_journal": [
+        "IEEE Access"
+      ],
+      "registered_authors": [
+        "Kim",
+        "Kucukaslan",
+        "Navab"
+      ],
+      "crossref_record_sha256": "f3dc14d68d68be2b3d458a3c72b51e658411ed024f3b14663ff77469fa488460",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "J12",
+      "doi": "10.3390/biomedicines12061232",
+      "url": "https://api.crossref.org/works/10.3390%2Fbiomedicines12061232",
+      "publisher_url": "https://doi.org/10.3390/biomedicines12061232",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Predictive Models for the Transition from Mild Neurocognitive Disorder to Major Neurocognitive Disorder: Insights from Clinical, Demographic, and Neuropsychological Data",
+      "registered_title": "Predictive Models for the Transition from Mild Neurocognitive Disorder to Major Neurocognitive Disorder: Insights from Clinical, Demographic, and Neuropsychological Data",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2024,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2024,
+              6,
+              1
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2024,
+              6,
+              1
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2024,
+              6,
+              1
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Biomedicines",
+      "registered_journal": [
+        "Biomedicines"
+      ],
+      "registered_authors": [
+        "Tsiakiri",
+        "Bakirtzis",
+        "Plakias",
+        "Vlotinou",
+        "Vadikolias",
+        "Terzoudi",
+        "Christidi"
+      ],
+      "crossref_record_sha256": "678b1c5f986dbd9641aa521fc1caefce859e188e99e3d99a2436ed7521c3bf15",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "J13",
+      "doi": "10.3389/fnagi.2021.688478",
+      "url": "https://api.crossref.org/works/10.3389%2Ffnagi.2021.688478",
+      "publisher_url": "https://doi.org/10.3389/fnagi.2021.688478",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Validity Evidence for the Research Category, “Cognitively Unimpaired – Declining,” as a Risk Marker for Mild Cognitive Impairment and Alzheimer’s Disease",
+      "registered_title": "Validity Evidence for the Research Category, “Cognitively Unimpaired – Declining,” as a Risk Marker for Mild Cognitive Impairment and Alzheimer’s Disease",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2021,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2021,
+              7,
+              26
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2021,
+              7,
+              26
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2021,
+              7,
+              26
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Frontiers in Aging Neuroscience",
+      "registered_journal": [
+        "Frontiers in Aging Neuroscience"
+      ],
+      "registered_authors": [
+        "Langhough Koscik",
+        "Hermann",
+        "Allison",
+        "Clark",
+        "Jonaitis",
+        "Mueller",
+        "Betthauser",
+        "Christian",
+        "Du",
+        "Okonkwo",
+        "Birdsill",
+        "Chin",
+        "Gleason",
+        "Johnson"
+      ],
+      "crossref_record_sha256": "ce95aa1436898d6de2f6787961c2c750956c7356e66807a5541ae33d5377beec",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "J14",
+      "doi": "10.1038/s41598-026-47047-y",
+      "url": "https://api.crossref.org/works/10.1038%2Fs41598-026-47047-y",
+      "publisher_url": "https://doi.org/10.1038/s41598-026-47047-y",
+      "status": "IDENTITY_VERIFIED",
+      "manuscript_title": "Imaging-genetics-based dementia risk prediction using deep survival neural networks in the Rotterdam Study",
+      "registered_title": "Imaging-genetics-based dementia risk prediction using deep survival neural networks in the Rotterdam Study",
+      "registered_subtitle": "",
+      "title_match": "exact_after_typographic_normalization",
+      "manuscript_year": 2026,
+      "registry_dates": {
+        "published": {
+          "date-parts": [
+            [
+              2026,
+              4,
+              9
+            ]
+          ]
+        },
+        "published-online": {
+          "date-parts": [
+            [
+              2026,
+              4,
+              9
+            ]
+          ]
+        },
+        "issued": {
+          "date-parts": [
+            [
+              2026,
+              4,
+              9
+            ]
+          ]
+        }
+      },
+      "manuscript_journal": "Scientific Reports",
+      "registered_journal": [
+        "Scientific Reports"
+      ],
+      "registered_authors": [
+        "Yu",
+        "Rosbergen",
+        "Wolters",
+        "Bron",
+        "Vernooij",
+        "Ikram",
+        "Roshchupkin"
+      ],
+      "crossref_record_sha256": "a56ad5163b0f7fd896ac5dbc16b523189b2e2d643167ed495c9459af9a7228a9",
+      "retraction_markers_in_record": [],
+      "entailment_status": "CHECK_SEPARATELY_FROM_METADATA",
+      "status_check_scope": "Crossref record only; absence of a marker is not exhaustive retraction certification."
+    },
+    {
+      "key": "J900",
+      "status": "IDENTIFIED_SOFTWARE_DISCLOSURE",
+      "title": "Codex (GPT-6): AI-assisted editorial preparation",
+      "source": "https://openai.com/codex/",
+      "scientific_evidence": false
+    }
+  ],
+  "claim_limit": "DOI identity is distinct from full-text support, scientific validity, retraction completeness and journal acceptance."
+}

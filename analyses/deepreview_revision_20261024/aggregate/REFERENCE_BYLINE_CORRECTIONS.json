@@ -1,0 +1,51 @@
+[
+  {
+    "key": "19",
+    "doi": "10.1186/s12916-019-1466-7",
+    "primary_byline_url": "https://bmcmedicine.biomedcentral.com/articles/10.1186/s12916-019-1466-7",
+    "correction": "Named people before collective author; original registry deposit retained unchanged.",
+    "rendered_order": [
+      "Van Calster",
+      "McLernon",
+      "van Smeden",
+      "Wynants",
+      "Steyerberg",
+      "On behalf of Topic Group ‘Evaluating diagnostic tests and prediction models’ of the STRATOS initiative"
+    ]
+  },
+  {
+    "key": "J5",
+    "doi": "10.1007/s11682-018-0019-6",
+    "primary_byline_url": "https://link.springer.com/article/10.1007/s11682-018-0019-6",
+    "correction": "Named people before collective author; original registry deposit retained unchanged.",
+    "rendered_order": [
+      "Vuoksimaa",
+      "McEvoy",
+      "Holland",
+      "Franz",
+      "Kremen",
+      "for the Alzheimer’s Disease Neuroimaging Initiative"
+    ]
+  },
+  {
+    "key": "J9",
+    "doi": "10.3233/jad-200821",
+    "primary_byline_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9626361/",
+    "correction": "Named people before collective author; original registry deposit retained unchanged.",
+    "rendered_order": [
+      "Stonnington",
+      "Wu",
+      "Zhang",
+      "Shi",
+      "Bauer III",
+      "Devadas",
+      "Su",
+      "Locke",
+      "Reiman",
+      "Caselli",
+      "Chen",
+      "Wang",
+      "for the Alzheimer’s Disease Neuroimaging Initiative"
+    ]
+  }
+]

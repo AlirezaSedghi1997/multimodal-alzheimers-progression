@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-24",
+  "new_python_syntax": "AST parse of all new executed sources and safe verifier passed; research runners not imported",
+  "aggregate_bundle_verification": {
+    "status": "PASS_BUNDLE_INTEGRITY_AND_AGGREGATE_CONSISTENCY_ONLY",
+    "files": 31,
+    "external_validation": false,
+    "recomputed_restricted_data_results": false,
+    "scientific_approval": false
+  },
+  "new_bundle_privacy": "Only exact source, plans, aggregate JSON and documentation; identifier-pattern and forbidden-binary-type checks passed. PET header descriptions stripped.",
+  "statistical_execution_records": "A01 through A09 in aggregate/; original primary estimates retained",
+  "scientific_limits": [
+    "No external validation",
+    "No full A4 image-training reproduction",
+    "No full Jacobian-channel or pretrained encoder comparison",
+    "No established modality superiority",
+    "Conditional post-hoc inference"
+  ],
+  "prior_tests": "Historical 2026-10-14 OOF/pilot tests remain historical, not newly re-executed"
+}

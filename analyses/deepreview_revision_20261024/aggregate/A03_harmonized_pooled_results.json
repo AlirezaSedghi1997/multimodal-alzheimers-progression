@@ -1,0 +1,1024 @@
+{
+  "status": "EXECUTED_POST_HOC_FROZEN_CNN_HEAD_REFIT",
+  "new_CNN_training": false,
+  "transform": "component mean/SD on disjoint meta rows; locked on outer predictions",
+  "results": {
+    "mri__clinical_amyloid__clinical_mri_amyloid": {
+      "n": 1059,
+      "resamples": 40000,
+      "seed": 20261024,
+      "paired_reference": "clinical_amyloid",
+      "paired_augmented": "clinical_mri_amyloid",
+      "delta_ibs": 4.035931475876253e-05,
+      "delta_uno": 0.004351387313992809,
+      "valid_uno_resamples": 40000,
+      "undefined_uno_resamples": 0,
+      "folds": [
+        {
+          "fold": 1,
+          "n": 212,
+          "events3y": 22,
+          "undefined_resamples": 0,
+          "delta_ibs": 0.00017494612911870427,
+          "delta_uno": -0.004623338613732542
+        },
+        {
+          "fold": 2,
+          "n": 212,
+          "events3y": 20,
+          "undefined_resamples": 0,
+          "delta_ibs": -4.0372555583094266e-05,
+          "delta_uno": 0.0059679880669833985
+        },
+        {
+          "fold": 3,
+          "n": 212,
+          "events3y": 21,
+          "undefined_resamples": 0,
+          "delta_ibs": -7.9630892989774e-06,
+          "delta_uno": 0.012762972137589812
+        },
+        {
+          "fold": 4,
+          "n": 212,
+          "events3y": 21,
+          "undefined_resamples": 0,
+          "delta_ibs": 0.00031664702772576784,
+          "delta_uno": 0.0033622835393428696
+        },
+        {
+          "fold": 5,
+          "n": 211,
+          "events3y": 20,
+          "undefined_resamples": 0,
+          "delta_ibs": -0.00024279657917772223,
+          "delta_uno": 0.0042867264356373225
+        }
+      ],
+      "absolute": {
+        "clinical_amyloid": {
+          "ibs": 0.04029586829820857,
+          "uno": 0.683619653082852
+        },
+        "clinical_mri_amyloid": {
+          "ibs": 0.040336227612967325,
+          "uno": 0.6879710403968448
+        }
+      },
+      "intervals": {
+        "1": {
+          "ibs_all": [
+            -0.0001902475372210285,
+            0.0002805989151068346
+          ],
+          "ibs_same_estimable_draws": [
+            -0.0001902475372210285,
+            0.0002805989151068346
+          ],
+          "uno_original_estimable": [
+            -0.0045791473745069805,
+            0.013672794687810746
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.0045791473745069805,
+            0.013672794687810746
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.0045791473745069805,
+            0.013672794687810746
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.004671773699185023,
+            0.013594800568925777
+          ]
+        },
+        "2": {
+          "ibs_all": [
+            -0.000222785908362912,
+            0.00031735345743559183
+          ],
+          "ibs_same_estimable_draws": [
+            -0.000222785908362912,
+            0.00031735345743559183
+          ],
+          "uno_original_estimable": [
+            -0.005736573500215676,
+            0.01522773720111936
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.005736573500215676,
+            0.01522773720111936
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.005736573500215676,
+            0.01522773720111936
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.005896723597655744,
+            0.01513265029394552
+          ]
+        },
+        "40": {
+          "ibs_all": [
+            -0.00032925681872386295,
+            0.00044317384962702314
+          ],
+          "ibs_same_estimable_draws": [
+            -0.00032925681872386295,
+            0.00044317384962702314
+          ],
+          "uno_original_estimable": [
+            -0.010609287940737549,
+            0.02146242473718084
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.010609287940737549,
+            0.02146242473718084
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.010609287940737549,
+            0.02146242473718084
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.010738233000187794,
+            0.021170116629679884
+          ]
+        }
+      },
+      "pair_weighted_delta_uno": 0.004260578781642231,
+      "alternative_statistic_warning": "Zero-filled and renormalized differences change undefined-fold handling. Pair-weighted C changes the aggregation estimand; no cross-fold pairs are introduced. None is a proof of conservative coverage."
+    },
+    "pet__clinical_mri_amyloid__clinical_mri_amyloid_pet": {
+      "n": 544,
+      "resamples": 40000,
+      "seed": 20261024,
+      "paired_reference": "clinical_mri_amyloid",
+      "paired_augmented": "clinical_mri_amyloid_pet",
+      "delta_ibs": -0.00043972496561009374,
+      "delta_uno": -0.0018305680975974853,
+      "valid_uno_resamples": 39994,
+      "undefined_uno_resamples": 6,
+      "folds": [
+        {
+          "fold": 1,
+          "n": 113,
+          "events3y": 10,
+          "undefined_resamples": 0,
+          "delta_ibs": -0.00041116723680802636,
+          "delta_uno": -0.0072643447337183975
+        },
+        {
+          "fold": 2,
+          "n": 106,
+          "events3y": 9,
+          "undefined_resamples": 4,
+          "delta_ibs": -0.00018549259196110903,
+          "delta_uno": -0.009979560230084283
+        },
+        {
+          "fold": 3,
+          "n": 102,
+          "events3y": 11,
+          "undefined_resamples": 1,
+          "delta_ibs": -0.000836596118908824,
+          "delta_uno": -0.011159037075940681
+        },
+        {
+          "fold": 4,
+          "n": 119,
+          "events3y": 10,
+          "undefined_resamples": 1,
+          "delta_ibs": -0.0007450224766122214,
+          "delta_uno": 0.001126663161535868
+        },
+        {
+          "fold": 5,
+          "n": 104,
+          "events3y": 10,
+          "undefined_resamples": 0,
+          "delta_ibs": 8.694327508153005e-06,
+          "delta_uno": 0.018144463074319828
+        }
+      ],
+      "absolute": {
+        "clinical_mri_amyloid": {
+          "ibs": 0.04096207766917021,
+          "uno": 0.7115163227573648
+        },
+        "clinical_mri_amyloid_pet": {
+          "ibs": 0.04052235270356013,
+          "uno": 0.7096857546597671
+        }
+      },
+      "intervals": {
+        "1": {
+          "ibs_all": [
+            -0.0009449949651973357,
+            4.96170784328122e-05
+          ],
+          "ibs_same_estimable_draws": [
+            -0.0009450121747290624,
+            4.963358675316633e-05
+          ],
+          "uno_original_estimable": [
+            -0.014554015418564914,
+            0.010321499741636223
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.014553455525468544,
+            0.010321365867376042
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.014553455525468544,
+            0.010321365867376042
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.014380761867802487,
+            0.00981015745437906
+          ]
+        },
+        "2": {
+          "ibs_all": [
+            -0.0010226298755988358,
+            0.0001168481934775725
+          ],
+          "ibs_same_estimable_draws": [
+            -0.0010226444629049959,
+            0.00011685100968935354
+          ],
+          "uno_original_estimable": [
+            -0.016724220705519877,
+            0.011998539448993964
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.01672353652118747,
+            0.011998104321765995
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.01672353652118747,
+            0.011998104321765995
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.016280770611651278,
+            0.011614513256785274
+          ]
+        },
+        "40": {
+          "ibs_all": [
+            -0.0012938393391160174,
+            0.0003460118017115164
+          ],
+          "ibs_same_estimable_draws": [
+            -0.0012938428084938308,
+            0.00034601340159371433
+          ],
+          "uno_original_estimable": [
+            -0.024974945260112992,
+            0.01863839705697695
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.024974197191058683,
+            0.018638377867430153
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.024974197191058683,
+            0.018638377867430153
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.023445346600706504,
+            0.017557248703245727
+          ]
+        }
+      },
+      "pair_weighted_delta_uno": -0.0021033601271463064,
+      "alternative_statistic_warning": "Zero-filled and renormalized differences change undefined-fold handling. Pair-weighted C changes the aggregation estimand; no cross-fold pairs are introduced. None is a proof of conservative coverage."
+    },
+    "blood__clinical_amyloid_blood__clinical_mri_amyloid_blood": {
+      "n": 696,
+      "resamples": 40000,
+      "seed": 20261024,
+      "paired_reference": "clinical_amyloid_blood",
+      "paired_augmented": "clinical_mri_amyloid_blood",
+      "delta_ibs": -0.00010655301681241109,
+      "delta_uno": 0.005139754128016011,
+      "valid_uno_resamples": 40000,
+      "undefined_uno_resamples": 0,
+      "folds": [
+        {
+          "fold": 1,
+          "n": 141,
+          "events3y": 14,
+          "undefined_resamples": 0,
+          "delta_ibs": 1.9578779914090413e-05,
+          "delta_uno": -0.004166959646692336
+        },
+        {
+          "fold": 2,
+          "n": 129,
+          "events3y": 12,
+          "undefined_resamples": 0,
+          "delta_ibs": -0.0006714410494643461,
+          "delta_uno": 0.010519717737002665
+        },
+        {
+          "fold": 3,
+          "n": 147,
+          "events3y": 17,
+          "undefined_resamples": 0,
+          "delta_ibs": -0.0001405871323134112,
+          "delta_uno": 0.007798732693789723
+        },
+        {
+          "fold": 4,
+          "n": 142,
+          "events3y": 14,
+          "undefined_resamples": 0,
+          "delta_ibs": 0.0001886365802450792,
+          "delta_uno": 0.003589905746353872
+        },
+        {
+          "fold": 5,
+          "n": 137,
+          "events3y": 12,
+          "undefined_resamples": 0,
+          "delta_ibs": 2.6089793918583866e-05,
+          "delta_uno": 0.008405739220730513
+        }
+      ],
+      "absolute": {
+        "clinical_amyloid_blood": {
+          "ibs": 0.04011745442135309,
+          "uno": 0.7064284876244303
+        },
+        "clinical_mri_amyloid_blood": {
+          "ibs": 0.04001090140454067,
+          "uno": 0.7115682417524464
+        }
+      },
+      "intervals": {
+        "1": {
+          "ibs_all": [
+            -0.0005040023608186541,
+            0.0002939680045186735
+          ],
+          "ibs_same_estimable_draws": [
+            -0.0005040023608186541,
+            0.0002939680045186735
+          ],
+          "uno_original_estimable": [
+            -0.006033423308518588,
+            0.016738794629897594
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.006033423308518588,
+            0.016738794629897594
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.006033423308518588,
+            0.016738794629897594
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.00639915899839246,
+            0.01675779753153594
+          ]
+        },
+        "3": {
+          "ibs_all": [
+            -0.0005913974256467664,
+            0.00039007053978599185
+          ],
+          "ibs_same_estimable_draws": [
+            -0.0005913974256467664,
+            0.00039007053978599185
+          ],
+          "uno_original_estimable": [
+            -0.008700023166106886,
+            0.019377628955794278
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.008700023166106886,
+            0.019377628955794278
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.008700023166106886,
+            0.019377628955794278
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.0092156798979062,
+            0.019607659532305834
+          ]
+        },
+        "40": {
+          "ibs_all": [
+            -0.0007616120830843061,
+            0.0005717997705757037
+          ],
+          "ibs_same_estimable_draws": [
+            -0.0007616120830843061,
+            0.0005717997705757037
+          ],
+          "uno_original_estimable": [
+            -0.01390332323542746,
+            0.0249034250081826
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.01390332323542746,
+            0.0249034250081826
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.01390332323542746,
+            0.0249034250081826
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.014200471373370879,
+            0.024738451573053412
+          ]
+        }
+      },
+      "pair_weighted_delta_uno": 0.004974626951879338,
+      "alternative_statistic_warning": "Zero-filled and renormalized differences change undefined-fold handling. Pair-weighted C changes the aggregation estimand; no cross-fold pairs are introduced. None is a proof of conservative coverage."
+    },
+    "tau__clinical_amyloid__clinical_amyloid_tau": {
+      "n": 358,
+      "resamples": 40000,
+      "seed": 20261024,
+      "paired_reference": "clinical_amyloid",
+      "paired_augmented": "clinical_amyloid_tau",
+      "delta_ibs": -0.0027654119510264166,
+      "delta_uno": 0.07295876540654694,
+      "valid_uno_resamples": 39339,
+      "undefined_uno_resamples": 661,
+      "folds": [
+        {
+          "fold": 1,
+          "n": 67,
+          "events3y": 10,
+          "undefined_resamples": 1,
+          "delta_ibs": -0.0011847837758167752,
+          "delta_uno": 0.09787860101049806
+        },
+        {
+          "fold": 2,
+          "n": 70,
+          "events3y": 4,
+          "undefined_resamples": 659,
+          "delta_ibs": -0.0003483414196480933,
+          "delta_uno": 0.07736129416530946
+        },
+        {
+          "fold": 3,
+          "n": 70,
+          "events3y": 10,
+          "undefined_resamples": 0,
+          "delta_ibs": -0.002938251449051304,
+          "delta_uno": 0.08919590493352791
+        },
+        {
+          "fold": 4,
+          "n": 69,
+          "events3y": 13,
+          "undefined_resamples": 0,
+          "delta_ibs": -0.0013981115887332712,
+          "delta_uno": -0.02236949698930224
+        },
+        {
+          "fold": 5,
+          "n": 82,
+          "events3y": 10,
+          "undefined_resamples": 1,
+          "delta_ibs": -0.007123241037270483,
+          "delta_uno": 0.11519345247784973
+        }
+      ],
+      "absolute": {
+        "clinical_amyloid": {
+          "ibs": 0.049564395144863306,
+          "uno": 0.704159479208027
+        },
+        "clinical_amyloid_tau": {
+          "ibs": 0.0467989831938369,
+          "uno": 0.7771182446145739
+        }
+      },
+      "intervals": {
+        "1": {
+          "ibs_all": [
+            -0.005785822147403181,
+            0.000315048338512622
+          ],
+          "ibs_same_estimable_draws": [
+            -0.005792321511518856,
+            0.0003097329520174802
+          ],
+          "uno_original_estimable": [
+            0.029680128139214,
+            0.11911104534397521
+          ],
+          "uno_undefined_fold_delta_zero": [
+            0.02939986324949565,
+            0.1189714748353666
+          ],
+          "uno_estimable_fold_renormalized": [
+            0.029608553742614348,
+            0.11916266066287255
+          ],
+          "uno_pair_weighted_within_fold": [
+            0.023724967393715504,
+            0.11326679738933225
+          ]
+        },
+        "3": {
+          "ibs_all": [
+            -0.0064369085269039075,
+            0.0010202059958805923
+          ],
+          "ibs_same_estimable_draws": [
+            -0.006442485386105532,
+            0.0010026189986507663
+          ],
+          "uno_original_estimable": [
+            0.019676985010101847,
+            0.1306755317157473
+          ],
+          "uno_undefined_fold_delta_zero": [
+            0.019420111446770097,
+            0.13052591077662323
+          ],
+          "uno_estimable_fold_renormalized": [
+            0.019640287229124764,
+            0.13069684904027815
+          ],
+          "uno_pair_weighted_within_fold": [
+            0.01373276497547551,
+            0.12359381914658311
+          ]
+        },
+        "40": {
+          "ibs_all": [
+            -0.007753927379822113,
+            0.002497739283514807
+          ],
+          "ibs_same_estimable_draws": [
+            -0.007760996555761844,
+            0.002434744193890409
+          ],
+          "uno_original_estimable": [
+            0.0012991685002474232,
+            0.15404248654191285
+          ],
+          "uno_undefined_fold_delta_zero": [
+            0.0012985106643976924,
+            0.1538369464425658
+          ],
+          "uno_estimable_fold_renormalized": [
+            0.0012985106643976924,
+            0.15433435925738032
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.0055323222263801665,
+            0.14495042534164415
+          ]
+        }
+      },
+      "pair_weighted_delta_uno": 0.06699479292924948,
+      "alternative_statistic_warning": "Zero-filled and renormalized differences change undefined-fold handling. Pair-weighted C changes the aggregation estimand; no cross-fold pairs are introduced. None is a proof of conservative coverage."
+    },
+    "tau__clinical_mri_amyloid__clinical_mri_amyloid_tau": {
+      "n": 358,
+      "resamples": 40000,
+      "seed": 20261024,
+      "paired_reference": "clinical_mri_amyloid",
+      "paired_augmented": "clinical_mri_amyloid_tau",
+      "delta_ibs": -0.002882409762384412,
+      "delta_uno": 0.06964007451171954,
+      "valid_uno_resamples": 39339,
+      "undefined_uno_resamples": 661,
+      "folds": [
+        {
+          "fold": 1,
+          "n": 67,
+          "events3y": 10,
+          "undefined_resamples": 1,
+          "delta_ibs": -0.001495153828973459,
+          "delta_uno": 0.09990692367162579
+        },
+        {
+          "fold": 2,
+          "n": 70,
+          "events3y": 4,
+          "undefined_resamples": 659,
+          "delta_ibs": -0.00012138832695785162,
+          "delta_uno": 0.05028089452845175
+        },
+        {
+          "fold": 3,
+          "n": 70,
+          "events3y": 10,
+          "undefined_resamples": 0,
+          "delta_ibs": -0.0034005645537165097,
+          "delta_uno": 0.08913314708823317
+        },
+        {
+          "fold": 4,
+          "n": 69,
+          "events3y": 13,
+          "undefined_resamples": 0,
+          "delta_ibs": -0.001410227430977172,
+          "delta_uno": -0.009029591001244563
+        },
+        {
+          "fold": 5,
+          "n": 82,
+          "events3y": 10,
+          "undefined_resamples": 1,
+          "delta_ibs": -0.0071693291952166765,
+          "delta_uno": 0.11099319091603166
+        }
+      ],
+      "absolute": {
+        "clinical_mri_amyloid": {
+          "ibs": 0.049245839263440574,
+          "uno": 0.7086997499679735
+        },
+        "clinical_mri_amyloid_tau": {
+          "ibs": 0.04636342950105617,
+          "uno": 0.7783398244796929
+        }
+      },
+      "intervals": {
+        "1": {
+          "ibs_all": [
+            -0.005868802643863341,
+            0.00014114025816581177
+          ],
+          "ibs_same_estimable_draws": [
+            -0.005874151297746696,
+            0.00013552483112057906
+          ],
+          "uno_original_estimable": [
+            0.02754734474962429,
+            0.11546461591514895
+          ],
+          "uno_undefined_fold_delta_zero": [
+            0.02736740401499261,
+            0.11535137825801017
+          ],
+          "uno_estimable_fold_renormalized": [
+            0.027499310371420095,
+            0.11570605926975622
+          ],
+          "uno_pair_weighted_within_fold": [
+            0.023630586338164127,
+            0.11422363379609163
+          ]
+        },
+        "3": {
+          "ibs_all": [
+            -0.00653087244085802,
+            0.0008225281008395454
+          ],
+          "ibs_same_estimable_draws": [
+            -0.006534284058142051,
+            0.0007940503715192582
+          ],
+          "uno_original_estimable": [
+            0.01746131125615785,
+            0.12606115679733365
+          ],
+          "uno_undefined_fold_delta_zero": [
+            0.01731660011758929,
+            0.12586551795295808
+          ],
+          "uno_estimable_fold_renormalized": [
+            0.017429308377445923,
+            0.12654085380878802
+          ],
+          "uno_pair_weighted_within_fold": [
+            0.014138538398157737,
+            0.12521148810441002
+          ]
+        },
+        "40": {
+          "ibs_all": [
+            -0.007821344888817737,
+            0.002222854630400978
+          ],
+          "ibs_same_estimable_draws": [
+            -0.007828793288321858,
+            0.0021997797045758397
+          ],
+          "uno_original_estimable": [
+            0.0004528461691577022,
+            0.14902923564437315
+          ],
+          "uno_undefined_fold_delta_zero": [
+            0.0006298170039991642,
+            0.14902697655585426
+          ],
+          "uno_estimable_fold_renormalized": [
+            0.0006298170039991642,
+            0.14964423094884316
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.0031486912211777323,
+            0.14681545480659608
+          ]
+        }
+      },
+      "pair_weighted_delta_uno": 0.06732717908097126,
+      "alternative_statistic_warning": "Zero-filled and renormalized differences change undefined-fold handling. Pair-weighted C changes the aggregation estimand; no cross-fold pairs are introduced. None is a proof of conservative coverage."
+    }
+  },
+  "direct_raw_vs_harmonized": {
+    "mri": {
+      "n": 1059,
+      "resamples": 40000,
+      "seed": 20261024,
+      "paired_reference": "raw",
+      "paired_augmented": "harmonized",
+      "delta_ibs": 3.949113789935194e-05,
+      "delta_uno": 0.004323954899329448,
+      "valid_uno_resamples": 40000,
+      "undefined_uno_resamples": 0,
+      "folds": [
+        {
+          "fold": 1,
+          "n": 212,
+          "events3y": 22,
+          "undefined_resamples": 0,
+          "delta_ibs": 0.0001798120747674873,
+          "delta_uno": -0.0033490512941982686
+        },
+        {
+          "fold": 2,
+          "n": 212,
+          "events3y": 20,
+          "undefined_resamples": 0,
+          "delta_ibs": -5.308008693633919e-05,
+          "delta_uno": 0.0067841079066525145
+        },
+        {
+          "fold": 3,
+          "n": 212,
+          "events3y": 21,
+          "undefined_resamples": 0,
+          "delta_ibs": 2.7745605893134295e-05,
+          "delta_uno": 0.012458577999137632
+        },
+        {
+          "fold": 4,
+          "n": 212,
+          "events3y": 21,
+          "undefined_resamples": 0,
+          "delta_ibs": 0.0003143406297212242,
+          "delta_uno": 0.00362793222508373
+        },
+        {
+          "fold": 5,
+          "n": 211,
+          "events3y": 20,
+          "undefined_resamples": 0,
+          "delta_ibs": -0.0002728357740996858,
+          "delta_uno": 0.002087659094856198
+        }
+      ],
+      "absolute": {
+        "raw": {
+          "ibs": 0.04029673647506798,
+          "uno": 0.6836470854975153
+        },
+        "harmonized": {
+          "ibs": 0.040336227612967325,
+          "uno": 0.6879710403968448
+        }
+      },
+      "intervals": {
+        "1": {
+          "ibs_all": [
+            -0.00018897630368838248,
+            0.00028113034958986144
+          ],
+          "ibs_same_estimable_draws": [
+            -0.00018897630368838248,
+            0.00028113034958986144
+          ],
+          "uno_original_estimable": [
+            -0.0046802331580115325,
+            0.013833092240756451
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.0046802331580115325,
+            0.013833092240756451
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.0046802331580115325,
+            0.013833092240756451
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.004694818905139227,
+            0.013793143500065979
+          ]
+        },
+        "2": {
+          "ibs_all": [
+            -0.0002224260808608433,
+            0.00031703757976073843
+          ],
+          "ibs_same_estimable_draws": [
+            -0.0002224260808608433,
+            0.00031703757976073843
+          ],
+          "uno_original_estimable": [
+            -0.005883357857037203,
+            0.015391624769358597
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.005883357857037203,
+            0.015391624769358597
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.005883357857037203,
+            0.015391624769358597
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.005985061357225945,
+            0.01534821824581317
+          ]
+        },
+        "40": {
+          "ibs_all": [
+            -0.0003296414782395105,
+            0.0004439412324220306
+          ],
+          "ibs_same_estimable_draws": [
+            -0.0003296414782395105,
+            0.0004439412324220306
+          ],
+          "uno_original_estimable": [
+            -0.010712651096696408,
+            0.021952310110370195
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.010712651096696408,
+            0.021952310110370195
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.010712651096696408,
+            0.021952310110370195
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.01092581978226215,
+            0.02141355648042573
+          ]
+        }
+      },
+      "pair_weighted_delta_uno": 0.004272789488924589,
+      "alternative_statistic_warning": "Zero-filled and renormalized differences change undefined-fold handling. Pair-weighted C changes the aggregation estimand; no cross-fold pairs are introduced. None is a proof of conservative coverage."
+    },
+    "pet": {
+      "n": 544,
+      "resamples": 40000,
+      "seed": 20261024,
+      "paired_reference": "raw",
+      "paired_augmented": "harmonized",
+      "delta_ibs": -0.00016516605817158282,
+      "delta_uno": 0.007983410656185325,
+      "valid_uno_resamples": 39994,
+      "undefined_uno_resamples": 6,
+      "folds": [
+        {
+          "fold": 1,
+          "n": 113,
+          "events3y": 10,
+          "undefined_resamples": 0,
+          "delta_ibs": 0.00013498822775894216,
+          "delta_uno": -0.014644688028546016
+        },
+        {
+          "fold": 2,
+          "n": 106,
+          "events3y": 9,
+          "undefined_resamples": 4,
+          "delta_ibs": 0.0002954445572413382,
+          "delta_uno": 0.01153284625788864
+        },
+        {
+          "fold": 3,
+          "n": 102,
+          "events3y": 11,
+          "undefined_resamples": 1,
+          "delta_ibs": -0.000869854796334659,
+          "delta_uno": 0.004855583876707481
+        },
+        {
+          "fold": 4,
+          "n": 119,
+          "events3y": 10,
+          "undefined_resamples": 1,
+          "delta_ibs": -0.00045892084385345156,
+          "delta_uno": 0.006542334292074625
+        },
+        {
+          "fold": 5,
+          "n": 104,
+          "events3y": 10,
+          "undefined_resamples": 0,
+          "delta_ibs": 6.6496549952044e-05,
+          "delta_uno": 0.0336686163910892
+        }
+      ],
+      "absolute": {
+        "raw": {
+          "ibs": 0.04068751876173171,
+          "uno": 0.7017023440035819
+        },
+        "harmonized": {
+          "ibs": 0.04052235270356013,
+          "uno": 0.7096857546597671
+        }
+      },
+      "intervals": {
+        "1": {
+          "ibs_all": [
+            -0.000743565834888464,
+            0.00044276735128381475
+          ],
+          "ibs_same_estimable_draws": [
+            -0.000743567586853594,
+            0.00044278670385840236
+          ],
+          "uno_original_estimable": [
+            -0.007271732830004357,
+            0.02325579435053315
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.00727160695624488,
+            0.023255546843402725
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.00727160695624488,
+            0.023255546843402725
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.007372300964211785,
+            0.02268010606440389
+          ]
+        },
+        "2": {
+          "ibs_all": [
+            -0.0008221351270983965,
+            0.0005387472128015585
+          ],
+          "ibs_same_estimable_draws": [
+            -0.0008221366433102758,
+            0.0005388267760274494
+          ],
+          "uno_original_estimable": [
+            -0.009649156632780223,
+            0.02561464478712743
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.009648863389982774,
+            0.02561335154093178
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.009648863389982774,
+            0.02561335154093178
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.009566205440455857,
+            0.02485549939617097
+          ]
+        },
+        "40": {
+          "ibs_all": [
+            -0.0011216362330301755,
+            0.0008725089041728438
+          ],
+          "ibs_same_estimable_draws": [
+            -0.0011216513912484056,
+            0.0008725129053791189
+          ],
+          "uno_original_estimable": [
+            -0.018460133979169745,
+            0.035401551733336006
+          ],
+          "uno_undefined_fold_delta_zero": [
+            -0.018459611707085488,
+            0.03540149318203009
+          ],
+          "uno_estimable_fold_renormalized": [
+            -0.018459611707085488,
+            0.03540149318203009
+          ],
+          "uno_pair_weighted_within_fold": [
+            -0.018257513411844034,
+            0.03304484083497739
+          ]
+        }
+      },
+      "pair_weighted_delta_uno": 0.007616523599039131,
+      "alternative_statistic_warning": "Zero-filled and renormalized differences change undefined-fold handling. Pair-weighted C changes the aggregation estimand; no cross-fold pairs are introduced. None is a proof of conservative coverage."
+    }
+  }
+}

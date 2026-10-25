@@ -1,0 +1,522 @@
+{
+  "date": "2026-10-24",
+  "references": [
+    {
+      "key": "1",
+      "title": "Prevalence of Cerebral Amyloid Pathology in Persons Without Dementia: A Meta-analysis",
+      "doi": "10.1001/jama.2015.4668",
+      "year": 2015,
+      "contexts": [
+        "Biomarker evidence and clinical prognosis answer different questions. Amyloid can accumulate while cognition remains unimpaired, and a biological diagnosis does not specify when everyday functioning will change [1, 2, 3]. Tau and structural brain measures are associated with later decline, but such associations do not establish added predictive value after baseline cognition and clinical characteristics are known [5, 6, 8, 10]. A useful incremental comparison therefore requires the same participants, outcome horizon and reference predictors, together with assessment of both ranking and absolute-risk error [19]."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "2",
+      "title": "NIA‐AA Research Framework: Toward a biological definition of Alzheimer's disease",
+      "doi": "10.1016/j.jalz.2018.02.018",
+      "year": 2018,
+      "contexts": [
+        "Biomarker evidence and clinical prognosis answer different questions. Amyloid can accumulate while cognition remains unimpaired, and a biological diagnosis does not specify when everyday functioning will change [1, 2, 3]. Tau and structural brain measures are associated with later decline, but such associations do not establish added predictive value after baseline cognition and clinical characteristics are known [5, 6, 8, 10]. A useful incremental comparison therefore requires the same participants, outcome horizon and reference predictors, together with assessment of both ranking and absolute-risk error [19]."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "3",
+      "title": "Revised criteria for diagnosis and staging of Alzheimer's disease: Alzheimer's Association Workgroup",
+      "doi": "10.1002/alz.13859",
+      "year": 2024,
+      "contexts": [
+        "Biomarker evidence and clinical prognosis answer different questions. Amyloid can accumulate while cognition remains unimpaired, and a biological diagnosis does not specify when everyday functioning will change [1, 2, 3]. Tau and structural brain measures are associated with later decline, but such associations do not establish added predictive value after baseline cognition and clinical characteristics are known [5, 6, 8, 10]. A useful incremental comparison therefore requires the same participants, outcome horizon and reference predictors, together with assessment of both ranking and absolute-risk error [19]."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "5",
+      "title": "Amyloid and tau PET-positive cognitively unimpaired individuals are at high risk for future cognitive decline",
+      "doi": "10.1038/s41591-022-02049-x",
+      "year": 2022,
+      "contexts": [
+        "Biomarker evidence and clinical prognosis answer different questions. Amyloid can accumulate while cognition remains unimpaired, and a biological diagnosis does not specify when everyday functioning will change [1, 2, 3]. Tau and structural brain measures are associated with later decline, but such associations do not establish added predictive value after baseline cognition and clinical characteristics are known [5, 6, 8, 10]. A useful incremental comparison therefore requires the same participants, outcome horizon and reference predictors, together with assessment of both ranking and absolute-risk error [19]."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "6",
+      "title": "Effects of amyloid pathology and neurodegeneration on cognitive change in cognitively normal adults",
+      "doi": "10.1093/brain/awy150",
+      "year": 2018,
+      "contexts": [
+        "Biomarker evidence and clinical prognosis answer different questions. Amyloid can accumulate while cognition remains unimpaired, and a biological diagnosis does not specify when everyday functioning will change [1, 2, 3]. Tau and structural brain measures are associated with later decline, but such associations do not establish added predictive value after baseline cognition and clinical characteristics are known [5, 6, 8, 10]. A useful incremental comparison therefore requires the same participants, outcome horizon and reference predictors, together with assessment of both ranking and absolute-risk error [19]."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "8",
+      "title": "A multi‐cohort study of longitudinal and cross‐sectional Alzheimer's disease biomarkers in cognitively unimpaired older adults",
+      "doi": "10.1002/alz.14492",
+      "year": 2025,
+      "contexts": [
+        "Biomarker evidence and clinical prognosis answer different questions. Amyloid can accumulate while cognition remains unimpaired, and a biological diagnosis does not specify when everyday functioning will change [1, 2, 3]. Tau and structural brain measures are associated with later decline, but such associations do not establish added predictive value after baseline cognition and clinical characteristics are known [5, 6, 8, 10]. A useful incremental comparison therefore requires the same participants, outcome horizon and reference predictors, together with assessment of both ranking and absolute-risk error [19]."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "10",
+      "title": "Plasma p-tau217 and tau-PET predict future cognitive decline among cognitively unimpaired individuals: implications for clinical trials",
+      "doi": "10.1038/s43587-025-00835-z",
+      "year": 2025,
+      "contexts": [
+        "Biomarker evidence and clinical prognosis answer different questions. Amyloid can accumulate while cognition remains unimpaired, and a biological diagnosis does not specify when everyday functioning will change [1, 2, 3]. Tau and structural brain measures are associated with later decline, but such associations do not establish added predictive value after baseline cognition and clinical characteristics are known [5, 6, 8, 10]. A useful incremental comparison therefore requires the same participants, outcome horizon and reference predictors, together with assessment of both ranking and absolute-risk error [19].",
+        "Tau's ranking signal does not establish calibrated individual probabilities. Same-draw Brier and alternative undefined-fold checks supported the original three-comparison interpretation, but the broader tabular conclusion depended on concordance aggregation. The 220-person, 26-event overlap analysis did not establish superiority over plasma [10, 19]. The tested models therefore remain exploratory. Both clinical and imaging-augmented risks tracked cognition; this does not independently validate an imaging contribution.",
+        "Tau's ranking signal was more consistent than its probability-error signal under the reported fold-size-weighted estimand. Restricting IBS to the same estimable draws and retaining all draws under alternative undefined-fold policies did not reverse the three-comparison interpretation. However, changing to comparable-pair-weighted aggregation made the tabular Cox interval span zero under the broad 40-contrast correction. Robustness therefore depends on the stated estimand and multiplicity family. The matched plasma/tau subset did not establish superiority of either biomarker. Sparse calibration, post-hoc region selection and historical development remain material limitations [10, 19]. Exact effective degrees of freedom and nested head results are reported in Table S11; nominal input counts alone do not quantify ridge model complexity."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "12",
+      "title": "Trial of Solanezumab in Preclinical Alzheimer’s Disease",
+      "doi": "10.1056/nejmoa2305032",
+      "year": 2023,
+      "contexts": [
+        "The Anti-Amyloid Treatment in Asymptomatic Alzheimer's Disease (A4) study supports a complementary incremental-prognosis question [12, 13, 14, 15]: do intensity-based survival features learned by networks trained from scratch improve three-year confirmed progression prediction beyond clinical/cognitive predictors and quantitative amyloid? This representation excludes pretrained weights and deformation channels and has limited early-event supervision. We assess matched prediction, score standardization, regularization, common-sample biomarkers and deformation summaries. These post-hoc analyses do not provide independent replication.",
+        "This post-hoc analysis used deidentified A4 data from amyloid-positive, cognitively unimpaired adults aged 65–85 [12]. Trial arms were pooled with treatment assignment as a predictor; LEARN was excluded. NCT02008357 is the parent trial registration. Dated eligibility, Clinical Dementia Rating (CDR) zero, follow-up and automated magnetic resonance imaging (MRI) checks defined 1059 participants; amyloid positron emission tomography (PET), plasma and tau subsets overlapped (544/696/358). Missing modalities were not imputed. Each reference/augmentation used identical participants. Historical outcome-informed development prevents confirmatory interpretation. TRIPOD+AI reporting is mapped in Supplementary Information 2 [20].",
+        "This post-hoc secondary analysis used deidentified A4 data from amyloid-positive, cognitively unimpaired adults aged 65–85 years [12]. Trial arms were pooled, with treatment assignment included as a predictor; LEARN participants were not included. NCT02008357 identifies the parent trial, not preregistration of this analysis. Eligibility required a qualifying Clinical Dementia Rating (CDR) of zero, linked baseline magnetic resonance imaging (MRI) and amyloid measurements, valid chronology, later CDR follow-up and automated imaging quality checks. The MRI cohort comprised 1,059 participants; overlapping amyloid positron emission tomography (PET) image, plasma and entorhinal-tau subsets contained 544, 696 and 358 participants. Entire missing modalities were not imputed. Reference and augmented models were compared in identical eligible participants (Fig. 1; Table 1). Earlier outcome-informed development means the final locked outer folds were not an untouched confirmatory sample. Reporting follows TRIPOD+AI (Supplementary Information 2) [20].",
+        "This retrospective study used A4 trial data from cognitively unimpaired adults aged 65–85 years with elevated amyloid [12]. The parent trial was registered as NCT02008357; this registration does not apply to the present post-hoc analysis. The primary workflow comprised cohort construction, separate image-expert and fusion-model fitting, held-out matched comparisons, and supporting cognitive and anatomical analyses. Trial arms were pooled with assignment included as a predictor; LEARN participants were not included. Earlier work with this cohort had used outcomes to inform model development and diagnostic review. For the final evaluation, outer partitions were locked, and model fitting, preprocessing of tabular predictors and hyperparameter selection used the corresponding training partitions. This internal evaluation therefore does not represent an untouched confirmatory sample. TRIPOD+AI informed reporting (Online Resource 2) [20].",
+        "This secondary analysis was approved by the Research Ethics Committees of Tarbiat Modares University (IR.MODARES.REC.1404.039; 2 June 2025). The original A4 trial obtained institutional ethics approval and written informed consent from participants [12]. The present work used de-identified research data and involved no new participant recruitment or contact."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "13",
+      "title": "Amyloid and Tau Prediction of Cognitive and Functional Decline in Unimpaired Older Individuals: Longitudinal Data from the A4 and LEARN Studies",
+      "doi": "10.14283/jpad.2024.122",
+      "year": 2024,
+      "contexts": [
+        "The Anti-Amyloid Treatment in Asymptomatic Alzheimer's Disease (A4) study supports a complementary incremental-prognosis question [12, 13, 14, 15]: do intensity-based survival features learned by networks trained from scratch improve three-year confirmed progression prediction beyond clinical/cognitive predictors and quantitative amyloid? This representation excludes pretrained weights and deformation channels and has limited early-event supervision. We assess matched prediction, score standardization, regularization, common-sample biomarkers and deformation summaries. These post-hoc analyses do not provide independent replication."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "14",
+      "title": "Multimodal prognostic modeling of individual cognitive trajectories to enhance trial efficiency in preclinical Alzheimer's disease",
+      "doi": "10.1002/alz.70702",
+      "year": 2025,
+      "contexts": [
+        "The Anti-Amyloid Treatment in Asymptomatic Alzheimer's Disease (A4) study supports a complementary incremental-prognosis question [12, 13, 14, 15]: do intensity-based survival features learned by networks trained from scratch improve three-year confirmed progression prediction beyond clinical/cognitive predictors and quantitative amyloid? This representation excludes pretrained weights and deformation channels and has limited early-event supervision. We assess matched prediction, score standardization, regularization, common-sample biomarkers and deformation summaries. These post-hoc analyses do not provide independent replication."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "15",
+      "title": "Incremental value of plasma biomarkers in predicting clinical decline among cognitively unimpaired older adults: Results from the A4 trial",
+      "doi": "10.1002/dad2.70321",
+      "year": 2026,
+      "contexts": [
+        "Khorsand and colleagues reported added information from plasma p-tau217 and cognitive performance in A4 and LEARN, using a week-240 clinical-decline classification outcome [15]. They noted the limitations of a completer-based analysis for unequal follow-up and censoring. The present study uses A4 participants only and a time-to-confirmation endpoint. It extends the evaluation question to matched error, ranking and calibration, rather than claiming an independent replication or a numerical head-to-head comparison with that report.",
+        "Khorsand and colleagues' completer-based analysis explicitly motivated time-to-event approaches for future work [15]. We address that methodological issue, while retaining separate limitations from historical development, selected participants and conditional inference. Both studies reuse the same parent resource; their results are not independent replications. The added contribution is the aligned comparison of modalities and performance dimensions for a confirmation-time endpoint.",
+        "The Anti-Amyloid Treatment in Asymptomatic Alzheimer's Disease (A4) study supports a complementary incremental-prognosis question [12, 13, 14, 15]: do intensity-based survival features learned by networks trained from scratch improve three-year confirmed progression prediction beyond clinical/cognitive predictors and quantitative amyloid? This representation excludes pretrained weights and deformation channels and has limited early-event supervision. We assess matched prediction, score standardization, regularization, common-sample biomarkers and deformation summaries. These post-hoc analyses do not provide independent replication."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Destination-specific primary-text check with access limits: see REFERENCE_CLAIM_LEDGER.md"
+    },
+    {
+      "key": "16",
+      "title": "Prediction of conversion to Alzheimer’s disease using deep survival analysis of MRI images",
+      "doi": "10.1093/braincomms/fcaa057",
+      "year": 2020,
+      "contexts": [
+        "The imaging finding applies to the tested representation. MRI experts were trained from scratch on 564–566 participants after internal learning-rate and duration selection. MRI-only performance was weak, and nonlinear registration may shift some size information into deformation fields that were not supplied to the network. These are plausible explanations, not demonstrated causes: no matched native-space, Jacobian-channel or pretrained experiment isolated them. Associations of regional volumes with progression show that anatomical information was present, but do not show that the CNN learned it or that regional volumes lowered prediction error [16, 17]. The new four-summary deformation control increased probability error relative to clinical plus amyloid. Summary compression, added model complexity and the selected cohort remain alternative explanations; this experiment did not isolate one of them or exhaust spatial deformation information."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "17",
+      "title": "Predicting time-to-conversion for dementia of Alzheimer's type using multi-modal deep survival analysis",
+      "doi": "10.1016/j.neurobiolaging.2022.10.005",
+      "year": 2023,
+      "contexts": [
+        "Multimodal deep survival analysis has been used to model time to dementia across people with normal or mildly impaired cognition [17]. This approach appropriately accommodates incomplete follow-up, yet predictive value can change when the cohort is restricted to amyloid-positive adults who are unimpaired at baseline. Such restriction changes disease severity and the available prognostic variation. A matched incremental analysis in this earlier clinical stage can clarify what a particular imaging representation contributes without treating prediction as proof of mechanism.",
+        "The imaging finding applies to the tested representation. MRI experts were trained from scratch on 564–566 participants after internal learning-rate and duration selection. MRI-only performance was weak, and nonlinear registration may shift some size information into deformation fields that were not supplied to the network. These are plausible explanations, not demonstrated causes: no matched native-space, Jacobian-channel or pretrained experiment isolated them. Associations of regional volumes with progression show that anatomical information was present, but do not show that the CNN learned it or that regional volumes lowered prediction error [16, 17]. The new four-summary deformation control increased probability error relative to clinical plus amyloid. Summary compression, added model complexity and the selected cohort remain alternative explanations; this experiment did not isolate one of them or exhaust spatial deformation information.",
+        "The multimodal survival work of Mirabnahrazam and colleagues supports time-to-event modeling of Alzheimer's trajectories [17], but its cognitive spectrum, inputs and evaluation differ. Our score-standardization, penalty-tuning and fixed deformation-summary analyses address specific internal concerns without showing that MRI lacks biological information. The deformation control did not rescue probability error; a full Jacobian-channel, native-space or pretrained comparison remains distinct, and no unique mechanism of underperformance was established."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Destination-specific primary-text check with access limits: see REFERENCE_CLAIM_LEDGER.md"
+    },
+    {
+      "key": "18",
+      "title": "Leakage and the reproducibility crisis in machine-learning-based science",
+      "doi": "10.1016/j.patter.2023.100804",
+      "year": 2023,
+      "contexts": [
+        "Five participant-level outer folds were stratified by event status and treatment (split seed 20261003). In the primary workflow, each outer training set supplied three component splits that allocated approximately two thirds to the image expert and one third to the fusion head. The expert pool was split 80:20 for fitting/early stopping, then refitted on the full expert pool for the selected number of epochs after learning-rate selection. The refit matched epochs, not gradient-update counts; its larger data pool therefore increased updates per epoch. For each component, that same locked expert generated features for both its fusion pool and the outer test set; its corresponding head was fitted only on the fusion pool. We averaged the final survival curves across the three components and seeds 13, 29 and 47. Each component retained its own head; features from different experts were not averaged and then passed to a common head. MRI expert pools contained 564–566 participants, fusion pools 282–283 and test folds 211–212. Recorded membership checks found no expert/fusion/test overlap in the 45 MRI and 45 PET component fits. Figure 1 and Online Resource 1 describe this pairing [18]."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "19",
+      "title": "Calibration: the Achilles heel of predictive analytics",
+      "doi": "10.1186/s12916-019-1466-7",
+      "year": 2019,
+      "contexts": [
+        "Biomarker evidence and clinical prognosis answer different questions. Amyloid can accumulate while cognition remains unimpaired, and a biological diagnosis does not specify when everyday functioning will change [1, 2, 3]. Tau and structural brain measures are associated with later decline, but such associations do not establish added predictive value after baseline cognition and clinical characteristics are known [5, 6, 8, 10]. A useful incremental comparison therefore requires the same participants, outcome horizon and reference predictors, together with assessment of both ranking and absolute-risk error [19].",
+        "Tau's ranking signal does not establish calibrated individual probabilities. Same-draw Brier and alternative undefined-fold checks supported the original three-comparison interpretation, but the broader tabular conclusion depended on concordance aggregation. The 220-person, 26-event overlap analysis did not establish superiority over plasma [10, 19]. The tested models therefore remain exploratory. Both clinical and imaging-augmented risks tracked cognition; this does not independently validate an imaging contribution.",
+        "Tau's ranking signal was more consistent than its probability-error signal under the reported fold-size-weighted estimand. Restricting IBS to the same estimable draws and retaining all draws under alternative undefined-fold policies did not reverse the three-comparison interpretation. However, changing to comparable-pair-weighted aggregation made the tabular Cox interval span zero under the broad 40-contrast correction. Robustness therefore depends on the stated estimand and multiplicity family. The matched plasma/tau subset did not establish superiority of either biomarker. Sparse calibration, post-hoc region selection and historical development remain material limitations [10, 19]. Exact effective degrees of freedom and nested head results are reported in Table S11; nominal input counts alone do not quantify ridge model complexity.",
+        "Three-year calibration used censoring-weighted logistic regression of event status on the logit of held-out risk [19]. We report fold-specific estimates and pooled descriptive estimates with each participant's fold-specific training-derived weights. Intercept and slope were estimated jointly; calibration-in-the-large was separately estimated with slope fixed at one. The observed/expected ratio compared weighted observed events with weighted expected events in the same evaluable participants. Paired within-fold bootstrap samples (2,000) provided conditional 95% intervals. Three risk bins, weighted logistic calibration curves with conditional pointwise 95% bands, and risk histograms supported visual interpretation. Curves are restricted to the central 95% of risks with observed horizon status; the logistic form is descriptive and does not establish calibration in sparse tails. Early-censored observations received zero weight, rather than being treated as event-free. Predictions were not recalibrated using test outcomes; no clinical threshold or net-benefit rule was validated."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "20",
+      "title": "TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods",
+      "doi": "10.1136/bmj-2023-078378",
+      "year": 2024,
+      "contexts": [
+        "This post-hoc analysis used deidentified A4 data from amyloid-positive, cognitively unimpaired adults aged 65–85 [12]. Trial arms were pooled with treatment assignment as a predictor; LEARN was excluded. NCT02008357 is the parent trial registration. Dated eligibility, Clinical Dementia Rating (CDR) zero, follow-up and automated magnetic resonance imaging (MRI) checks defined 1059 participants; amyloid positron emission tomography (PET), plasma and tau subsets overlapped (544/696/358). Missing modalities were not imputed. Each reference/augmentation used identical participants. Historical outcome-informed development prevents confirmatory interpretation. TRIPOD+AI reporting is mapped in Supplementary Information 2 [20].",
+        "This post-hoc secondary analysis used deidentified A4 data from amyloid-positive, cognitively unimpaired adults aged 65–85 years [12]. Trial arms were pooled, with treatment assignment included as a predictor; LEARN participants were not included. NCT02008357 identifies the parent trial, not preregistration of this analysis. Eligibility required a qualifying Clinical Dementia Rating (CDR) of zero, linked baseline magnetic resonance imaging (MRI) and amyloid measurements, valid chronology, later CDR follow-up and automated imaging quality checks. The MRI cohort comprised 1,059 participants; overlapping amyloid positron emission tomography (PET) image, plasma and entorhinal-tau subsets contained 544, 696 and 358 participants. Entire missing modalities were not imputed. Reference and augmented models were compared in identical eligible participants (Fig. 1; Table 1). Earlier outcome-informed development means the final locked outer folds were not an untouched confirmatory sample. Reporting follows TRIPOD+AI (Supplementary Information 2) [20].",
+        "This retrospective study used A4 trial data from cognitively unimpaired adults aged 65–85 years with elevated amyloid [12]. The parent trial was registered as NCT02008357; this registration does not apply to the present post-hoc analysis. The primary workflow comprised cohort construction, separate image-expert and fusion-model fitting, held-out matched comparisons, and supporting cognitive and anatomical analyses. Trial arms were pooled with assignment included as a predictor; LEARN participants were not included. Earlier work with this cohort had used outcomes to inform model development and diagnostic review. For the final evaluation, outer partitions were locked, and model fitting, preprocessing of tabular predictors and hyperparameter selection used the corresponding training partitions. This internal evaluation therefore does not represent an untouched confirmatory sample. TRIPOD+AI informed reporting (Online Resource 2) [20]."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "21",
+      "title": "The Clinical Dementia Rating (CDR): Current version and scoring rules",
+      "doi": "10.1212/wnl.43.11.2412-a",
+      "year": 1993,
+      "contexts": [
+        "Clinical status was measured with the global CDR [21]. For this analysis, confirmed clinical progression required CDR ≥0.5 on two consecutive assessments on distinct dates. The event date was the second assessment. Same-day duplicate records were resolved without treating them as repeated confirmation; conflicting records were excluded from endpoint construction. Participants without confirmation were censored at their last valid CDR assessment within 1,640 days. This outcome denotes sustained change in global clinical status, not adjudicated Alzheimer's dementia. Reverse Kaplan–Meier estimation described potential follow-up [22]. Endpoint sensitivities considered the first date of a confirmed pair, a single threshold crossing, an unconfirmed terminal positive assessment counted as an event, and censoring at the last negative assessment. These alternatives change the target and were not treated as interchangeable outcomes. Observed distinct-day CDR assessment intervals had a median of 418 days (interquartile range 266–425); the first-to-confirming positive interval had a median of 417 days. Confirmation therefore adds a visit-dependent lag, not a fixed biological persistence duration.",
+        "The dated eligibility algorithm yielded randomization as the landmark for every retained participant. MRI, amyloid, cognition and plasma had to satisfy pre-landmark timing rules within 183 days; tau scans were also within 183 days (observed lead 0–77 days; median 12). Confirmed progression required global CDR ≥0.5 at two consecutive assessments on distinct dates, with the second assessment defining the event [21]. Duplicate same-day records were not treated as confirmation. Participants without confirmation were censored at their last valid CDR assessment within 1,640 days. This endpoint is sustained clinical change, not adjudicated Alzheimer's dementia or latent disease onset. Alternative event dates and confirmation rules were examined as sensitivities, not interchangeable outcomes. Complete date-resolution rules are in Supplementary Information 1. Observed CDR intervals had median 418 days (interquartile range 266–425); the confirmation-pair median was 417 days. The resulting visit-dependent lag contributes to sparse early event support."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "22",
+      "title": "A note on quantifying follow-up in studies of failure time",
+      "doi": "10.1016/0197-2456(96)00075-x",
+      "year": 1996,
+      "contexts": [
+        "Clinical status was measured with the global CDR [21]. For this analysis, confirmed clinical progression required CDR ≥0.5 on two consecutive assessments on distinct dates. The event date was the second assessment. Same-day duplicate records were resolved without treating them as repeated confirmation; conflicting records were excluded from endpoint construction. Participants without confirmation were censored at their last valid CDR assessment within 1,640 days. This outcome denotes sustained change in global clinical status, not adjudicated Alzheimer's dementia. Reverse Kaplan–Meier estimation described potential follow-up [22]. Endpoint sensitivities considered the first date of a confirmed pair, a single threshold crossing, an unconfirmed terminal positive assessment counted as an event, and censoring at the last negative assessment. These alternatives change the target and were not treated as interchangeable outcomes. Observed distinct-day CDR assessment intervals had a median of 418 days (interquartile range 266–425); the first-to-confirming positive interval had a median of 417 days. Confirmation therefore adds a visit-dependent lag, not a fixed biological persistence duration."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "23",
+      "title": "The Preclinical Alzheimer Cognitive Composite: Measuring Amyloid-Related Decline",
+      "doi": "10.1001/jamaneurol.2014.803",
+      "year": 2014,
+      "contexts": [
+        "Clinical predictors were age, sex, education, APOE ε4 status, baseline Preclinical Alzheimer's Cognitive Composite (PACC), Mini-Mental State Examination (MMSE), and treatment assignment [23]. MMSE also contributes to PACC. Quantitative amyloid used Centiloids [24]; plasma used log-transformed Lilly p-tau217. Post-hoc entorhinal tau was the bilateral mean flortaucipir standardized uptake value ratio, referenced to cerebellar crus. Study-supplied native-scan NeuroQuant volumes were normalized by intracranial volume for prediction. Its software version was unavailable. MRI underwent N4 correction and nonlinear ANTs registration to MNI152NLin2009cAsym on a 128³ grid at 1.5 mm [25, 26, 27], with masked clipping/standardization. Automated criteria included correlation ≥0.40, coverage ≥0.75 and positive-Jacobian fraction ≥0.99; independent visual registration review was incomplete. Jacobians were quality-control outputs, not network inputs. PET arrays represented spatial patterns, not verified calibrated tracer measurements: 227 participants were absent from the assembled input list and 288 had nonfinite source arrays before local resampling. Supplementary Information 1 documents processing, missingness and selection. The supplied PET records did not establish reference-region normalization or masks mapped to source PET geometry; a T1 template mask could not simply replace them. Conclusions are limited to the retained uncalibrated pattern representation.",
+        "Clinical predictors were age, sex, education, apolipoprotein E (APOE) ε4, baseline Preclinical Alzheimer's Cognitive Composite (PACC), Mini-Mental State Examination (MMSE) and treatment [23]. Quantitative amyloid used Centiloids [24]; plasma used log Lilly p-tau217; tau was bilateral entorhinal flortaucipir standardized uptake value ratio (SUVR), referenced to cerebellar crus. Native NeuroQuant volumes used volume/intracranial volume (ICV); its version was unavailable. MRI used N4/ANTs registration to MNI152NLin2009cAsym, masked clipping/standardization and a 128³, 1.5-mm grid [25,26,27]. Automated criteria were correlation ≥0.40, coverage ≥0.75 and positive Jacobians ≥0.99; visual review was incomplete. PET patterns excluded 227 absent input-list entries and 288 nonfinite source arrays. Voxel normalization/source-space brain masks were unverified; background-only NaN recovery was not assumed. Supplementary Information 1 (SI1) gives implementation/selection details.",
+        "The fixed clinical set comprised age, sex, years of education, apolipoprotein E (APOE) ε4 carrier status, baseline Preclinical Alzheimer's Cognitive Composite (PACC), baseline Mini-Mental State Examination (MMSE) and treatment assignment. PACC was the study-provided composite of memory, processing-speed and global-cognition measures [23]. Because MMSE contributes to PACC, including both does not represent two wholly independent cognitive constructs. This seven-variable set was a defined comparator, not a comprehensive inventory of available clinical or functional measures."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "24",
+      "title": "The Centiloid Project: Standardizing quantitative amyloid plaque estimation by PET",
+      "doi": "10.1016/j.jalz.2014.07.003",
+      "year": 2015,
+      "contexts": [
+        "Clinical predictors were age, sex, education, APOE ε4 status, baseline Preclinical Alzheimer's Cognitive Composite (PACC), Mini-Mental State Examination (MMSE), and treatment assignment [23]. MMSE also contributes to PACC. Quantitative amyloid used Centiloids [24]; plasma used log-transformed Lilly p-tau217. Post-hoc entorhinal tau was the bilateral mean flortaucipir standardized uptake value ratio, referenced to cerebellar crus. Study-supplied native-scan NeuroQuant volumes were normalized by intracranial volume for prediction. Its software version was unavailable. MRI underwent N4 correction and nonlinear ANTs registration to MNI152NLin2009cAsym on a 128³ grid at 1.5 mm [25, 26, 27], with masked clipping/standardization. Automated criteria included correlation ≥0.40, coverage ≥0.75 and positive-Jacobian fraction ≥0.99; independent visual registration review was incomplete. Jacobians were quality-control outputs, not network inputs. PET arrays represented spatial patterns, not verified calibrated tracer measurements: 227 participants were absent from the assembled input list and 288 had nonfinite source arrays before local resampling. Supplementary Information 1 documents processing, missingness and selection. The supplied PET records did not establish reference-region normalization or masks mapped to source PET geometry; a T1 template mask could not simply replace them. Conclusions are limited to the retained uncalibrated pattern representation.",
+        "Clinical predictors were age, sex, education, apolipoprotein E (APOE) ε4, baseline Preclinical Alzheimer's Cognitive Composite (PACC), Mini-Mental State Examination (MMSE) and treatment [23]. Quantitative amyloid used Centiloids [24]; plasma used log Lilly p-tau217; tau was bilateral entorhinal flortaucipir standardized uptake value ratio (SUVR), referenced to cerebellar crus. Native NeuroQuant volumes used volume/intracranial volume (ICV); its version was unavailable. MRI used N4/ANTs registration to MNI152NLin2009cAsym, masked clipping/standardization and a 128³, 1.5-mm grid [25,26,27]. Automated criteria were correlation ≥0.40, coverage ≥0.75 and positive Jacobians ≥0.99; visual review was incomplete. PET patterns excluded 227 absent input-list entries and 288 nonfinite source arrays. Voxel normalization/source-space brain masks were unverified; background-only NaN recovery was not assumed. Supplementary Information 1 (SI1) gives implementation/selection details.",
+        "Quantitative amyloid burden was taken from the study's Centiloid data [24]. Plasma p-tau217 from the Lilly assay was log-transformed after eligibility checks. Entorhinal tau was the arithmetic mean of the left and right flortaucipir standardized uptake value ratios (SUVR), using the cerebellar crus reference specified in the source table. Its selection was post hoc; this measure was not equated with a broader temporal composite or universal tau scale. Hippocampal, entorhinal and lateral ventricular volumes were normalized by intracranial volume for prediction. Their transformations in the separate association analyses differed, as described below. Regional volumes were supplied by the parent study's NeuroQuant processing of native T1 scans, rather than computed from the nonlinearly registered network input. Parent-study documentation did not specify the NeuroQuant software version. No new partial-volume correction or alternative tau-reference normalization was applied."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "25",
+      "title": "N4ITK: Improved N3 Bias Correction",
+      "doi": "10.1109/tmi.2010.2046908",
+      "year": 2010,
+      "contexts": [
+        "Clinical predictors were age, sex, education, APOE ε4 status, baseline Preclinical Alzheimer's Cognitive Composite (PACC), Mini-Mental State Examination (MMSE), and treatment assignment [23]. MMSE also contributes to PACC. Quantitative amyloid used Centiloids [24]; plasma used log-transformed Lilly p-tau217. Post-hoc entorhinal tau was the bilateral mean flortaucipir standardized uptake value ratio, referenced to cerebellar crus. Study-supplied native-scan NeuroQuant volumes were normalized by intracranial volume for prediction. Its software version was unavailable. MRI underwent N4 correction and nonlinear ANTs registration to MNI152NLin2009cAsym on a 128³ grid at 1.5 mm [25, 26, 27], with masked clipping/standardization. Automated criteria included correlation ≥0.40, coverage ≥0.75 and positive-Jacobian fraction ≥0.99; independent visual registration review was incomplete. Jacobians were quality-control outputs, not network inputs. PET arrays represented spatial patterns, not verified calibrated tracer measurements: 227 participants were absent from the assembled input list and 288 had nonfinite source arrays before local resampling. Supplementary Information 1 documents processing, missingness and selection. The supplied PET records did not establish reference-region normalization or masks mapped to source PET geometry; a T1 template mask could not simply replace them. Conclusions are limited to the retained uncalibrated pattern representation.",
+        "Clinical predictors were age, sex, education, apolipoprotein E (APOE) ε4, baseline Preclinical Alzheimer's Cognitive Composite (PACC), Mini-Mental State Examination (MMSE) and treatment [23]. Quantitative amyloid used Centiloids [24]; plasma used log Lilly p-tau217; tau was bilateral entorhinal flortaucipir standardized uptake value ratio (SUVR), referenced to cerebellar crus. Native NeuroQuant volumes used volume/intracranial volume (ICV); its version was unavailable. MRI used N4/ANTs registration to MNI152NLin2009cAsym, masked clipping/standardization and a 128³, 1.5-mm grid [25,26,27]. Automated criteria were correlation ≥0.40, coverage ≥0.75 and positive Jacobians ≥0.99; visual review was incomplete. PET patterns excluded 227 absent input-list entries and 288 nonfinite source arrays. Voxel normalization/source-space brain masks were unverified; background-only NaN recovery was not assumed. Supplementary Information 1 (SI1) gives implementation/selection details.",
+        "MRI preprocessing used N4 bias correction and nonlinear ANTs registration to MNI152NLin2009cAsym [25, 26, 27]. Images occupied a 128 × 128 × 128 grid at 1.5-mm spacing. A template-space brain mask defined intensity clipping at the 0.5th/99.5th percentiles and within-image standardization; voxels outside it were zero. This route did not include a separate native-space skull-stripping stage. Automated checks required template correlation ≥0.40, coverage ≥0.75 and positive-Jacobian fraction ≥0.99, alongside geometry and finite-value checks. Jacobians were quality-control outputs, not network channels. Independent visual review had not been completed for all processed scans; the parent study's clinical safety reads did not evaluate this registration pipeline. The intensity-only input was intended to retain residual spatial and tissue-pattern information after alignment. It did not explicitly encode the deformation field; registration does not imply removal of all anatomical information. A separate post-hoc deformation-summary control is described below."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "26",
+      "title": "Symmetric diffeomorphic image registration with cross-correlation: Evaluating automated labeling of elderly and neurodegenerative brain",
+      "doi": "10.1016/j.media.2007.06.004",
+      "year": 2008,
+      "contexts": [
+        "Clinical predictors were age, sex, education, APOE ε4 status, baseline Preclinical Alzheimer's Cognitive Composite (PACC), Mini-Mental State Examination (MMSE), and treatment assignment [23]. MMSE also contributes to PACC. Quantitative amyloid used Centiloids [24]; plasma used log-transformed Lilly p-tau217. Post-hoc entorhinal tau was the bilateral mean flortaucipir standardized uptake value ratio, referenced to cerebellar crus. Study-supplied native-scan NeuroQuant volumes were normalized by intracranial volume for prediction. Its software version was unavailable. MRI underwent N4 correction and nonlinear ANTs registration to MNI152NLin2009cAsym on a 128³ grid at 1.5 mm [25, 26, 27], with masked clipping/standardization. Automated criteria included correlation ≥0.40, coverage ≥0.75 and positive-Jacobian fraction ≥0.99; independent visual registration review was incomplete. Jacobians were quality-control outputs, not network inputs. PET arrays represented spatial patterns, not verified calibrated tracer measurements: 227 participants were absent from the assembled input list and 288 had nonfinite source arrays before local resampling. Supplementary Information 1 documents processing, missingness and selection. The supplied PET records did not establish reference-region normalization or masks mapped to source PET geometry; a T1 template mask could not simply replace them. Conclusions are limited to the retained uncalibrated pattern representation.",
+        "Clinical predictors were age, sex, education, apolipoprotein E (APOE) ε4, baseline Preclinical Alzheimer's Cognitive Composite (PACC), Mini-Mental State Examination (MMSE) and treatment [23]. Quantitative amyloid used Centiloids [24]; plasma used log Lilly p-tau217; tau was bilateral entorhinal flortaucipir standardized uptake value ratio (SUVR), referenced to cerebellar crus. Native NeuroQuant volumes used volume/intracranial volume (ICV); its version was unavailable. MRI used N4/ANTs registration to MNI152NLin2009cAsym, masked clipping/standardization and a 128³, 1.5-mm grid [25,26,27]. Automated criteria were correlation ≥0.40, coverage ≥0.75 and positive Jacobians ≥0.99; visual review was incomplete. PET patterns excluded 227 absent input-list entries and 288 nonfinite source arrays. Voxel normalization/source-space brain masks were unverified; background-only NaN recovery was not assumed. Supplementary Information 1 (SI1) gives implementation/selection details.",
+        "MRI preprocessing used N4 bias correction and nonlinear ANTs registration to MNI152NLin2009cAsym [25, 26, 27]. Images occupied a 128 × 128 × 128 grid at 1.5-mm spacing. A template-space brain mask defined intensity clipping at the 0.5th/99.5th percentiles and within-image standardization; voxels outside it were zero. This route did not include a separate native-space skull-stripping stage. Automated checks required template correlation ≥0.40, coverage ≥0.75 and positive-Jacobian fraction ≥0.99, alongside geometry and finite-value checks. Jacobians were quality-control outputs, not network channels. Independent visual review had not been completed for all processed scans; the parent study's clinical safety reads did not evaluate this registration pipeline. The intensity-only input was intended to retain residual spatial and tissue-pattern information after alignment. It did not explicitly encode the deformation field; registration does not imply removal of all anatomical information. A separate post-hoc deformation-summary control is described below."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "27",
+      "title": "TemplateFlow: FAIR-sharing of multi-scale, multi-species brain models",
+      "doi": "10.1038/s41592-022-01681-2",
+      "year": 2022,
+      "contexts": [
+        "Clinical predictors were age, sex, education, APOE ε4 status, baseline Preclinical Alzheimer's Cognitive Composite (PACC), Mini-Mental State Examination (MMSE), and treatment assignment [23]. MMSE also contributes to PACC. Quantitative amyloid used Centiloids [24]; plasma used log-transformed Lilly p-tau217. Post-hoc entorhinal tau was the bilateral mean flortaucipir standardized uptake value ratio, referenced to cerebellar crus. Study-supplied native-scan NeuroQuant volumes were normalized by intracranial volume for prediction. Its software version was unavailable. MRI underwent N4 correction and nonlinear ANTs registration to MNI152NLin2009cAsym on a 128³ grid at 1.5 mm [25, 26, 27], with masked clipping/standardization. Automated criteria included correlation ≥0.40, coverage ≥0.75 and positive-Jacobian fraction ≥0.99; independent visual registration review was incomplete. Jacobians were quality-control outputs, not network inputs. PET arrays represented spatial patterns, not verified calibrated tracer measurements: 227 participants were absent from the assembled input list and 288 had nonfinite source arrays before local resampling. Supplementary Information 1 documents processing, missingness and selection. The supplied PET records did not establish reference-region normalization or masks mapped to source PET geometry; a T1 template mask could not simply replace them. Conclusions are limited to the retained uncalibrated pattern representation.",
+        "Clinical predictors were age, sex, education, apolipoprotein E (APOE) ε4, baseline Preclinical Alzheimer's Cognitive Composite (PACC), Mini-Mental State Examination (MMSE) and treatment [23]. Quantitative amyloid used Centiloids [24]; plasma used log Lilly p-tau217; tau was bilateral entorhinal flortaucipir standardized uptake value ratio (SUVR), referenced to cerebellar crus. Native NeuroQuant volumes used volume/intracranial volume (ICV); its version was unavailable. MRI used N4/ANTs registration to MNI152NLin2009cAsym, masked clipping/standardization and a 128³, 1.5-mm grid [25,26,27]. Automated criteria were correlation ≥0.40, coverage ≥0.75 and positive Jacobians ≥0.99; visual review was incomplete. PET patterns excluded 227 absent input-list entries and 288 nonfinite source arrays. Voxel normalization/source-space brain masks were unverified; background-only NaN recovery was not assumed. Supplementary Information 1 (SI1) gives implementation/selection details.",
+        "MRI preprocessing used N4 bias correction and nonlinear ANTs registration to MNI152NLin2009cAsym [25, 26, 27]. Images occupied a 128 × 128 × 128 grid at 1.5-mm spacing. A template-space brain mask defined intensity clipping at the 0.5th/99.5th percentiles and within-image standardization; voxels outside it were zero. This route did not include a separate native-space skull-stripping stage. Automated checks required template correlation ≥0.40, coverage ≥0.75 and positive-Jacobian fraction ≥0.99, alongside geometry and finite-value checks. Jacobians were quality-control outputs, not network channels. Independent visual review had not been completed for all processed scans; the parent study's clinical safety reads did not evaluate this registration pipeline. The intensity-only input was intended to retain residual spatial and tissue-pattern information after alignment. It did not explicitly encode the deformation field; registration does not imply removal of all anatomical information. A separate post-hoc deformation-summary control is described below."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "28",
+      "title": "A scalable discrete-time survival model for neural networks",
+      "doi": "10.7717/peerj.6257",
+      "year": 2019,
+      "contexts": [
+        "Separate three-dimensional residual convolutional neural networks (CNNs), trained from scratch, produced nine-interval survival curves using a discrete-time likelihood [28]. Three cumulative-hazard summaries entered ridge-Cox fusion heads (penalty 10; Breslow ties) [29]. Five participant-level outer folds were stratified by event and treatment. Within each outer-training set, three components separated expert training from fusion-head training; expert fitting/early-stopping used an 80:20 split before refitting the full expert pool for the selected number of epochs, not the same update count. Each locked expert supplied features to its own fusion head and outer-test participants. Final survival curves—not feature vectors—were averaged over components and seeds 13, 29 and 47. MRI expert, fusion and test pools contained 564–566, 282–283 and 211–212 participants, respectively. Reference heads used the same training rows and penalty as augmented heads. Imputation/scaling were training-derived. Stronger clinical Cox models used all outer-training rows with three-fold inner tuning; random survival forests supplied a nonlinear comparator [30]. Penalty 10 applies to unnormalized partial likelihood: the software minimizes [-log likelihood + alpha||beta||²/2]/n. Equal alpha does not equalize effective shrinkage.",
+        "The image model was a locally implemented three-dimensional convolutional neural network (CNN) for survival analysis, trained from scratch, with residual blocks, four spatial feature scales and a 128-dimensional latent representation. It predicted conditional hazards over nine time intervals, using a discrete-time survival likelihood [28] and the survival function in Eq. 1. It was not evaluated as a pretrained foundation model. Separate MRI and amyloid PET networks were used. MRI training included small translations and low-amplitude noise; evaluation inputs were unchanged. No test-time augmentation was used."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "29",
+      "title": "Regression Models and Life-Tables",
+      "doi": "10.1111/j.2517-6161.1972.tb00899.x",
+      "year": 1972,
+      "contexts": [
+        "Each image modality supplied three cumulative-hazard features, evaluated at 547.875, 821.71875 and 1095.75 days, to a ridge-penalized Cox fusion model (penalty 10; Breslow ties) [29]. Clinical reference and augmented heads used identical fusion-training rows and the same fixed penalty. This policy holds regularization constant for the paired predictor comparison; it does not establish that penalty 10 is optimal for each predictor set. Imputation and standardization were learned within each training pool. Stronger clinical Cox comparators used all outer-training participants, with three inner folds selecting among ridge penalties 0.1, 1 and 10 by a one-standard-error rule favoring stronger regularization. Random survival forests provided a nonlinear tabular comparator [30]. Tau heads used matched tau-eligible rows and fixed image checkpoints. Primary image training used mixed precision. A separate 32-bit floating-point (FP32) sensitivity analysis regenerated features from fixed CNN checkpoints and refitted small heads; it did not retrain the CNNs or exactly reproduce the primary configuration. Online Resource 1 specifies the hazard intervals, architecture, optimizer, stopping rules and runtime versions. The scikit-survival objective is [-partial log-likelihood + alpha times the squared standardized-coefficient norm divided by two]/n. Its equivalent unnormalized objective therefore uses alpha/2, so alpha=10 does not impose equal effective shrinkage across differently sized pools or predictor sets. Three summaries retain time-specific information but are correlated; three inputs are not three independent signals. We retained this fixed policy for the original comparison and separately assessed nested head tuning and the fitted heads' effective degrees of freedom.",
+        "Separate three-dimensional residual convolutional neural networks (CNNs), trained from scratch, produced nine-interval survival curves using a discrete-time likelihood [28]. Three cumulative-hazard summaries entered ridge-Cox fusion heads (penalty 10; Breslow ties) [29]. Five participant-level outer folds were stratified by event and treatment. Within each outer-training set, three components separated expert training from fusion-head training; expert fitting/early-stopping used an 80:20 split before refitting the full expert pool for the selected number of epochs, not the same update count. Each locked expert supplied features to its own fusion head and outer-test participants. Final survival curves—not feature vectors—were averaged over components and seeds 13, 29 and 47. MRI expert, fusion and test pools contained 564–566, 282–283 and 211–212 participants, respectively. Reference heads used the same training rows and penalty as augmented heads. Imputation/scaling were training-derived. Stronger clinical Cox models used all outer-training rows with three-fold inner tuning; random survival forests supplied a nonlinear comparator [30]. Penalty 10 applies to unnormalized partial likelihood: the software minimizes [-log likelihood + alpha||beta||²/2]/n. Equal alpha does not equalize effective shrinkage."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "30",
+      "title": "Random survival forests",
+      "doi": "10.1214/08-aoas169",
+      "year": 2008,
+      "contexts": [
+        "Each image modality supplied three cumulative-hazard features, evaluated at 547.875, 821.71875 and 1095.75 days, to a ridge-penalized Cox fusion model (penalty 10; Breslow ties) [29]. Clinical reference and augmented heads used identical fusion-training rows and the same fixed penalty. This policy holds regularization constant for the paired predictor comparison; it does not establish that penalty 10 is optimal for each predictor set. Imputation and standardization were learned within each training pool. Stronger clinical Cox comparators used all outer-training participants, with three inner folds selecting among ridge penalties 0.1, 1 and 10 by a one-standard-error rule favoring stronger regularization. Random survival forests provided a nonlinear tabular comparator [30]. Tau heads used matched tau-eligible rows and fixed image checkpoints. Primary image training used mixed precision. A separate 32-bit floating-point (FP32) sensitivity analysis regenerated features from fixed CNN checkpoints and refitted small heads; it did not retrain the CNNs or exactly reproduce the primary configuration. Online Resource 1 specifies the hazard intervals, architecture, optimizer, stopping rules and runtime versions. The scikit-survival objective is [-partial log-likelihood + alpha times the squared standardized-coefficient norm divided by two]/n. Its equivalent unnormalized objective therefore uses alpha/2, so alpha=10 does not impose equal effective shrinkage across differently sized pools or predictor sets. Three summaries retain time-specific information but are correlated; three inputs are not three independent signals. We retained this fixed policy for the original comparison and separately assessed nested head tuning and the fitted heads' effective degrees of freedom.",
+        "Separate three-dimensional residual convolutional neural networks (CNNs), trained from scratch, produced nine-interval survival curves using a discrete-time likelihood [28]. Three cumulative-hazard summaries entered ridge-Cox fusion heads (penalty 10; Breslow ties) [29]. Five participant-level outer folds were stratified by event and treatment. Within each outer-training set, three components separated expert training from fusion-head training; expert fitting/early-stopping used an 80:20 split before refitting the full expert pool for the selected number of epochs, not the same update count. Each locked expert supplied features to its own fusion head and outer-test participants. Final survival curves—not feature vectors—were averaged over components and seeds 13, 29 and 47. MRI expert, fusion and test pools contained 564–566, 282–283 and 211–212 participants, respectively. Reference heads used the same training rows and penalty as augmented heads. Imputation/scaling were training-derived. Stronger clinical Cox models used all outer-training rows with three-fold inner tuning; random survival forests supplied a nonlinear comparator [30]. Penalty 10 applies to unnormalized partial likelihood: the software minimizes [-log likelihood + alpha||beta||²/2]/n. Equal alpha does not equalize effective shrinkage."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "31",
+      "title": "Assessment and comparison of prognostic classification schemes for survival data",
+      "doi": "10.1002/(sici)1097-0258(19990915/30)18:17/18<2529::aid-sim274>3.0.co;2-5",
+      "year": 1999,
+      "contexts": [
+        "The principal measure was censoring-weighted integrated Brier score (IBS), evaluated at nine times from 365 to 1,095.75 days with trapezoidal integration [31]. Training-derived reverse Kaplan–Meier weights, support checks and administrative truncation were used. Uno's three-year concordance assessed ranking [32]; a training-derived null model provided the index of prediction accuracy [33]. Metrics were computed within folds and weighted by test-set size. Differences are augmented minus reference: lower IBS and higher concordance favor augmentation.",
+        "The principal measure was the integrated Brier score (IBS) with inverse-probability-of-censoring weighting (IPCW) over nine time points from 365 to 1,095.75 days [31]. Equation 2 summarizes the time-averaged prediction error; implementation used trapezoidal integration on the specified grid. Censoring weights were estimated from the corresponding training data using the survival library's reverse Kaplan–Meier convention, with support checks and administrative truncation. The confirmation rule yielded no events by day 365 and five by day 730. Early Brier terms therefore contain little event information and can dilute later differences; squared probability errors need not be zero. The horizon-specific Brier analysis isolates the final-horizon error."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "32",
+      "title": "On the C‐statistics for evaluating overall adequacy of risk prediction procedures with censored survival data",
+      "doi": "10.1002/sim.4154",
+      "year": 2011,
+      "contexts": [
+        "BS_f(t) is the fold-specific IPCW Brier score: observed events by t contribute predicted survival squared divided by the training censoring probability at their observed time; participants observed beyond t contribute one minus predicted survival, squared, divided by the training censoring probability at t. Earlier-censored participants contribute zero. The implementation uses the library's reverse-Kaplan–Meier tie convention. Evaluation records are administratively capped just below the corresponding training maximum; there is no arbitrary clipping of positive weights. Equation 2 is integrated by the trapezoidal rule over the nine fixed times and divided by the interval length. Fold IBS and three-year Uno concordance [32] are averaged with weights n_f/sum(n_f). A training-derived Kaplan–Meier null supplies IPA, 100 times one minus model/null IBS [33]. Different modality subsets are not head-to-head comparisons.",
+        "The principal measure was censoring-weighted integrated Brier score (IBS), evaluated at nine times from 365 to 1,095.75 days with trapezoidal integration [31]. Training-derived reverse Kaplan–Meier weights, support checks and administrative truncation were used. Uno's three-year concordance assessed ranking [32]; a training-derived null model provided the index of prediction accuracy [33]. Metrics were computed within folds and weighted by test-set size. Differences are augmented minus reference: lower IBS and higher concordance favor augmentation."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "33",
+      "title": "The index of prediction accuracy: an intuitive measure useful for evaluating risk prediction models",
+      "doi": "10.1186/s41512-018-0029-2",
+      "year": 2018,
+      "contexts": [
+        "BS_f(t) is the fold-specific IPCW Brier score: observed events by t contribute predicted survival squared divided by the training censoring probability at their observed time; participants observed beyond t contribute one minus predicted survival, squared, divided by the training censoring probability at t. Earlier-censored participants contribute zero. The implementation uses the library's reverse-Kaplan–Meier tie convention. Evaluation records are administratively capped just below the corresponding training maximum; there is no arbitrary clipping of positive weights. Equation 2 is integrated by the trapezoidal rule over the nine fixed times and divided by the interval length. Fold IBS and three-year Uno concordance [32] are averaged with weights n_f/sum(n_f). A training-derived Kaplan–Meier null supplies IPA, 100 times one minus model/null IBS [33]. Different modality subsets are not head-to-head comparisons.",
+        "The principal measure was censoring-weighted integrated Brier score (IBS), evaluated at nine times from 365 to 1,095.75 days with trapezoidal integration [31]. Training-derived reverse Kaplan–Meier weights, support checks and administrative truncation were used. Uno's three-year concordance assessed ranking [32]; a training-derived null model provided the index of prediction accuracy [33]. Metrics were computed within folds and weighted by test-set size. Differences are augmented minus reference: lower IBS and higher concordance favor augmentation."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "34",
+      "title": "Uncertainty of risk estimates from clinical prediction models: rationale, challenges, and approaches",
+      "doi": "10.1136/bmj-2024-080749",
+      "year": 2025,
+      "contexts": [
+        "Generalization is limited by the selected, highly educated, predominantly White cohort, unequal modality availability, historical outcome-informed development, and incomplete independent visual registration review. Conditional intervals exclude model-development uncertainty [34, 38]. The confirmed-CDR endpoint records later verification of clinical change, not latent onset or adjudicated dementia; sparse early events partly explain low IBS. PET calibration and the cause of sex-related availability differences remain unresolved. Fixed models, representative independent cohorts, matched modality acquisition and adequately supported calibration are needed before decision-specific utility can be assessed.",
+        "Paired participant bootstrap resampling within outer folds held predictions, fitted models and censoring distributions fixed. Intervals describe conditional sampling uncertainty, not uncertainty from repeating model development [34]. Bonferroni families contained eight MRI/plasma, seven PET, three tau and two stronger-comparator contrasts. Tau used 40,000 draws; other original families used 2,000. Concordance draws lacking comparable-pair support in any fold were omitted; Brier draws remained estimable. Broader tau multiplicity checks, 20 three-year Brier contrasts with 40,000 draws, and seven OOF IBS contrasts in three separate families were retained. New paired OOF tau concordance increments used 40,000 draws. All-fold failure omits the entire original concordance draw; alternative handling and IBS restricted to identical draws were examined. Censoring-weighted calibration, nested tabular sensitivities, covariate-dependent censoring, subgroup/manufacturer checks and endpoint alternatives are documented in Supplementary Information 1. No test-outcome recalibration or clinical decision threshold was validated.",
+        "Paired participant bootstrapping within outer folds held fitted models, partitions and training-derived censoring distributions fixed. Intervals therefore describe conditional sampling uncertainty, not uncertainty from repeating model development [34]. Differences were augmented minus reference: negative values favor augmentation for IBS and positive values for concordance. Bonferroni percentile intervals targeted 95% coverage within each metric and comparison family: eight MRI/plasma, seven PET, three tau and two stronger-comparator contrasts. The MRI/plasma, PET and stronger-comparator families used 2,000 draws; tau used 40,000 to assess stability near zero. A concordance resample was omitted in its entirety if even one of the five folds had no weighted comparable pairs; the five-fold mean and its interval are therefore conditional on all-fold estimability. All Brier draws remained estimable. Nominal intervals and valid-draw counts are retained in Online Resource 3. Broader tau sensitivities used 20 contrasts per metric and 40 across both metrics; these address the reported comparison families, not every historical analytic choice. Nominal 95% intervals for absolute IBS, concordance and IPA describe precision of each model, not the paired increment. Absolute concordance intervals for Table 2 and the OOF sensitivity used 2,000 within-fold resamples with the same fixed-prediction conditioning; a draw was omitted if any fold lacked weighted comparable pairs.",
+        "These results concern a selected, highly educated, predominantly White, amyloid-positive trial population. Sex differences in modality availability were observed, but their mechanism was not identified. Earlier outcome-informed development and the absence of an independent cohort limit generalization. Bootstrap intervals condition on fitted predictions, exclude retraining/selection uncertainty, and do not correct every historical analytic choice [34, 38]. The confirmation-time endpoint delays recorded progression and is not adjudicated dementia; sparse early events partly explain low absolute IBS. Horizon-specific Brier analysis did not resolve probability-accuracy uncertainty. Incomplete independent visual registration review, unverified quantitative calibration of PET arrays, and limited center-level characterization also constrain imaging interpretation."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "35",
+      "title": "Minimum sample size for developing a multivariable prediction model: PART II ‐ binary and time‐to‐event outcomes",
+      "doi": "10.1002/sim.7992",
+      "year": 2019,
+      "contexts": [
+        "Further sensitivities examined endpoint definitions, age and MMSE strata, sex, blood-subset selection, proportional-hazards diagnostics and PET-manufacturer holdout. Manufacturer holdout remained an internal stress test and used a smaller ensemble than the primary analysis. Retrospective sample-size scenarios used the three criteria described by Riley and colleagues, including the published correction [35, 36]. Their assumed signal strengths and limited parameter counts do not establish adequacy for a convolutional network."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "36",
+      "title": "Correction to: Minimum sample size for developing a multivariable prediction model: Part II‐binary and time‐to‐event outcomes by Riley RD, Snell KI, Ensor J, et al.",
+      "doi": "10.1002/sim.8409",
+      "year": 2019,
+      "contexts": [
+        "Further sensitivities examined endpoint definitions, age and MMSE strata, sex, blood-subset selection, proportional-hazards diagnostics and PET-manufacturer holdout. Manufacturer holdout remained an internal stress test and used a smaller ensemble than the primary analysis. Retrospective sample-size scenarios used the three criteria described by Riley and colleagues, including the published correction [35, 36]. Their assumed signal strengths and limited parameter counts do not establish adequacy for a convolutional network."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "38",
+      "title": "PROBAST+AI: an updated quality, risk of bias, and applicability assessment tool for prediction models using regression or artificial intelligence methods",
+      "doi": "10.1136/bmj-2024-082505",
+      "year": 2025,
+      "contexts": [
+        "Generalization is limited by the selected, highly educated, predominantly White cohort, unequal modality availability, historical outcome-informed development, and incomplete independent visual registration review. Conditional intervals exclude model-development uncertainty [34, 38]. The confirmed-CDR endpoint records later verification of clinical change, not latent onset or adjudicated dementia; sparse early events partly explain low IBS. PET calibration and the cause of sex-related availability differences remain unresolved. Fixed models, representative independent cohorts, matched modality acquisition and adequately supported calibration are needed before decision-specific utility can be assessed.",
+        "These results concern a selected, highly educated, predominantly White, amyloid-positive trial population. Sex differences in modality availability were observed, but their mechanism was not identified. Earlier outcome-informed development and the absence of an independent cohort limit generalization. Bootstrap intervals condition on fitted predictions, exclude retraining/selection uncertainty, and do not correct every historical analytic choice [34, 38]. The confirmation-time endpoint delays recorded progression and is not adjudicated dementia; sparse early events partly explain low absolute IBS. Horizon-specific Brier analysis did not resolve probability-accuracy uncertainty. Incomplete independent visual registration review, unverified quantitative calibration of PET arrays, and limited center-level characterization also constrain imaging interpretation."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    },
+    {
+      "key": "J2",
+      "title": "Time-stratified modeling of cognitive impairment risk in rural aging populations: Nomogram development (2011) and external validation (2013) using CHARLS",
+      "doi": "10.1016/j.archger.2025.106033",
+      "year": 2026,
+      "contexts": [
+        "Prediction also depends on the population and setting. Recent work in rural Chinese older adults examined a cognitive-impairment model built from demographic, physical and psychological characteristics [J2]. That setting differs substantially from an amyloid-positive prevention trial, but the contrast highlights why accessible clinical information and population selection belong in the reference model. An imaging model should demonstrate additional prognostic information against that reference rather than be judged only by its stand-alone discrimination.",
+        "The rural-population modeling work in this journal illustrates that cognitive risk models can draw on readily available characteristics and still require setting-specific evaluation [J2]. Our cohort instead selected amyloid-positive, cognitively unimpaired volunteers, with limited educational and racial diversity. Neither study's performance should be transferred numerically to the other. The relevant implication is to establish the clinical reference and intended setting before deciding what an advanced biomarker contributes."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Destination-specific primary-text check with access limits: see REFERENCE_CLAIM_LEDGER.md"
+    },
+    {
+      "key": "J3",
+      "title": "Cognitive Stability Among Plasma p-tau 181 Negative Individuals: A 5-year Analysis of the Multidomain Alzheimer Prevention Trial Study",
+      "doi": "10.1093/gerona/glaf113",
+      "year": 2025,
+      "contexts": [
+        "A five-year analysis of the Multidomain Alzheimer Prevention Trial found broadly stable cognition in plasma p-tau181-negative groups, while frailty distinguished participants who nevertheless declined [J3]. This does not establish a frailty effect in A4, where frailty was not part of our fixed comparator. It does show why biomarker interpretation must retain a geriatric context. The present study addresses a different, amyloid-positive population and asks whether imaging and biomarker additions improve near-term prediction within it.",
+        "The MAPT report on p-tau181 and frailty emphasizes vulnerability beyond a single marker [J3]. Our analysis neither measured that same construct nor evaluated p-tau181, and cannot claim to confirm its findings. Instead, it identifies a practical next question for medical gerontology: whether richer clinical characterization, including functional or vascular measures, changes the incremental contribution of imaging when evaluated prospectively in the intended population."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Destination-specific primary-text check with access limits: see REFERENCE_CLAIM_LEDGER.md"
+    },
+    {
+      "key": "J5",
+      "title": "Modifying the minimum criteria for diagnosing amnestic MCI to improve prediction of brain atrophy and progression to Alzheimer’s disease",
+      "doi": "10.1007/s11682-018-0019-6",
+      "year": 2020,
+      "contexts": [
+        "Brain–behavior associations do not by themselves show that a measure improves prediction. In amnestic mild cognitive impairment, changing the memory criteria altered the observed atrophy and progression profiles [J5]. We study an earlier clinical stage: amyloid-positive adults who remain cognitively unimpaired. The question is whether brain measurements improve prognosis after clinical and cognitive information has been considered.",
+        "Clinical risk already tracked later cognitive change. The similar association for imaging-augmented risk therefore does not establish a distinct contribution from the network. Earlier work showed how memory-based definitions of mild cognitive impairment can alter brain–progression relationships [J5]; our findings likewise depend on the phenotype and endpoint, in a different, cognitively unimpaired population."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Destination-specific primary-text check with access limits: see REFERENCE_CLAIM_LEDGER.md"
+    },
+    {
+      "key": "J8",
+      "title": "Self-Organized Prediction-Classification- Superposition of Longitudinal Cognitive Decline in Alzheimer's Disease: An Application to Novel Clinical Research Methodology",
+      "doi": "10.1109/jbhi.2025.3546020",
+      "year": 2025,
+      "contexts": [
+        "Sato and colleagues developed a method for predicting, classifying and superimposing longitudinal cognitive trajectories from short-term individual observations [J8]. Such trajectory modeling addresses a related but distinct target from confirmation-time clinical events. Here, we examine a defined three-year survival target, match each augmented model to its clinical reference, and evaluate both component-specific fusion and pooled out-of-fold stacking. The contribution is an auditable evaluation of incremental information and fusion assumptions, rather than a claim of a new state-of-the-art architecture.",
+        "Trajectory-oriented work targets a different disease-course representation [J8], not a numerical benchmark for our Brier scores. The internal repair and tuning checks are now executed, including a limited deformation control and common-sample biomarkers. A future deployment study should lock these choices before independent evaluation and assess absolute-risk calibration; increasing fusion support or changing scales alone does not establish clinical utility."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Destination-specific primary-text check with access limits: see REFERENCE_CLAIM_LEDGER.md"
+    },
+    {
+      "key": "J9",
+      "title": "Improved Prediction of Imminent Progression to Clinically Significant Memory Decline Using Surface Multivariate Morphometry Statistics and Sparse Coding",
+      "doi": "10.3233/jad-200821",
+      "year": 2021,
+      "contexts": [
+        "Hippocampal surface morphometry and sparse coding have been evaluated for imminent progression to clinically significant memory decline in prospective Arizona and ADNI cohorts [J9]. Such anatomically targeted representations provide an important alternative to a generic whole-image network. Their endpoints and populations differ from those examined here; they motivate testing added information in the intended clinical stage rather than assuming that an imaging result transfers across stages or prediction targets.",
+        "The hippocampal morphometry study provides a useful contrast because it targeted impending memory decline with a different representation and prospective cohorts [J9]. Its findings support controlled evaluation of anatomically informed features, not an assumption that our from-scratch network should reproduce its performance. Conversely, our uncertain increment should not be generalized to every MRI method. The tau ranking result is promising for a defined follow-up hypothesis, but remains distinct from a reliable individual-risk estimate."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Destination-specific primary-text check with access limits: see REFERENCE_CLAIM_LEDGER.md"
+    },
+    {
+      "key": "J10",
+      "title": "Longitudinal Brain MR Image Modeling Using Personalized Memory for Alzheimer’s Disease",
+      "doi": "10.1109/access.2021.3121609",
+      "year": 2021,
+      "contexts": [
+        "Longitudinal MRI modeling has addressed the generation of future scans from personalized structural and temporal representations [J10]. That task differs from estimating a clinical-event probability. Both involve progression, but reconstruction quality cannot substitute for clinical calibration. We therefore define a confirmation-time endpoint and compare incremental survival prediction under two participant-separated fusion designs, retaining the code and aggregate outputs needed to inspect the comparisons.",
+        "Personalized longitudinal image modeling and clinical-risk estimation have complementary engineering roles [J10], but their evaluation criteria should remain distinct. The present package exposes cohort construction, model pairing, fixed-prediction inference and numerical replay. It does not distribute restricted participant data or establish independent reproduction of image training. That boundary makes the computational contribution reviewable without claiming more openness or validation than the available evidence supports."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Destination-specific primary-text check with access limits: see REFERENCE_CLAIM_LEDGER.md"
+    },
+    {
+      "key": "J12",
+      "title": "Predictive Models for the Transition from Mild Neurocognitive Disorder to Major Neurocognitive Disorder: Insights from Clinical, Demographic, and Neuropsychological Data",
+      "doi": "10.3390/biomedicines12061232",
+      "year": 2024,
+      "contexts": [
+        "A study of progression from mild to major neurocognitive disorder used demographic, clinical and neuropsychological information to model subsequent deterioration [J12]. Although that population is more impaired than the A4 cohort, it illustrates why a substantive clinical reference is necessary when evaluating advanced biomarkers. We examine whether imaging-derived survival features, regional anatomy and selected tau measures improve prognosis after clinical characteristics, cognition and quantitative amyloid are already included.",
+        "The clinical and neuropsychological modeling reported by Tsiakiri and colleagues supports considering readily obtainable patient characteristics as a meaningful comparator [J12]. Our earlier-stage cohort and censored endpoint answer a different question, so accuracy values cannot be compared directly. A translational program should next evaluate compact clinical and biomarker sets in representative, independently observed patients, then assess decisions and resource use rather than infer utility from association alone."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Destination-specific primary-text check with access limits: see REFERENCE_CLAIM_LEDGER.md"
+    },
+    {
+      "key": "J13",
+      "title": "Validity Evidence for the Research Category, “Cognitively Unimpaired – Declining,” as a Risk Marker for Mild Cognitive Impairment and Alzheimer’s Disease",
+      "doi": "10.3389/fnagi.2021.688478",
+      "year": 2021,
+      "contexts": [
+        "Research on a cognitively unimpaired–declining category linked a subclinical cognitive phenotype to later impairment and Alzheimer's biomarkers [J13]. That category is not the endpoint used here, but it reinforces the relevance of psychological assessment in early disease research. Within an amyloid-positive cohort, we ask whether brain-image features and selected biomarkers improve prediction beyond a clinical and cognitive reference, while separately examining how risk scores relate to subsequent cognitive trajectories.",
+        "The cognitively unimpaired–declining literature gives baseline cognitive phenotype a substantive role in preclinical research [J13]. Our results are consistent with taking that role seriously, but do not validate the same classification or prove that cognition exhausts the information in imaging. They support designing the next study around a defined clinical transition, sufficiently rich psychological assessment and an independent test of any additional brain representation."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Destination-specific primary-text check with access limits: see REFERENCE_CLAIM_LEDGER.md"
+    },
+    {
+      "key": "J14",
+      "title": "Imaging-genetics-based dementia risk prediction using deep survival neural networks in the Rotterdam Study",
+      "doi": "10.1038/s41598-026-47047-y",
+      "year": 2026,
+      "contexts": [
+        "A Rotterdam Study analysis integrating imaging and genetic data found that the apparent benefit of deep survival modeling depended on whether the Cox reference also contained MRI markers; an extracted-feature approach provided further gains [J14]. That study included an external ADNI evaluation. Our analysis instead addresses a selected, amyloid-positive A4 population with a confirmation-time clinical endpoint. It provides a matched internal comparison, not an external replication of the Rotterdam models.",
+        "The Rotterdam imaging-genetics study shows reference-model dependence and benefits from extracted CNN features [J14]. Its population, endpoint and external evaluation differ. Our repaired-score, nested-penalty and fixed deformation-summary checks address selected internal explanations; they do not isolate why the original CNN increment was weak or justify an absence-of-anatomical-information claim. The original null and the adverse deformation-summary result are both retained."
+      ],
+      "identity_scope": "official live DOI record",
+      "entailment_scope": "Destination-specific primary-text check with access limits: see REFERENCE_CLAIM_LEDGER.md"
+    },
+    {
+      "key": "J900",
+      "title": "Codex (GPT-6): AI-assisted manuscript preparation",
+      "doi": "",
+      "year": 2026,
+      "contexts": [],
+      "identity_scope": "software disclosure; not scientific evidence",
+      "entailment_scope": "Original cited context retained for review; DOI identity alone does not prove every inference."
+    }
+  ],
+  "boundaries": "No cross-study performance claim, no external replication of this model, and no full-text access assertion beyond the evidence ledger."
+}
